@@ -3,59 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="description" content="Studio NaoJunは、プログラム、映像、ツールを制作・販売する小さなスタジオです。">
   <title>Studio NaoJun</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-      color: #222;
-      background: #f7f7f5;
-    }
-
-    main {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 120px 24px;
-    }
-
-    h1 {
-      margin-bottom: 24px;
-      font-size: clamp(40px, 8vw, 72px);
-      letter-spacing: -0.04em;
-    }
-
-    p {
-      max-width: 620px;
-      font-size: 18px;
-      line-height: 1.9;
-    }
-
-    .status {
-      margin-top: 48px;
-      font-size: 14px;
-      color: #777;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
 <body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="./">Studio NaoJun</a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="about/">About</a>
+        <a href="works/">Works</a>
+        <a href="contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <h1>Studio NaoJun</h1>
+    <section class="hero">
+      <div class="container hero-copy">
+        <div class="eyebrow">Small studio, useful creations</div>
+        <h1>作る。整える。届ける。</h1>
+        <p class="lead">Studio NaoJunは、プログラム、映像、ツールなど、私たちが作ったものを届けるための小さなスタジオです。</p>
+        <div class="actions">
+          <a class="button primary" href="works/">作品を見る</a>
+          <a class="button secondary" href="about/">スタジオについて</a>
+        </div>
+      </div>
+    </section>
 
-    <p>
-      プログラム、映像、ツール。
-      私たちが作ったものを届けるための、小さなスタジオです。
-    </p>
-
-    <p class="status">
-      Website under construction.
-    </p>
+    <section class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Works</div>
+            <h2>制作しているもの</h2>
+          </div>
+          <p>実用性と手触りを大切にしながら、小さくても長く使える作品を作ります。</p>
+        </div>
+        <div class="grid">
+          <a class="card" href="works/sample-product/">
+            <div class="meta">PROGRAM</div>
+            <h3>サンプルツール</h3>
+            <p>作品詳細ページの雛形です。実際の作品名、説明、価格、購入先に置き換えて使えます。</p>
+          </a>
+          <article class="card">
+            <div class="meta">VIDEO</div>
+            <h3>映像作品</h3>
+            <p>制作中。公開できる作品が整い次第、ここに追加します。</p>
+          </article>
+          <article class="card">
+            <div class="meta">TOOL</div>
+            <h3>暮らしと仕事の道具</h3>
+            <p>日々の不便を減らす、小さなツールやテンプレートを扱います。</p>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span data-year></span> Studio NaoJun</span>
+      <span>Programs, films and tools.</span>
+    </div>
+  </footer>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
