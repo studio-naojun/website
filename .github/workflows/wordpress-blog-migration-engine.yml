@@ -9,6 +9,7 @@ on:
       - 'sites/wordpress-blog/.gitignore'
       - 'sites/wordpress-blog/site.config.json'
       - 'sites/wordpress-blog/ci-smoke.mjs'
+      - 'sites/wordpress-blog/README.md'
       - '.github/workflows/wordpress-blog-migration-engine.yml'
   push:
     branches:
@@ -20,6 +21,7 @@ on:
       - 'sites/wordpress-blog/.gitignore'
       - 'sites/wordpress-blog/site.config.json'
       - 'sites/wordpress-blog/ci-smoke.mjs'
+      - 'sites/wordpress-blog/README.md'
       - '.github/workflows/wordpress-blog-migration-engine.yml'
 
 permissions:
@@ -39,8 +41,8 @@ jobs:
         run: node sites/wordpress-blog/ci-smoke.mjs
       - name: Unit tests
         working-directory: sites/wordpress-blog/migration
-        run: python -m unittest -v test_engine.py
-      - name: Build strict fixture bundle
+        run: python -m unittest -v test_engine.py test_u2memo_policy.py
+      - name: Build generic strict fixture bundle
         working-directory: sites/wordpress-blog/migration
         run: |
           rm -rf /tmp/wordpress-blog-fixture /tmp/wordpress-blog-db-import
@@ -51,7 +53,23 @@ jobs:
           test -s /tmp/wordpress-blog-db-import/wp_migration_run.json
           ! grep -R -F 'reader@example.net' /tmp/wordpress-blog-db-import
           ! grep -R -F '192.0.2.1' /tmp/wordpress-blog-db-import
-      - name: Guarded media manifest dry run
+      - name: Build u2memo policy fixture bundle
+        working-directory: sites/wordpress-blog/migration
+        run: |
+          rm -rf /tmp/u2memo-fixture /tmp/u2memo-db-import /tmp/u2memo-media-dry-run
+          python import_u2memo_wxr.py fixtures/u2memo-sample.xml --output /tmp/u2memo-fixture
+          python prepare_u2memo_db_import.py /tmp/u2memo-fixture --output /tmp/u2memo-db-import
+          test -s /tmp/u2memo-db-import/u2memo_legacy_comments.csv
+          test -s /tmp/u2memo-db-import/u2memo_migration_run.json
+          ! grep -R -F 'synthetic@example.net' /tmp/u2memo-db-import
+          ! grep -R -F '192.0.2.50' /tmp/u2memo-db-import
+          ! grep -R -F 'PASS: TEST_ONLY' /tmp/u2memo-db-import
+          python download_media.py /tmp/u2memo-fixture/media-manifest.json \
+            --output /tmp/u2memo-media-dry-run \
+            --allow-host pocca.net \
+            --allow-host tracker.example.com \
+            --dry-run
+      - name: Guarded generic media manifest dry run
         working-directory: sites/wordpress-blog/migration
         run: |
           python download_media.py /tmp/wordpress-blog-fixture/media-manifest.json \
