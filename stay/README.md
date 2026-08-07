@@ -2,6 +2,37 @@
 
 家族旅行向けホテル情報を、地図・検索・フィルタ・比較で閲覧できるStudio NaoJunのデータ作品です。
 
+Public:
+
+```text
+https://naojun.jp/stay/
+```
+
+Live Admin:
+
+```text
+https://naojun.jp/stay/live-admin.html
+```
+
+## Production state
+
+Last verified: 2026-08-07
+
+Stay Atlas v1 is deployed on GitHub Pages and reads the production dataset from Supabase.
+
+Current production snapshot:
+
+- Hotels: **133**
+- `open`: **130**
+- `planned`: **3**
+- `closed`: **0**
+- `hidden`: **0**
+- Field Verification rows: **123**
+
+The public application exposes only `open` and `planned` Hotel rows. The current public count is therefore **133**.
+
+These values are a dated production snapshot, not a permanent invariant. Future curation, opening/closure changes, or monthly refreshes may change the counts.
+
 ## v1で実装したもの
 
 - クリック可能な日本地域マップ
@@ -13,28 +44,31 @@
 - ホテル詳細Dialog
 - 日本語名 / 英語名の分離
 - Source / 最終確認日 / quality status
-- Admin Preview
+- PostgreSQL / Supabase production persistence
+- Supabase Auth + `app_metadata` role based Live Admin
+- RLSによる公開読取・Admin書込の分離
+- 公開閲覧専用の匿名Supabase ClientとAdmin Sessionの分離
 - 編集前Snapshotを残すRevision History
 - Field単位の変更差分表示
 - 過去Revisionを現在値として復元（復元前の現在値も新Revisionとして保存）
 - WordPress旧テーブルHTML importer
 - Jun提供の旧WordPress表を `data/legacy-table.html` として保存
-- 初回アクセス時の旧表全件自動Migration
 - Repository管理の公式確認Patch layer
 - Field単位の `verified` / `conflicting` 表示
 - 公開画面の「公式確認あり / 公式Source競合あり」Filter
-- Adminの「公式確認あり」Audit Queue
-- JSON export
-- PostgreSQL / Supabase向けSchema
+- Live Adminでの検索・編集・Revision・Restore
+- 初期Preview Datasetの一回限りのSupabase bootstrap
+- JSON export / Local Admin Preview
 - Browser smoke tests
+- PostgreSQL schema / RLS / Revision / Restore tests
 
 ## Data provenance
 
 ### 1. Legacy source
 
-`data/legacy-table.html` は、Junが共有した旧WordPress表をMigration inputとして保存したものです。値は旧表由来であり、2026年時点の最新情報として再検証済みではありません。
+`data/legacy-table.html` は、Junが共有した旧WordPress表をMigration inputとして保存したものです。値は旧表由来であり、2026年時点の最新情報として全件再検証済みではありません。
 
-公開画面とAdmin Previewは、ブラウザに現行datasetがまだ無い場合、この保存済みHTMLを自動で読み込み、全行を構造化します。`data/seed.js` は取得に失敗した場合のPreview fallbackです。
+Repository内のImporterは、この保存済みHTMLを構造化し、Preview Datasetおよび初期production migrationの基礎データを作ります。`data/seed.js` はLegacy HTML取得に失敗した場合のPreview fallbackです。
 
 Importerは空欄や「いける？」「追加料金？」等を推測で補完せず、`needs_review` として保持します。英語ホテル名も推測生成せず、旧表に英語表記が明示されている場合だけ抽出します。それ以外は `English name pending` として残します。
 
@@ -42,7 +76,7 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
 
-現在のcuration versionは `5`、確認対象は21件です。
+現在のRepository curation versionは `5`、確認対象は21件です。
 
 Hilton batches:
 
@@ -86,18 +120,28 @@ The Westin TokyoではWestin Clubと12歳以下のCocktail Time制限、駐車�
 
 Source同士の状態が一致しない場合も、都合のよい値を選びません。Conrad Nagoyaは営業開始状態、Hilton Nagoyaは旧表の添寝上限と現行Family Policyの整合に確認余地があるため `needs_review` / `conflicting` を保持します。
 
-## 重要: Admin Previewの制約
+## Public / Admin architecture
 
-現在の管理画面はGitHub Pagesで安全に試せるよう、変更とRevisionを `localStorage` に保存します。そのため管理変更は同じブラウザにだけ反映され、他の利用者やリポジトリの公開データは更新しません。
+### Public application
 
-「旧表＋公式確認へ戻す」は、そのブラウザ内の編集・Revisionを削除して `data/legacy-table.html` からdatasetを再構築し、Repository管理のcuration layerを重ね直します。
+`/stay/` はSupabaseの公開読取を使用します。
 
-本番v1として公開更新を可能にする場合は、次のどちらかへ移行します。
+- 公開ClientはAuth Sessionを保持しない匿名Clientです。
+- `hotels` はRLSにより `open` / `planned` のみ公開されます。
+- `field_verifications` も公開可能なHotelに紐づく行だけ読取可能です。
+- Live DBが一時的に利用できない場合の安全なBundled Dataset fallbackは残しています。
 
-1. Supabase / PostgreSQL + Auth
-2. Cloudflare Workers + D1 + Access/Auth
+### Live Admin
 
-本番では、公開データ、Admin認証、Revision、Source verificationをServer-sideで管理します。クライアントにGitHub PAT等の長期Credentialを置かない方針です。
+`/stay/live-admin.html` はSupabase Auth Sessionを使用します。
+
+Authenticationだけでは書込権限になりません。AdminはJWTのtrusted `app_metadata.stay_atlas_role = "admin"` とDatabase RLS / RPC checkの双方で制御します。
+
+Productionでは実際に、Admin login、Hotel edit、`edit` Revision生成、過去RevisionからのRestore、Restore前状態の新Revision保存まで確認済みです。
+
+### Local Admin Preview
+
+`/stay/admin.html` は開発・Preview用途です。Local Adminの編集とRevisionは `localStorage` に保存され、production Supabaseの値は変更しません。
 
 ## Data model（v1）
 
@@ -118,15 +162,29 @@ Hotel recordは以下を基本単位とします。
 
 ## Revision policy
 
-編集時は変更前Hotel snapshotをRevisionとして保存します。Rollbackは履歴を書き換えず、選択した過去snapshotを現在値へ複製し、Rollback直前の値も新Revisionとして保存します。
+ProductionのHotel編集では、変更前Hotel snapshotをPostgreSQL Triggerで`hotel_revisions`へ保存します。
 
-公式確認PatchはRepository側のcuration layerとしてVersion管理します。ブラウザにlocal Revisionが存在する場合、未適用のcurationを自動で上書き適用しない方針です。
+Restoreは履歴を書き換えません。選択した過去snapshotを現在値へ複製する直前に、Restore前の現在値を新しい`restore` Revisionとして保存します。
+
+Repository側の公式確認Patchは、初期migration / Preview再構築用のcuration layerとしてVersion管理します。Production更新はDatabaseのRevision履歴を保ったまま行います。
 
 ## Validation
 
-`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version 5、21件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証するassertionを用意しています。
+`Stay Atlas Smoke` は以下をCIで検証します。
 
-このtest harnessはBrowserで実行して確認する必要があります。コード追加だけをもってTest通過とは扱いません。
+- Browser: legacy migration、curation、public filters、Local Admin、adapter mapping、Live Admin unconfigured path
+- PostgreSQL 16: schema idempotency、RLS、Revision capture、Live Admin RPC note、Restore behavior
+
+Production integrationでは、CIとは別に実環境で以下を確認済みです。
+
+- Live AdminのAdmin login
+- 一回限りの初期bootstrap
+- Edit → Revision
+- Restore → Restore前状態のRevision保存
+- Public browserからSupabase Data APIへの接続
+- Public countとproduction SQL countの一致（133件）
+
+厳格なSecurity acceptanceとして、通常のauthenticated non-admin userによる書込拒否と、`hidden` rowの公開不可は別途明示的なproduction testを行う余地があります。Schema / CIではRLS policyを検証していますが、実production accountを使った手動acceptanceとは区別します。
 
 ## 次段階
 
@@ -135,7 +193,6 @@ Hotel recordは以下を基本単位とします。
 - 全ホテルの日本語正式名 / 英語正式名の確認
 - 旧表の未確認・欠落項目の棚卸し
 - SLH等の公式Sourceによる現況再検証
-- Browser visual/function validation
-- 本番DB / Authの選定と導入
-- `stay.naojun.jp` への独立Deployment
-- 月次Change Candidate検出（v1.1）
+- 月次Change Candidate検出とreview workflow（v1.1）
+- `stay.naojun.jp` への独立Deployment検討
+- strict production security acceptance（non-admin write拒否 / hidden公開拒否）の明示的確認
