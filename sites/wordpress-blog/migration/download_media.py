@@ -24,12 +24,17 @@ def safe_name(value: str, fallback: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Download WordPress attachment files from a generated media manifest.")
+    parser = argparse.ArgumentParser(description="Download WordPress media from a generated media manifest.")
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--allow-host", action="append", default=[], help="Allowed source hostname. Repeat for multiple hosts.")
     parser.add_argument("--max-bytes", type=int, default=25 * 1024 * 1024)
     parser.add_argument("--dry-run", action="store_true", help="Validate URLs without making network requests.")
+    parser.add_argument(
+        "--include-tracking-likely",
+        action="store_true",
+        help="Also process manifest rows marked tracking_likely. Default is to skip legacy tracking pixels.",
+    )
     args = parser.parse_args()
 
     rows = json.loads(args.manifest.read_text(encoding="utf-8"))
@@ -40,12 +45,19 @@ def main() -> int:
     args.output.mkdir(parents=True, exist_ok=True)
     report = []
     failures = 0
+    skipped_tracking = 0
 
     for index, row in enumerate(rows, start=1):
         url = (row.get("source_url") or "").strip()
+        result = {"legacy_post_id": row.get("legacy_post_id"), "source_url": url, "status": "pending"}
+        if row.get("tracking_likely") is True and not args.include_tracking_likely:
+            skipped_tracking += 1
+            result.update(status="skipped", reason="tracking_likely")
+            report.append(result)
+            continue
+
         parsed = urllib.parse.urlsplit(url)
         host = (parsed.hostname or "").lower().strip(".")
-        result = {"legacy_post_id": row.get("legacy_post_id"), "source_url": url, "status": "pending"}
         if parsed.scheme not in {"http", "https"} or not host:
             result.update(status="rejected", reason="invalid_url")
             failures += 1
@@ -103,6 +115,7 @@ def main() -> int:
     print(json.dumps({
         "items": len(rows),
         "failures": failures,
+        "skipped_tracking": skipped_tracking,
         "dry_run": args.dry_run,
         "report": str(report_path),
     }, ensure_ascii=False, indent=2))
