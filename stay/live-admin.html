@@ -26,6 +26,11 @@
 
     <section id="liveWorkspace" hidden>
       <div class="admin-toolbar"><span id="liveUser" class="muted"></span><button class="secondary-btn" id="reloadBtn" type="button">再読込</button><button class="secondary-btn" id="logoutBtn" type="button">ログアウト</button></div>
+      <div id="bootstrapPanel" class="admin-note" hidden>
+        Live DBは空です。旧WordPress表＋Repository管理の公式確認Patchから、初期Datasetを一度だけ投入できます。
+        <div class="admin-actions"><button class="primary-btn" id="bootstrapBtn" type="button">Preview Datasetを初期投入</button></div>
+        <p id="bootstrapMessage" class="muted"></p>
+      </div>
       <div class="admin-grid">
         <aside class="admin-list"><input id="liveSearch" type="search" placeholder="ホテルを検索"><div class="admin-records" id="liveRecords"></div></aside>
         <section>
@@ -64,6 +69,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
   <script src="./supabase-config.js"></script>
   <script src="./supabase-adapter.js"></script>
+  <script src="./supabase-bootstrap.js"></script>
+  <script src="./data/seed.js"></script>
+  <script src="./data/verified-patches.js"></script>
+  <script src="./data/verified-patches-hilton-3.js"></script>
+  <script src="./data/verified-patches-marriott-1.js"></script>
+  <script src="./data/verified-patches-marriott-2.js"></script>
   <script src="./core.js"></script>
   <script src="./live-admin.js"></script>
 </body>
