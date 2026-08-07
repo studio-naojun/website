@@ -11,6 +11,96 @@ permissions:
   contents: read
 
 jobs:
+  database-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGPASSWORD: postgres
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Stub Supabase auth helpers
+        run: |
+          psql -h 127.0.0.1 -U postgres -d postgres -v ON_ERROR_STOP=1 <<'SQL'
+          create schema if not exists auth;
+          do $$ begin
+            if not exists (select 1 from pg_roles where rolname = 'anon') then create role anon noinherit; end if;
+            if not exists (select 1 from pg_roles where rolname = 'authenticated') then create role authenticated noinherit; end if;
+          end $$;
+          create or replace function auth.jwt()
+          returns jsonb language sql stable
+          as $$ select '{"app_metadata":{"stay_atlas_role":"admin"}}'::jsonb $$;
+          create or replace function auth.uid()
+          returns uuid language sql stable
+          as $$ select '00000000-0000-0000-0000-000000000001'::uuid $$;
+          grant usage on schema auth to anon, authenticated;
+          grant execute on function auth.jwt(), auth.uid() to anon, authenticated;
+          SQL
+
+      - name: Apply production schema twice
+        run: |
+          psql -h 127.0.0.1 -U postgres -d postgres -v ON_ERROR_STOP=1 -f stay/db/schema.sql
+          psql -h 127.0.0.1 -U postgres -d postgres -v ON_ERROR_STOP=1 -f stay/db/schema.sql
+
+      - name: Verify RLS revision and restore behavior
+        run: |
+          psql -h 127.0.0.1 -U postgres -d postgres -v ON_ERROR_STOP=1 <<'SQL'
+          set role authenticated;
+          insert into public.hotels(slug,name_ja,status) values ('ci-hotel','CI Hotel','open');
+          insert into public.hotels(slug,name_ja,status) values ('ci-hidden','CI Hidden','hidden');
+          update public.hotels set name_ja='CI Hotel v2' where slug='ci-hotel';
+
+          do $$
+          declare
+            v_revision uuid;
+            v_name text;
+          begin
+            if (select count(*) from public.hotel_revisions where action='create') <> 2 then
+              raise exception 'create revisions were not captured';
+            end if;
+            if (select count(*) from public.hotel_revisions where action='edit' and hotel_id=(select id from public.hotels where slug='ci-hotel')) <> 1 then
+              raise exception 'edit revision was not captured';
+            end if;
+            select id into v_revision
+            from public.hotel_revisions
+            where action='edit' and hotel_id=(select id from public.hotels where slug='ci-hotel')
+            order by created_at desc limit 1;
+            perform public.restore_hotel_revision(v_revision,'CI restore');
+            select name_ja into v_name from public.hotels where slug='ci-hotel';
+            if v_name <> 'CI Hotel' then
+              raise exception 'restore did not recover historical snapshot';
+            end if;
+            if not exists (
+              select 1 from public.hotel_revisions
+              where action='restore' and hotel_id=(select id from public.hotels where slug='ci-hotel')
+            ) then
+              raise exception 'restore did not preserve pre-restore state';
+            end if;
+          end $$;
+          reset role;
+          SQL
+
+          PUBLIC_COUNT=$(psql -h 127.0.0.1 -U postgres -d postgres -Atq -v ON_ERROR_STOP=1 -c "set role anon; select count(*) from public.hotels;")
+          VIEW_COUNT=$(psql -h 127.0.0.1 -U postgres -d postgres -Atq -v ON_ERROR_STOP=1 -c "set role anon; select count(*) from public.public_hotels;")
+          test "$PUBLIC_COUNT" = "1"
+          test "$VIEW_COUNT" = "1"
+
   browser-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
