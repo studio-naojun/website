@@ -61,6 +61,29 @@ try {
     assert(officialCount >= 21, `Expected at least 21 officially curated admin records, got ${officialCount}`);
   });
 
+  await openPage('/stay/live-admin.html', async page => {
+    await page.waitForFunction(() => (document.querySelector('#liveStatus')?.textContent || '') !== 'checking');
+    const status = await page.locator('#liveStatus').innerText();
+    const note = await page.locator('#connectionNote').innerText();
+    assert(status === 'NOT CONFIGURED', `Expected unconfigured Live Admin in CI, got ${status}`);
+    assert(note.includes('Publishable Key'), 'Live Admin must explain publishable-key configuration');
+    assert(await page.locator('#liveWorkspace').isHidden(), 'Live workspace must stay hidden without Supabase configuration');
+    const mapping = await page.evaluate(() => {
+      const record = StayAtlasSupabase.hotelToRecord({
+        name_ja:'CI Hotel',name_en:'CI Hotel EN',chain:'Hilton Honors',brand:'Hilton',status:'open',
+        region:'関東',prefecture:'東京都',city:'新宿区',child:{raw:'5歳まで'},award:{raw:''},capacity:{raw:'4人まで',value:4},
+        facilities:{pool:{raw:'〇',available:true}},quality:'verified',source:{label:'CI',url:'https://example.com',last_checked:'2026-08-07'}
+      });
+      const hotel = StayAtlasSupabase.rowToHotel({
+        id:'00000000-0000-0000-0000-000000000001',slug:'ci-hotel',...record,
+        created_at:'2026-08-07T00:00:00Z',updated_at:'2026-08-07T00:00:00Z'
+      },{});
+      return {record,hotel};
+    });
+    assert(mapping.record.capacity_json.value === 4, 'Supabase adapter must preserve structured capacity JSON');
+    assert(mapping.hotel.source.last_checked === '2026-08-07', 'Supabase adapter must preserve source verification date');
+  });
+
   assert(browserErrors.length === 0, `Browser errors detected:\n${browserErrors.join('\n')}`);
   console.log('Stay Atlas headless browser validation passed.');
 } finally {
