@@ -32,11 +32,7 @@ export default {
     const cached = await cache.match(cacheKey);
     if (cached) return withCors(cached, origin, allowedOrigin);
 
-    const providers = [
-      fetchYahoo(jan, env),
-      fetchRakuten(jan, env),
-    ];
-
+    const providers = [fetchYahoo(jan, env), fetchRakuten(jan, env)];
     const settled = await Promise.allSettled(providers);
     const providerResults = settled
       .filter((entry) => entry.status === 'fulfilled')
@@ -53,31 +49,22 @@ export default {
 
     settled.forEach((entry, index) => {
       if (entry.status === 'rejected') {
-        providerStatus.push({
-          provider: index === 0 ? 'yahoo' : 'rakuten',
-          ok: false,
-        });
+        providerStatus.push({ provider: index === 0 ? 'yahoo' : 'rakuten', ok: false });
         console.error(entry.reason);
       }
     });
 
     if (!providerResults.length) {
-      return corsResponse({
-        error: 'providers_unavailable',
-        jan,
-        providers: providerStatus,
-      }, 503, origin, allowedOrigin);
+      return corsResponse({ error: 'providers_unavailable', jan, providers: providerStatus }, 503, origin, allowedOrigin);
     }
 
-    const body = {
+    const response = new Response(JSON.stringify({
       jan,
       product,
       results,
       providers: providerStatus,
       checkedAt: new Date().toISOString(),
-    };
-
-    const response = new Response(JSON.stringify(body), {
+    }), {
       status: 200,
       headers: {
         'content-type': 'application/json; charset=utf-8',
@@ -97,6 +84,7 @@ async function fetchYahoo(jan, env) {
   url.searchParams.set('appid', env.YAHOO_CLIENT_ID);
   url.searchParams.set('jan_code', jan);
   url.searchParams.set('condition', 'new');
+  url.searchParams.set('in_stock', 'true');
   url.searchParams.set('sort', '+price');
   url.searchParams.set('results', '50');
 
@@ -114,7 +102,7 @@ async function fetchYahoo(jan, env) {
       store: hit.seller?.name ? `${hit.seller.name}（Yahoo!ショッピング）` : 'Yahoo!ショッピング',
       price: toNumberOrNull(hit.price),
       shipping: shippingFromYahoo(hit.shipping),
-      stock: hit.inStock === true ? 'in_stock' : 'out_of_stock',
+      stock: hit.inStock === true ? 'in_stock' : 'unknown',
       url: hit.url || null,
       checkedAt,
       note: hit.priceLabel?.taxable === false ? '表示価格は税込とは限りません' : '',
@@ -139,20 +127,20 @@ async function fetchRakuten(jan, env) {
   if (!response.ok) throw new Error(`Rakuten HTTP ${response.status}`);
 
   const data = await response.json();
-  const products = Array.isArray(data.products)
-    ? data.products
-    : Array.isArray(data.Items)
-      ? data.Items
-      : Array.isArray(data.items)
-        ? data.items
-        : [];
+  const products = Array.isArray(data.Products)
+    ? data.Products
+    : Array.isArray(data.products)
+      ? data.products
+      : Array.isArray(data.Items)
+        ? data.Items
+        : Array.isArray(data.items)
+          ? data.items
+          : [];
 
-  const raw = products[0]?.product || products[0] || null;
-  if (!raw) {
-    return { provider: 'rakuten', product: null, results: [] };
-  }
+  const raw = products[0]?.product || products[0]?.Product || products[0] || null;
+  if (!raw) return { provider: 'rakuten', product: null, results: [] };
 
-  const salesCount = toNumberOrNull(raw.salesItemCount ?? raw.usedExcludeSalesItemCount);
+  const salesCount = toNumberOrNull(raw.usedExcludeSalesItemCount ?? raw.salesItemCount);
   const minPrice = toNumberOrNull(raw.usedExcludeSalesMinPrice ?? raw.salesMinPrice);
   const targetUrl = raw.affiliateUrl || raw.productUrlPC || raw.searchUrl || null;
   const checkedAt = new Date().toISOString();
@@ -167,7 +155,7 @@ async function fetchRakuten(jan, env) {
       stock: salesCount === 0 ? 'out_of_stock' : salesCount > 0 ? 'in_stock' : 'unknown',
       url: targetUrl,
       checkedAt,
-      note: salesCount != null ? `購入可能 ${salesCount}件の最低価格` : '楽天市場内の最低価格',
+      note: salesCount != null ? `購入可能 ${salesCount}件の最低価格` : '楽天市場内の購入可能最低価格',
       source: 'rakuten',
     }] : [],
   };
@@ -176,8 +164,7 @@ async function fetchRakuten(jan, env) {
 function shippingFromYahoo(shipping) {
   if (!shipping) return null;
   const label = String(shipping.name || '');
-  if (label.includes('無料')) return 0;
-  return null;
+  return label.includes('無料') ? 0 : null;
 }
 
 async function fetchWithTimeout(url, timeoutMs) {
