@@ -84,6 +84,15 @@ try {
     assert(mapping.hotel.source.last_checked === '2026-08-07', 'Supabase adapter must preserve source verification date');
   });
 
+  await openPage('/stay/auth/accept-invite.html', async page => {
+    await page.waitForFunction(() => (document.querySelector('#inviteStatus')?.textContent || '') !== 'checking');
+    const status = await page.locator('#inviteStatus').innerText();
+    const message = await page.locator('#inviteMessage').innerText();
+    assert(status === 'NOT CONFIGURED', `Expected unconfigured invite page in CI, got ${status}`);
+    assert(message.includes('Publishable Key'), 'Invite page must explain Project URL / Publishable Key setup');
+    assert(await page.locator('#passwordForm').isHidden(), 'Password form must stay hidden without Supabase configuration');
+  });
+
   assert(browserErrors.length === 0, `Browser errors detected:\n${browserErrors.join('\n')}`);
   console.log('Stay Atlas headless browser validation passed.');
 } finally {
