@@ -1,41 +1,47 @@
 {
-  "siteId": "wordpress-blog",
-  "domain": "TBD",
-  "phase": "ready_for_wxr",
+  "siteId": "u2memo",
+  "domain": "pocca.net",
+  "siteUrl": "https://pocca.net/u2memo/",
+  "phase": "real_wxr_validation",
   "public": {
     "static": true,
     "root": "./",
-    "samplePost": "posts/sample.html",
-    "urlStrategy": "preserve_legacy_path"
+    "basePath": "/u2memo/",
+    "urlStrategy": "preserve_legacy_path",
+    "realContentCommitted": false
   },
   "admin": {
     "path": "admin/",
     "livePath": "admin/live-admin.html",
     "commentsVisibility": "admin_only",
     "authProvider": "supabase",
-    "roleClaim": "wordpress_blog_role",
+    "supabaseProject": "existing_naojun_stay_atlas",
+    "table": "u2memo_legacy_comments",
+    "migrationRunsTable": "u2memo_migration_runs",
+    "roleClaim": "u2memo_archive_role",
     "roleValue": "admin",
     "liveDataEnabled": false,
     "browserWritesAllowed": false
   },
   "migration": {
     "source": "wordpress-wxr",
+    "sourceBaseUrl": "https://pocca.net/u2memo",
     "engineReady": true,
+    "sitePolicy": "u2memo_policy.py",
     "autoImport": false,
     "realInputCommitted": false,
     "verificationMetrics": [
       "posts_total",
       "pages_total",
-      "attachments_total",
       "comments_total",
-      "approved_comments_total",
       "content_raw_chars",
       "content_normalized_plain_text_chars",
       "comments_raw_chars",
       "comments_normalized_plain_text_chars",
       "per_record_normalized_text_sha256",
       "url_mapping_coverage",
-      "warning_count"
+      "inline_media_inventory",
+      "actionable_warning_count"
     ]
   }
 }
