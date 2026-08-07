@@ -64,6 +64,10 @@ create table if not exists public.u2memo_migration_runs (
   source_content_normalized_plain_text_chars bigint,
   source_comments_raw_chars bigint,
   source_comments_normalized_plain_text_chars bigint,
+  retained_comments_raw_chars bigint,
+  retained_comments_normalized_plain_text_chars bigint,
+  legacy_secret_comments_total bigint,
+  password_markers_removed_total bigint,
   warning_count bigint not null default 0,
   verified boolean not null default false,
   verification_note text
