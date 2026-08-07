@@ -1,0 +1,49 @@
+name: Stay Atlas Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'stay/**'
+      - '.github/workflows/stay-atlas-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/stay-atlas-http.log 2>&1 &
+          echo $! > /tmp/stay-atlas-http.pid
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/stay/tests.html > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/stay-atlas-http.log
+          exit 1
+
+      - name: Run headless browser validation
+        run: node stay/ci-smoke.mjs
+
+      - name: Print server log on failure
+        if: failure()
+        run: cat /tmp/stay-atlas-http.log || true
