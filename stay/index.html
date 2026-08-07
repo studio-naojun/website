@@ -69,9 +69,9 @@
         <label>都道府県<select id="prefectureFilter"><option value="">すべて</option></select></label>
         <label>定員<select id="capacityFilter"><option value="">指定なし</option><option value="3">3名以上</option><option value="4">4名以上</option></select></label>
         <label>設備<select id="facilityFilter"><option value="">指定なし</option><option value="lounge">ラウンジ</option><option value="breakfast">朝食情報あり</option><option value="onsen">温泉</option><option value="pool">プール</option><option value="parking">駐車場情報あり</option></select></label>
-        <label>確認状態<select id="qualityFilter"><option value="">すべて</option><option value="verified">確認済</option><option value="unverified">未検証</option><option value="needs_review">要確認</option><option value="missing">不足</option><option value="conflicting">競合</option></select></label>
+        <label>確認状態<select id="qualityFilter"><option value="">すべて</option><option value="official">公式確認あり</option><option value="field_conflict">公式Source競合あり</option><option value="verified">レコード確認済</option><option value="unverified">レコード未検証</option><option value="needs_review">要確認</option><option value="missing">不足</option><option value="conflicting">レコード競合</option></select></label>
         <label>営業状態<select id="statusFilter"><option value="">すべて</option><option value="open">営業中</option><option value="planned">開業予定</option></select></label>
-        <label>並び順<select id="sortSelect"><option value="prefecture">都道府県</option><option value="name">ホテル名</option><option value="capacity_desc">定員が多い順</option><option value="verified_desc">確認日が新しい順</option></select></label>
+        <label>並び順<select id="sortSelect"><option value="prefecture">都道府県</option><option value="name">ホテル名</option><option value="capacity_desc">定員が多い順</option><option value="verified_desc">公式確認日が新しい順</option></select></label>
       </div>
       <div class="admin-toolbar"><label><input id="child12Filter" type="checkbox"> 12歳以上まで添寝可能と確認できるホテル</label><button class="secondary-btn" id="clearFilters" type="button">条件をすべて解除</button></div>
 
