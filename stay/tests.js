@@ -18,7 +18,8 @@
       line(rawTokyo?.opening_note==='2026年開業予定','legacy opening note is preserved before curation');
 
       const full=StayAtlas.applyCuratedPatches(rawFull);
-      line(full.curationVersion===StayAtlas.CURATION_VERSION,'curation version is applied');
+      line(full.curationVersion===3&&full.curationVersion===StayAtlas.CURATION_VERSION,'curation version 3 is applied');
+
       const waldorfOsaka=full.hotels.find(h=>h.name_ja==='ウォルドーフ・アストリア大阪');
       line(waldorfOsaka?.status==='open'&&waldorfOsaka?.name_en==='Waldorf Astoria Osaka','Waldorf Astoria Osaka receives official identity/status patch');
       line(waldorfOsaka?.verifications?.status?.status==='verified','official status verification is stored per field');
@@ -51,9 +52,34 @@
       line(conradTokyo?.facilities?.pool?.raw==='〇 25m室内プール','Conrad Tokyo pool information is curated');
       line(conradTokyo?.verifications?.['facilities.lounge']?.status==='verified','Conrad Tokyo Executive Lounge is verified');
 
+      const odaiba=full.hotels.find(h=>h.name_ja==='ヒルトン東京お台場');
+      line(odaiba?.name_en==='Hilton Tokyo Odaiba'&&odaiba?.city==='港区','Hilton Tokyo Odaiba receives official identity/location patch');
+      line(odaiba?.facilities?.parking?.raw==='1泊2,000円','Hilton Tokyo Odaiba parking is curated');
+      line(odaiba?.verifications?.['families.booking_age']?.status==='verified','Hilton Tokyo Odaiba booking age classification is stored separately');
+      line(odaiba?.verifications?.['facilities.pool']?.status==='verified','Hilton Tokyo Odaiba pool is verified');
+
+      const ariake=full.hotels.find(h=>h.name_ja==='ダブルツリーbyヒルトン東京有明');
+      line(ariake?.name_en==='DoubleTree by Hilton Tokyo Ariake'&&ariake?.city==='江東区','DoubleTree Tokyo Ariake receives official identity/location patch');
+      line(ariake?.child?.max_age===11&&ariake?.child?.rule_type==='age_under','DoubleTree Tokyo Ariake bed-sharing policy is curated');
+      line(ariake?.facilities?.breakfast?.raw.includes('0〜5歳無料'),'DoubleTree Tokyo Ariake child breakfast policy is curated');
+      line(ariake?.facilities?.parking?.raw==='× 駐車場なし','DoubleTree Tokyo Ariake parking availability is curated');
+
+      const odawara=full.hotels.find(h=>h.name_ja==='ヒルトン小田原リゾート＆スパ');
+      line(odawara?.name_en==='Hilton Odawara Resort & Spa'&&odawara?.city==='小田原市','Hilton Odawara receives official identity/location patch');
+      line(odawara?.child?.max_age===5&&odawara?.child?.rule_type==='age_under','Hilton Odawara bed-sharing policy is curated');
+      line(odawara?.facilities?.onsen?.available===true&&odawara?.verifications?.['facilities.onsen']?.status==='verified','Hilton Odawara hot spring is explicitly verified');
+      line(odawara?.facilities?.parking?.raw==='〇 無料','Hilton Odawara complimentary parking is curated');
+      line(odawara?.verifications?.['facilities.lounge']?.status==='conflicting','Hilton Odawara legacy lounge value is flagged for review');
+
+      const hiltonNagoya=full.hotels.find(h=>h.name_ja==='ヒルトン名古屋');
+      line(hiltonNagoya?.name_en==='Hilton Nagoya'&&hiltonNagoya?.city==='名古屋市','Hilton Nagoya receives official identity/location patch');
+      line(hiltonNagoya?.quality==='needs_review'&&hiltonNagoya?.verifications?.['child.raw']?.status==='conflicting','Hilton Nagoya child policy conflict remains explicit');
+      line(hiltonNagoya?.facilities?.parking?.raw==='1泊3,000円','Hilton Nagoya parking is curated');
+      line(hiltonNagoya?.verifications?.['facilities.lounge']?.status==='verified'&&hiltonNagoya?.verifications?.['facilities.breakfast']?.status==='verified','Hilton Nagoya lounge and breakfast fields are verified');
+
       const health=StayAtlas.health(full);line(health.total===full.hotels.length,'health total matches hotel count');
-      line(health.fieldVerified>20,'health reports expanded verified field coverage');
-      line(health.fieldConflicting>=4,'health reports explicit conflicting fields');
+      line(health.fieldVerified>35,'health reports expanded verified field coverage');
+      line(health.fieldConflicting>=7,'health reports explicit conflicting fields');
       const first=full.hotels[0];line(Boolean(first),'full dataset contains at least one hotel');
       StayAtlas.save(full);
       const next=StayAtlas.clone(first);next.name_ja=`${first.name_ja} TEST`;
