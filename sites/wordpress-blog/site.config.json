@@ -1,0 +1,30 @@
+{
+  "siteId": "wordpress-blog",
+  "domain": "TBD",
+  "phase": "shell",
+  "public": {
+    "static": true,
+    "root": "./",
+    "samplePost": "posts/sample.html"
+  },
+  "admin": {
+    "path": "admin/",
+    "commentsVisibility": "admin_only",
+    "authProvider": "supabase",
+    "roleClaim": "wordpress_blog_role",
+    "roleValue": "admin",
+    "liveDataEnabled": false
+  },
+  "migration": {
+    "source": "wordpress-wxr",
+    "enabled": false,
+    "verificationMetrics": [
+      "posts_total",
+      "pages_total",
+      "comments_total",
+      "approved_comments_total",
+      "source_raw_content_chars",
+      "normalized_plain_text_chars"
+    ]
+  }
+}
