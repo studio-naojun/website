@@ -25,10 +25,11 @@ jobs:
       - name: Validate JavaScript syntax
         run: node --check stay/auth/accept-invite.js
 
-      - name: Validate safe unconfigured shell
+      - name: Validate configured auth shell safety
         run: |
           grep -q 'id="passwordForm" hidden' stay/auth/accept-invite.html
           grep -q '\[hidden\]{display:none!important}' stay/auth/accept-invite.html
-          grep -q "enabled: false" stay/auth/supabase-config.js
-          grep -q "publishableKey: ''" stay/auth/supabase-config.js
+          grep -q "enabled: true" stay/auth/supabase-config.js
+          grep -q "url: 'https://.*\.supabase\.co'" stay/auth/supabase-config.js
+          grep -q "publishableKey: 'sb_publishable_[A-Za-z0-9_-]\+'" stay/auth/supabase-config.js
           ! grep -R -E 'service_role|sb_secret_' stay/auth --exclude='accept-invite.js'
