@@ -13,16 +13,20 @@
     unique('chain').forEach(v=>$('#chainFilter').insertAdjacentHTML('beforeend',`<option>${escapeHtml(v)}</option>`));
     unique('prefecture').forEach(v=>$('#prefectureFilter').insertAdjacentHTML('beforeend',`<option>${escapeHtml(v)}</option>`));
   }
-  function supportsChild12(h){if(h.child?.rule_type==='age')return Number(h.child.max_age)>=12;if(h.child?.raw&&/17歳まで|13歳まで|12歳まで/.test(h.child.raw))return true;return false;}
+  function verificationStats(h){const checks=Object.values(h.verifications||{});const verified=checks.filter(v=>v.status==='verified').length;const conflicting=checks.filter(v=>v.status==='conflicting').length;const dates=checks.map(v=>v.checked_at||'').filter(Boolean).sort();return{verified,conflicting,total:checks.length,latest:dates.at(-1)||h.source?.last_checked||''};}
+  function supportsChild12(h){if(Number.isFinite(Number(h.child?.max_age))&&Number(h.child.max_age)>=12)return true;if(h.child?.raw&&/17歳まで|13歳まで|12歳まで/.test(h.child.raw))return true;return false;}
   function filtered(){
     let rows=db.hotels.filter(h=>{
       const hay=[h.name_ja,h.name_en,h.prefecture,h.city,h.chain,h.brand,h.portfolio].join(' ').toLowerCase();
+      const verification=verificationStats(h);
       if(state.region&&h.region!==state.region)return false;
       if(state.search&&!hay.includes(state.search.toLowerCase()))return false;
       if(state.chain&&h.chain!==state.chain)return false;
       if(state.prefecture&&h.prefecture!==state.prefecture)return false;
       if(state.capacity&&(!h.capacity?.value||h.capacity.value<Number(state.capacity)))return false;
-      if(state.quality&&h.quality!==state.quality)return false;
+      if(state.quality==='official'&&verification.verified===0)return false;
+      if(state.quality==='field_conflict'&&verification.conflicting===0)return false;
+      if(state.quality&&!['official','field_conflict'].includes(state.quality)&&h.quality!==state.quality)return false;
       if(state.status&&h.status!==state.status)return false;
       if(state.child12&&!supportsChild12(h))return false;
       if(state.facility){const f=h.facilities||{};if(state.facility==='breakfast'&&!f.breakfast?.has_info)return false;if(state.facility==='parking'&&!f.parking?.has_info)return false;if(['lounge','onsen','pool'].includes(state.facility)&&f[state.facility]?.available!==true)return false;}
@@ -31,17 +35,17 @@
     rows.sort((a,b)=>{
       if(state.sort==='name')return collator.compare(a.name_ja,b.name_ja);
       if(state.sort==='capacity_desc')return (b.capacity?.value||0)-(a.capacity?.value||0)||collator.compare(a.name_ja,b.name_ja);
-      if(state.sort==='verified_desc')return latestVerification(b).localeCompare(latestVerification(a))||collator.compare(a.name_ja,b.name_ja);
+      if(state.sort==='verified_desc')return verificationStats(b).latest.localeCompare(verificationStats(a).latest)||collator.compare(a.name_ja,b.name_ja);
       return collator.compare(a.prefecture,b.prefecture)||collator.compare(a.name_ja,b.name_ja);
     });
     return rows;
   }
-  function latestVerification(h){const dates=Object.values(h.verifications||{}).map(v=>v.checked_at||'').filter(Boolean);return dates.sort().at(-1)||h.source?.last_checked||'';}
+  function latestVerification(h){return verificationStats(h).latest;}
   function qualityLabel(q){return q==='verified'?'確認済':q==='needs_review'?'要確認':q==='missing'?'不足':q==='conflicting'?'競合':'未検証';}
   function statusLabel(s){return s==='planned'?'開業予定':s==='closed'?'終了':s==='hidden'?'非公開':'営業中';}
   function checkLabel(s){return s==='verified'?'確認済':s==='conflicting'?'競合':s==='needs_review'?'要確認':'未検証';}
-  function tableRow(h){const checked=latestVerification(h);return `<tr><td><button class="hotel-name-button" data-hotel="${escapeHtml(h.id)}"><strong>${escapeHtml(h.name_ja||'名称未登録')}</strong><span>${escapeHtml(h.name_en||'English name pending')}</span></button></td><td>${escapeHtml(h.prefecture||'—')}<br><span class="muted">${escapeHtml(h.chain||'—')}</span></td><td>${escapeHtml(h.child?.raw||'—')}</td><td>${escapeHtml(h.capacity?.raw||'—')}</td><td>${escapeHtml(h.facilities?.lounge?.raw||'—')}</td><td>${escapeHtml(h.facilities?.breakfast?.raw||'—')}</td><td>${escapeHtml(h.facilities?.onsen?.raw||'—')}</td><td>${escapeHtml(h.facilities?.pool?.raw||'—')}</td><td>${escapeHtml(h.facilities?.parking?.raw||'—')}</td><td><span class="pill quality-${escapeHtml(h.quality)}">${qualityLabel(h.quality)}</span><br><span class="muted">${escapeHtml(checked||'日付未確認')}</span></td></tr>`;}
-  function card(h){const verified=Object.values(h.verifications||{}).filter(v=>v.status==='verified').length;return `<article class="hotel-card" tabindex="0" role="button" data-hotel="${escapeHtml(h.id)}"><span class="pill">${escapeHtml(h.prefecture||'未設定')} / ${escapeHtml(h.brand||h.chain||'')}</span><h3>${escapeHtml(h.name_ja||'名称未登録')}</h3><p class="en">${escapeHtml(h.name_en||'English name pending')}</p>${verified?`<p class="verified-line">公式確認 ${verified}項目</p>`:''}<div class="card-facts"><div><small>添寝</small><strong>${escapeHtml(h.child?.raw||'—')}</strong></div><div><small>定員</small><strong>${escapeHtml(h.capacity?.raw||'—')}</strong></div><div><small>ラウンジ</small><strong>${yesNo(h.facilities?.lounge?.available)}</strong></div><div><small>プール</small><strong>${yesNo(h.facilities?.pool?.available)}</strong></div></div></article>`;}
+  function tableRow(h){const verification=verificationStats(h);return `<tr><td><button class="hotel-name-button" data-hotel="${escapeHtml(h.id)}"><strong>${escapeHtml(h.name_ja||'名称未登録')}</strong><span>${escapeHtml(h.name_en||'English name pending')}</span></button></td><td>${escapeHtml(h.prefecture||'—')}<br><span class="muted">${escapeHtml(h.chain||'—')}</span></td><td>${escapeHtml(h.child?.raw||'—')}</td><td>${escapeHtml(h.capacity?.raw||'—')}</td><td>${escapeHtml(h.facilities?.lounge?.raw||'—')}</td><td>${escapeHtml(h.facilities?.breakfast?.raw||'—')}</td><td>${escapeHtml(h.facilities?.onsen?.raw||'—')}</td><td>${escapeHtml(h.facilities?.pool?.raw||'—')}</td><td>${escapeHtml(h.facilities?.parking?.raw||'—')}</td><td><span class="pill quality-${escapeHtml(h.quality)}">${qualityLabel(h.quality)}</span>${verification.verified?`<br><span class="verification-summary is-verified">公式確認 ${verification.verified}</span>`:''}${verification.conflicting?`<br><span class="verification-summary is-conflicting">競合 ${verification.conflicting}</span>`:''}<br><span class="muted">${escapeHtml(verification.latest||'日付未確認')}</span></td></tr>`;}
+  function card(h){const verification=verificationStats(h);return `<article class="hotel-card" tabindex="0" role="button" data-hotel="${escapeHtml(h.id)}"><span class="pill">${escapeHtml(h.prefecture||'未設定')} / ${escapeHtml(h.brand||h.chain||'')}</span><h3>${escapeHtml(h.name_ja||'名称未登録')}</h3><p class="en">${escapeHtml(h.name_en||'English name pending')}</p>${verification.verified?`<p class="verified-line">公式確認 ${verification.verified}項目${verification.conflicting?` / 競合 ${verification.conflicting}`:''}</p>`:''}<div class="card-facts"><div><small>添寝</small><strong>${escapeHtml(h.child?.raw||'—')}</strong></div><div><small>定員</small><strong>${escapeHtml(h.capacity?.raw||'—')}</strong></div><div><small>ラウンジ</small><strong>${yesNo(h.facilities?.lounge?.available)}</strong></div><div><small>プール</small><strong>${yesNo(h.facilities?.pool?.available)}</strong></div></div></article>`;}
   function updateMapCounts(){const counts={};db.hotels.forEach(h=>{if(h.region)counts[h.region]=(counts[h.region]||0)+1;});$$('[data-count-region]').forEach(el=>{el.textContent=counts[el.dataset.countRegion]||0;});$$('.region').forEach(el=>{const r=el.dataset.region;el.setAttribute('aria-label',`${r} ${counts[r]||0}件`);});}
   function render(){
     const rows=filtered();$('#resultCount').textContent=rows.length;$('#hotelTableBody').innerHTML=rows.map(tableRow).join('');$('#cardView').innerHTML=rows.map(card).join('');$('#selectedRegionLabel').textContent=state.region||'全国';$('#selectedRegionCount').textContent=`${rows.length} hotels`;
