@@ -5,3 +5,6 @@ workers_dev = true
 
 [vars]
 ALLOWED_ORIGIN = "https://naojun.jp"
+
+[secrets]
+required = ["YAHOO_CLIENT_ID", "RAKUTEN_APPLICATION_ID", "RAKUTEN_ACCESS_KEY"]
