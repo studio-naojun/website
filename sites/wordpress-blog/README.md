@@ -16,7 +16,7 @@ Completed in repository:
 
 - Public sample index: `index.html`
 - Public sample article: `posts/sample.html`
-- Synthetic Admin prototype: `admin/index.html`
+- Private Archive admin entry: `admin/index.html`
 - Read-only authenticated Admin shell: `admin/live-admin.html`
 - Disabled-by-default Supabase config: `admin/supabase-config.js`
 - Private Archive RLS definition: `db/schema.sql`
@@ -26,6 +26,8 @@ Completed in repository:
 - Guarded media downloader: `migration/download_media.py`
 - Synthetic WXR fixture and unit tests
 - CI smoke and migration-engine workflows
+
+No synthetic comment records are retained in the repository. The Admin entry contains no comment dataset.
 
 Still intentionally not completed because they require real input or an external irreversible change:
 
