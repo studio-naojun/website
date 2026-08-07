@@ -18,7 +18,7 @@
       line(rawTokyo?.opening_note==='2026年開業予定','legacy opening note is preserved before curation');
 
       const full=StayAtlas.applyCuratedPatches(rawFull);
-      line(full.curationVersion===4&&full.curationVersion===StayAtlas.CURATION_VERSION,'curation version 4 is applied');
+      line(full.curationVersion===5&&full.curationVersion===StayAtlas.CURATION_VERSION,'curation version 5 is applied');
 
       const waldorfOsaka=full.hotels.find(h=>h.name_ja==='ウォルドーフ・アストリア大阪');
       line(waldorfOsaka?.status==='open'&&waldorfOsaka?.name_en==='Waldorf Astoria Osaka','Waldorf Astoria Osaka receives official identity/status patch');
@@ -98,8 +98,28 @@
       line(courtyardHakuba?.facilities?.onsen?.raw==='〇 白馬姫川温泉'&&courtyardHakuba?.verifications?.['facilities.onsen']?.status==='verified','Courtyard Hakuba hot spring is verified');
       line(courtyardHakuba?.facilities?.parking?.raw==='〇 無料','Courtyard Hakuba parking is curated');
 
+      const westinTokyo=full.hotels.find(h=>h.name_ja==='ウェスティンホテル東京');
+      line(westinTokyo?.name_en==='The Westin Tokyo'&&westinTokyo?.city==='目黒区','The Westin Tokyo receives official identity/location patch');
+      line(westinTokyo?.facilities?.lounge?.available===true&&westinTokyo?.verifications?.['facilities.lounge']?.status==='verified','The Westin Tokyo Club Lounge is verified');
+      line(westinTokyo?.facilities?.parking?.raw.includes('1,200円/時'),'The Westin Tokyo parking is curated');
+
+      const yokohamaSheraton=full.hotels.find(h=>h.name_ja==='横浜ベイシェラトン ホテル&タワーズ');
+      line(yokohamaSheraton?.name_en==='Yokohama Bay Sheraton Hotel & Towers'&&yokohamaSheraton?.city==='横浜市','Yokohama Bay Sheraton receives official identity/location patch');
+      line(yokohamaSheraton?.facilities?.lounge?.available===true&&yokohamaSheraton?.facilities?.pool?.available===true,'Yokohama Bay Sheraton lounge and pool are curated');
+      line(yokohamaSheraton?.facilities?.parking?.raw==='440円/時・1,900円/日','Yokohama Bay Sheraton parking is curated');
+
+      const tokyoMarriott=full.hotels.find(h=>h.name_ja==='東京マリオットホテル');
+      line(tokyoMarriott?.name_en==='Tokyo Marriott Hotel'&&tokyoMarriott?.city==='品川区','Tokyo Marriott Hotel receives official identity/location patch');
+      line(tokyoMarriott?.facilities?.lounge?.available===true&&tokyoMarriott?.verifications?.['facilities.lounge']?.status==='verified','Tokyo Marriott Executive Lounge is verified');
+      line(tokyoMarriott?.facilities?.parking?.raw==='1,000円/時・2,000円/日','Tokyo Marriott parking is curated');
+
+      const osakaMarriott=full.hotels.find(h=>h.name_ja==='大阪マリオット都ホテル');
+      line(osakaMarriott?.name_en==='Osaka Marriott Miyako Hotel'&&osakaMarriott?.city==='大阪市','Osaka Marriott Miyako receives official identity/location patch');
+      line(osakaMarriott?.facilities?.lounge?.raw.includes('17:30まで')&&osakaMarriott?.verifications?.['facilities.lounge']?.status==='verified','Osaka Marriott Miyako child lounge restriction is curated');
+      line(osakaMarriott?.facilities?.parking?.raw==='1,100円/時・3,000円/日','Osaka Marriott Miyako parking is curated');
+
       const health=StayAtlas.health(full);line(health.total===full.hotels.length,'health total matches hotel count');
-      line(health.fieldVerified>50,'health reports expanded verified field coverage');
+      line(health.fieldVerified>65,'health reports expanded verified field coverage');
       line(health.fieldConflicting>=7,'health reports explicit conflicting fields');
       const first=full.hotels[0];line(Boolean(first),'full dataset contains at least one hotel');
       StayAtlas.save(full);
