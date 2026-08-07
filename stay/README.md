@@ -41,15 +41,23 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 `data/verified-patches.js` は、公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
 
-最初の確認batchでは、次の5件を対象にしています。
+現在のcuration versionは `2` です。確認batchは次の9件です。
 
 - Waldorf Astoria Osaka
 - Canopy by Hilton Okinawa Miyako Island Resort
 - Waldorf Astoria Tokyo Nihonbashi
 - Conrad Yokohama
 - Conrad Nagoya
+- Hilton Tokyo
+- Hilton Tokyo Bay
+- Hilton Osaka
+- Conrad Tokyo
 
-Source同士の状態が一致しない場合は、都合のよい値を選ばず `conflicting` として残します。Conrad Nagoyaは、公式Hiltonで2026-07-31以降の予約を受け付ける一方、検索一覧が `Coming Soon` 表示のため、営業開始状態を `needs_review` / `conflicting` として保持しています。
+第2batchでは、Hilton Tokyo / Hilton Tokyo Bay / Hilton Osaka / Conrad Tokyoについて、公式Hiltonページから英語名・所在地・営業状態・ラウンジ・プール・駐車場等を確認しました。Hilton TokyoとHilton Osakaは添寝条件も公式Hotel Policyへ置き換えています。
+
+旧表で `温泉: 〇` となっている一方、公式ページではSpa / bath / sauna / indoor pool等の記載しか確認できないケースは、温泉なしと断定せず `conflicting` として再確認対象にしています。
+
+Source同士の状態が一致しない場合も、都合のよい値を選ばず `conflicting` として残します。Conrad Nagoyaは、公式Hiltonで2026-07-31以降の予約を受け付ける一方、検索一覧が `Coming Soon` 表示のため、営業開始状態を `needs_review` / `conflicting` として保持しています。
 
 ## 重要: Admin Previewの制約
 
@@ -82,16 +90,16 @@ Hotel recordは以下を基本単位とします。
 
 ## Revision policy
 
-編集時は変更前Hotel snapshotをRevisionとして保存します。Rollbackは履歴を書き換えず、選択した過去snapshotを現在値へ複製し、Rollback直前の値も新しいRevisionとして保存します。
+編集時は変更前Hotel snapshotをRevisionとして保存します。Rollbackは履歴を書き換えず、選択した過去snapshotを現在値へ複製し、Rollback直前の値も新Revisionとして保存します。
 
 公式確認PatchはRepository側のcuration layerとしてVersion管理します。ブラウザにlocal Revisionが存在する場合、未適用のcurationを自動で上書き適用しない方針です。
 
 ## 次段階
 
+- Hilton系の公式確認batchを継続し、英語名・添寝・朝食・設備情報を更新
 - 全ホテルの日本語正式名 / 英語正式名の確認
 - 旧表の未確認・欠落項目の棚卸し
-- Hilton / Marriott / SLH等の公式Sourceによる現況再検証
-- 公式確認Patchのbatch拡大
+- Marriott / SLH等の公式Sourceによる現況再検証
 - 本番DB / Authの選定と導入
 - `stay.naojun.jp` への独立Deployment
 - 月次Change Candidate検出（v1.1）
