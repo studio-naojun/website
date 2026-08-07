@@ -12,6 +12,8 @@ create table if not exists hotels (
   brand text,
   portfolio text,
   status text not null default 'open' check (status in ('open','planned','closed','hidden')),
+  opening_note text,
+  official_url text,
   region text,
   prefecture text,
   city text,
@@ -92,6 +94,10 @@ create table if not exists refresh_runs (
 -- Public clients should receive only published hotel data.
 create or replace view public_hotels as
 select * from hotels where status in ('open','planned');
+
+-- Verification policy:
+-- each field_verifications row records one field/value/source/check event.
+-- Conflicting sources remain visible as conflicting; do not silently select a winner.
 
 -- Rollback policy: never delete or rewrite revision history.
 -- A restore operation must first insert the current hotel snapshot into hotel_revisions,
