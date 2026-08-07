@@ -18,7 +18,7 @@
       line(rawTokyo?.opening_note==='2026年開業予定','legacy opening note is preserved before curation');
 
       const full=StayAtlas.applyCuratedPatches(rawFull);
-      line(full.curationVersion===3&&full.curationVersion===StayAtlas.CURATION_VERSION,'curation version 3 is applied');
+      line(full.curationVersion===4&&full.curationVersion===StayAtlas.CURATION_VERSION,'curation version 4 is applied');
 
       const waldorfOsaka=full.hotels.find(h=>h.name_ja==='ウォルドーフ・アストリア大阪');
       line(waldorfOsaka?.status==='open'&&waldorfOsaka?.name_en==='Waldorf Astoria Osaka','Waldorf Astoria Osaka receives official identity/status patch');
@@ -77,8 +77,29 @@
       line(hiltonNagoya?.facilities?.parking?.raw==='1泊3,000円','Hilton Nagoya parking is curated');
       line(hiltonNagoya?.verifications?.['facilities.lounge']?.status==='verified'&&hiltonNagoya?.verifications?.['facilities.breakfast']?.status==='verified','Hilton Nagoya lounge and breakfast fields are verified');
 
+      const westinYokohama=full.hotels.find(h=>h.name_ja==='ウェスティンホテル横浜');
+      line(westinYokohama?.name_en==='The Westin Yokohama'&&westinYokohama?.city==='横浜市','The Westin Yokohama receives official identity/location patch');
+      line(westinYokohama?.facilities?.lounge?.available===true&&westinYokohama?.verifications?.['facilities.lounge']?.status==='verified','The Westin Yokohama Club Lounge is verified');
+      line(westinYokohama?.facilities?.pool?.raw.includes('大人3,300円'),'The Westin Yokohama pool fee is curated');
+      line(westinYokohama?.facilities?.parking?.raw.includes('6,000円/日'),'The Westin Yokohama parking is curated');
+
+      const sheratonBay=full.hotels.find(h=>h.name_ja==='シェラトン・グランデ・トーキョーベイ・ホテル');
+      line(sheratonBay?.name_en==='Sheraton Grande Tokyo Bay Hotel'&&sheratonBay?.city==='浦安市','Sheraton Grande Tokyo Bay receives official identity/location patch');
+      line(sheratonBay?.facilities?.pool?.available===true&&sheratonBay?.verifications?.['facilities.pool']?.status==='verified','Sheraton Grande Tokyo Bay pool is verified');
+      line(sheratonBay?.facilities?.parking?.raw.includes('1泊目3,100円'),'Sheraton Grande Tokyo Bay parking is curated');
+
+      const fujiMarriott=full.hotels.find(h=>h.name_ja==='富士マリオット・ホテル山中湖');
+      line(fujiMarriott?.name_en==='Fuji Marriott Hotel Lake Yamanaka'&&fujiMarriott?.city==='南都留郡山中湖村','Fuji Marriott Lake Yamanaka receives official identity/location patch');
+      line(fujiMarriott?.facilities?.onsen?.available===true&&fujiMarriott?.verifications?.['facilities.onsen']?.status==='verified','Fuji Marriott Lake Yamanaka hot spring is verified');
+      line(fujiMarriott?.facilities?.parking?.raw==='〇 無料','Fuji Marriott Lake Yamanaka parking is curated');
+
+      const courtyardHakuba=full.hotels.find(h=>h.name_ja==='コートヤード・バイ・マリオット白馬');
+      line(courtyardHakuba?.name_en==='Courtyard by Marriott Hakuba'&&courtyardHakuba?.city==='白馬村','Courtyard Hakuba receives official identity/location patch');
+      line(courtyardHakuba?.facilities?.onsen?.raw==='〇 白馬姫川温泉'&&courtyardHakuba?.verifications?.['facilities.onsen']?.status==='verified','Courtyard Hakuba hot spring is verified');
+      line(courtyardHakuba?.facilities?.parking?.raw==='〇 無料','Courtyard Hakuba parking is curated');
+
       const health=StayAtlas.health(full);line(health.total===full.hotels.length,'health total matches hotel count');
-      line(health.fieldVerified>35,'health reports expanded verified field coverage');
+      line(health.fieldVerified>50,'health reports expanded verified field coverage');
       line(health.fieldConflicting>=7,'health reports explicit conflicting fields');
       const first=full.hotels[0];line(Boolean(first),'full dataset contains at least one hotel');
       StayAtlas.save(full);
