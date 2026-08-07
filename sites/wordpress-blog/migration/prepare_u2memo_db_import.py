@@ -28,7 +28,11 @@ def main() -> int:
         return 2
 
     args.output.mkdir(parents=True, exist_ok=True)
-    comments = [json.loads(line) for line in (args.bundle / "private" / "comments.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    comments = [
+        json.loads(line)
+        for line in (args.bundle / "private" / "comments.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
     csv_path = args.output / "u2memo_legacy_comments.csv"
     with csv_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=COMMENT_FIELDS, extrasaction="ignore")
@@ -37,8 +41,10 @@ def main() -> int:
             writer.writerow({field: row.get(field, "") if row.get(field) is not None else "" for field in COMMENT_FIELDS})
 
     report = json.loads((args.bundle / "migration-report.json").read_text(encoding="utf-8"))
+    policy_report = json.loads((args.bundle / "u2memo-policy-report.json").read_text(encoding="utf-8"))
     manifest = json.loads((args.bundle / "public-manifest.json").read_text(encoding="utf-8"))
     counts = report["source_counts"]
+    comment_policy = policy_report["comments"]
     run = {
         "source_name": report["source"]["file_name"],
         "source_posts_total": counts["posts_total"],
@@ -53,6 +59,10 @@ def main() -> int:
         "source_content_normalized_plain_text_chars": counts["content_normalized_plain_text_chars"],
         "source_comments_raw_chars": counts["comments_raw_chars"],
         "source_comments_normalized_plain_text_chars": counts["comments_normalized_plain_text_chars"],
+        "retained_comments_raw_chars": sum(int(row.get("raw_chars") or 0) for row in comments),
+        "retained_comments_normalized_plain_text_chars": sum(int(row.get("normalized_plain_text_chars") or 0) for row in comments),
+        "legacy_secret_comments_total": comment_policy["legacy_secret_true"],
+        "password_markers_removed_total": comment_policy["password_markers_removed"],
         "warning_count": verification["counts"]["actionable_warnings"],
         "verified": True,
         "verification_note": "u2memo site-specific verification passed before DB import preparation.",
@@ -67,7 +77,14 @@ def main() -> int:
         "Record u2memo_migration_run.json in public.u2memo_migration_runs after recounting. Browser writes are unsupported.\n",
         encoding="utf-8",
     )
-    print(json.dumps({"verified": True, "comments": len(comments), "comments_csv": str(csv_path), "migration_run": str(run_path)}, ensure_ascii=False, indent=2))
+    print(json.dumps({
+        "verified": True,
+        "comments": len(comments),
+        "comments_csv": str(csv_path),
+        "migration_run": str(run_path),
+        "retained_comments_raw_chars": run["retained_comments_raw_chars"],
+        "retained_comments_normalized_plain_text_chars": run["retained_comments_normalized_plain_text_chars"],
+    }, ensure_ascii=False, indent=2))
     return 0
 
 
