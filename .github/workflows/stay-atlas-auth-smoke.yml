@@ -1,0 +1,35 @@
+name: Stay Atlas Auth Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'stay/auth/**'
+      - '.github/workflows/stay-atlas-auth-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stay-atlas-auth-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  auth-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JavaScript syntax
+        run: node --check stay/auth/accept-invite.js
+
+      - name: Validate configured auth shell safety
+        run: |
+          grep -q 'id="passwordForm" hidden' stay/auth/accept-invite.html
+          grep -q '\[hidden\]{display:none!important}' stay/auth/accept-invite.html
+          grep -q "enabled: true" stay/auth/supabase-config.js
+          grep -q "url: 'https://.*\.supabase\.co'" stay/auth/supabase-config.js
+          grep -q "publishableKey: 'sb_publishable_[A-Za-z0-9_-]\+'" stay/auth/supabase-config.js
+          ! grep -R -E 'service_role|sb_secret_' stay/auth --exclude='accept-invite.js'

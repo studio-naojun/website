@@ -1,46 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Stay Atlas Admin Setup | Studio NaoJun</title>
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="../verification.css">
-  <style>[hidden]{display:none!important}</style>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Studio NaoJun | 管理者アカウント設定</title>
+  <style>
+    :root{color-scheme:light;--bg:#f4f1ea;--paper:#fffdf8;--ink:#18211d;--muted:#6c756f;--line:#d6d2c8;--accent:#355c4a;--warn:#7a4b22}
+    *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.shell{min-height:100vh;display:grid;place-items:center;padding:28px}.panel{width:min(620px,100%);background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:34px;box-shadow:0 18px 60px rgba(24,33,29,.08)}.eyebrow{margin:0 0 10px;font-size:.72rem;letter-spacing:.14em;font-weight:700;color:var(--muted)}h1{margin:0 0 12px;font-size:clamp(2rem,6vw,3.2rem);letter-spacing:-.04em;line-height:1.05}.lead{color:var(--muted);line-height:1.8}.status{display:inline-flex;margin:18px 0;padding:6px 10px;border-radius:999px;background:#e5ebe6;font-size:.72rem;font-weight:700}.notice{margin:8px 0 22px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;line-height:1.7;background:white}.notice.error{border-color:#d7ad8a;color:var(--warn)}form{display:grid;gap:14px}label{display:grid;gap:7px;font-size:.82rem;color:var(--muted)}input{width:100%;border:1px solid var(--line);border-radius:12px;background:white;padding:13px 14px;font:inherit;color:var(--ink)}button,a.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;background:var(--ink);color:white;text-decoration:none;padding:13px 18px;font:inherit;cursor:pointer}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.small{font-size:.78rem;color:var(--muted);line-height:1.7}.brand{display:inline-block;margin-top:26px;color:var(--accent);text-decoration:none;font-weight:700}
+  </style>
 </head>
 <body>
-  <header class="atlas-header"><a class="brand" href="../">← Stay Atlas</a><nav><a href="../live-admin.html">Live Admin</a></nav></header>
-  <main class="admin-shell">
-    <div class="admin-head">
-      <div><p class="eyebrow">SUPABASE AUTH</p><h1>管理者アカウント設定</h1></div>
-      <span id="inviteStatus" class="pill">checking</span>
-    </div>
+  <main class="shell">
+    <section class="panel" aria-labelledby="pageTitle">
+      <p class="eyebrow">STUDIO NAOJUN / SUPABASE AUTH</p>
+      <h1 id="pageTitle">管理者アカウント設定</h1>
+      <p class="lead">招待メールから開いた場合、このページで最初のPasswordを設定します。</p>
+      <div id="status" class="status">CHECKING</div>
+      <div id="message" class="notice">招待状態を確認しています。</div>
 
-    <section class="import-panel">
-      <div id="inviteMessage" class="admin-note">招待状態を確認しています。</div>
-
-      <form id="passwordForm" class="admin-form" hidden>
+      <form id="passwordForm" hidden>
         <label>新しいPassword
-          <input id="newPassword" type="password" autocomplete="new-password" minlength="12" required>
+          <input id="password" type="password" autocomplete="new-password" minlength="12" required>
         </label>
         <label>Password（確認）
-          <input id="confirmPassword" type="password" autocomplete="new-password" minlength="12" required>
+          <input id="passwordConfirm" type="password" autocomplete="new-password" minlength="12" required>
         </label>
-        <p class="muted full">12文字以上を推奨します。Studioの他サービスで使っているPasswordは再利用しないでください。</p>
-        <div class="admin-actions full"><button class="primary-btn" type="submit">Passwordを設定</button></div>
+        <p class="small">12文字以上を使用し、他サービスと同じPasswordは再利用しないでください。</p>
+        <div class="actions"><button type="submit">Passwordを設定</button></div>
       </form>
 
-      <div id="completePanel" hidden>
-        <p>アカウントのPassword設定が完了しました。</p>
-        <div class="admin-actions"><a class="primary-btn" href="../live-admin.html">Live Adminへ進む</a></div>
+      <div id="complete" hidden>
+        <p class="notice">Password設定が完了しました。安全のため、このページの認証Sessionは終了しました。</p>
+        <div class="actions"><a class="button" href="/">Studio NaoJunへ戻る</a></div>
       </div>
 
-      <p id="inviteDetail" class="muted"></p>
+      <p id="detail" class="small"></p>
+      <a class="brand" href="/">Studio NaoJun</a>
     </section>
   </main>
-
-  <script src="../supabase-config.js"></script>
+  <script src="./supabase-config.js"></script>
   <script src="./accept-invite.js"></script>
 </body>
 </html>
