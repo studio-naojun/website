@@ -27,7 +27,7 @@
   let currentUser = null;
 
   function isAdmin(user){
-    return user?.app_metadata?.wordpress_blog_role === 'admin';
+    return user?.app_metadata?.u2memo_archive_role === 'admin';
   }
 
   function setStatus(label, message){
@@ -60,7 +60,8 @@
     for(const row of filtered){
       const card = document.createElement('div');
       card.className = 'comment';
-      const meta = `#${row.legacy_comment_id} / post ${row.legacy_post_id} / ${row.post_slug || ''} / ${row.wordpress_status || ''} / ${row.created_at || ''}`;
+      const secret = row.legacy_secret === true ? ' / legacy secret' : '';
+      const meta = `#${row.legacy_comment_id} / post ${row.legacy_post_id} / ${row.post_slug || ''} / ${row.wordpress_status || ''}${secret} / ${row.created_at || ''}`;
       card.appendChild(makeText('p', 'meta', meta));
       card.appendChild(makeText('strong', '', row.author_display_name || '(no display name)'));
       card.appendChild(makeText('p', 'comment-body', row.comment_body || ''));
@@ -80,8 +81,8 @@
     const from = offset;
     const to = offset + PAGE_SIZE - 1;
     const { data, error } = await client
-      .from('wp_legacy_comments')
-      .select('legacy_comment_id,legacy_post_id,post_slug,parent_legacy_comment_id,author_display_name,comment_body,created_at,wordpress_status,comment_type')
+      .from('u2memo_legacy_comments')
+      .select('legacy_comment_id,legacy_post_id,post_slug,parent_legacy_comment_id,author_display_name,comment_body,legacy_secret,created_at,wordpress_status,comment_type')
       .order('created_at', {ascending:false})
       .range(from, to);
 
@@ -108,15 +109,15 @@
     if(!isAdmin(currentUser)){
       workspace.hidden = true;
       loginPanel.hidden = false;
-      loginMessage.textContent = 'このAccountには旧コメントArchiveのAdmin権限がありません。';
-      setStatus('NOT ADMIN', '認証済みですがAdmin roleがありません。Database RLSも読取を拒否します。');
+      loginMessage.textContent = 'このAccountにはu2memo旧コメントArchiveのAdmin権限がありません。';
+      setStatus('NOT ADMIN', '認証済みですがu2memo Archive Admin roleがありません。Database RLSも読取を拒否します。');
       return;
     }
 
     loginPanel.hidden = true;
     workspace.hidden = false;
     liveUser.textContent = currentUser.email || currentUser.id;
-    setStatus('LIVE DB', '認証済みAdminとしてPrivate Archiveへ接続しています。');
+    setStatus('LIVE DB', '認証済みu2memo Archive AdminとしてPrivate Archiveへ接続しています。');
     await loadNextPage({reset:true});
   }
 

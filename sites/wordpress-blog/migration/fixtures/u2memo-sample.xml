@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+  xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+  <title>u2memo synthetic fixture</title>
+  <link>https://pocca.net/u2memo</link>
+  <wp:wxr_version>1.2</wp:wxr_version>
+  <wp:base_site_url>https://pocca.net/</wp:base_site_url>
+  <wp:base_blog_url>https://pocca.net/u2memo</wp:base_blog_url>
+  <item>
+    <title>u2memo移行テスト</title>
+    <link>https://pocca.net/u2memo/fixture-post/</link>
+    <guid isPermaLink="false">https://pocca.net/u2memo/?p=9001</guid>
+    <content:encoded><![CDATA[<p><font color="red">本文は保持し、旧font装飾だけ落とします。</font></p><p><img src="https://pocca.net/u2memo/media/sample.jpg" alt="sample"></p><img src="https://tracker.example.com/0.gif" width="1" height="1" alt="">]]></content:encoded>
+    <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+    <wp:post_id>9001</wp:post_id>
+    <wp:post_date>2024-01-01 09:00:00</wp:post_date>
+    <wp:post_date_gmt>2024-01-01 00:00:00</wp:post_date_gmt>
+    <wp:post_modified>2024-01-01 09:00:00</wp:post_modified>
+    <wp:post_modified_gmt>2024-01-01 00:00:00</wp:post_modified_gmt>
+    <wp:post_name>fixture-post</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:post_type>post</wp:post_type>
+    <category domain="category" nicename="test"><![CDATA[テスト]]></category>
+    <wp:comment>
+      <wp:comment_id>9501</wp:comment_id>
+      <wp:comment_author><![CDATA[Legacy Reader]]></wp:comment_author>
+      <wp:comment_author_email><![CDATA[synthetic@example.net]]></wp:comment_author_email>
+      <wp:comment_author_IP><![CDATA[192.0.2.50]]></wp:comment_author_IP>
+      <wp:comment_date>2024-01-02 10:00:00</wp:comment_date>
+      <wp:comment_date_gmt>2024-01-02 01:00:00</wp:comment_date_gmt>
+      <wp:comment_content><![CDATA[SECRET: 1
+PASS: TEST_ONLY
+保持するコメント本文です。]]></wp:comment_content>
+      <wp:comment_approved>0</wp:comment_approved>
+      <wp:comment_type>comment</wp:comment_type>
+      <wp:comment_parent>0</wp:comment_parent>
+      <wp:comment_user_id>0</wp:comment_user_id>
+    </wp:comment>
+  </item>
+  <item>
+    <title>メニュー</title>
+    <link>https://pocca.net/u2memo/menu/</link>
+    <guid isPermaLink="false">https://pocca.net/u2memo/?p=9002</guid>
+    <content:encoded><![CDATA[]]></content:encoded>
+    <wp:post_id>9002</wp:post_id>
+    <wp:post_date>2024-01-01 09:00:00</wp:post_date>
+    <wp:post_name>menu</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:post_type>nav_menu_item</wp:post_type>
+  </item>
+  <item>
+    <title>Styles</title>
+    <link>https://pocca.net/u2memo/styles/</link>
+    <guid isPermaLink="false">https://pocca.net/u2memo/?p=9003</guid>
+    <content:encoded><![CDATA[]]></content:encoded>
+    <wp:post_id>9003</wp:post_id>
+    <wp:post_date>2024-01-01 09:00:00</wp:post_date>
+    <wp:post_name>styles</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:post_type>wp_global_styles</wp:post_type>
+  </item>
+</channel>
+</rss>
