@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Stay Atlas Admin Setup | Studio NaoJun</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../verification.css">
+</head>
+<body>
+  <header class="atlas-header"><a class="brand" href="../">← Stay Atlas</a><nav><a href="../live-admin.html">Live Admin</a></nav></header>
+  <main class="admin-shell">
+    <div class="admin-head">
+      <div><p class="eyebrow">SUPABASE AUTH</p><h1>管理者アカウント設定</h1></div>
+      <span id="inviteStatus" class="pill">checking</span>
+    </div>
+
+    <section class="import-panel">
+      <div id="inviteMessage" class="admin-note">招待状態を確認しています。</div>
+
+      <form id="passwordForm" class="admin-form" hidden>
+        <label>新しいPassword
+          <input id="newPassword" type="password" autocomplete="new-password" minlength="12" required>
+        </label>
+        <label>Password（確認）
+          <input id="confirmPassword" type="password" autocomplete="new-password" minlength="12" required>
+        </label>
+        <p class="muted full">12文字以上を推奨します。Studioの他サービスで使っているPasswordは再利用しないでください。</p>
+        <div class="admin-actions full"><button class="primary-btn" type="submit">Passwordを設定</button></div>
+      </form>
+
+      <div id="completePanel" hidden>
+        <p>アカウントのPassword設定が完了しました。</p>
+        <div class="admin-actions"><a class="primary-btn" href="../live-admin.html">Live Adminへ進む</a></div>
+      </div>
+
+      <p id="inviteDetail" class="muted"></p>
+    </section>
+  </main>
+
+  <script src="../supabase-config.js"></script>
+  <script src="./accept-invite.js"></script>
+</body>
+</html>
