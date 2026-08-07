@@ -143,10 +143,12 @@ revoke all on function stay_atlas_private.jsonb_diff(jsonb,jsonb) from public;
 
 -- Every direct UPDATE preserves OLD before changing the current row. The restore RPC sets
 -- transaction-local revision context so the trigger records action=restore instead of edit.
+-- Trigger functions use SECURITY DEFINER so private revision helpers and revision inserts do
+-- not need to be exposed to browser roles; RLS on hotels still authorizes the originating write.
 create or replace function stay_atlas_private.capture_hotel_revision()
 returns trigger
 language plpgsql
-security invoker
+security definer
 set search_path = ''
 as $$
 declare
@@ -181,7 +183,7 @@ $$;
 create or replace function stay_atlas_private.capture_hotel_create_revision()
 returns trigger
 language plpgsql
-security invoker
+security definer
 set search_path = ''
 as $$
 begin
