@@ -11,11 +11,11 @@
   <header class="atlas-header"><a class="brand" href="./">← Stay Atlas</a><nav><a href="../">Studio NaoJun</a></nav></header>
   <main class="admin-shell">
     <div class="admin-head"><div><p class="eyebrow">LOCAL ADMIN PREVIEW</p><h1>Stay Atlas Admin</h1></div><span id="adminCount" class="pill">0 hotels</span></div>
-    <div class="admin-note">このv1管理画面の変更・履歴は、このブラウザのlocalStorageにのみ保存されます。初回表示では、Repositoryに保存したJun提供の旧WordPress表を全件読み込みます。公開データを直接更新する本番管理機能ではありません。</div>
+    <div class="admin-note">このv1管理画面の変更・履歴は、このブラウザのlocalStorageにのみ保存されます。初回表示ではJun提供の旧WordPress表を全件読み込み、その上にRepositoryで管理する公式確認済みPatchを重ねます。公開DBを直接更新する本番管理機能ではありません。</div>
 
     <div class="admin-toolbar">
       <button class="secondary-btn" id="exportBtn" type="button">JSONを書き出す</button>
-      <button class="danger-btn" id="resetBtn" type="button">旧表から再読み込み</button>
+      <button class="danger-btn" id="resetBtn" type="button">旧表＋公式確認へ戻す</button>
     </div>
 
     <div class="admin-toolbar" aria-label="Data audit filters">
@@ -24,6 +24,7 @@
       <button class="secondary-btn audit-filter" data-audit="english" type="button" aria-pressed="false">英語名未確認 <span id="auditEnglish">0</span></button>
       <button class="secondary-btn audit-filter" data-audit="location" type="button" aria-pressed="false">エリア不足 <span id="auditLocation">0</span></button>
       <button class="secondary-btn audit-filter" data-audit="planned" type="button" aria-pressed="false">開業予定 <span id="auditPlanned">0</span></button>
+      <button class="secondary-btn audit-filter" data-audit="official" type="button" aria-pressed="false">公式確認あり <span id="auditOfficial">0</span></button>
     </div>
 
     <div class="admin-grid">
@@ -58,6 +59,11 @@
           <div class="admin-actions"><button class="primary-btn" id="saveBtn" type="button">変更を保存</button></div>
         </div>
 
+        <div class="verification-panel" style="margin-top:18px">
+          <p class="eyebrow">OFFICIAL FIELD VERIFICATION</p>
+          <div id="verificationList" class="verification-list"><p class="muted">ホテルを選択してください。</p></div>
+        </div>
+
         <div class="revision-panel" style="margin-top:18px">
           <p class="eyebrow">REVISION HISTORY</p>
           <div id="revisionList" class="revision-list"><p class="muted">ホテルを選択してください。</p></div>
@@ -68,13 +74,14 @@
     <section class="import-panel">
       <p class="eyebrow">LEGACY IMPORTER</p>
       <h2>別のWordPressテーブルを取り込む</h2>
-      <p class="muted">通常はRepositoryに保存済みの旧表が自動で読み込まれます。別版を検証したい場合だけ、ここへ <code>&lt;table&gt;</code> を含むHTMLを貼り付けます。空欄や「いける？」「追加料金？」などは推測で補わず、要確認として保持します。英語名は旧表に明記された場合だけ抽出します。</p>
+      <p class="muted">通常はRepositoryに保存済みの旧表が自動で読み込まれます。別版を検証したい場合だけ、ここへ <code>&lt;table&gt;</code> を含むHTMLを貼り付けます。空欄や「いける？」「追加料金？」などは推測で補わず、要確認として保持します。既知のホテルにはRepository管理の公式確認Patchが再適用されます。</p>
       <textarea id="legacyHtml" placeholder="<!-- wp:table ... --> ..."></textarea>
       <div class="admin-actions"><button class="primary-btn" id="importBtn" type="button">HTMLから全件取り込む</button></div>
       <p id="importResult" class="muted"></p>
     </section>
   </main>
   <script src="./data/seed.js"></script>
+  <script src="./data/verified-patches.js"></script>
   <script src="./core.js"></script>
   <script src="./admin.js"></script>
 </body>
