@@ -16,8 +16,12 @@
   }
   StayAtlas.bootstrapLegacy=async function(){
     if(StayAtlasSupabase.configured()){
-      try{await ensureSupabaseLibrary();return await StayAtlasSupabase.loadHotels({admin:false});}
-      catch(error){console.warn('Stay Atlas live data unavailable; using bundled legacy dataset.',error);}
+      try{
+        await ensureSupabaseLibrary();
+        const live=await StayAtlasSupabase.loadHotels({admin:false});
+        if(live.hotels?.length)return live;
+        console.warn('Stay Atlas live database is empty; using bundled legacy dataset until bootstrap completes.');
+      }catch(error){console.warn('Stay Atlas live data unavailable; using bundled legacy dataset.',error);}
     }
     return legacyBootstrap();
   };
