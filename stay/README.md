@@ -39,9 +39,9 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 ### 2. Curated official verification
 
-`data/verified-patches.js` は、公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
+`data/verified-patches.js` と `data/verified-patches-hilton-3.js` は、公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
 
-現在のcuration versionは `2` です。確認batchは次の9件です。
+現在のcuration versionは `3`、確認対象は13件です。
 
 - Waldorf Astoria Osaka
 - Canopy by Hilton Okinawa Miyako Island Resort
@@ -52,20 +52,24 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 - Hilton Tokyo Bay
 - Hilton Osaka
 - Conrad Tokyo
+- Hilton Tokyo Odaiba
+- DoubleTree by Hilton Tokyo Ariake
+- Hilton Odawara Resort & Spa
+- Hilton Nagoya
 
-第2batchでは、Hilton Tokyo / Hilton Tokyo Bay / Hilton Osaka / Conrad Tokyoについて、公式Hiltonページから英語名・所在地・営業状態・ラウンジ・プール・駐車場等を確認しました。Hilton TokyoとHilton Osakaは添寝条件も公式Hotel Policyへ置き換えています。
+第3batchでは、Hilton Tokyo Odaiba / DoubleTree by Hilton Tokyo Ariake / Hilton Odawara Resort & Spa / Hilton Nagoyaを追加しました。英語名・所在地・営業状態に加え、公式Sourceが支える範囲で添寝、朝食、ラウンジ、温泉、プール、駐車場をField単位で確認しています。
 
-Hilton Tokyo Bayについて公式ページで確認できた「6歳以上は大人として予約人数に含める」という条件は、添寝無料条件と同義ではないため、`families.booking_age` として別Fieldに保存し、旧表の添寝値をその情報だけで上書きしません。
+「予約上の子ども区分」と「無料添寝条件」は同義とみなしません。たとえばHilton Tokyo BayやHilton Tokyo Odaibaの年齢区分は `families.booking_age` として別Fieldに保存し、その情報だけで旧表の添寝値を上書きしません。
 
-旧表で `温泉: 〇` となっている一方、公式ページではSpa / bath / sauna / indoor pool等の記載しか確認できないケースは、温泉なしと断定せず `conflicting` として再確認対象にしています。
+旧表で `温泉: 〇` でも、公式ページでSpa / bath / sauna / whirlpool等しか確認できない場合は `温泉なし` と断定せず `conflicting` として残します。一方、公式SourceがHot Springを明示する場合は `verified` として扱います。
 
-Source同士の状態が一致しない場合も、都合のよい値を選ばず `conflicting` として残します。Conrad Nagoyaは、公式Hiltonで2026-07-31以降の予約を受け付ける一方、検索一覧が `Coming Soon` 表示のため、営業開始状態を `needs_review` / `conflicting` として保持しています。
+Source同士の状態が一致しない場合も、都合のよい値を選びません。Conrad Nagoyaは営業開始状態、Hilton Nagoyaは旧表の添寝上限と現行Family Policyの整合に確認余地があるため `needs_review` / `conflicting` を保持します。
 
 ## 重要: Admin Previewの制約
 
 現在の管理画面はGitHub Pagesで安全に試せるよう、変更とRevisionを `localStorage` に保存します。そのため管理変更は同じブラウザにだけ反映され、他の利用者やリポジトリの公開データは更新しません。
 
-「旧表＋公式確認へ戻す」は、そのブラウザ内の編集・Revisionを削除して `data/legacy-table.html` からdatasetを再構築し、`data/verified-patches.js` を重ね直します。
+「旧表＋公式確認へ戻す」は、そのブラウザ内の編集・Revisionを削除して `data/legacy-table.html` からdatasetを再構築し、Repository管理のcuration layerを重ね直します。
 
 本番v1として公開更新を可能にする場合は、次のどちらかへ移行します。
 
@@ -84,6 +88,7 @@ Hotel recordは以下を基本単位とします。
 - award: `raw`
 - capacity: `raw`, `value`
 - facilities: lounge / breakfast / onsen / pool / parking
+- family verification extras: `verifications['families.booking_age']` など
 - legacy source: `source.label`, `source.url`, `source.last_checked`
 - official field verification: `verifications[field_path]`
 - record quality: `verified`, `unverified`, `needs_review`, `missing`, `conflicting`
@@ -98,9 +103,9 @@ Hotel recordは以下を基本単位とします。
 
 ## Validation
 
-`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version、9件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証します。
+`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version 3、13件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証するassertionを用意しています。
 
-Browserでのvisual/function validationはMerge前に別途必要です。
+このtest harnessはBrowserで実行して確認する必要があります。コード追加だけをもってTest通過とは扱いません。
 
 ## 次段階
 
@@ -108,6 +113,7 @@ Browserでのvisual/function validationはMerge前に別途必要です。
 - 全ホテルの日本語正式名 / 英語正式名の確認
 - 旧表の未確認・欠落項目の棚卸し
 - Marriott / SLH等の公式Sourceによる現況再検証
+- Browser visual/function validation
 - 本番DB / Authの選定と導入
 - `stay.naojun.jp` への独立Deployment
 - 月次Change Candidate検出（v1.1）
