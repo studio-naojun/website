@@ -94,6 +94,12 @@ Hotel recordは以下を基本単位とします。
 
 公式確認PatchはRepository側のcuration layerとしてVersion管理します。ブラウザにlocal Revisionが存在する場合、未適用のcurationを自動で上書き適用しない方針です。
 
+## Validation
+
+`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version、9件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証します。
+
+Browserでのvisual/function validationはMerge前に別途必要です。
+
 ## 次段階
 
 - Hilton系の公式確認batchを継続し、英語名・添寝・朝食・設備情報を更新
