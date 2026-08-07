@@ -37,6 +37,7 @@
 
       const tokyoBay=full.hotels.find(h=>h.name_ja==='ヒルトン東京ベイ');
       line(tokyoBay?.name_en==='Hilton Tokyo Bay'&&tokyoBay?.city==='浦安市','Hilton Tokyo Bay receives official identity/location patch');
+      line(tokyoBay?.verifications?.['families.booking_age']?.status==='verified','Hilton Tokyo Bay booking age classification is stored separately from bed-sharing policy');
       line(tokyoBay?.facilities?.parking?.raw.includes('3泊以上6,300円'),'Hilton Tokyo Bay parking schedule is curated');
       line(tokyoBay?.facilities?.pool?.raw.includes('室内プール（通年）'),'Hilton Tokyo Bay pool information is curated');
 
