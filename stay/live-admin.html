@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Stay Atlas Live Admin | Studio NaoJun</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./verification.css">
+</head>
+<body>
+  <header class="atlas-header"><a class="brand" href="./">← Stay Atlas</a><nav><a href="./admin.html">Local Preview</a></nav></header>
+  <main class="admin-shell">
+    <div class="admin-head"><div><p class="eyebrow">AUTHENTICATED ADMIN</p><h1>Stay Atlas Live Admin</h1></div><span id="liveStatus" class="pill">checking</span></div>
+    <div id="connectionNote" class="admin-note">Supabase接続状態を確認しています。</div>
+
+    <section id="loginPanel" class="import-panel" hidden>
+      <p class="eyebrow">SUPABASE AUTH</p><h2>管理者ログイン</h2>
+      <form id="loginForm" class="admin-form">
+        <label>Email<input id="loginEmail" type="email" autocomplete="username" required></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+      </form>
+      <div class="admin-actions"><button class="primary-btn" id="loginBtn" type="submit" form="loginForm">ログイン</button></div>
+      <p id="loginMessage" class="muted"></p>
+    </section>
+
+    <section id="liveWorkspace" hidden>
+      <div class="admin-toolbar"><span id="liveUser" class="muted"></span><button class="secondary-btn" id="reloadBtn" type="button">再読込</button><button class="secondary-btn" id="logoutBtn" type="button">ログアウト</button></div>
+      <div class="admin-grid">
+        <aside class="admin-list"><input id="liveSearch" type="search" placeholder="ホテルを検索"><div class="admin-records" id="liveRecords"></div></aside>
+        <section>
+          <div class="admin-editor">
+            <p class="eyebrow">LIVE RECORD EDITOR</p>
+            <form id="liveHotelForm" class="admin-form">
+              <input id="l_id" type="hidden">
+              <label>ホテル名（日本語）<input id="l_name_ja" required></label>
+              <label>Hotel name (English)<input id="l_name_en"></label>
+              <label>チェーン<select id="l_chain"><option>Marriott Bonvoy</option><option>Hilton Honors</option></select></label>
+              <label>ブランド<input id="l_brand"></label>
+              <label>都道府県<input id="l_prefecture"></label>
+              <label>市区町村<input id="l_city"></label>
+              <label>添寝<input id="l_child"></label>
+              <label>定員<input id="l_capacity"></label>
+              <label>ポイント・宿泊条件<input id="l_award"></label>
+              <label>ラウンジ<input id="l_lounge"></label>
+              <label>朝食<input id="l_breakfast"></label>
+              <label>温泉<input id="l_onsen"></label>
+              <label>プール<input id="l_pool"></label>
+              <label>駐車場<input id="l_parking"></label>
+              <label>品質<select id="l_quality"><option value="verified">確認済</option><option value="unverified">未検証</option><option value="needs_review">要確認</option><option value="missing">不足</option><option value="conflicting">競合</option></select></label>
+              <label>最終確認日<input id="l_checked" type="date"></label>
+              <label class="full">Source URL<input id="l_source_url" type="url"></label>
+              <label class="full">変更メモ<textarea id="l_note" rows="3" placeholder="変更理由・確認内容"></textarea></label>
+            </form>
+            <div class="admin-actions"><button class="primary-btn" id="liveSaveBtn" type="button">DBへ保存</button></div>
+            <p id="saveMessage" class="muted"></p>
+          </div>
+          <div class="verification-panel" style="margin-top:18px"><p class="eyebrow">OFFICIAL FIELD VERIFICATION</p><div id="liveVerificationList" class="verification-list"></div></div>
+          <div class="revision-panel" style="margin-top:18px"><p class="eyebrow">DATABASE REVISION HISTORY</p><div id="liveRevisionList" class="revision-list"></div></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
+  <script src="./supabase-config.js"></script>
+  <script src="./supabase-adapter.js"></script>
+  <script src="./core.js"></script>
+  <script src="./live-admin.js"></script>
+</body>
+</html>
