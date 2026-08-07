@@ -1,0 +1,44 @@
+name: WordPress Blog Migration Engine
+
+on:
+  pull_request:
+    paths:
+      - 'sites/wordpress-blog/migration/**'
+      - 'sites/wordpress-blog/.gitignore'
+      - '.github/workflows/wordpress-blog-migration-engine.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'sites/wordpress-blog/migration/**'
+      - 'sites/wordpress-blog/.gitignore'
+      - '.github/workflows/wordpress-blog-migration-engine.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  migration-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        working-directory: sites/wordpress-blog/migration
+        run: python -m unittest -v test_engine.py
+      - name: Build strict fixture bundle
+        working-directory: sites/wordpress-blog/migration
+        run: |
+          rm -rf /tmp/wordpress-blog-fixture
+          python import_wxr.py fixtures/sample.xml --output /tmp/wordpress-blog-fixture --strict
+          python verify_bundle.py /tmp/wordpress-blog-fixture --strict
+      - name: Ensure no real migration inputs are tracked
+        run: |
+          if git ls-files 'sites/wordpress-blog/migration/input/*' | grep -Ev '/\.gitkeep$' | grep -q .; then
+            echo 'Real migration input is tracked in the public repository.' >&2
+            exit 1
+          fi
