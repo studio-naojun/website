@@ -22,6 +22,7 @@
 - 初回アクセス時の旧表全件自動Migration
 - Repository管理の公式確認Patch layer
 - Field単位の `verified` / `conflicting` 表示
+- 公開画面の「公式確認あり / 公式Source競合あり」Filter
 - Adminの「公式確認あり」Audit Queue
 - JSON export
 - PostgreSQL / Supabase向けSchema
@@ -39,9 +40,11 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 ### 2. Curated official verification
 
-`data/verified-patches.js` と `data/verified-patches-hilton-3.js` は、公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
+公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
 
-現在のcuration versionは `3`、確認対象は13件です。
+現在のcuration versionは `4`、確認対象は17件です。
+
+Hilton batches:
 
 - Waldorf Astoria Osaka
 - Canopy by Hilton Okinawa Miyako Island Resort
@@ -57,9 +60,18 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 - Hilton Odawara Resort & Spa
 - Hilton Nagoya
 
-第3batchでは、Hilton Tokyo Odaiba / DoubleTree by Hilton Tokyo Ariake / Hilton Odawara Resort & Spa / Hilton Nagoyaを追加しました。英語名・所在地・営業状態に加え、公式Sourceが支える範囲で添寝、朝食、ラウンジ、温泉、プール、駐車場をField単位で確認しています。
+Marriott batch 1:
 
-「予約上の子ども区分」と「無料添寝条件」は同義とみなしません。たとえばHilton Tokyo BayやHilton Tokyo Odaibaの年齢区分は `families.booking_age` として別Fieldに保存し、その情報だけで旧表の添寝値を上書きしません。
+- The Westin Yokohama
+- Sheraton Grande Tokyo Bay Hotel
+- Fuji Marriott Hotel Lake Yamanaka
+- Courtyard by Marriott Hakuba
+
+Marriott第1batchでは、公式Marriott property pageから英語名・所在地・営業状態を確認し、公式Sourceが支える範囲でClub Lounge、Pool、Hot Spring、ParkingをField単位で補正しています。
+
+The Westin YokohamaではClub Lounge、室内プールと子どもの利用時間・料金、駐車料金を確認しています。Sheraton Grande Tokyo Bay Hotelでは室内 / 屋外プールと駐車料金を確認しました。Fuji Marriott Hotel Lake YamanakaとCourtyard by Marriott Hakubaでは、公式ページがHot Springを明示しているため温泉Fieldを`verified`として扱っています。
+
+「予約上の子ども区分」と「無料添寝条件」は同義とみなしません。公式Sourceが添寝条件を直接支えない場合、旧表の添寝値を別の年齢情報だけで上書きしません。
 
 旧表で `温泉: 〇` でも、公式ページでSpa / bath / sauna / whirlpool等しか確認できない場合は `温泉なし` と断定せず `conflicting` として残します。一方、公式SourceがHot Springを明示する場合は `verified` として扱います。
 
@@ -103,16 +115,17 @@ Hotel recordは以下を基本単位とします。
 
 ## Validation
 
-`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version 3、13件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証するassertionを用意しています。
+`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version 4、17件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証するassertionを用意しています。
 
 このtest harnessはBrowserで実行して確認する必要があります。コード追加だけをもってTest通過とは扱いません。
 
 ## 次段階
 
-- Hilton系の公式確認batchを継続し、英語名・添寝・朝食・設備情報を更新
+- Marriott系の公式確認batchを継続し、家族利用に重要な施設・ポリシーを更新
+- Hilton系の未確認ホテルを継続確認
 - 全ホテルの日本語正式名 / 英語正式名の確認
 - 旧表の未確認・欠落項目の棚卸し
-- Marriott / SLH等の公式Sourceによる現況再検証
+- SLH等の公式Sourceによる現況再検証
 - Browser visual/function validation
 - 本番DB / Authの選定と導入
 - `stay.naojun.jp` への独立Deployment
