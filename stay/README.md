@@ -55,6 +55,8 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 第2batchでは、Hilton Tokyo / Hilton Tokyo Bay / Hilton Osaka / Conrad Tokyoについて、公式Hiltonページから英語名・所在地・営業状態・ラウンジ・プール・駐車場等を確認しました。Hilton TokyoとHilton Osakaは添寝条件も公式Hotel Policyへ置き換えています。
 
+Hilton Tokyo Bayについて公式ページで確認できた「6歳以上は大人として予約人数に含める」という条件は、添寝無料条件と同義ではないため、`families.booking_age` として別Fieldに保存し、旧表の添寝値をその情報だけで上書きしません。
+
 旧表で `温泉: 〇` となっている一方、公式ページではSpa / bath / sauna / indoor pool等の記載しか確認できないケースは、温泉なしと断定せず `conflicting` として再確認対象にしています。
 
 Source同士の状態が一致しない場合も、都合のよい値を選ばず `conflicting` として残します。Conrad Nagoyaは、公式Hiltonで2026-07-31以降の予約を受け付ける一方、検索一覧が `Coming Soon` 表示のため、営業開始状態を `needs_review` / `conflicting` として保持しています。
