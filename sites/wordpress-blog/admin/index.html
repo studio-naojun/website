@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog Private Archive Admin Prototype</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="hero">
+      <p class="eyebrow">Private Archive / Phase 1</p>
+      <h1>旧コメント管理</h1>
+      <p>この画面はUI確認用prototypeです。実WordPressコメントはまだ接続されていません。</p>
+    </header>
+
+    <section class="admin-card">
+      <p><span class="badge">DEMO DATA</span></p>
+      <h2>認証境界</h2>
+      <p id="auth-status" class="status">Live Auth未接続。Phase 2でSupabase Auth + RLSを有効化します。</p>
+      <p class="private-note">本番の旧コメントは公開Repositoryや公開HTMLへ保存せず、認証済みAdminだけがRLS経由で取得します。</p>
+    </section>
+
+    <section class="admin-card">
+      <h2>サンプル記事</h2>
+      <p class="meta">legacy post id: 1001 / slug: sample-post</p>
+      <div id="comment-list" aria-live="polite"></div>
+    </section>
+
+    <section class="admin-card">
+      <h2>Migration status</h2>
+      <p>Importer: <strong>DISABLED</strong></p>
+      <p>Live private data: <strong>DISABLED</strong></p>
+      <p>Verification: <strong>NOT STARTED</strong></p>
+    </section>
+  </main>
+  <script src="./admin.js"></script>
+</body>
+</html>
