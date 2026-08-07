@@ -1,0 +1,77 @@
+name: JAN Search Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'tools/jan/**'
+      - 'assets/js/jan-search.js'
+      - 'assets/css/jan-search.css'
+      - 'worker/jan-search/**'
+      - '.github/workflows/jan-search-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jan-search-smoke-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  syntax-and-worker-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: JavaScript syntax check
+        run: |
+          node --check assets/js/jan-search.js
+          node --check worker/jan-search/src/index.js
+          node --check tools/jan/ci-smoke.mjs
+
+      - name: Wrangler dry run
+        run: npx --yes wrangler@4.102.0 deploy --dry-run --config worker/jan-search/wrangler.toml
+
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/jan-search-http.log 2>&1 &
+          echo $! > /tmp/jan-search-http.pid
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/tools/jan/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/jan-search-http.log
+          exit 1
+
+      - name: Run browser smoke
+        run: node tools/jan/ci-smoke.mjs
+
+      - name: Print server log on failure
+        if: failure()
+        run: cat /tmp/jan-search-http.log || true
