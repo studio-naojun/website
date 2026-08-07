@@ -1,0 +1,7 @@
+# Real WordPress exports and generated migration bundles may contain private data.
+# Never commit them to this public repository.
+migration/input/*.xml
+migration/input/*.wxr
+migration/output/
+migration/work/
+!migration/input/.gitkeep

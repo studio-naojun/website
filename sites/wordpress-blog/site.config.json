@@ -1,30 +1,41 @@
 {
   "siteId": "wordpress-blog",
   "domain": "TBD",
-  "phase": "shell",
+  "phase": "ready_for_wxr",
   "public": {
     "static": true,
     "root": "./",
-    "samplePost": "posts/sample.html"
+    "samplePost": "posts/sample.html",
+    "urlStrategy": "preserve_legacy_path"
   },
   "admin": {
     "path": "admin/",
+    "livePath": "admin/live-admin.html",
     "commentsVisibility": "admin_only",
     "authProvider": "supabase",
     "roleClaim": "wordpress_blog_role",
     "roleValue": "admin",
-    "liveDataEnabled": false
+    "liveDataEnabled": false,
+    "browserWritesAllowed": false
   },
   "migration": {
     "source": "wordpress-wxr",
-    "enabled": false,
+    "engineReady": true,
+    "autoImport": false,
+    "realInputCommitted": false,
     "verificationMetrics": [
       "posts_total",
       "pages_total",
+      "attachments_total",
       "comments_total",
       "approved_comments_total",
-      "source_raw_content_chars",
-      "normalized_plain_text_chars"
+      "content_raw_chars",
+      "content_normalized_plain_text_chars",
+      "comments_raw_chars",
+      "comments_normalized_plain_text_chars",
+      "per_record_normalized_text_sha256",
+      "url_mapping_coverage",
+      "warning_count"
     ]
   }
 }

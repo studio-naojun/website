@@ -1,0 +1,66 @@
+name: WordPress Blog Migration Engine
+
+on:
+  pull_request:
+    paths:
+      - 'sites/wordpress-blog/migration/**'
+      - 'sites/wordpress-blog/db/**'
+      - 'sites/wordpress-blog/admin/**'
+      - 'sites/wordpress-blog/.gitignore'
+      - 'sites/wordpress-blog/site.config.json'
+      - 'sites/wordpress-blog/ci-smoke.mjs'
+      - '.github/workflows/wordpress-blog-migration-engine.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'sites/wordpress-blog/migration/**'
+      - 'sites/wordpress-blog/db/**'
+      - 'sites/wordpress-blog/admin/**'
+      - 'sites/wordpress-blog/.gitignore'
+      - 'sites/wordpress-blog/site.config.json'
+      - 'sites/wordpress-blog/ci-smoke.mjs'
+      - '.github/workflows/wordpress-blog-migration-engine.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  migration-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Shell privacy smoke
+        run: node sites/wordpress-blog/ci-smoke.mjs
+      - name: Unit tests
+        working-directory: sites/wordpress-blog/migration
+        run: python -m unittest -v test_engine.py
+      - name: Build strict fixture bundle
+        working-directory: sites/wordpress-blog/migration
+        run: |
+          rm -rf /tmp/wordpress-blog-fixture /tmp/wordpress-blog-db-import
+          python import_wxr.py fixtures/sample.xml --output /tmp/wordpress-blog-fixture --strict
+          python verify_bundle.py /tmp/wordpress-blog-fixture --strict
+          python prepare_db_import.py /tmp/wordpress-blog-fixture --output /tmp/wordpress-blog-db-import
+          test -s /tmp/wordpress-blog-db-import/wp_legacy_comments.csv
+          test -s /tmp/wordpress-blog-db-import/wp_migration_run.json
+          ! grep -R -F 'reader@example.net' /tmp/wordpress-blog-db-import
+          ! grep -R -F '192.0.2.1' /tmp/wordpress-blog-db-import
+      - name: Guarded media manifest dry run
+        working-directory: sites/wordpress-blog/migration
+        run: |
+          python download_media.py /tmp/wordpress-blog-fixture/media-manifest.json \
+            --output /tmp/wordpress-blog-media-dry-run \
+            --allow-host old.example.com \
+            --dry-run
+      - name: Ensure no real migration inputs are tracked
+        run: |
+          if git ls-files 'sites/wordpress-blog/migration/input/*' | grep -Ev '/\.gitkeep$' | grep -q .; then
+            echo 'Real migration input is tracked in the public repository.' >&2
+            exit 1
+          fi
