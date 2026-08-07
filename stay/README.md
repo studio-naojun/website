@@ -42,7 +42,7 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
 
-現在のcuration versionは `4`、確認対象は17件です。
+現在のcuration versionは `5`、確認対象は21件です。
 
 Hilton batches:
 
@@ -67,9 +67,18 @@ Marriott batch 1:
 - Fuji Marriott Hotel Lake Yamanaka
 - Courtyard by Marriott Hakuba
 
-Marriott第1batchでは、公式Marriott property pageから英語名・所在地・営業状態を確認し、公式Sourceが支える範囲でClub Lounge、Pool、Hot Spring、ParkingをField単位で補正しています。
+Marriott batch 2:
+
+- The Westin Tokyo
+- Yokohama Bay Sheraton Hotel & Towers
+- Tokyo Marriott Hotel
+- Osaka Marriott Miyako Hotel
+
+Marriott batchesでは、公式Marriott property pageから英語名・所在地・営業状態を確認し、公式Sourceが支える範囲でClub / Executive Lounge、Pool、Hot Spring、ParkingをField単位で補正しています。
 
 The Westin YokohamaではClub Lounge、室内プールと子どもの利用時間・料金、駐車料金を確認しています。Sheraton Grande Tokyo Bay Hotelでは室内 / 屋外プールと駐車料金を確認しました。Fuji Marriott Hotel Lake YamanakaとCourtyard by Marriott Hakubaでは、公式ページがHot Springを明示しているため温泉Fieldを`verified`として扱っています。
+
+The Westin TokyoではWestin Clubと12歳以下のCocktail Time制限、駐車情報を確認しています。Yokohama Bay Sheraton Hotel & TowersではSheraton Club Lounge、室内プール、駐車料金を確認。Tokyo Marriott HotelではExecutive Loungeと駐車料金、Osaka Marriott Miyako HotelではClub Lounge、小学生以下の17:30までの利用条件、駐車料金を確認しました。
 
 「予約上の子ども区分」と「無料添寝条件」は同義とみなしません。公式Sourceが添寝条件を直接支えない場合、旧表の添寝値を別の年齢情報だけで上書きしません。
 
@@ -115,7 +124,7 @@ Hotel recordは以下を基本単位とします。
 
 ## Validation
 
-`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version 4、17件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証するassertionを用意しています。
+`tests.html` のSmoke Testでは、旧表100件超のMigration、curation version 5、21件の公式確認Patch、Field-level verification / conflict、Revision / restore、曖昧値の保持を検証するassertionを用意しています。
 
 このtest harnessはBrowserで実行して確認する必要があります。コード追加だけをもってTest通過とは扱いません。
 
