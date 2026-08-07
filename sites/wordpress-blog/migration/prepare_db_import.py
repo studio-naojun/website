@@ -51,7 +51,10 @@ def main() -> int:
             writer.writerow({field: row.get(field, "") for field in COMMENT_FIELDS})
 
     report = json.loads((args.bundle / "migration-report.json").read_text(encoding="utf-8"))
+    manifest = json.loads((args.bundle / "public-manifest.json").read_text(encoding="utf-8"))
     counts = report["source_counts"]
+    imported_posts = sum(1 for row in manifest if row.get("post_type") == "post")
+    imported_pages = sum(1 for row in manifest if row.get("post_type") == "page")
     run = {
         "source_name": report["source"]["file_name"],
         "source_posts_total": counts["posts_total"],
@@ -59,8 +62,8 @@ def main() -> int:
         "source_attachments_total": counts["attachments_total"],
         "source_comments_total": counts["comments_total"],
         "source_approved_comments_total": counts["approved_comments_total"],
-        "imported_posts_total": report["output_counts"]["public_records_total"],
-        "imported_pages_total": 0,
+        "imported_posts_total": imported_posts,
+        "imported_pages_total": imported_pages,
         "imported_comments_total": report["output_counts"]["archived_comments_total"],
         "source_content_raw_chars": counts["content_raw_chars"],
         "source_content_normalized_plain_text_chars": counts["content_normalized_plain_text_chars"],
