@@ -20,11 +20,16 @@
 - WordPress旧テーブルHTML importer
 - Jun提供の旧WordPress表を `data/legacy-table.html` として保存
 - 初回アクセス時の旧表全件自動Migration
+- Repository管理の公式確認Patch layer
+- Field単位の `verified` / `conflicting` 表示
+- Adminの「公式確認あり」Audit Queue
 - JSON export
 - PostgreSQL / Supabase向けSchema
 - Browser smoke tests
 
-## 初期データについて
+## Data provenance
+
+### 1. Legacy source
 
 `data/legacy-table.html` は、Junが共有した旧WordPress表をMigration inputとして保存したものです。値は旧表由来であり、2026年時点の最新情報として再検証済みではありません。
 
@@ -32,13 +37,25 @@
 
 Importerは空欄や「いける？」「追加料金？」等を推測で補完せず、`needs_review` として保持します。英語ホテル名も推測生成せず、旧表に英語表記が明示されている場合だけ抽出します。それ以外は `English name pending` として残します。
 
-旧表に「開業予定」と記録されているホテルも、現時点で開業済みと推測して書き換えません。現在の公式状態は次工程でSource確認します。
+### 2. Curated official verification
+
+`data/verified-patches.js` は、公式Sourceで確認したFieldだけを旧表由来recordへ重ねる補正layerです。旧表自体は書き換えず、`verifications` にField名・status・Source・確認日・noteを残します。
+
+最初の確認batchでは、次の5件を対象にしています。
+
+- Waldorf Astoria Osaka
+- Canopy by Hilton Okinawa Miyako Island Resort
+- Waldorf Astoria Tokyo Nihonbashi
+- Conrad Yokohama
+- Conrad Nagoya
+
+Source同士の状態が一致しない場合は、都合のよい値を選ばず `conflicting` として残します。Conrad Nagoyaは、公式Hiltonで2026-07-31以降の予約を受け付ける一方、検索一覧が `Coming Soon` 表示のため、営業開始状態を `needs_review` / `conflicting` として保持しています。
 
 ## 重要: Admin Previewの制約
 
 現在の管理画面はGitHub Pagesで安全に試せるよう、変更とRevisionを `localStorage` に保存します。そのため管理変更は同じブラウザにだけ反映され、他の利用者やリポジトリの公開データは更新しません。
 
-「旧表から再読み込み」は、そのブラウザ内の編集・Revisionを削除して `data/legacy-table.html` からdatasetを再構築します。
+「旧表＋公式確認へ戻す」は、そのブラウザ内の編集・Revisionを削除して `data/legacy-table.html` からdatasetを再構築し、`data/verified-patches.js` を重ね直します。
 
 本番v1として公開更新を可能にする場合は、次のどちらかへ移行します。
 
@@ -51,14 +68,15 @@ Importerは空欄や「いける？」「追加料金？」等を推測で補完
 
 Hotel recordは以下を基本単位とします。
 
-- identity: `id`, `name_ja`, `name_en`, `chain`, `brand`, `portfolio`, `status`
+- identity: `id`, `name_ja`, `name_en`, `chain`, `brand`, `portfolio`, `status`, `opening_note`, `official_url`
 - location: `region`, `prefecture`, `city`
 - child: `raw`, `allowed`, `rule_type`, `max_age`
 - award: `raw`
 - capacity: `raw`, `value`
 - facilities: lounge / breakfast / onsen / pool / parking
-- source: `label`, `url`, `last_checked`
-- quality: `verified`, `unverified`, `needs_review`, `missing`, `conflicting`
+- legacy source: `source.label`, `source.url`, `source.last_checked`
+- official field verification: `verifications[field_path]`
+- record quality: `verified`, `unverified`, `needs_review`, `missing`, `conflicting`
 
 原文値は `raw` に保存し、構造化によって原文の意味を失わないようにします。
 
@@ -66,12 +84,14 @@ Hotel recordは以下を基本単位とします。
 
 編集時は変更前Hotel snapshotをRevisionとして保存します。Rollbackは履歴を書き換えず、選択した過去snapshotを現在値へ複製し、Rollback直前の値も新しいRevisionとして保存します。
 
+公式確認PatchはRepository側のcuration layerとしてVersion管理します。ブラウザにlocal Revisionが存在する場合、未適用のcurationを自動で上書き適用しない方針です。
+
 ## 次段階
 
 - 全ホテルの日本語正式名 / 英語正式名の確認
 - 旧表の未確認・欠落項目の棚卸し
-- Hilton / Marriott等の公式Sourceによる現況再検証
+- Hilton / Marriott / SLH等の公式Sourceによる現況再検証
+- 公式確認Patchのbatch拡大
 - 本番DB / Authの選定と導入
-- 項目単位Source / verification UI
 - `stay.naojun.jp` への独立Deployment
 - 月次Change Candidate検出（v1.1）
