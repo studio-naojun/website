@@ -11,11 +11,11 @@
   <header class="atlas-header"><a class="brand" href="./">← Stay Atlas</a><nav><a href="../">Studio NaoJun</a></nav></header>
   <main class="admin-shell">
     <div class="admin-head"><div><p class="eyebrow">LOCAL ADMIN PREVIEW</p><h1>Stay Atlas Admin</h1></div><span id="adminCount" class="pill">0 hotels</span></div>
-    <div class="admin-note">このv1管理画面の変更・履歴は、このブラウザのlocalStorageにのみ保存されます。公開データを直接更新する本番管理機能ではありません。Source of Truthを壊さずUIとRevision設計を検証するためのPreviewです。</div>
+    <div class="admin-note">このv1管理画面の変更・履歴は、このブラウザのlocalStorageにのみ保存されます。初回表示では、Repositoryに保存したJun提供の旧WordPress表を全件読み込みます。公開データを直接更新する本番管理機能ではありません。</div>
 
     <div class="admin-toolbar">
       <button class="secondary-btn" id="exportBtn" type="button">JSONを書き出す</button>
-      <button class="danger-btn" id="resetBtn" type="button">Seedへ戻す</button>
+      <button class="danger-btn" id="resetBtn" type="button">旧表から再読み込み</button>
     </div>
 
     <div class="admin-grid">
@@ -59,8 +59,8 @@
 
     <section class="import-panel">
       <p class="eyebrow">LEGACY IMPORTER</p>
-      <h2>WordPressテーブルを取り込む</h2>
-      <p class="muted">旧記事の <code>&lt;table&gt;</code> を含むHTMLを貼り付けます。空欄や「いける？」「追加料金？」などは推測で補わず、要確認として保持します。英語名は自動推測しません。</p>
+      <h2>別のWordPressテーブルを取り込む</h2>
+      <p class="muted">通常はRepositoryに保存済みの旧表が自動で読み込まれます。別版を検証したい場合だけ、ここへ <code>&lt;table&gt;</code> を含むHTMLを貼り付けます。空欄や「いける？」「追加料金？」などは推測で補わず、要確認として保持します。英語名は旧表に明記された場合だけ抽出します。</p>
       <textarea id="legacyHtml" placeholder="<!-- wp:table ... --> ..."></textarea>
       <div class="admin-actions"><button class="primary-btn" id="importBtn" type="button">HTMLから全件取り込む</button></div>
       <p id="importResult" class="muted"></p>
