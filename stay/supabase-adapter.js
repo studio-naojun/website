@@ -1,12 +1,25 @@
 (function(){
   let client=null;
+  let publicClient=null;
   const config=()=>window.STAY_ATLAS_SUPABASE_CONFIG||{};
   function configured(){const c=config();return c.enabled===true&&/^https:\/\//.test(c.url||'')&&Boolean(c.publishableKey);}
-  function getClient(){
+  function assertClientAvailable(){
     if(!configured())throw new Error('Supabase is not configured');
     if(!window.supabase?.createClient)throw new Error('supabase-js is not loaded');
+  }
+  function getClient(){
+    assertClientAvailable();
     if(!client){const c=config();client=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});}
     return client;
+  }
+  function getPublicClient(){
+    assertClientAvailable();
+    if(!publicClient){
+      const c=config();
+      const memoryStorage={getItem(){return null;},setItem(){},removeItem(){}};
+      publicClient=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storage:memoryStorage,storageKey:'stay-atlas-public-anon'}});
+    }
+    return publicClient;
   }
   function dateOnly(value){return value?String(value).slice(0,10):null;}
   function verificationMap(rows){
@@ -90,11 +103,12 @@
   }
   async function signOut(){const {error}=await getClient().auth.signOut();if(error)throw error;}
   async function loadHotels({admin=false}={}){
-    let hotelQuery=getClient().from('hotels').select('*');
+    const db=admin?getClient():getPublicClient();
+    let hotelQuery=db.from('hotels').select('*');
     if(!admin)hotelQuery=hotelQuery.in('status',['open','planned']);
     const {data:hotelRows,error:hotelError}=await hotelQuery.order('prefecture',{ascending:true}).order('name_ja',{ascending:true});
     if(hotelError)throw hotelError;
-    const {data:checks,error:checkError}=await getClient().from('field_verifications').select('*').order('checked_at',{ascending:false});
+    const {data:checks,error:checkError}=await db.from('field_verifications').select('*').order('checked_at',{ascending:false});
     if(checkError)throw checkError;
     const grouped=verificationMap(checks);
     return{schemaVersion:1,datasetVersion:3,curationVersion:null,source:'supabase',hotels:(hotelRows||[]).map(r=>rowToHotel(r,grouped[r.id]||{}))};
@@ -117,5 +131,5 @@
     return row?rowToHotel(row,{}):null;
   }
   function onAuthStateChange(callback){if(!configured())return{unsubscribe(){}};const{data}=getClient().auth.onAuthStateChange((_event,session)=>callback(session?.user||null));return data.subscription;}
-  window.StayAtlasSupabase={configured,getClient,rowToHotel,hotelToRecord,authState,signIn,signOut,loadHotels,loadRevisions,updateHotel,restoreRevision,onAuthStateChange};
+  window.StayAtlasSupabase={configured,getClient,getPublicClient,rowToHotel,hotelToRecord,authState,signIn,signOut,loadHotels,loadRevisions,updateHotel,restoreRevision,onAuthStateChange};
 })();
