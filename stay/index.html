@@ -6,6 +6,7 @@
   <meta name="description" content="NaoJun Stay Atlas。子どもと泊まるホテルを、地図とデータから探せる家族旅行向けホテルデータベース。">
   <title>NaoJun Stay Atlas | Studio NaoJun</title>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./verification.css">
 </head>
 <body>
   <header class="atlas-header">
@@ -30,8 +31,8 @@
     <section class="about-section" aria-label="preview notice">
       <p class="eyebrow">V1 PREVIEW / DATA NOTICE</p>
       <div class="about-grid">
-        <p>現在のデータは旧記事を初期資料として移行中です。宿泊条件・料金・特典は変更されるため、予約前に各ホテルの公式情報を確認してください。</p>
-        <p>未確認・要確認の情報は状態を明示し、推測で最新情報として扱わない方針です。</p>
+        <p>現在のデータは旧記事を初期資料として移行中です。確認できた項目から公式Sourceによる補正を重ねています。宿泊条件・料金・特典は変更されるため、予約前に各ホテルの公式情報を確認してください。</p>
+        <p>未確認・要確認・Source間で状態が一致しない情報は区別して表示し、推測で最新情報として扱わない方針です。</p>
       </div>
     </section>
 
@@ -87,6 +88,6 @@
 
   <dialog id="hotelDialog" class="hotel-dialog"><button class="dialog-close" type="button" aria-label="閉じる">×</button><div id="hotelDialogContent"></div></dialog>
   <footer class="atlas-footer"><span>© <span id="year"></span> Studio NaoJun</span><span>NaoJun Stay Atlas / v1 Preview</span></footer>
-  <script src="./data/seed.js"></script><script src="./core.js"></script><script src="./app.js"></script>
+  <script src="./data/seed.js"></script><script src="./data/verified-patches.js"></script><script src="./core.js"></script><script src="./app.js"></script>
 </body>
 </html>
