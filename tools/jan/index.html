@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja" data-jan-api="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JANコードを入力するか、商品のバーコードをカメラで読み取って、在庫と販売価格を比較するStudio NaoJunの検索ツールです。">
+  <title>JANコード在庫検索 | Studio NaoJun</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/jan-search.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../../">Studio NaoJun</a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="../../about/">About</a>
+        <a href="../../works/">Works</a>
+        <a href="../../contact/">Contact</a>
+        <a href="https://studio-naojun.stores.jp/" target="_blank" rel="noopener noreferrer">Store</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="jan-hero">
+      <div class="jan-container">
+        <div class="eyebrow">Tool / Free</div>
+        <h1>JANコード在庫検索</h1>
+        <p class="jan-lead">JANコードを入れる。あるいは、バーコードを読む。<br>在庫のある販売店と価格を、まとめて比べます。</p>
+
+        <form class="jan-search-form" id="jan-search-form" novalidate>
+          <label class="jan-label" for="jan-code">JANコード</label>
+          <div class="jan-input-row">
+            <input
+              class="jan-input"
+              id="jan-code"
+              name="jan"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="13"
+              placeholder="例：4901234567894"
+              aria-describedby="jan-help jan-error">
+            <button class="jan-scan-button" id="scan-button" type="button" aria-haspopup="dialog">カメラで読む</button>
+            <button class="jan-submit-button" type="submit">検索</button>
+          </div>
+          <p class="jan-help" id="jan-help">8桁または13桁のJANコードに対応しています。</p>
+          <p class="jan-error" id="jan-error" role="alert" hidden></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="jan-results-section" id="results-section" aria-live="polite">
+      <div class="jan-container">
+        <div class="jan-results-head">
+          <div>
+            <div class="eyebrow">Results</div>
+            <h2>検索結果</h2>
+          </div>
+          <label class="jan-sort-label" for="sort-results">
+            並び順
+            <select class="jan-sort" id="sort-results">
+              <option value="price-asc">価格が安い順</option>
+              <option value="price-desc">価格が高い順</option>
+              <option value="store">店舗名順</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="jan-status" id="search-status">JANコードを入力して検索してください。</div>
+        <div class="jan-product" id="product-summary" hidden></div>
+        <div class="jan-results" id="jan-results"></div>
+      </div>
+    </section>
+
+    <section class="jan-about-section">
+      <div class="jan-container jan-about-grid">
+        <div>
+          <div class="eyebrow">Simple by design</div>
+          <h2>探すためだけの、道具。</h2>
+        </div>
+        <div class="jan-about-copy">
+          <p>商品名を考えて入力したり、販売店を一つずつ回ったりする手間を減らすためのツールです。</p>
+          <p>検索の起点はJANコードだけ。必要な情報を、必要な順番で確認できることを優先しています。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="jan-scanner" id="scanner-dialog" role="dialog" aria-modal="true" aria-labelledby="scanner-title" hidden>
+    <div class="jan-scanner-panel">
+      <div class="jan-scanner-head">
+        <div>
+          <div class="eyebrow">Barcode scanner</div>
+          <h2 id="scanner-title">バーコードを読み取る</h2>
+        </div>
+        <button class="jan-close-button" id="scanner-close" type="button" aria-label="カメラを閉じる">閉じる</button>
+      </div>
+      <div class="jan-video-wrap">
+        <video id="scanner-video" playsinline muted></video>
+        <div class="jan-scan-guide" aria-hidden="true"></div>
+      </div>
+      <p class="jan-scanner-status" id="scanner-status">カメラを起動しています…</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span data-year></span> Studio NaoJun</span>
+      <a href="../../works/">Works</a>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/@zxing/browser@0.2.0"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script src="../../assets/js/jan-search.js"></script>
+</body>
+</html>
