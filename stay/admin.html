@@ -18,6 +18,14 @@
       <button class="danger-btn" id="resetBtn" type="button">旧表から再読み込み</button>
     </div>
 
+    <div class="admin-toolbar" aria-label="Data audit filters">
+      <button class="secondary-btn audit-filter" data-audit="" type="button" aria-pressed="true">全件 <span id="auditAll">0</span></button>
+      <button class="secondary-btn audit-filter" data-audit="needs_review" type="button" aria-pressed="false">要確認 <span id="auditReview">0</span></button>
+      <button class="secondary-btn audit-filter" data-audit="english" type="button" aria-pressed="false">英語名未確認 <span id="auditEnglish">0</span></button>
+      <button class="secondary-btn audit-filter" data-audit="location" type="button" aria-pressed="false">エリア不足 <span id="auditLocation">0</span></button>
+      <button class="secondary-btn audit-filter" data-audit="planned" type="button" aria-pressed="false">開業予定 <span id="auditPlanned">0</span></button>
+    </div>
+
     <div class="admin-grid">
       <aside class="admin-list">
         <input id="adminSearch" type="search" placeholder="ホテルを検索">
