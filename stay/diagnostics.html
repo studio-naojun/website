@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Stay Atlas Public Diagnostics</title>
+  <style>
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:24px;line-height:1.6;background:#f7f7f7;color:#111}
+    main{max-width:900px;margin:auto;background:#fff;padding:24px;border-radius:12px}
+    pre{white-space:pre-wrap;word-break:break-word;background:#111;color:#fff;padding:16px;border-radius:8px;overflow:auto}
+    .ok{color:#087f23}.bad{color:#b42318}
+  </style>
+</head>
+<body>
+<main>
+  <h1>Stay Atlas Public Diagnostics</h1>
+  <p>公開ブラウザからSupabase Data APIへ到達できるかを確認します。Secret情報やPasswordは表示しません。</p>
+  <p id="state">確認中…</p>
+  <pre id="out">starting…</pre>
+</main>
+<script src="./supabase-config.js?v=20260807-debug1"></script>
+<script>
+(async()=>{
+  const state=document.getElementById('state');
+  const out=document.getElementById('out');
+  const report={
+    page:location.href,
+    userAgent:navigator.userAgent,
+    configured:false,
+    supabaseLibrary:false,
+    authenticated:false,
+    isAdmin:false,
+    hotels:null,
+    fieldVerifications:null,
+    error:null
+  };
+  const render=()=>{out.textContent=JSON.stringify(report,null,2)};
+  const summarizeError=e=>({name:e?.name||'',message:e?.message||String(e),code:e?.code||'',details:e?.details||'',hint:e?.hint||'',status:e?.status||''});
+  try{
+    const c=window.STAY_ATLAS_SUPABASE_CONFIG||{};
+    report.configured=c.enabled===true&&/^https:\/\//.test(c.url||'')&&Boolean(c.publishableKey);
+    render();
+    if(!report.configured)throw new Error('Stay Atlas Supabase config is not enabled');
+
+    await new Promise((resolve,reject)=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0';
+      s.onload=resolve;
+      s.onerror=()=>reject(new Error('Failed to load supabase-js from jsDelivr'));
+      document.head.appendChild(s);
+    });
+    report.supabaseLibrary=Boolean(window.supabase?.createClient);
+    render();
+    if(!report.supabaseLibrary)throw new Error('supabase-js loaded but createClient is unavailable');
+
+    const client=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+    const session=await client.auth.getSession();
+    if(session.error)throw session.error;
+    report.authenticated=Boolean(session.data?.session?.user);
+    report.isAdmin=session.data?.session?.user?.app_metadata?.stay_atlas_role==='admin';
+    render();
+
+    const hotels=await client.from('hotels').select('id,status').in('status',['open','planned']);
+    if(hotels.error)throw hotels.error;
+    const rows=hotels.data||[];
+    report.hotels={total:rows.length,open:rows.filter(r=>r.status==='open').length,planned:rows.filter(r=>r.status==='planned').length};
+    render();
+
+    const checks=await client.from('field_verifications').select('id,hotel_id');
+    if(checks.error)throw checks.error;
+    report.fieldVerifications={total:(checks.data||[]).length};
+    state.textContent='LIVE DB 接続成功';
+    state.className='ok';
+    render();
+  }catch(error){
+    report.error=summarizeError(error);
+    state.textContent='LIVE DB 接続エラー';
+    state.className='bad';
+    render();
+  }
+})();
+</script>
+</body>
+</html>
