@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Stay Atlas Admin Preview | Studio NaoJun</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="atlas-header"><a class="brand" href="./">← Stay Atlas</a><nav><a href="../">Studio NaoJun</a></nav></header>
+  <main class="admin-shell">
+    <div class="admin-head"><div><p class="eyebrow">LOCAL ADMIN PREVIEW</p><h1>Stay Atlas Admin</h1></div><span id="adminCount" class="pill">0 hotels</span></div>
+    <div class="admin-note">このv1管理画面の変更・履歴は、このブラウザのlocalStorageにのみ保存されます。公開データを直接更新する本番管理機能ではありません。Source of Truthを壊さずUIとRevision設計を検証するためのPreviewです。</div>
+
+    <div class="admin-toolbar">
+      <button class="secondary-btn" id="exportBtn" type="button">JSONを書き出す</button>
+      <button class="danger-btn" id="resetBtn" type="button">Seedへ戻す</button>
+    </div>
+
+    <div class="admin-grid">
+      <aside class="admin-list">
+        <input id="adminSearch" type="search" placeholder="ホテルを検索">
+        <div class="admin-records" id="adminRecords"></div>
+      </aside>
+      <section>
+        <div class="admin-editor">
+          <p class="eyebrow">RECORD EDITOR</p>
+          <form id="hotelForm" class="admin-form">
+            <input type="hidden" id="f_id">
+            <label>ホテル名（日本語）<input id="f_name_ja"></label>
+            <label>Hotel name (English)<input id="f_name_en"></label>
+            <label>チェーン<select id="f_chain"><option>Marriott Bonvoy</option><option>Hilton Honors</option></select></label>
+            <label>ブランド<input id="f_brand"></label>
+            <label>都道府県<input id="f_prefecture"></label>
+            <label>市区町村<input id="f_city"></label>
+            <label>添寝<input id="f_child"></label>
+            <label>定員<input id="f_capacity"></label>
+            <label>ポイント・宿泊条件<input id="f_award"></label>
+            <label>ラウンジ<input id="f_lounge"></label>
+            <label>朝食<input id="f_breakfast"></label>
+            <label>温泉<input id="f_onsen"></label>
+            <label>プール<input id="f_pool"></label>
+            <label>駐車場<input id="f_parking"></label>
+            <label>品質<select id="f_quality"><option value="verified">確認済</option><option value="unverified">未検証</option><option value="needs_review">要確認</option><option value="missing">不足</option><option value="conflicting">競合</option></select></label>
+            <label>最終確認日<input id="f_checked" type="date"></label>
+            <label class="full">Source URL<input id="f_source_url" type="url"></label>
+            <label class="full">変更メモ<textarea id="f_note" rows="3" placeholder="変更理由・確認内容"></textarea></label>
+          </form>
+          <div class="admin-actions"><button class="primary-btn" id="saveBtn" type="button">変更を保存</button></div>
+        </div>
+
+        <div class="revision-panel" style="margin-top:18px">
+          <p class="eyebrow">REVISION HISTORY</p>
+          <div id="revisionList" class="revision-list"><p class="muted">ホテルを選択してください。</p></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="import-panel">
+      <p class="eyebrow">LEGACY IMPORTER</p>
+      <h2>WordPressテーブルを取り込む</h2>
+      <p class="muted">旧記事の <code>&lt;table&gt;</code> を含むHTMLを貼り付けます。空欄や「いける？」「追加料金？」などは推測で補わず、要確認として保持します。英語名は自動推測しません。</p>
+      <textarea id="legacyHtml" placeholder="<!-- wp:table ... --> ..."></textarea>
+      <div class="admin-actions"><button class="primary-btn" id="importBtn" type="button">HTMLから全件取り込む</button></div>
+      <p id="importResult" class="muted"></p>
+    </section>
+  </main>
+  <script src="./data/seed.js"></script>
+  <script src="./core.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>
