@@ -90,8 +90,9 @@
   }
   async function signOut(){const {error}=await getClient().auth.signOut();if(error)throw error;}
   async function loadHotels({admin=false}={}){
-    const relation=admin?'hotels':'public_hotels';
-    const {data:hotelRows,error:hotelError}=await getClient().from(relation).select('*').order('prefecture',{ascending:true}).order('name_ja',{ascending:true});
+    let hotelQuery=getClient().from('hotels').select('*');
+    if(!admin)hotelQuery=hotelQuery.in('status',['open','planned']);
+    const {data:hotelRows,error:hotelError}=await hotelQuery.order('prefecture',{ascending:true}).order('name_ja',{ascending:true});
     if(hotelError)throw hotelError;
     const {data:checks,error:checkError}=await getClient().from('field_verifications').select('*').order('checked_at',{ascending:false});
     if(checkError)throw checkError;
