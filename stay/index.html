@@ -10,10 +10,7 @@
 <body>
   <header class="atlas-header">
     <a class="brand" href="../">Studio NaoJun</a>
-    <nav aria-label="Stay Atlas navigation">
-      <a href="#explore">Explore</a>
-      <a href="#about">About</a>
-    </nav>
+    <nav aria-label="Stay Atlas navigation"><a href="#explore">Explore</a><a href="#about">About</a></nav>
   </header>
 
   <main>
@@ -26,143 +23,70 @@
       <div class="hero-meta" aria-label="data status">
         <div><span id="hotelCount">0</span><small>HOTELS</small></div>
         <div><span id="prefectureCount">0</span><small>PREFECTURES</small></div>
-        <div><span>v1</span><small>PREVIEW</small></div>
+        <div><span id="reviewCount">0</span><small>NEEDS REVIEW</small></div>
+      </div>
+    </section>
+
+    <section class="about-section" aria-label="preview notice">
+      <p class="eyebrow">V1 PREVIEW / DATA NOTICE</p>
+      <div class="about-grid">
+        <p>現在のデータは旧記事を初期資料として移行中です。宿泊条件・料金・特典は変更されるため、予約前に各ホテルの公式情報を確認してください。</p>
+        <p>未確認・要確認の情報は状態を明示し、推測で最新情報として扱わない方針です。</p>
       </div>
     </section>
 
     <section class="map-section" id="explore">
       <div class="section-heading">
-        <div>
-          <p class="eyebrow">EXPLORE BY REGION</p>
-          <h2>地図から探す</h2>
-        </div>
+        <div><p class="eyebrow">EXPLORE BY REGION</p><h2>地図から探す</h2></div>
         <button class="text-button" id="clearRegion" type="button">地域選択を解除</button>
       </div>
-
       <div class="map-panel">
         <svg class="japan-map" viewBox="0 0 760 420" role="img" aria-labelledby="mapTitle mapDesc">
-          <title id="mapTitle">日本地域マップ</title>
-          <desc id="mapDesc">地域を選択するとホテル一覧を絞り込みます。</desc>
-          <g class="region" data-region="北海道" tabindex="0" role="button" aria-label="北海道">
-            <path d="M590 28 L684 28 L715 56 L685 96 L610 91 L575 61 Z"/><text x="645" y="66">北海道</text>
-          </g>
-          <g class="region" data-region="東北" tabindex="0" role="button" aria-label="東北">
-            <path d="M540 108 L610 102 L625 176 L576 205 L525 162 Z"/><text x="575" y="151">東北</text>
-          </g>
-          <g class="region" data-region="関東" tabindex="0" role="button" aria-label="関東">
-            <path d="M525 205 L600 190 L627 242 L580 275 L515 252 Z"/><text x="570" y="235">関東</text>
-          </g>
-          <g class="region" data-region="中部" tabindex="0" role="button" aria-label="中部">
-            <path d="M418 182 L520 182 L532 252 L472 284 L397 248 Z"/><text x="467" y="227">中部</text>
-          </g>
-          <g class="region" data-region="近畿" tabindex="0" role="button" aria-label="近畿">
-            <path d="M332 224 L414 205 L430 280 L370 312 L318 276 Z"/><text x="370" y="258">近畿</text>
-          </g>
-          <g class="region" data-region="中国" tabindex="0" role="button" aria-label="中国">
-            <path d="M215 226 L326 224 L316 282 L225 294 L190 261 Z"/><text x="260" y="260">中国</text>
-          </g>
-          <g class="region" data-region="四国" tabindex="0" role="button" aria-label="四国">
-            <path d="M244 306 L330 296 L346 331 L292 350 L230 334 Z"/><text x="290" y="327">四国</text>
-          </g>
-          <g class="region" data-region="九州・沖縄" tabindex="0" role="button" aria-label="九州・沖縄">
-            <path d="M120 264 L193 260 L208 330 L166 382 L112 346 Z"/><circle cx="62" cy="375" r="18"/><text x="160" y="310">九州</text><text x="28" y="410">沖縄</text>
-          </g>
+          <title id="mapTitle">日本地域マップ</title><desc id="mapDesc">地域を選択するとホテル一覧を絞り込みます。</desc>
+          <g class="region" data-region="北海道" tabindex="0" role="button"><path d="M590 28 L684 28 L715 56 L685 96 L610 91 L575 61 Z"/><text x="645" y="60">北海道</text><text class="region-count" data-count-region="北海道" x="645" y="79">0</text></g>
+          <g class="region" data-region="東北" tabindex="0" role="button"><path d="M540 108 L610 102 L625 176 L576 205 L525 162 Z"/><text x="575" y="145">東北</text><text class="region-count" data-count-region="東北" x="575" y="164">0</text></g>
+          <g class="region" data-region="関東" tabindex="0" role="button"><path d="M525 205 L600 190 L627 242 L580 275 L515 252 Z"/><text x="570" y="229">関東</text><text class="region-count" data-count-region="関東" x="570" y="248">0</text></g>
+          <g class="region" data-region="中部" tabindex="0" role="button"><path d="M418 182 L520 182 L532 252 L472 284 L397 248 Z"/><text x="467" y="221">中部</text><text class="region-count" data-count-region="中部" x="467" y="240">0</text></g>
+          <g class="region" data-region="近畿" tabindex="0" role="button"><path d="M332 224 L414 205 L430 280 L370 312 L318 276 Z"/><text x="370" y="252">近畿</text><text class="region-count" data-count-region="近畿" x="370" y="271">0</text></g>
+          <g class="region" data-region="中国" tabindex="0" role="button"><path d="M215 226 L326 224 L316 282 L225 294 L190 261 Z"/><text x="260" y="254">中国</text><text class="region-count" data-count-region="中国" x="260" y="273">0</text></g>
+          <g class="region" data-region="四国" tabindex="0" role="button"><path d="M244 306 L330 296 L346 331 L292 350 L230 334 Z"/><text x="290" y="321">四国</text><text class="region-count" data-count-region="四国" x="290" y="340">0</text></g>
+          <g class="region" data-region="九州・沖縄" tabindex="0" role="button"><path d="M120 264 L193 260 L208 330 L166 382 L112 346 Z"/><circle cx="62" cy="375" r="18"/><text x="160" y="304">九州</text><text class="region-count" data-count-region="九州・沖縄" x="160" y="323">0</text><text x="28" y="410">沖縄</text></g>
         </svg>
-        <div class="map-summary">
-          <p>選択中</p>
-          <strong id="selectedRegionLabel">全国</strong>
-          <span id="selectedRegionCount">0 hotels</span>
-        </div>
+        <div class="map-summary"><p>選択中</p><strong id="selectedRegionLabel">全国</strong><span id="selectedRegionCount">0 hotels</span></div>
       </div>
     </section>
 
     <section class="database-section">
       <div class="section-heading compact">
-        <div>
-          <p class="eyebrow">HOTEL DATABASE</p>
-          <h2>ホテルを比較する</h2>
-        </div>
-        <div class="view-switch" aria-label="表示切替">
-          <button type="button" class="is-active" data-view="table">Table</button>
-          <button type="button" data-view="cards">Cards</button>
-        </div>
+        <div><p class="eyebrow">HOTEL DATABASE</p><h2>ホテルを比較する</h2></div>
+        <div class="view-switch" aria-label="表示切替"><button type="button" class="is-active" data-view="table">Table</button><button type="button" data-view="cards">Cards</button></div>
       </div>
 
       <div class="toolbar">
-        <label class="search-box">
-          <span>検索</span>
-          <input id="searchInput" type="search" placeholder="ホテル名・都道府県・ブランド">
-        </label>
-        <label>チェーン
-          <select id="chainFilter"><option value="">すべて</option></select>
-        </label>
-        <label>都道府県
-          <select id="prefectureFilter"><option value="">すべて</option></select>
-        </label>
-        <label>定員
-          <select id="capacityFilter">
-            <option value="">指定なし</option>
-            <option value="3">3名以上</option>
-            <option value="4">4名以上</option>
-          </select>
-        </label>
-        <label>設備
-          <select id="facilityFilter">
-            <option value="">指定なし</option>
-            <option value="lounge">ラウンジ</option>
-            <option value="breakfast">朝食情報あり</option>
-            <option value="onsen">温泉</option>
-            <option value="pool">プール</option>
-            <option value="parking">駐車場情報あり</option>
-          </select>
-        </label>
-        <label>並び順
-          <select id="sortSelect">
-            <option value="prefecture">都道府県</option>
-            <option value="name">ホテル名</option>
-            <option value="capacity_desc">定員が多い順</option>
-            <option value="verified_desc">確認日が新しい順</option>
-          </select>
-        </label>
+        <label class="search-box"><span>検索</span><input id="searchInput" type="search" placeholder="ホテル名・都道府県・ブランド"></label>
+        <label>チェーン<select id="chainFilter"><option value="">すべて</option></select></label>
+        <label>都道府県<select id="prefectureFilter"><option value="">すべて</option></select></label>
+        <label>定員<select id="capacityFilter"><option value="">指定なし</option><option value="3">3名以上</option><option value="4">4名以上</option></select></label>
+        <label>設備<select id="facilityFilter"><option value="">指定なし</option><option value="lounge">ラウンジ</option><option value="breakfast">朝食情報あり</option><option value="onsen">温泉</option><option value="pool">プール</option><option value="parking">駐車場情報あり</option></select></label>
+        <label>確認状態<select id="qualityFilter"><option value="">すべて</option><option value="verified">確認済</option><option value="unverified">未検証</option><option value="needs_review">要確認</option><option value="missing">不足</option><option value="conflicting">競合</option></select></label>
+        <label>営業状態<select id="statusFilter"><option value="">すべて</option><option value="open">営業中</option><option value="planned">開業予定</option></select></label>
+        <label>並び順<select id="sortSelect"><option value="prefecture">都道府県</option><option value="name">ホテル名</option><option value="capacity_desc">定員が多い順</option><option value="verified_desc">確認日が新しい順</option></select></label>
       </div>
+      <div class="admin-toolbar"><label><input id="child12Filter" type="checkbox"> 12歳以上まで添寝可能と確認できるホテル</label><button class="secondary-btn" id="clearFilters" type="button">条件をすべて解除</button></div>
 
       <div class="result-line"><strong id="resultCount">0</strong> 件を表示</div>
-
-      <div class="table-wrap" id="tableView">
-        <table class="hotel-table">
-          <thead>
-            <tr>
-              <th>ホテル</th><th>エリア</th><th>添寝</th><th>定員</th><th>ラウンジ</th><th>朝食</th><th>温泉</th><th>プール</th><th>駐車場</th><th>確認</th>
-            </tr>
-          </thead>
-          <tbody id="hotelTableBody"></tbody>
-        </table>
-      </div>
+      <div class="table-wrap" id="tableView"><table class="hotel-table"><thead><tr><th>ホテル</th><th>エリア</th><th>添寝</th><th>定員</th><th>ラウンジ</th><th>朝食</th><th>温泉</th><th>プール</th><th>駐車場</th><th>確認</th></tr></thead><tbody id="hotelTableBody"></tbody></table></div>
       <div class="card-grid is-hidden" id="cardView"></div>
     </section>
 
     <section class="about-section" id="about">
-      <p class="eyebrow">ABOUT THIS WORK</p>
-      <h2>旅行情報を、使い捨ての記事ではなく<br>更新できるデータとして残す。</h2>
-      <div class="about-grid">
-        <p>Stay Atlasは、家族旅行で比較したいホテル情報を構造化し、検索・フィルタ・履歴管理できる形へ再編集するStudio NaoJunのデータ作品です。</p>
-        <p>情報は変わります。公開値には確認状態とSourceを持たせ、未確認情報を確定事項として扱わない設計を前提にしています。</p>
-      </div>
+      <p class="eyebrow">ABOUT THIS WORK</p><h2>旅行情報を、使い捨ての記事ではなく<br>更新できるデータとして残す。</h2>
+      <div class="about-grid"><p>Stay Atlasは、家族旅行で比較したいホテル情報を構造化し、検索・フィルタ・履歴管理できる形へ再編集するStudio NaoJunのデータ作品です。</p><p>情報は変わります。公開値には確認状態とSourceを持たせ、未確認情報を確定事項として扱わない設計を前提にしています。</p></div>
     </section>
   </main>
 
-  <dialog id="hotelDialog" class="hotel-dialog">
-    <button class="dialog-close" type="button" aria-label="閉じる">×</button>
-    <div id="hotelDialogContent"></div>
-  </dialog>
-
-  <footer class="atlas-footer">
-    <span>© <span id="year"></span> Studio NaoJun</span>
-    <span>NaoJun Stay Atlas / v1 Preview</span>
-  </footer>
-
-  <script src="./data/seed.js"></script>
-  <script src="./core.js"></script>
-  <script src="./app.js"></script>
+  <dialog id="hotelDialog" class="hotel-dialog"><button class="dialog-close" type="button" aria-label="閉じる">×</button><div id="hotelDialogContent"></div></dialog>
+  <footer class="atlas-footer"><span>© <span id="year"></span> Studio NaoJun</span><span>NaoJun Stay Atlas / v1 Preview</span></footer>
+  <script src="./data/seed.js"></script><script src="./core.js"></script><script src="./app.js"></script>
 </body>
 </html>
