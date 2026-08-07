@@ -5,6 +5,17 @@ const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext();
 const browserErrors = [];
 
+// Keep browser smoke deterministic and independent of the production Supabase project.
+// stay/supabase-config.js preserves an existing global, so this init script forces the
+// public page and Live Admin into the bundled/offline path before page scripts execute.
+await context.addInitScript(() => {
+  window.STAY_ATLAS_SUPABASE_CONFIG = {
+    enabled: false,
+    url: '',
+    publishableKey: ''
+  };
+});
+
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -65,9 +76,9 @@ try {
     await page.waitForFunction(() => (document.querySelector('#liveStatus')?.textContent || '') !== 'checking');
     const status = await page.locator('#liveStatus').innerText();
     const note = await page.locator('#connectionNote').innerText();
-    assert(status === 'NOT CONFIGURED', `Expected unconfigured Live Admin in CI, got ${status}`);
+    assert(status === 'NOT CONFIGURED', `Expected CI Supabase override to keep Live Admin unconfigured, got ${status}`);
     assert(note.includes('Publishable Key'), 'Live Admin must explain publishable-key configuration');
-    assert(await page.locator('#liveWorkspace').isHidden(), 'Live workspace must stay hidden without Supabase configuration');
+    assert(await page.locator('#liveWorkspace').isHidden(), 'Live workspace must stay hidden with the CI Supabase override');
     const mapping = await page.evaluate(() => {
       const record = StayAtlasSupabase.hotelToRecord({
         name_ja:'CI Hotel',name_en:'CI Hotel EN',chain:'Hilton Honors',brand:'Hilton',status:'open',
@@ -84,14 +95,9 @@ try {
     assert(mapping.hotel.source.last_checked === '2026-08-07', 'Supabase adapter must preserve source verification date');
   });
 
-  await openPage('/stay/auth/accept-invite.html', async page => {
-    await page.waitForFunction(() => (document.querySelector('#inviteStatus')?.textContent || '') !== 'checking');
-    const status = await page.locator('#inviteStatus').innerText();
-    const message = await page.locator('#inviteMessage').innerText();
-    assert(status === 'NOT CONFIGURED', `Expected unconfigured invite page in CI, got ${status}`);
-    assert(message.includes('Publishable Key'), 'Invite page must explain Project URL / Publishable Key setup');
-    assert(await page.locator('#passwordForm').isHidden(), 'Password form must stay hidden without Supabase configuration');
-  });
+  // The standalone invite callback is already published from main and has its own
+  // Stay Atlas Auth Smoke workflow. Do not make the v1 browser suite depend on the
+  // production Auth callback or external Supabase/CDN availability.
 
   assert(browserErrors.length === 0, `Browser errors detected:\n${browserErrors.join('\n')}`);
   console.log('Stay Atlas headless browser validation passed.');
