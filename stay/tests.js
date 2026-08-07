@@ -29,9 +29,30 @@
       const nagoya=full.hotels.find(h=>h.name_ja==='コンラッド名古屋');
       line(nagoya?.quality==='needs_review'&&nagoya?.verifications?.status?.status==='conflicting','Conrad Nagoya source conflict remains explicit');
 
+      const hiltonTokyo=full.hotels.find(h=>h.name_ja==='ヒルトン東京');
+      line(hiltonTokyo?.name_en==='Hilton Tokyo'&&hiltonTokyo?.city==='新宿区','Hilton Tokyo receives official identity/location patch');
+      line(hiltonTokyo?.child?.max_age===5&&hiltonTokyo?.verifications?.['child.raw']?.status==='verified','Hilton Tokyo bed-sharing policy is curated from official policy');
+      line(hiltonTokyo?.facilities?.parking?.raw==='1泊1,500円','Hilton Tokyo parking is updated from official hotel info');
+      line(hiltonTokyo?.verifications?.['facilities.onsen']?.status==='conflicting','Hilton Tokyo legacy onsen value is flagged for review');
+
+      const tokyoBay=full.hotels.find(h=>h.name_ja==='ヒルトン東京ベイ');
+      line(tokyoBay?.name_en==='Hilton Tokyo Bay'&&tokyoBay?.city==='浦安市','Hilton Tokyo Bay receives official identity/location patch');
+      line(tokyoBay?.facilities?.parking?.raw.includes('3泊以上6,300円'),'Hilton Tokyo Bay parking schedule is curated');
+      line(tokyoBay?.facilities?.pool?.raw.includes('室内プール（通年）'),'Hilton Tokyo Bay pool information is curated');
+
+      const hiltonOsaka=full.hotels.find(h=>h.name_ja==='ヒルトン大阪');
+      line(hiltonOsaka?.child?.max_age===11&&hiltonOsaka?.child?.rule_type==='age_under','Hilton Osaka bed-sharing policy is curated');
+      line(hiltonOsaka?.facilities?.parking?.raw==='1泊7,200円','Hilton Osaka parking is curated');
+      line(hiltonOsaka?.verifications?.['facilities.onsen']?.status==='conflicting','Hilton Osaka legacy onsen value is flagged for review');
+
+      const conradTokyo=full.hotels.find(h=>h.name_ja==='コンラッド東京');
+      line(conradTokyo?.name_en==='Conrad Tokyo'&&conradTokyo?.city==='港区','Conrad Tokyo receives official identity/location patch');
+      line(conradTokyo?.facilities?.pool?.raw==='〇 25m室内プール','Conrad Tokyo pool information is curated');
+      line(conradTokyo?.verifications?.['facilities.lounge']?.status==='verified','Conrad Tokyo Executive Lounge is verified');
+
       const health=StayAtlas.health(full);line(health.total===full.hotels.length,'health total matches hotel count');
-      line(health.fieldVerified>0,'health reports verified fields');
-      line(health.fieldConflicting>0,'health reports conflicting fields');
+      line(health.fieldVerified>20,'health reports expanded verified field coverage');
+      line(health.fieldConflicting>=4,'health reports explicit conflicting fields');
       const first=full.hotels[0];line(Boolean(first),'full dataset contains at least one hotel');
       StayAtlas.save(full);
       const next=StayAtlas.clone(first);next.name_ja=`${first.name_ja} TEST`;
