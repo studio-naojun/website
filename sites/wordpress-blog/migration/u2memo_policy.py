@@ -13,6 +13,7 @@ from wxr_engine import local_name, child_text, normalize_plain_text, sha256_text
 
 SOURCE_BASE_URL = "https://pocca.net/u2memo"
 IGNORED_UNSUPPORTED_POST_TYPES = {"nav_menu_item", "wp_global_styles"}
+IGNORED_PRESENTATION_WARNING_CODES = {"dropped_tag:font"}
 
 
 class InlineImageCollector(HTMLParser):
@@ -174,7 +175,10 @@ def verify_u2memo_bundle(bundle: Path) -> dict:
     actionable = []
     ignored = []
     for warning in base.get("warnings") or []:
-        if warning.get("code") == "unsupported_post_type" and warning.get("detail") in IGNORED_UNSUPPORTED_POST_TYPES:
+        code = warning.get("code")
+        if code == "unsupported_post_type" and warning.get("detail") in IGNORED_UNSUPPORTED_POST_TYPES:
+            ignored.append(warning)
+        elif code in IGNORED_PRESENTATION_WARNING_CODES:
             ignored.append(warning)
         else:
             actionable.append(warning)
