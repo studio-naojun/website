@@ -34,7 +34,32 @@ Apply these files in order:
 
 `live-admin.sql` adds `update_hotel_record()`, which lets the authenticated Live Admin attach a change note to an update while still using the same automatic Revision trigger.
 
-## 3. Create the administrator account
+## 3. Configure Auth redirect URLs
+
+Do this only after the invite-acceptance page has been merged and is actually reachable on `naojun.jp`.
+
+In Supabase Dashboard open:
+
+`Authentication > URL Configuration`
+
+For the current Dashboard-driven invitation flow, configure:
+
+```text
+Site URL
+https://naojun.jp/stay/auth/accept-invite.html
+
+Redirect URLs
+https://naojun.jp/stay/auth/accept-invite.html
+https://naojun.jp/stay/live-admin.html
+```
+
+The invitation email must not continue to redirect to `http://localhost:3000`.
+
+`stay/auth/accept-invite.html` handles the authenticated invitation redirect, establishes the Supabase browser session, lets the invited user set an initial password, and then links to Live Admin.
+
+If an invitation token was exposed, expired, or already consumed, do not reuse it. Issue a new invitation after the production redirect URL is configured.
+
+## 4. Create the administrator account
 
 Create or invite the administrator through Supabase Auth using the dashboard or a trusted server-side administrative process.
 
@@ -50,7 +75,16 @@ Do not use user-editable metadata for this authorization flag.
 
 Do not place a Supabase secret key in `live-admin.html`, `supabase-config.js`, GitHub Pages, or any other browser-delivered file.
 
-## 4. Verify Live Admin login
+For a Dashboard invitation:
+
+1. confirm `stay/auth/accept-invite.html` is deployed;
+2. confirm the URL Configuration above is saved;
+3. issue a new invitation from `Authentication > Users`;
+4. open the new email link;
+5. set a unique password on the Stay Atlas account setup page;
+6. add `app_metadata.stay_atlas_role = "admin"` through a trusted administrative path if it has not yet been applied.
+
+## 5. Verify Live Admin login
 
 Open:
 
@@ -62,7 +96,7 @@ After an administrator signs in, it should show `LIVE DB`.
 
 A signed-in user without `app_metadata.stay_atlas_role = admin` must not receive write access. The UI also hides the workspace, but PostgreSQL RLS is the actual authorization boundary.
 
-## 5. Initial data bootstrap
+## 6. Initial data bootstrap
 
 If `hotels` is empty, Live Admin exposes **Preview Datasetを初期投入**.
 
@@ -76,7 +110,7 @@ The bootstrap:
 
 Bootstrap intentionally refuses to run when the Live DB already contains a Hotel. It is an initial migration operation, not a synchronization mechanism.
 
-## 6. Editing and restore behavior
+## 7. Editing and restore behavior
 
 Live edits call `update_hotel_record()` rather than directly storing local browser state.
 
@@ -84,11 +118,11 @@ Before the Hotel row changes, the database trigger stores the previous state in 
 
 Restore calls `restore_hotel_revision()`. Restore does not delete or rewrite history. The state that existed immediately before Restore becomes another Revision before the historical snapshot becomes current.
 
-## 7. Validation
+## 8. Validation
 
 The `Stay Atlas Smoke` GitHub Actions workflow runs two independent checks:
 
-- Chromium browser validation for the public UI, Local Admin and unconfigured Live Admin shell.
+- Chromium browser validation for the public UI, Local Admin, unconfigured Live Admin shell, and unconfigured invite-acceptance shell.
 - PostgreSQL 16 validation for schema idempotency, RLS, direct update Revision capture, Live Admin RPC Revision notes and Restore behavior.
 
 A real Supabase project remains required for final integration testing of Auth and PostgREST against Supabase infrastructure.
