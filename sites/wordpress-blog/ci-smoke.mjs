@@ -12,7 +12,6 @@ const config = JSON.parse(read('site.config.json'));
 const publicIndex = read('index.html');
 const publicPost = read('posts/sample.html');
 const adminPage = read('admin/index.html');
-const adminScript = read('admin/admin.js');
 const liveAdmin = read('admin/live-admin.html');
 const liveAdminScript = read('admin/live-admin.js');
 const liveConfig = read('admin/supabase-config.js');
@@ -27,14 +26,14 @@ assert(config.admin.browserWritesAllowed === false, 'Browser writes to the priva
 assert(config.admin.commentsVisibility === 'admin_only', 'Legacy comments must be admin_only.');
 
 for (const [name, html] of [['index.html', publicIndex], ['posts/sample.html', publicPost]]) {
-  assert(!html.includes('admin/admin.js'), `${name} must not load the Admin script.`);
-  assert(!html.includes('Sample Reader'), `${name} must not contain synthetic private-archive demo records.`);
+  assert(!html.includes('Sample Reader'), `${name} must not contain synthetic private-archive records.`);
   assert(!html.includes('wp_legacy_comments'), `${name} must not reference the private comment table.`);
   assert(!html.includes('wordpress_blog_role'), `${name} must not reference the Admin role.`);
 }
 
-assert(adminPage.includes('DEMO DATA'), 'Admin prototype must clearly label synthetic data.');
-assert(adminScript.includes('実WordPressデータではありません'), 'Demo comments must be explicitly synthetic.');
+assert(adminPage.includes('PRIVATE ARCHIVE'), 'Admin entry must identify the Private Archive.');
+assert(!adminPage.includes('DEMO DATA'), 'Synthetic comment demo must not remain in the final Admin entry.');
+assert(adminPage.includes('./live-admin.html'), 'Admin entry must link to authenticated Live Admin.');
 assert(liveAdmin.includes('AUTHENTICATED PRIVATE ARCHIVE'), 'Live Admin shell must identify the private archive.');
 assert(/enabled:\s*false/.test(liveConfig), 'Live Supabase config must remain disabled until production setup.');
 assert(liveAdminScript.includes(".from('wp_legacy_comments')"), 'Live Admin must read the private archive table.');
@@ -54,6 +53,6 @@ console.log(JSON.stringify({
   liveDataEnabled: config.admin.liveDataEnabled,
   browserWritesAllowed: config.admin.browserWritesAllowed,
   commentsVisibility: config.admin.commentsVisibility,
-  publicSamplePages: 2,
+  syntheticAdminData: false,
   privateArchiveSchema: 'RLS required'
 }, null, 2));
