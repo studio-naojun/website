@@ -1,5 +1,5 @@
-(function(){
-  const db=StayAtlas.load();
+(async function(){
+  const db=await StayAtlas.bootstrapLegacy();
   const state={region:'',search:'',chain:'',prefecture:'',capacity:'',facility:'',quality:'',status:'',child12:false,sort:'prefecture',view:'table'};
   const $=s=>document.querySelector(s);
   const $$=s=>[...document.querySelectorAll(s)];
