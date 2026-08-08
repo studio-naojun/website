@@ -49,8 +49,8 @@
     {
       id: 'joshin',
       name: 'Joshin',
-      description: 'Joshin webショップで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://joshinweb.jp/dps/srhzs.html?KEY=ZS_ALL&KEYWORD=${encodeURIComponent(jan)}&REQUEST_CODE=1`,
+      description: 'Joshin webショップ全体から、このJANコードを検索します。',
+      buildUrl: (jan) => `https://joshinweb.jp/srhzs.html?KEY=ZS_ALL&KEY_M=ALL&QK=${encodeURIComponent(jan)}&REQUEST_CODE=1`,
     },
     {
       id: 'sofmap',
