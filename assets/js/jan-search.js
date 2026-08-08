@@ -77,19 +77,21 @@
     storeTabs.replaceChildren();
 
     stores.forEach((store, index) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'jan-store-tab';
-      button.id = `store-tab-${store.id}`;
-      button.dataset.storeIndex = String(index);
-      button.setAttribute('role', 'tab');
-      button.setAttribute('aria-controls', 'store-panel');
-      button.setAttribute('aria-selected', index === activeStoreIndex ? 'true' : 'false');
-      button.tabIndex = index === activeStoreIndex ? 0 : -1;
-      button.textContent = store.name;
-      button.addEventListener('click', () => selectStore(index));
-      button.addEventListener('keydown', handleTabKeydown);
-      storeTabs.append(button);
+      const link = document.createElement('a');
+      link.className = 'jan-store-tab';
+      link.id = `store-tab-${store.id}`;
+      link.dataset.storeIndex = String(index);
+      link.href = store.buildUrl(currentJan);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.setAttribute('role', 'tab');
+      link.setAttribute('aria-controls', 'store-panel');
+      link.setAttribute('aria-selected', index === activeStoreIndex ? 'true' : 'false');
+      link.tabIndex = index === activeStoreIndex ? 0 : -1;
+      link.textContent = store.name;
+      link.addEventListener('click', () => selectStore(index));
+      link.addEventListener('keydown', handleTabKeydown);
+      storeTabs.append(link);
     });
   };
 
@@ -131,7 +133,7 @@
     currentJanEl.textContent = jan;
     storeSearch.hidden = false;
     copyJanButton.hidden = false;
-    status.textContent = '販売店を選んで、各サイトの検索結果を確認してください。';
+    status.textContent = '店舗名を押すと、このJANコードの検索結果を新しいWindowで開きます。';
     buildTabs();
     renderStore();
 
