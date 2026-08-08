@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="JANコードを入力するか商品のバーコードを読み取り、販売店を切り替えながら商品を探せるStudio NaoJunの無料検索ツールです。">
-  <title>JANコード在庫検索 | Studio NaoJun</title>
+  <meta name="description" content="商品名・型番・JANコードなどのキーワードを入力し、複数の販売店を切り替えながら商品を探せるStudio NaoJunの無料横断検索ツールです。商品のバーコードをカメラで読み取ってJANコードを入力することもできます。">
+  <title>商品横断検索 | Studio NaoJun</title>
   <link rel="stylesheet" href="../../assets/css/style.css">
   <link rel="stylesheet" href="../../assets/css/jan-search.css">
 </head>
@@ -25,26 +25,26 @@
     <section class="jan-hero">
       <div class="jan-container">
         <div class="eyebrow">Tool / Free</div>
-        <h1>JANコード在庫検索</h1>
-        <p class="jan-lead">バーコードひとつで、いろいろな店をすぐ探す。<br>JANコードを入れるか、商品のバーコードを読み取ってください。</p>
+        <h1>商品横断検索</h1>
+        <p class="jan-lead">ひとつのキーワードで、いろいろな店をすぐ探す。<br>商品名・型番・JANコードを入力するか、商品のバーコードを読み取ってください。</p>
 
         <form class="jan-search-form" id="jan-search-form" novalidate>
-          <label class="jan-label" for="jan-code">JANコード</label>
+          <label class="jan-label" for="jan-code">検索キーワード</label>
           <div class="jan-input-row">
             <input
               class="jan-input"
               id="jan-code"
-              name="jan"
-              type="text"
-              inputmode="numeric"
+              name="q"
+              type="search"
               autocomplete="off"
-              maxlength="13"
-              placeholder="例：4902370550733"
+              enterkeyhint="search"
+              maxlength="100"
+              placeholder="例：Nintendo Switch 2 / 4902370550733"
               aria-describedby="jan-help jan-error">
-            <button class="jan-scan-button" id="scan-button" type="button" aria-haspopup="dialog">カメラで読む</button>
+            <button class="jan-scan-button" id="scan-button" type="button" aria-haspopup="dialog">バーコードを読む</button>
             <button class="jan-submit-button" type="submit">検索</button>
           </div>
-          <p class="jan-help" id="jan-help">8桁または13桁のJANコードに対応しています。</p>
+          <p class="jan-help" id="jan-help">商品名・型番・JANコードなどで検索できます。JANコードはカメラから入力できます。</p>
           <p class="jan-error" id="jan-error" role="alert" hidden></p>
         </form>
       </div>
@@ -55,16 +55,16 @@
         <div class="jan-results-head">
           <div>
             <div class="eyebrow">Find at stores</div>
-            <h2>販売店を切り替えて探す</h2>
+            <h2>販売店を選んで探す</h2>
           </div>
-          <button class="jan-copy-button" id="copy-jan" type="button" hidden>JANをコピー</button>
+          <button class="jan-copy-button" id="copy-jan" type="button" hidden>検索語をコピー</button>
         </div>
 
-        <p class="jan-status" id="search-status">JANコードを入力して検索してください。</p>
+        <p class="jan-status" id="search-status">商品名・型番・JANコードなどを入力して検索してください。</p>
 
         <div class="jan-store-search" id="store-search" hidden>
           <div class="jan-code-summary">
-            <span>検索中のJAN</span>
+            <span>検索中のキーワード</span>
             <strong id="current-jan"></strong>
           </div>
 
@@ -76,7 +76,7 @@
               <h3 id="store-name"></h3>
               <p id="store-description"></p>
             </div>
-            <a class="jan-store-link" id="store-link" href="#" target="_blank" rel="noopener noreferrer">この店舗で商品を見る →</a>
+            <a class="jan-store-link" id="store-link" href="#" target="_blank" rel="noopener noreferrer">この店舗で検索する →</a>
             <button class="jan-next-button" id="next-store" type="button">次の店舗を見る</button>
           </section>
 
@@ -92,7 +92,7 @@
           <h2>探すためだけの、道具。</h2>
         </div>
         <div class="jan-about-copy">
-          <p>商品名を考えて入力し直す代わりに、JANコードをそのまま各販売店の検索へ渡します。</p>
+          <p>商品名、型番、JANコードなど、同じ検索語を各販売店の検索へそのまま渡します。バーコードが手元にあるときは、カメラでJANコードを読み取って入力できます。</p>
           <p>Studio NaoJunは価格や在庫データを保存せず、販売店ごとの検索をすばやく切り替えることに機能を絞っています。</p>
         </div>
       </div>
@@ -104,7 +104,7 @@
       <div class="jan-scanner-head">
         <div>
           <div class="eyebrow">Barcode scanner</div>
-          <h2 id="scanner-title">バーコードを読み取る</h2>
+          <h2 id="scanner-title">JANコードを読み取る</h2>
         </div>
         <button class="jan-close-button" id="scanner-close" type="button" aria-label="カメラを閉じる">閉じる</button>
       </div>
