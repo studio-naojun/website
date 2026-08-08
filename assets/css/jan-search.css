@@ -1,0 +1,279 @@
+.jan-container {
+  width: min(calc(100% - 40px), 920px);
+  margin: 0 auto;
+}
+
+.jan-hero {
+  padding: 96px 0 64px;
+}
+
+.jan-hero h1 {
+  max-width: 760px;
+  margin-bottom: 20px;
+  font-size: clamp(42px, 8vw, 78px);
+}
+
+.jan-lead {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(18px, 2.6vw, 24px);
+}
+
+.jan-search-form { margin-top: 48px; }
+.jan-label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 700; }
+
+.jan-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
+}
+
+.jan-input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 19px;
+  letter-spacing: .04em;
+}
+
+.jan-input:focus,
+.jan-scan-button:focus-visible,
+.jan-submit-button:focus-visible,
+.jan-copy-button:focus-visible,
+.jan-store-tab:focus-visible,
+.jan-store-link:focus-visible,
+.jan-next-button:focus-visible,
+.jan-close-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  outline-offset: 2px;
+}
+
+.jan-scan-button,
+.jan-submit-button,
+.jan-copy-button,
+.jan-next-button,
+.jan-close-button {
+  min-height: 54px;
+  padding: 0 18px;
+  border: 1px solid var(--text);
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.jan-scan-button,
+.jan-copy-button,
+.jan-next-button,
+.jan-close-button {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.jan-submit-button { background: var(--text); color: #fff; }
+.jan-submit-button:hover { background: var(--accent); border-color: var(--accent); }
+.jan-scan-button:hover,
+.jan-copy-button:hover,
+.jan-next-button:hover,
+.jan-close-button:hover { background: var(--accent-soft); }
+
+.jan-help,
+.jan-error,
+.jan-scanner-status { margin: 10px 0 0; font-size: 14px; }
+.jan-help,
+.jan-scanner-status { color: var(--muted); }
+.jan-error { color: #9d2f2f; font-weight: 650; }
+
+.jan-results-section {
+  min-height: 440px;
+  padding: 72px 0 96px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.jan-results-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.jan-results-head h2,
+.jan-about-grid h2,
+.jan-scanner-head h2 { margin-top: 8px; margin-bottom: 0; }
+
+.jan-copy-button { min-height: 42px; }
+.jan-status { margin: 0; padding: 16px 0 24px; color: var(--muted); }
+.jan-store-search[hidden] { display: none; }
+
+.jan-code-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.jan-code-summary span { color: var(--muted); font-size: 13px; }
+.jan-code-summary strong { font-size: 20px; letter-spacing: .05em; }
+
+.jan-store-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+  overflow-x: auto;
+  padding: 2px 2px 10px;
+  scrollbar-width: thin;
+}
+
+.jan-store-tab {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.jan-store-tab[aria-selected="true"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: #fff;
+}
+
+.jan-store-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  margin-top: 10px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fff;
+}
+
+.jan-store-kicker {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.jan-store-panel h3 { margin: 6px 0 8px; font-size: clamp(26px, 4vw, 38px); }
+.jan-store-panel p { max-width: 560px; margin: 0; color: var(--muted); }
+
+.jan-store-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.jan-store-link:hover { filter: brightness(.94); }
+
+.jan-next-button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-height: 40px;
+  padding: 0 14px;
+  border-color: var(--line);
+  font-size: 13px;
+}
+
+.jan-external-note { margin: 14px 2px 0; color: var(--muted); font-size: 12px; }
+
+.jan-about-section { padding: 88px 0; }
+.jan-about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 72px; }
+.jan-about-copy { color: var(--muted); font-size: 18px; }
+.jan-about-copy p:first-child { margin-top: 0; }
+
+.jan-scanner[hidden] { display: none; }
+.jan-scanner {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(16, 18, 17, .72);
+}
+
+.jan-scanner-panel {
+  width: min(100%, 640px);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  padding: 24px;
+  border-radius: 22px;
+  background: var(--bg);
+}
+
+.jan-scanner-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.jan-close-button { min-height: 42px; }
+.jan-video-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background: #101412;
+}
+
+#scanner-video { width: 100%; height: 100%; object-fit: cover; }
+.jan-scan-guide {
+  position: absolute;
+  inset: 34% 8%;
+  border: 2px solid rgba(255,255,255,.9);
+  border-radius: 10px;
+  box-shadow: 0 0 0 999px rgba(0,0,0,.22);
+}
+
+@media (max-width: 760px) {
+  .jan-hero { padding: 72px 0 52px; }
+  .jan-input-row { grid-template-columns: 1fr 1fr; }
+  .jan-input { grid-column: 1 / -1; }
+  .jan-results-head { align-items: center; }
+  .jan-store-panel { grid-template-columns: 1fr; }
+  .jan-store-link { justify-self: stretch; }
+  .jan-next-button { grid-column: auto; }
+  .jan-about-grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+@media (max-width: 440px) {
+  .jan-container { width: min(calc(100% - 28px), 920px); }
+  .jan-input-row { grid-template-columns: 1fr; }
+  .jan-input { grid-column: auto; }
+  .jan-results-head { display: block; }
+  .jan-copy-button { margin-top: 16px; }
+  .jan-code-summary { display: grid; gap: 4px; }
+  .jan-store-panel { padding: 22px; }
+}
