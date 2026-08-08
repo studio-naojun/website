@@ -6,7 +6,8 @@ on:
       - 'tools/jan/**'
       - 'assets/js/jan-search.js'
       - 'assets/css/jan-search.css'
-      - 'worker/jan-search/**'
+      - 'index.html'
+      - 'works/index.html'
       - '.github/workflows/jan-search-smoke.yml'
   workflow_dispatch:
 
@@ -18,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  syntax-and-worker-build:
+  syntax:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -33,11 +34,7 @@ jobs:
       - name: JavaScript syntax check
         run: |
           node --check assets/js/jan-search.js
-          node --check worker/jan-search/src/index.js
           node --check tools/jan/ci-smoke.mjs
-
-      - name: Wrangler dry run
-        run: npx --yes wrangler@4.102.0 deploy --dry-run --config worker/jan-search/wrangler.toml
 
   browser-smoke:
     runs-on: ubuntu-latest
