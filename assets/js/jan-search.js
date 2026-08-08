@@ -10,8 +10,11 @@
   const storeName = document.getElementById('store-name');
   const storeDescription = document.getElementById('store-description');
   const storeLink = document.getElementById('store-link');
+  const storeFrame = document.getElementById('store-frame');
+  const frameNote = document.getElementById('frame-note');
   const currentJanEl = document.getElementById('current-jan');
   const copyJanButton = document.getElementById('copy-jan');
+  const openAllButton = document.getElementById('open-all-stores');
   const nextStoreButton = document.getElementById('next-store');
   const scannerDialog = document.getElementById('scanner-dialog');
   const scannerVideo = document.getElementById('scanner-video');
@@ -19,8 +22,6 @@
   const scanButton = document.getElementById('scan-button');
   const scannerClose = document.getElementById('scanner-close');
 
-  // Keep retailer URL builders in one place so future affiliate routing can be
-  // introduced without changing the search UI or JAN handling.
   const stores = [
     {
       id: 'yodobashi',
@@ -97,10 +98,14 @@
     const store = stores[activeStoreIndex];
     if (!store || !currentJan) return;
 
+    const url = store.buildUrl(currentJan);
     storeName.textContent = store.name;
     storeDescription.textContent = store.description;
-    storeLink.href = store.buildUrl(currentJan);
+    storeLink.href = url;
     storeLink.textContent = `${store.name}で商品を見る →`;
+    storeFrame.src = url;
+    storeFrame.title = `${store.name}の検索結果`;
+    frameNote.textContent = `${store.name}側の設定により、この枠内に表示できない場合があります。その場合は「${store.name}で商品を見る」から新しいWindowで開いてください。`;
 
     storeTabs.querySelectorAll('[role="tab"]').forEach((tab, index) => {
       const selected = index === activeStoreIndex;
@@ -131,7 +136,8 @@
     currentJanEl.textContent = jan;
     storeSearch.hidden = false;
     copyJanButton.hidden = false;
-    status.textContent = '販売店を選んで、各サイトの検索結果を確認してください。';
+    openAllButton.hidden = false;
+    status.textContent = '販売店タブを切り替えると、下の表示も同じJANコードで切り替わります。';
     buildTabs();
     renderStore();
 
@@ -168,6 +174,20 @@
   });
 
   nextStoreButton.addEventListener('click', () => selectStore(activeStoreIndex + 1, true));
+
+  openAllButton.addEventListener('click', () => {
+    if (!currentJan) return;
+    let blocked = 0;
+
+    stores.forEach((store) => {
+      const popup = window.open(store.buildUrl(currentJan), '_blank', 'noopener,noreferrer');
+      if (!popup) blocked += 1;
+    });
+
+    status.textContent = blocked
+      ? `一部または全部の新しいWindowがブラウザにブロックされました。ポップアップを許可して、もう一度お試しください。`
+      : `${stores.length}サイトを新しいWindowで開きました。`;
+  });
 
   copyJanButton.addEventListener('click', async () => {
     if (!currentJan) return;
