@@ -137,6 +137,9 @@
 }
 
 .jan-store-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
   min-height: 42px;
   padding: 0 16px;
@@ -144,6 +147,7 @@
   border-radius: 999px;
   background: #fff;
   color: var(--text);
+  text-decoration: none;
   font: inherit;
   font-size: 14px;
   font-weight: 700;
