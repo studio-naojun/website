@@ -10,11 +10,11 @@
   const storeName = document.getElementById('store-name');
   const storeDescription = document.getElementById('store-description');
   const storeLink = document.getElementById('store-link');
-  const storeFrame = document.getElementById('store-frame');
-  const frameNote = document.getElementById('frame-note');
   const currentJanEl = document.getElementById('current-jan');
   const copyJanButton = document.getElementById('copy-jan');
   const openAllButton = document.getElementById('open-all-stores');
+  const allStoreLinksPanel = document.getElementById('all-store-links-panel');
+  const allStoreLinks = document.getElementById('all-store-links');
   const nextStoreButton = document.getElementById('next-store');
   const scannerDialog = document.getElementById('scanner-dialog');
   const scannerVideo = document.getElementById('scanner-video');
@@ -94,6 +94,20 @@
     });
   };
 
+  const buildAllStoreLinks = () => {
+    allStoreLinks.replaceChildren();
+
+    stores.forEach((store) => {
+      const link = document.createElement('a');
+      link.className = 'jan-all-store-link';
+      link.href = store.buildUrl(currentJan);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = `${store.name}で商品を見る →`;
+      allStoreLinks.append(link);
+    });
+  };
+
   const renderStore = () => {
     const store = stores[activeStoreIndex];
     if (!store || !currentJan) return;
@@ -103,9 +117,6 @@
     storeDescription.textContent = store.description;
     storeLink.href = url;
     storeLink.textContent = `${store.name}で商品を見る →`;
-    storeFrame.src = url;
-    storeFrame.title = `${store.name}の検索結果`;
-    frameNote.textContent = `${store.name}側の設定により、この枠内に表示できない場合があります。その場合は「${store.name}で商品を見る」から新しいWindowで開いてください。`;
 
     storeTabs.querySelectorAll('[role="tab"]').forEach((tab, index) => {
       const selected = index === activeStoreIndex;
@@ -137,7 +148,10 @@
     storeSearch.hidden = false;
     copyJanButton.hidden = false;
     openAllButton.hidden = false;
-    status.textContent = '販売店タブを切り替えると、下の表示も同じJANコードで切り替わります。';
+    allStoreLinksPanel.hidden = true;
+    allStoreLinks.replaceChildren();
+    openAllButton.textContent = '4店舗のリンクを表示';
+    status.textContent = '販売店を選んで、各サイトの検索結果を新しいWindowで確認してください。';
     buildTabs();
     renderStore();
 
@@ -177,16 +191,19 @@
 
   openAllButton.addEventListener('click', () => {
     if (!currentJan) return;
-    let blocked = 0;
 
-    stores.forEach((store) => {
-      const popup = window.open(store.buildUrl(currentJan), '_blank', 'noopener,noreferrer');
-      if (!popup) blocked += 1;
-    });
+    if (!allStoreLinksPanel.hidden) {
+      allStoreLinksPanel.hidden = true;
+      openAllButton.textContent = '4店舗のリンクを表示';
+      status.textContent = '販売店を選んで、各サイトの検索結果を新しいWindowで確認してください。';
+      return;
+    }
 
-    status.textContent = blocked
-      ? `一部または全部の新しいWindowがブラウザにブロックされました。ポップアップを許可して、もう一度お試しください。`
-      : `${stores.length}サイトを新しいWindowで開きました。`;
+    buildAllStoreLinks();
+    allStoreLinksPanel.hidden = false;
+    openAllButton.textContent = '4店舗のリンクを閉じる';
+    status.textContent = '4店舗の検索リンクを表示しました。開きたい店舗を選んでください。';
+    allStoreLinksPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
   copyJanButton.addEventListener('click', async () => {

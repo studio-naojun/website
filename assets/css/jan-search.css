@@ -1,5 +1,5 @@
 .jan-container {
-  width: min(calc(100% - 40px), 1040px);
+  width: min(calc(100% - 40px), 920px);
   margin: 0 auto;
 }
 
@@ -49,6 +49,7 @@
 .jan-open-all-button:focus-visible,
 .jan-store-tab:focus-visible,
 .jan-store-link:focus-visible,
+.jan-all-store-link:focus-visible,
 .jan-next-button:focus-visible,
 .jan-close-button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 26%, transparent);
@@ -124,7 +125,8 @@
 .jan-open-all-button { min-height: 42px; }
 .jan-open-all-button { border-color: var(--accent); color: var(--accent); }
 .jan-status { margin: 0; padding: 16px 0 24px; color: var(--muted); }
-.jan-store-search[hidden] { display: none; }
+.jan-store-search[hidden],
+.jan-all-stores[hidden] { display: none; }
 
 .jan-code-summary {
   display: flex;
@@ -172,10 +174,10 @@
 .jan-store-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px 22px;
+  gap: 22px;
   align-items: center;
   margin-top: 10px;
-  padding: 24px;
+  padding: 28px;
   border: 1px solid var(--line);
   border-radius: 20px;
   background: #fff;
@@ -189,8 +191,10 @@
   text-transform: uppercase;
 }
 
-.jan-store-panel h3 { margin: 6px 0 8px; font-size: clamp(26px, 4vw, 38px); }
-.jan-store-panel p { max-width: 620px; margin: 0; color: var(--muted); }
+.jan-store-panel h3,
+.jan-all-stores h3 { margin: 6px 0 8px; font-size: clamp(26px, 4vw, 38px); }
+.jan-store-panel p,
+.jan-all-stores p { max-width: 620px; margin: 0; color: var(--muted); }
 
 .jan-store-actions {
   display: flex;
@@ -199,7 +203,8 @@
   gap: 8px;
 }
 
-.jan-store-link {
+.jan-store-link,
+.jan-all-store-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -208,12 +213,13 @@
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
-  white-space: nowrap;
   font-size: 14px;
   font-weight: 750;
 }
 
-.jan-store-link:hover { filter: brightness(.94); }
+.jan-store-link { white-space: nowrap; }
+.jan-store-link:hover,
+.jan-all-store-link:hover { filter: brightness(.94); }
 
 .jan-next-button {
   min-height: 40px;
@@ -222,29 +228,32 @@
   font-size: 13px;
 }
 
-.jan-frame-wrap {
-  grid-column: 1 / -1;
-  overflow: hidden;
-  width: 100%;
-  min-height: 560px;
-  height: min(72vh, 820px);
+.jan-all-stores {
+  margin-top: 18px;
+  padding: 24px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 20px;
   background: var(--bg);
 }
 
-.jan-store-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: #fff;
+.jan-all-store-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.jan-frame-note {
-  grid-column: 1 / -1;
-  font-size: 12px;
-  line-height: 1.65;
+.jan-all-store-link {
+  min-height: 52px;
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.jan-all-store-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  filter: none;
 }
 
 .jan-external-note { margin: 14px 2px 0; color: var(--muted); font-size: 12px; }
@@ -308,13 +317,12 @@
   .jan-store-panel { grid-template-columns: 1fr; }
   .jan-store-actions { width: 100%; }
   .jan-store-link { justify-self: stretch; }
-  .jan-frame-wrap { grid-column: auto; min-height: 500px; height: 68vh; }
-  .jan-frame-note { grid-column: auto; }
+  .jan-all-store-links { grid-template-columns: 1fr; }
   .jan-about-grid { grid-template-columns: 1fr; gap: 28px; }
 }
 
 @media (max-width: 440px) {
-  .jan-container { width: min(calc(100% - 28px), 1040px); }
+  .jan-container { width: min(calc(100% - 28px), 920px); }
   .jan-input-row { grid-template-columns: 1fr; }
   .jan-input { grid-column: auto; }
   .jan-results-head { display: block; }
@@ -322,6 +330,6 @@
   .jan-copy-button,
   .jan-open-all-button { flex: 1 1 100%; }
   .jan-code-summary { display: grid; gap: 4px; }
-  .jan-store-panel { padding: 18px; }
-  .jan-frame-wrap { min-height: 460px; height: 64vh; }
+  .jan-store-panel,
+  .jan-all-stores { padding: 20px; }
 }
