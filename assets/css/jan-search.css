@@ -39,7 +39,7 @@
   color: var(--text);
   font: inherit;
   font-size: 19px;
-  letter-spacing: .04em;
+  letter-spacing: .01em;
 }
 
 .jan-input:focus,
@@ -124,8 +124,14 @@
   background: var(--bg);
 }
 
-.jan-code-summary span { color: var(--muted); font-size: 13px; }
-.jan-code-summary strong { font-size: 20px; letter-spacing: .05em; }
+.jan-code-summary span { flex: 0 0 auto; color: var(--muted); font-size: 13px; }
+.jan-code-summary strong {
+  min-width: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+  font-size: 20px;
+  letter-spacing: .01em;
+}
 
 .jan-store-tabs {
   display: grid;
@@ -280,6 +286,7 @@
   .jan-results-head { display: block; }
   .jan-copy-button { margin-top: 16px; }
   .jan-code-summary { display: grid; gap: 4px; }
+  .jan-code-summary strong { text-align: left; }
   .jan-store-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .jan-store-tab { padding: 8px 6px; font-size: 13px; }
   .jan-store-panel { padding: 22px; }
