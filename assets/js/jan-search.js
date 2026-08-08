@@ -47,6 +47,18 @@
       buildUrl: (jan) => `https://www.edion.com/item_list.html?keyword=${encodeURIComponent(jan)}`,
     },
     {
+      id: 'joshin',
+      name: 'Joshin',
+      description: 'Joshin webショップで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://joshinweb.jp/dps/srhzs.html?KEY=ZS_ALL&KEYWORD=${encodeURIComponent(jan)}&REQUEST_CODE=1`,
+    },
+    {
+      id: 'sofmap',
+      name: 'ソフマップ',
+      description: 'ソフマップ・ドットコムで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.sofmap.com/search_result.aspx?keyword=${encodeURIComponent(jan)}`,
+    },
+    {
       id: 'surugaya',
       name: '駿河屋',
       description: '駿河屋で、新品・中古を含めてこのJANコードを検索します。',
@@ -57,6 +69,24 @@
       name: 'ゲオ',
       description: 'ゲオオンラインストアで、このJANコードを検索します。',
       buildUrl: (jan) => `https://ec.geo-online.co.jp/shop/goods/search.aspx?keyword=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'toysrus',
+      name: 'トイザらス',
+      description: 'トイザらス オンラインストアで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.toysrus.co.jp/search/?q=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'pokemoncenter',
+      name: 'ポケモンセンター',
+      description: 'ポケモンセンターオンラインで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.pokemoncenter-online.com/search/?q=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'amiami',
+      name: 'あみあみ',
+      description: 'あみあみオンライン本店で、このJANコードを検索します。',
+      buildUrl: (jan) => `https://slist.amiami.jp/top/search/list?s_keywords=${encodeURIComponent(jan)}&pagemax=60`,
     },
     {
       id: 'amazon',
