@@ -23,17 +23,22 @@ try {
 
   const tabs = page.locator('.jan-store-tab');
   const tabCount = await tabs.count();
-  if (tabCount !== 4) throw new Error(`Expected 4 retailer tabs, got ${tabCount}`);
+  if (tabCount !== 9) throw new Error(`Expected 9 retailer tabs, got ${tabCount}`);
 
   const expectedTabs = [
     ['ヨドバシ', 'yodobashi.com/?word=4902370550733'],
+    ['ビックカメラ', 'biccamera.com/bc/category/?q=4902370550733'],
+    ['ヤマダ', 'yamada-denkiweb.com/search/4902370550733/'],
+    ['エディオン', 'edion.com/item_list.html?keyword=4902370550733'],
+    ['駿河屋', 'suruga-ya.jp/search?category=&search_word=4902370550733'],
+    ['ゲオ', 'geo-online.co.jp/shop/goods/search.aspx?keyword=4902370550733'],
     ['Amazon', 'amazon.co.jp/s?k=4902370550733'],
     ['楽天市場', 'search.rakuten.co.jp/search/mall/4902370550733/'],
     ['Yahoo!', 'shopping.yahoo.co.jp/search/4902370550733/0/'],
   ];
 
   for (const [name, expectedUrl] of expectedTabs) {
-    const tab = page.getByRole('tab', { name });
+    const tab = page.getByRole('tab', { name, exact: true });
     const tagName = await tab.evaluate((element) => element.tagName);
     const href = await tab.getAttribute('href');
     const target = await tab.getAttribute('target');
@@ -50,44 +55,34 @@ try {
     throw new Error(`Unexpected Yodobashi URL: ${yodobashiHref}`);
   }
 
-  const amazonTab = page.getByRole('tab', { name: 'Amazon' });
-  await amazonTab.evaluate((element) => {
+  const surugayaTab = page.getByRole('tab', { name: '駿河屋', exact: true });
+  await surugayaTab.evaluate((element) => {
     element.addEventListener('click', (event) => event.preventDefault(), { once: true });
   });
-  await amazonTab.click();
-  const amazonHref = await page.locator('#store-link').getAttribute('href');
-  if (!amazonHref?.includes('amazon.co.jp/s?k=4902370550733')) {
-    throw new Error(`Unexpected Amazon URL: ${amazonHref}`);
+  await surugayaTab.click();
+  const surugayaHref = await page.locator('#store-link').getAttribute('href');
+  if (!surugayaHref?.includes('suruga-ya.jp/search?category=&search_word=4902370550733')) {
+    throw new Error(`Unexpected Surugaya URL: ${surugayaHref}`);
   }
-  if ((await amazonTab.getAttribute('aria-selected')) !== 'true') {
-    throw new Error('Amazon tab did not become selected after click');
-  }
-
-  const rakutenTab = page.getByRole('tab', { name: '楽天市場' });
-  await rakutenTab.evaluate((element) => {
-    element.addEventListener('click', (event) => event.preventDefault(), { once: true });
-  });
-  await rakutenTab.click();
-  const rakutenHref = await page.locator('#store-link').getAttribute('href');
-  if (!rakutenHref?.includes('search.rakuten.co.jp/search/mall/4902370550733/')) {
-    throw new Error(`Unexpected Rakuten URL: ${rakutenHref}`);
+  if ((await surugayaTab.getAttribute('aria-selected')) !== 'true') {
+    throw new Error('Surugaya tab did not become selected after click');
   }
 
-  const yahooTab = page.getByRole('tab', { name: 'Yahoo!' });
-  await yahooTab.evaluate((element) => {
+  const geoTab = page.getByRole('tab', { name: 'ゲオ', exact: true });
+  await geoTab.evaluate((element) => {
     element.addEventListener('click', (event) => event.preventDefault(), { once: true });
   });
-  await yahooTab.click();
-  const yahooHref = await page.locator('#store-link').getAttribute('href');
-  if (!yahooHref?.includes('shopping.yahoo.co.jp/search/4902370550733/0/')) {
-    throw new Error(`Unexpected Yahoo URL: ${yahooHref}`);
+  await geoTab.click();
+  const geoHref = await page.locator('#store-link').getAttribute('href');
+  if (!geoHref?.includes('geo-online.co.jp/shop/goods/search.aspx?keyword=4902370550733')) {
+    throw new Error(`Unexpected GEO URL: ${geoHref}`);
   }
 
   if (!page.url().includes(`jan=${jan}`)) throw new Error(`JAN query parameter missing: ${page.url()}`);
 
   await page.locator('#next-store').click();
   const selectedAfterNext = await page.locator('.jan-store-tab[aria-selected="true"]').textContent();
-  if (selectedAfterNext !== 'ヨドバシ') throw new Error(`Next-store rotation failed: ${selectedAfterNext}`);
+  if (selectedAfterNext !== 'Amazon') throw new Error(`Next-store rotation failed: ${selectedAfterNext}`);
 
   await page.locator('#scan-button').click();
   const dialogHidden = await page.locator('#scanner-dialog').getAttribute('hidden');
@@ -96,7 +91,7 @@ try {
   const hiddenAfterClose = await page.locator('#scanner-dialog').getAttribute('hidden');
   if (hiddenAfterClose === null) throw new Error('Scanner dialog did not close');
 
-  console.log('JAN direct retailer tab browser smoke passed');
+  console.log('JAN expanded retailer tab browser smoke passed');
 } finally {
   await browser.close();
 }
