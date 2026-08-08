@@ -57,7 +57,10 @@
             <div class="eyebrow">Find at stores</div>
             <h2>販売店を切り替えて探す</h2>
           </div>
-          <button class="jan-copy-button" id="copy-jan" type="button" hidden>JANをコピー</button>
+          <div class="jan-head-actions">
+            <button class="jan-copy-button" id="copy-jan" type="button" hidden>JANをコピー</button>
+            <button class="jan-open-all-button" id="open-all-stores" type="button" hidden>全サイトを一括で開く</button>
+          </div>
         </div>
 
         <p class="jan-status" id="search-status">JANコードを入力して検索してください。</p>
@@ -71,16 +74,29 @@
           <div class="jan-store-tabs" id="store-tabs" role="tablist" aria-label="販売店"></div>
 
           <section class="jan-store-panel" id="store-panel" role="tabpanel" tabindex="0">
-            <div>
+            <div class="jan-store-copy">
               <div class="jan-store-kicker">Selected store</div>
               <h3 id="store-name"></h3>
               <p id="store-description"></p>
             </div>
-            <a class="jan-store-link" id="store-link" href="#" target="_blank" rel="noopener noreferrer">この店舗で商品を見る →</a>
-            <button class="jan-next-button" id="next-store" type="button">次の店舗を見る</button>
+            <div class="jan-store-actions">
+              <a class="jan-store-link" id="store-link" href="#" target="_blank" rel="noopener noreferrer">この店舗で商品を見る →</a>
+              <button class="jan-next-button" id="next-store" type="button">次の店舗を見る</button>
+            </div>
+
+            <div class="jan-frame-wrap">
+              <iframe
+                class="jan-store-frame"
+                id="store-frame"
+                title="販売店の検索結果"
+                loading="eager"
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+
+            <p class="jan-frame-note" id="frame-note">販売店側の設定により、この枠内に表示できない場合があります。その場合は「商品を見る」から新しいWindowで開いてください。</p>
           </section>
 
-          <p class="jan-external-note">価格・在庫・送料などの最新情報は、移動先の販売店ページで確認してください。</p>
+          <p class="jan-external-note">価格・在庫・送料などの最新情報は、表示中または移動先の販売店ページで確認してください。</p>
         </div>
       </div>
     </section>
