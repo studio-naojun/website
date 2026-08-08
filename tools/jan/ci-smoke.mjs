@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 
 const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage();
+const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
 
 try {
   await page.route('https://unpkg.com/**', (route) => route.abort());
@@ -30,7 +30,7 @@ try {
     ['ビックカメラ', 'biccamera.com/bc/category/?q=4902370550733'],
     ['ヤマダ', 'yamada-denkiweb.com/search/4902370550733/'],
     ['エディオン', 'edion.com/item_list.html?keyword=4902370550733'],
-    ['Joshin', 'joshinweb.jp/dps/srhzs.html?KEY=ZS_ALL&KEYWORD=4902370550733&REQUEST_CODE=1'],
+    ['Joshin', 'joshinweb.jp/srhzs.html?KEY=ZS_ALL&KEY_M=ALL&QK=4902370550733&REQUEST_CODE=1'],
     ['ソフマップ', 'sofmap.com/search_result.aspx?keyword=4902370550733'],
     ['駿河屋', 'suruga-ya.jp/search?category=&search_word=4902370550733'],
     ['ゲオ', 'geo-online.co.jp/shop/goods/search.aspx?keyword=4902370550733'],
@@ -54,6 +54,25 @@ try {
     if (target !== '_blank') throw new Error(`${name} tab must open in a new window: ${target}`);
     if (!rel?.includes('noopener')) throw new Error(`${name} tab must use noopener: ${rel}`);
   }
+
+  const tabLayout = await page.locator('#store-tabs').evaluate((element) => {
+    const positions = [...element.querySelectorAll('.jan-store-tab')].map((tab) => tab.offsetTop);
+    return {
+      display: getComputedStyle(element).display,
+      rowCount: new Set(positions).size,
+      scrollWidth: element.scrollWidth,
+      clientWidth: element.clientWidth,
+    };
+  });
+  if (tabLayout.display !== 'grid') throw new Error(`Retailer tabs must use grid layout: ${tabLayout.display}`);
+  if (tabLayout.rowCount < 2) throw new Error(`Retailer tabs did not wrap to multiple rows: ${tabLayout.rowCount}`);
+  if (tabLayout.scrollWidth > tabLayout.clientWidth + 1) {
+    throw new Error(`Retailer tabs still require horizontal scrolling: ${tabLayout.scrollWidth}/${tabLayout.clientWidth}`);
+  }
+
+  const joshinTab = page.getByRole('tab', { name: 'Joshin', exact: true });
+  const joshinHref = await joshinTab.getAttribute('href');
+  if (joshinHref?.includes('/dps/')) throw new Error(`Joshin URL still points to Disc Pier: ${joshinHref}`);
 
   const yodobashiHref = await page.locator('#store-link').getAttribute('href');
   if (!yodobashiHref?.includes('yodobashi.com/?word=4902370550733')) {
@@ -96,7 +115,7 @@ try {
   const hiddenAfterClose = await page.locator('#scanner-dialog').getAttribute('hidden');
   if (hiddenAfterClose === null) throw new Error('Scanner dialog did not close');
 
-  console.log('JAN 14-retailer tab browser smoke passed');
+  console.log('JAN Joshin site-wide search and multi-row retailer grid smoke passed');
 } finally {
   await browser.close();
 }
