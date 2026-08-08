@@ -23,15 +23,20 @@ try {
 
   const tabs = page.locator('.jan-store-tab');
   const tabCount = await tabs.count();
-  if (tabCount !== 9) throw new Error(`Expected 9 retailer tabs, got ${tabCount}`);
+  if (tabCount !== 14) throw new Error(`Expected 14 retailer tabs, got ${tabCount}`);
 
   const expectedTabs = [
     ['ヨドバシ', 'yodobashi.com/?word=4902370550733'],
     ['ビックカメラ', 'biccamera.com/bc/category/?q=4902370550733'],
     ['ヤマダ', 'yamada-denkiweb.com/search/4902370550733/'],
     ['エディオン', 'edion.com/item_list.html?keyword=4902370550733'],
+    ['Joshin', 'joshinweb.jp/dps/srhzs.html?KEY=ZS_ALL&KEYWORD=4902370550733&REQUEST_CODE=1'],
+    ['ソフマップ', 'sofmap.com/search_result.aspx?keyword=4902370550733'],
     ['駿河屋', 'suruga-ya.jp/search?category=&search_word=4902370550733'],
     ['ゲオ', 'geo-online.co.jp/shop/goods/search.aspx?keyword=4902370550733'],
+    ['トイザらス', 'toysrus.co.jp/search/?q=4902370550733'],
+    ['ポケモンセンター', 'pokemoncenter-online.com/search/?q=4902370550733'],
+    ['あみあみ', 'slist.amiami.jp/top/search/list?s_keywords=4902370550733&pagemax=60'],
     ['Amazon', 'amazon.co.jp/s?k=4902370550733'],
     ['楽天市場', 'search.rakuten.co.jp/search/mall/4902370550733/'],
     ['Yahoo!', 'shopping.yahoo.co.jp/search/4902370550733/0/'],
@@ -55,27 +60,27 @@ try {
     throw new Error(`Unexpected Yodobashi URL: ${yodobashiHref}`);
   }
 
-  const surugayaTab = page.getByRole('tab', { name: '駿河屋', exact: true });
-  await surugayaTab.evaluate((element) => {
+  const pokemonTab = page.getByRole('tab', { name: 'ポケモンセンター', exact: true });
+  await pokemonTab.evaluate((element) => {
     element.addEventListener('click', (event) => event.preventDefault(), { once: true });
   });
-  await surugayaTab.click();
-  const surugayaHref = await page.locator('#store-link').getAttribute('href');
-  if (!surugayaHref?.includes('suruga-ya.jp/search?category=&search_word=4902370550733')) {
-    throw new Error(`Unexpected Surugaya URL: ${surugayaHref}`);
+  await pokemonTab.click();
+  const pokemonHref = await page.locator('#store-link').getAttribute('href');
+  if (!pokemonHref?.includes('pokemoncenter-online.com/search/?q=4902370550733')) {
+    throw new Error(`Unexpected Pokemon Center URL: ${pokemonHref}`);
   }
-  if ((await surugayaTab.getAttribute('aria-selected')) !== 'true') {
-    throw new Error('Surugaya tab did not become selected after click');
+  if ((await pokemonTab.getAttribute('aria-selected')) !== 'true') {
+    throw new Error('Pokemon Center tab did not become selected after click');
   }
 
-  const geoTab = page.getByRole('tab', { name: 'ゲオ', exact: true });
-  await geoTab.evaluate((element) => {
+  const amiamiTab = page.getByRole('tab', { name: 'あみあみ', exact: true });
+  await amiamiTab.evaluate((element) => {
     element.addEventListener('click', (event) => event.preventDefault(), { once: true });
   });
-  await geoTab.click();
-  const geoHref = await page.locator('#store-link').getAttribute('href');
-  if (!geoHref?.includes('geo-online.co.jp/shop/goods/search.aspx?keyword=4902370550733')) {
-    throw new Error(`Unexpected GEO URL: ${geoHref}`);
+  await amiamiTab.click();
+  const amiamiHref = await page.locator('#store-link').getAttribute('href');
+  if (!amiamiHref?.includes('slist.amiami.jp/top/search/list?s_keywords=4902370550733&pagemax=60')) {
+    throw new Error(`Unexpected AmiAmi URL: ${amiamiHref}`);
   }
 
   if (!page.url().includes(`jan=${jan}`)) throw new Error(`JAN query parameter missing: ${page.url()}`);
@@ -91,7 +96,7 @@ try {
   const hiddenAfterClose = await page.locator('#scanner-dialog').getAttribute('hidden');
   if (hiddenAfterClose === null) throw new Error('Scanner dialog did not close');
 
-  console.log('JAN expanded retailer tab browser smoke passed');
+  console.log('JAN 14-retailer tab browser smoke passed');
 } finally {
   await browser.close();
 }
