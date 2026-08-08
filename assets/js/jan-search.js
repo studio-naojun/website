@@ -5,23 +5,51 @@
   const input = document.getElementById('jan-code');
   const error = document.getElementById('jan-error');
   const status = document.getElementById('search-status');
-  const results = document.getElementById('jan-results');
-  const productSummary = document.getElementById('product-summary');
-  const sortSelect = document.getElementById('sort-results');
+  const storeSearch = document.getElementById('store-search');
+  const storeTabs = document.getElementById('store-tabs');
+  const storeName = document.getElementById('store-name');
+  const storeDescription = document.getElementById('store-description');
+  const storeLink = document.getElementById('store-link');
+  const currentJanEl = document.getElementById('current-jan');
+  const copyJanButton = document.getElementById('copy-jan');
+  const nextStoreButton = document.getElementById('next-store');
   const scannerDialog = document.getElementById('scanner-dialog');
   const scannerVideo = document.getElementById('scanner-video');
   const scannerStatus = document.getElementById('scanner-status');
   const scanButton = document.getElementById('scan-button');
   const scannerClose = document.getElementById('scanner-close');
-  const apiEndpoint = (document.documentElement.dataset.janApi || '').trim();
 
-  const yen = new Intl.NumberFormat('ja-JP', {
-    style: 'currency',
-    currency: 'JPY',
-    maximumFractionDigits: 0,
-  });
+  // Keep retailer URL builders in one place so future affiliate routing can be
+  // introduced without changing the search UI or JAN handling.
+  const stores = [
+    {
+      id: 'yodobashi',
+      name: 'ヨドバシ',
+      description: 'ヨドバシ.comで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.yodobashi.com/?word=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'amazon',
+      name: 'Amazon',
+      description: 'Amazon.co.jpで、このJANコードをキーワード検索します。',
+      buildUrl: (jan) => `https://www.amazon.co.jp/s?k=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'rakuten',
+      name: '楽天市場',
+      description: '楽天市場で、このJANコードを検索します。',
+      buildUrl: (jan) => `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(jan)}/`,
+    },
+    {
+      id: 'yahoo',
+      name: 'Yahoo!',
+      description: 'Yahoo!ショッピングで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://shopping.yahoo.co.jp/search/${encodeURIComponent(jan)}/0/`,
+    },
+  ];
 
-  let currentResults = [];
+  let currentJan = '';
+  let activeStoreIndex = 0;
   let scannerControls = null;
 
   const normalizeJan = (value) => String(value || '').replace(/\D/g, '');
@@ -45,153 +73,114 @@
     error.hidden = !message;
   };
 
-  const clearOutput = () => {
-    currentResults = [];
-    results.replaceChildren();
-    productSummary.hidden = true;
-    productSummary.replaceChildren();
-  };
+  const buildTabs = () => {
+    storeTabs.replaceChildren();
 
-  const stockLabel = (stock) => {
-    if (stock === 'in_stock') return '在庫あり';
-    if (stock === 'low_stock') return '残りわずか';
-    return '在庫状況不明';
-  };
-
-  const sortItems = (items) => {
-    const sorted = [...items];
-    const mode = sortSelect.value;
-
-    if (mode === 'price-desc') {
-      sorted.sort((a, b) => Number(b.price ?? Infinity) - Number(a.price ?? Infinity));
-    } else if (mode === 'store') {
-      sorted.sort((a, b) => String(a.store || '').localeCompare(String(b.store || ''), 'ja'));
-    } else {
-      sorted.sort((a, b) => Number(a.price ?? Infinity) - Number(b.price ?? Infinity));
-    }
-
-    return sorted;
-  };
-
-  const renderResults = () => {
-    results.replaceChildren();
-    const visible = sortItems(currentResults.filter((item) => item.stock !== 'out_of_stock'));
-
-    if (!visible.length) {
-      status.textContent = '在庫のある販売店は見つかりませんでした。';
-      return;
-    }
-
-    status.textContent = `${visible.length}件の販売店が見つかりました。`;
-
-    visible.forEach((item) => {
-      const card = document.createElement('article');
-      card.className = 'jan-result-card';
-
-      const storeBox = document.createElement('div');
-      const store = document.createElement('div');
-      store.className = 'jan-result-store';
-      store.textContent = item.store || '販売店';
-
-      const note = document.createElement('div');
-      note.className = 'jan-result-note';
-      note.textContent = item.note || (item.checkedAt ? `確認: ${item.checkedAt}` : '');
-
-      const stock = document.createElement('span');
-      stock.className = 'jan-stock';
-      stock.textContent = stockLabel(item.stock);
-
-      storeBox.append(store, note, stock);
-
-      const price = document.createElement('div');
-      price.className = 'jan-price';
-      price.textContent = Number.isFinite(Number(item.price)) ? yen.format(Number(item.price)) : '価格不明';
-      if (item.shipping != null) {
-        const shipping = document.createElement('small');
-        shipping.textContent = Number(item.shipping) === 0 ? '送料無料' : `送料 ${yen.format(Number(item.shipping))}`;
-        price.append(shipping);
-      }
-
-      const link = document.createElement('a');
-      link.className = 'jan-result-link';
-      link.href = item.url || '#';
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = '販売店で見る';
-      if (!item.url) {
-        link.removeAttribute('href');
-        link.setAttribute('aria-disabled', 'true');
-      }
-
-      card.append(storeBox, price, link);
-      results.append(card);
+    stores.forEach((store, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'jan-store-tab';
+      button.id = `store-tab-${store.id}`;
+      button.dataset.storeIndex = String(index);
+      button.setAttribute('role', 'tab');
+      button.setAttribute('aria-controls', 'store-panel');
+      button.setAttribute('aria-selected', index === activeStoreIndex ? 'true' : 'false');
+      button.tabIndex = index === activeStoreIndex ? 0 : -1;
+      button.textContent = store.name;
+      button.addEventListener('click', () => selectStore(index));
+      button.addEventListener('keydown', handleTabKeydown);
+      storeTabs.append(button);
     });
   };
 
-  const renderProduct = (product, jan) => {
-    productSummary.replaceChildren();
+  const renderStore = () => {
+    const store = stores[activeStoreIndex];
+    if (!store || !currentJan) return;
 
-    const name = document.createElement('strong');
-    name.textContent = product?.name || '商品';
+    storeName.textContent = store.name;
+    storeDescription.textContent = store.description;
+    storeLink.href = store.buildUrl(currentJan);
+    storeLink.textContent = `${store.name}で商品を見る →`;
 
-    const code = document.createElement('span');
-    code.textContent = `JAN: ${jan}`;
-
-    productSummary.append(name, code);
-    productSummary.hidden = false;
+    storeTabs.querySelectorAll('[role="tab"]').forEach((tab, index) => {
+      const selected = index === activeStoreIndex;
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+      tab.tabIndex = selected ? 0 : -1;
+    });
   };
 
-  const search = async (jan) => {
-    clearOutput();
+  const selectStore = (index, focus = false) => {
+    activeStoreIndex = (index + stores.length) % stores.length;
+    renderStore();
+    if (focus) {
+      storeTabs.querySelector(`[data-store-index="${activeStoreIndex}"]`)?.focus();
+    }
+  };
 
-    if (!apiEndpoint) {
-      status.textContent = '価格比較APIがまだ接続されていません。公開前に検索APIの接続が必要です。';
-      return;
+  function handleTabKeydown(event) {
+    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft' && event.key !== 'Home' && event.key !== 'End') return;
+    event.preventDefault();
+
+    if (event.key === 'Home') return selectStore(0, true);
+    if (event.key === 'End') return selectStore(stores.length - 1, true);
+    selectStore(activeStoreIndex + (event.key === 'ArrowRight' ? 1 : -1), true);
+  }
+
+  const showStoreSearch = (jan) => {
+    currentJan = jan;
+    currentJanEl.textContent = jan;
+    storeSearch.hidden = false;
+    copyJanButton.hidden = false;
+    status.textContent = '販売店を選んで、各サイトの検索結果を確認してください。';
+    buildTabs();
+    renderStore();
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('jan', jan);
+    history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+  };
+
+  const submitJan = (jan, shouldScroll = true) => {
+    const normalized = normalizeJan(jan);
+    input.value = normalized;
+
+    if (!/^\d{8}$|^\d{13}$/.test(normalized)) {
+      showError('JANコードは8桁または13桁の数字で入力してください。');
+      return false;
     }
 
-    status.textContent = '販売店を検索しています…';
-
-    try {
-      const url = new URL(apiEndpoint, window.location.href);
-      url.searchParams.set('jan', jan);
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      const data = await response.json();
-      currentResults = Array.isArray(data.results) ? data.results : [];
-      renderProduct(data.product, data.jan || jan);
-      renderResults();
-    } catch (fetchError) {
-      console.error(fetchError);
-      status.textContent = '検索に失敗しました。時間をおいて、もう一度お試しください。';
+    if (!isValidJan(normalized)) {
+      showError('JANコードのチェックデジットが一致しません。入力内容を確認してください。');
+      return false;
     }
+
+    showError('');
+    showStoreSearch(normalized);
+    if (shouldScroll) {
+      document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    return true;
   };
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const jan = normalizeJan(input.value);
-    input.value = jan;
-
-    if (!/^\d{8}$|^\d{13}$/.test(jan)) {
-      showError('JANコードは8桁または13桁の数字で入力してください。');
-      return;
-    }
-
-    if (!isValidJan(jan)) {
-      showError('JANコードのチェックデジットが一致しません。入力内容を確認してください。');
-      return;
-    }
-
-    showError('');
-    search(jan);
-    document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    submitJan(input.value);
   });
 
-  sortSelect.addEventListener('change', renderResults);
+  nextStoreButton.addEventListener('click', () => selectStore(activeStoreIndex + 1, true));
+
+  copyJanButton.addEventListener('click', async () => {
+    if (!currentJan) return;
+    try {
+      await navigator.clipboard.writeText(currentJan);
+      copyJanButton.textContent = 'コピーしました';
+      window.setTimeout(() => { copyJanButton.textContent = 'JANをコピー'; }, 1400);
+    } catch (_) {
+      input.focus();
+      input.select();
+      status.textContent = 'JANコードを選択しました。コピーしてください。';
+    }
+  });
 
   const stopScanner = () => {
     if (scannerControls) {
@@ -248,9 +237,8 @@
           }
 
           input.value = jan;
-          scannerStatus.textContent = `JAN ${jan} を読み取りました。`;
           closeScanner();
-          form.requestSubmit();
+          submitJan(jan);
         },
       );
       scannerStatus.textContent = '商品のバーコードを枠内に合わせてください。';
@@ -271,4 +259,10 @@
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !scannerDialog.hidden) closeScanner();
   });
+
+  const initialJan = normalizeJan(new URLSearchParams(window.location.search).get('jan'));
+  if (initialJan && isValidJan(initialJan)) {
+    input.value = initialJan;
+    submitJan(initialJan, false);
+  }
 })();
