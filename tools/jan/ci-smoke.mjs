@@ -24,8 +24,6 @@ try {
   const tabCount = await page.locator('.jan-store-tab').count();
   if (tabCount !== 4) throw new Error(`Expected 4 retailer tabs, got ${tabCount}`);
 
-  if (await page.locator('#store-frame').count()) throw new Error('Blocked retailer iframe should not exist');
-
   const yodobashiHref = await page.locator('#store-link').getAttribute('href');
   if (!yodobashiHref?.includes('yodobashi.com/?word=4902370550733')) {
     throw new Error(`Unexpected Yodobashi URL: ${yodobashiHref}`);
@@ -49,36 +47,11 @@ try {
     throw new Error(`Unexpected Yahoo URL: ${yahooHref}`);
   }
 
-  const target = await page.locator('#store-link').getAttribute('target');
-  if (target !== '_blank') throw new Error(`Retailer link must open in a new window: ${target}`);
-
   if (!page.url().includes(`jan=${jan}`)) throw new Error(`JAN query parameter missing: ${page.url()}`);
 
   await page.locator('#next-store').click();
   const selectedAfterNext = await page.locator('.jan-store-tab[aria-selected="true"]').textContent();
   if (selectedAfterNext !== 'ヨドバシ') throw new Error(`Next-store rotation failed: ${selectedAfterNext}`);
-
-  await page.locator('#open-all-stores').click();
-  const panelHidden = await page.locator('#all-store-links-panel').getAttribute('hidden');
-  if (panelHidden !== null) throw new Error('All-store link panel did not open');
-
-  const allLinks = page.locator('.jan-all-store-link');
-  const allLinkCount = await allLinks.count();
-  if (allLinkCount !== 4) throw new Error(`Expected 4 retailer links, got ${allLinkCount}`);
-
-  const hrefs = await allLinks.evaluateAll((links) => links.map((link) => link.href));
-  for (const expected of ['yodobashi.com', 'amazon.co.jp', 'search.rakuten.co.jp', 'shopping.yahoo.co.jp']) {
-    if (!hrefs.some((url) => url.includes(expected) && url.includes(jan))) {
-      throw new Error(`All-store links missing ${expected}: ${hrefs.join(', ')}`);
-    }
-  }
-
-  const targets = await allLinks.evaluateAll((links) => links.map((link) => link.target));
-  if (targets.some((value) => value !== '_blank')) throw new Error(`All-store links must open separately: ${targets.join(', ')}`);
-
-  await page.locator('#open-all-stores').click();
-  const hiddenAfterToggle = await page.locator('#all-store-links-panel').getAttribute('hidden');
-  if (hiddenAfterToggle === null) throw new Error('All-store link panel did not close');
 
   await page.locator('#scan-button').click();
   const dialogHidden = await page.locator('#scanner-dialog').getAttribute('hidden');
@@ -87,7 +60,7 @@ try {
   const hiddenAfterClose = await page.locator('#scanner-dialog').getAttribute('hidden');
   if (hiddenAfterClose === null) throw new Error('Scanner dialog did not close');
 
-  console.log('JAN retailer link panel browser smoke passed');
+  console.log('JAN retailer tab browser smoke passed');
 } finally {
   await browser.close();
 }

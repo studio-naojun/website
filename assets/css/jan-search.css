@@ -46,10 +46,8 @@
 .jan-scan-button:focus-visible,
 .jan-submit-button:focus-visible,
 .jan-copy-button:focus-visible,
-.jan-open-all-button:focus-visible,
 .jan-store-tab:focus-visible,
 .jan-store-link:focus-visible,
-.jan-all-store-link:focus-visible,
 .jan-next-button:focus-visible,
 .jan-close-button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 26%, transparent);
@@ -59,7 +57,6 @@
 .jan-scan-button,
 .jan-submit-button,
 .jan-copy-button,
-.jan-open-all-button,
 .jan-next-button,
 .jan-close-button {
   min-height: 54px;
@@ -73,7 +70,6 @@
 
 .jan-scan-button,
 .jan-copy-button,
-.jan-open-all-button,
 .jan-next-button,
 .jan-close-button {
   background: var(--surface);
@@ -84,7 +80,6 @@
 .jan-submit-button:hover { background: var(--accent); border-color: var(--accent); }
 .jan-scan-button:hover,
 .jan-copy-button:hover,
-.jan-open-all-button:hover,
 .jan-next-button:hover,
 .jan-close-button:hover { background: var(--accent-soft); }
 
@@ -114,19 +109,9 @@
 .jan-about-grid h2,
 .jan-scanner-head h2 { margin-top: 8px; margin-bottom: 0; }
 
-.jan-head-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.jan-copy-button,
-.jan-open-all-button { min-height: 42px; }
-.jan-open-all-button { border-color: var(--accent); color: var(--accent); }
+.jan-copy-button { min-height: 42px; }
 .jan-status { margin: 0; padding: 16px 0 24px; color: var(--muted); }
-.jan-store-search[hidden],
-.jan-all-stores[hidden] { display: none; }
+.jan-store-search[hidden] { display: none; }
 
 .jan-code-summary {
   display: flex;
@@ -191,20 +176,10 @@
   text-transform: uppercase;
 }
 
-.jan-store-panel h3,
-.jan-all-stores h3 { margin: 6px 0 8px; font-size: clamp(26px, 4vw, 38px); }
-.jan-store-panel p,
-.jan-all-stores p { max-width: 620px; margin: 0; color: var(--muted); }
+.jan-store-panel h3 { margin: 6px 0 8px; font-size: clamp(26px, 4vw, 38px); }
+.jan-store-panel p { max-width: 560px; margin: 0; color: var(--muted); }
 
-.jan-store-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.jan-store-link,
-.jan-all-store-link {
+.jan-store-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -213,47 +188,20 @@
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
+  white-space: nowrap;
   font-size: 14px;
   font-weight: 750;
 }
 
-.jan-store-link { white-space: nowrap; }
-.jan-store-link:hover,
-.jan-all-store-link:hover { filter: brightness(.94); }
+.jan-store-link:hover { filter: brightness(.94); }
 
 .jan-next-button {
+  grid-column: 1 / -1;
+  justify-self: start;
   min-height: 40px;
   padding: 0 14px;
   border-color: var(--line);
   font-size: 13px;
-}
-
-.jan-all-stores {
-  margin-top: 18px;
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--bg);
-}
-
-.jan-all-store-links {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.jan-all-store-link {
-  min-height: 52px;
-  background: #fff;
-  border: 1px solid var(--line);
-  color: var(--text);
-}
-
-.jan-all-store-link:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  filter: none;
 }
 
 .jan-external-note { margin: 14px 2px 0; color: var(--muted); font-size: 12px; }
@@ -313,11 +261,10 @@
   .jan-hero { padding: 72px 0 52px; }
   .jan-input-row { grid-template-columns: 1fr 1fr; }
   .jan-input { grid-column: 1 / -1; }
-  .jan-results-head { align-items: flex-start; }
+  .jan-results-head { align-items: center; }
   .jan-store-panel { grid-template-columns: 1fr; }
-  .jan-store-actions { width: 100%; }
   .jan-store-link { justify-self: stretch; }
-  .jan-all-store-links { grid-template-columns: 1fr; }
+  .jan-next-button { grid-column: auto; }
   .jan-about-grid { grid-template-columns: 1fr; gap: 28px; }
 }
 
@@ -326,10 +273,7 @@
   .jan-input-row { grid-template-columns: 1fr; }
   .jan-input { grid-column: auto; }
   .jan-results-head { display: block; }
-  .jan-head-actions { justify-content: stretch; margin-top: 16px; }
-  .jan-copy-button,
-  .jan-open-all-button { flex: 1 1 100%; }
+  .jan-copy-button { margin-top: 16px; }
   .jan-code-summary { display: grid; gap: 4px; }
-  .jan-store-panel,
-  .jan-all-stores { padding: 20px; }
+  .jan-store-panel { padding: 22px; }
 }

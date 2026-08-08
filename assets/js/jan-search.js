@@ -12,9 +12,6 @@
   const storeLink = document.getElementById('store-link');
   const currentJanEl = document.getElementById('current-jan');
   const copyJanButton = document.getElementById('copy-jan');
-  const openAllButton = document.getElementById('open-all-stores');
-  const allStoreLinksPanel = document.getElementById('all-store-links-panel');
-  const allStoreLinks = document.getElementById('all-store-links');
   const nextStoreButton = document.getElementById('next-store');
   const scannerDialog = document.getElementById('scanner-dialog');
   const scannerVideo = document.getElementById('scanner-video');
@@ -22,6 +19,8 @@
   const scanButton = document.getElementById('scan-button');
   const scannerClose = document.getElementById('scanner-close');
 
+  // Keep retailer URL builders in one place so future affiliate routing can be
+  // introduced without changing the search UI or JAN handling.
   const stores = [
     {
       id: 'yodobashi',
@@ -94,28 +93,13 @@
     });
   };
 
-  const buildAllStoreLinks = () => {
-    allStoreLinks.replaceChildren();
-
-    stores.forEach((store) => {
-      const link = document.createElement('a');
-      link.className = 'jan-all-store-link';
-      link.href = store.buildUrl(currentJan);
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = `${store.name}で商品を見る →`;
-      allStoreLinks.append(link);
-    });
-  };
-
   const renderStore = () => {
     const store = stores[activeStoreIndex];
     if (!store || !currentJan) return;
 
-    const url = store.buildUrl(currentJan);
     storeName.textContent = store.name;
     storeDescription.textContent = store.description;
-    storeLink.href = url;
+    storeLink.href = store.buildUrl(currentJan);
     storeLink.textContent = `${store.name}で商品を見る →`;
 
     storeTabs.querySelectorAll('[role="tab"]').forEach((tab, index) => {
@@ -147,11 +131,7 @@
     currentJanEl.textContent = jan;
     storeSearch.hidden = false;
     copyJanButton.hidden = false;
-    openAllButton.hidden = false;
-    allStoreLinksPanel.hidden = true;
-    allStoreLinks.replaceChildren();
-    openAllButton.textContent = '4店舗のリンクを表示';
-    status.textContent = '販売店を選んで、各サイトの検索結果を新しいWindowで確認してください。';
+    status.textContent = '販売店を選んで、各サイトの検索結果を確認してください。';
     buildTabs();
     renderStore();
 
@@ -188,23 +168,6 @@
   });
 
   nextStoreButton.addEventListener('click', () => selectStore(activeStoreIndex + 1, true));
-
-  openAllButton.addEventListener('click', () => {
-    if (!currentJan) return;
-
-    if (!allStoreLinksPanel.hidden) {
-      allStoreLinksPanel.hidden = true;
-      openAllButton.textContent = '4店舗のリンクを表示';
-      status.textContent = '販売店を選んで、各サイトの検索結果を新しいWindowで確認してください。';
-      return;
-    }
-
-    buildAllStoreLinks();
-    allStoreLinksPanel.hidden = false;
-    openAllButton.textContent = '4店舗のリンクを閉じる';
-    status.textContent = '4店舗の検索リンクを表示しました。開きたい店舗を選んでください。';
-    allStoreLinksPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
 
   copyJanButton.addEventListener('click', async () => {
     if (!currentJan) return;

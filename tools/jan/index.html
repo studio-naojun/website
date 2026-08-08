@@ -57,10 +57,7 @@
             <div class="eyebrow">Find at stores</div>
             <h2>販売店を切り替えて探す</h2>
           </div>
-          <div class="jan-head-actions">
-            <button class="jan-copy-button" id="copy-jan" type="button" hidden>JANをコピー</button>
-            <button class="jan-open-all-button" id="open-all-stores" type="button" hidden>4店舗のリンクを表示</button>
-          </div>
+          <button class="jan-copy-button" id="copy-jan" type="button" hidden>JANをコピー</button>
         </div>
 
         <p class="jan-status" id="search-status">JANコードを入力して検索してください。</p>
@@ -74,24 +71,13 @@
           <div class="jan-store-tabs" id="store-tabs" role="tablist" aria-label="販売店"></div>
 
           <section class="jan-store-panel" id="store-panel" role="tabpanel" tabindex="0">
-            <div class="jan-store-copy">
+            <div>
               <div class="jan-store-kicker">Selected store</div>
               <h3 id="store-name"></h3>
               <p id="store-description"></p>
             </div>
-            <div class="jan-store-actions">
-              <a class="jan-store-link" id="store-link" href="#" target="_blank" rel="noopener noreferrer">この店舗で商品を見る →</a>
-              <button class="jan-next-button" id="next-store" type="button">次の店舗を見る</button>
-            </div>
-          </section>
-
-          <section class="jan-all-stores" id="all-store-links-panel" aria-labelledby="all-store-links-title" hidden>
-            <div>
-              <div class="jan-store-kicker">All stores</div>
-              <h3 id="all-store-links-title">4店舗の検索リンク</h3>
-              <p>ブラウザのポップアップ制限を避けるため、各店舗をここから個別に開けます。</p>
-            </div>
-            <div class="jan-all-store-links" id="all-store-links"></div>
+            <a class="jan-store-link" id="store-link" href="#" target="_blank" rel="noopener noreferrer">この店舗で商品を見る →</a>
+            <button class="jan-next-button" id="next-store" type="button">次の店舗を見る</button>
           </section>
 
           <p class="jan-external-note">価格・在庫・送料などの最新情報は、移動先の販売店ページで確認してください。</p>
