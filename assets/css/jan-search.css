@@ -128,29 +128,30 @@
 .jan-code-summary strong { font-size: 20px; letter-spacing: .05em; }
 
 .jan-store-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
   gap: 8px;
   margin-top: 22px;
-  overflow-x: auto;
-  padding: 2px 2px 10px;
-  scrollbar-width: thin;
+  padding: 2px;
 }
 
 .jan-store-tab {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
+  width: 100%;
   min-height: 42px;
-  padding: 0 16px;
+  padding: 8px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: #fff;
   color: var(--text);
+  text-align: center;
   text-decoration: none;
   font: inherit;
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.25;
   cursor: pointer;
 }
 
@@ -279,5 +280,7 @@
   .jan-results-head { display: block; }
   .jan-copy-button { margin-top: 16px; }
   .jan-code-summary { display: grid; gap: 4px; }
+  .jan-store-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .jan-store-tab { padding: 8px 6px; font-size: 13px; }
   .jan-store-panel { padding: 22px; }
 }
