@@ -29,6 +29,36 @@
       buildUrl: (jan) => `https://www.yodobashi.com/?word=${encodeURIComponent(jan)}`,
     },
     {
+      id: 'biccamera',
+      name: 'ビックカメラ',
+      description: 'ビックカメラ.comで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.biccamera.com/bc/category/?q=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'yamada',
+      name: 'ヤマダ',
+      description: 'ヤマダウェブコムで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.yamada-denkiweb.com/search/${encodeURIComponent(jan)}/`,
+    },
+    {
+      id: 'edion',
+      name: 'エディオン',
+      description: 'エディオン公式通販で、このJANコードを検索します。',
+      buildUrl: (jan) => `https://www.edion.com/item_list.html?keyword=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'surugaya',
+      name: '駿河屋',
+      description: '駿河屋で、新品・中古を含めてこのJANコードを検索します。',
+      buildUrl: (jan) => `https://www.suruga-ya.jp/search?category=&search_word=${encodeURIComponent(jan)}`,
+    },
+    {
+      id: 'geo',
+      name: 'ゲオ',
+      description: 'ゲオオンラインストアで、このJANコードを検索します。',
+      buildUrl: (jan) => `https://ec.geo-online.co.jp/shop/goods/search.aspx?keyword=${encodeURIComponent(jan)}`,
+    },
+    {
       id: 'amazon',
       name: 'Amazon',
       description: 'Amazon.co.jpで、このJANコードをキーワード検索します。',
