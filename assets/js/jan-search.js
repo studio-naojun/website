@@ -10,8 +10,8 @@
   const storeName = document.getElementById('store-name');
   const storeDescription = document.getElementById('store-description');
   const storeLink = document.getElementById('store-link');
-  const currentJanEl = document.getElementById('current-jan');
-  const copyJanButton = document.getElementById('copy-jan');
+  const currentQueryEl = document.getElementById('current-jan');
+  const copyQueryButton = document.getElementById('copy-jan');
   const nextStoreButton = document.getElementById('next-store');
   const scannerDialog = document.getElementById('scanner-dialog');
   const scannerVideo = document.getElementById('scanner-video');
@@ -20,98 +20,99 @@
   const scannerClose = document.getElementById('scanner-close');
 
   // Keep retailer URL builders in one place so future affiliate routing can be
-  // introduced without changing the search UI or JAN handling.
+  // introduced without changing the search UI or query handling.
   const stores = [
     {
       id: 'yodobashi',
       name: 'ヨドバシ',
-      description: 'ヨドバシ.comで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.yodobashi.com/?word=${encodeURIComponent(jan)}`,
+      description: 'ヨドバシ.comで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.yodobashi.com/?word=${encodeURIComponent(query)}`,
     },
     {
       id: 'biccamera',
       name: 'ビックカメラ',
-      description: 'ビックカメラ.comで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.biccamera.com/bc/category/?q=${encodeURIComponent(jan)}`,
+      description: 'ビックカメラ.comで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.biccamera.com/bc/category/?q=${encodeURIComponent(query)}`,
     },
     {
       id: 'yamada',
       name: 'ヤマダ',
-      description: 'ヤマダウェブコムで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.yamada-denkiweb.com/search/${encodeURIComponent(jan)}/`,
+      description: 'ヤマダウェブコムで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.yamada-denkiweb.com/search/${encodeURIComponent(query)}/`,
     },
     {
       id: 'edion',
       name: 'エディオン',
-      description: 'エディオン公式通販で、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.edion.com/item_list.html?keyword=${encodeURIComponent(jan)}`,
+      description: 'エディオン公式通販で、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.edion.com/item_list.html?keyword=${encodeURIComponent(query)}`,
     },
     {
       id: 'joshin',
       name: 'Joshin',
-      description: 'Joshin webショップ全体から、このJANコードを検索します。',
-      buildUrl: (jan) => `https://joshinweb.jp/srhzs.html?KEY=ZS_ALL&KEY_M=ALL&QK=${encodeURIComponent(jan)}&REQUEST_CODE=1`,
+      description: 'Joshin webショップ全体から、このキーワードを検索します。',
+      buildUrl: (query) => `https://joshinweb.jp/srhzs.html?KEY=ZS_ALL&KEY_M=ALL&QK=${encodeURIComponent(query)}&REQUEST_CODE=1`,
     },
     {
       id: 'sofmap',
       name: 'ソフマップ',
-      description: 'ソフマップ・ドットコムで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.sofmap.com/search_result.aspx?keyword=${encodeURIComponent(jan)}`,
+      description: 'ソフマップ・ドットコムで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.sofmap.com/search_result.aspx?keyword=${encodeURIComponent(query)}`,
     },
     {
       id: 'surugaya',
       name: '駿河屋',
-      description: '駿河屋で、新品・中古を含めてこのJANコードを検索します。',
-      buildUrl: (jan) => `https://www.suruga-ya.jp/search?category=&search_word=${encodeURIComponent(jan)}`,
+      description: '駿河屋で、新品・中古を含めてこのキーワードを検索します。',
+      buildUrl: (query) => `https://www.suruga-ya.jp/search?category=&search_word=${encodeURIComponent(query)}`,
     },
     {
       id: 'geo',
       name: 'ゲオ',
-      description: 'ゲオオンラインストアで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://ec.geo-online.co.jp/shop/goods/search.aspx?keyword=${encodeURIComponent(jan)}`,
+      description: 'ゲオオンラインストアで、このキーワードを検索します。',
+      buildUrl: (query) => `https://ec.geo-online.co.jp/shop/goods/search.aspx?keyword=${encodeURIComponent(query)}`,
     },
     {
       id: 'toysrus',
       name: 'トイザらス',
-      description: 'トイザらス オンラインストアで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.toysrus.co.jp/search/?q=${encodeURIComponent(jan)}`,
+      description: 'トイザらス オンラインストアで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.toysrus.co.jp/search/?q=${encodeURIComponent(query)}`,
     },
     {
       id: 'pokemoncenter',
       name: 'ポケモンセンター',
-      description: 'ポケモンセンターオンラインで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://www.pokemoncenter-online.com/search/?q=${encodeURIComponent(jan)}`,
+      description: 'ポケモンセンターオンラインで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.pokemoncenter-online.com/search/?q=${encodeURIComponent(query)}`,
     },
     {
       id: 'amiami',
       name: 'あみあみ',
-      description: 'あみあみオンライン本店で、このJANコードを検索します。',
-      buildUrl: (jan) => `https://slist.amiami.jp/top/search/list?s_keywords=${encodeURIComponent(jan)}&pagemax=60`,
+      description: 'あみあみオンライン本店で、このキーワードを検索します。',
+      buildUrl: (query) => `https://slist.amiami.jp/top/search/list?s_keywords=${encodeURIComponent(query)}&pagemax=60`,
     },
     {
       id: 'amazon',
       name: 'Amazon',
-      description: 'Amazon.co.jpで、このJANコードをキーワード検索します。',
-      buildUrl: (jan) => `https://www.amazon.co.jp/s?k=${encodeURIComponent(jan)}`,
+      description: 'Amazon.co.jpで、このキーワードを検索します。',
+      buildUrl: (query) => `https://www.amazon.co.jp/s?k=${encodeURIComponent(query)}`,
     },
     {
       id: 'rakuten',
       name: '楽天市場',
-      description: '楽天市場で、このJANコードを検索します。',
-      buildUrl: (jan) => `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(jan)}/`,
+      description: '楽天市場で、このキーワードを検索します。',
+      buildUrl: (query) => `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(query)}/`,
     },
     {
       id: 'yahoo',
       name: 'Yahoo!',
-      description: 'Yahoo!ショッピングで、このJANコードを検索します。',
-      buildUrl: (jan) => `https://shopping.yahoo.co.jp/search/${encodeURIComponent(jan)}/0/`,
+      description: 'Yahoo!ショッピングで、このキーワードを検索します。',
+      buildUrl: (query) => `https://shopping.yahoo.co.jp/search/${encodeURIComponent(query)}/0/`,
     },
   ];
 
-  let currentJan = '';
+  let currentQuery = '';
   let activeStoreIndex = 0;
   let scannerControls = null;
 
+  const normalizeQuery = (value) => String(value || '').trim().replace(/\s+/g, ' ');
   const normalizeJan = (value) => String(value || '').replace(/\D/g, '');
 
   const isValidJan = (code) => {
@@ -141,7 +142,7 @@
       link.className = 'jan-store-tab';
       link.id = `store-tab-${store.id}`;
       link.dataset.storeIndex = String(index);
-      link.href = store.buildUrl(currentJan);
+      link.href = store.buildUrl(currentQuery);
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       link.setAttribute('role', 'tab');
@@ -157,12 +158,12 @@
 
   const renderStore = () => {
     const store = stores[activeStoreIndex];
-    if (!store || !currentJan) return;
+    if (!store || !currentQuery) return;
 
     storeName.textContent = store.name;
     storeDescription.textContent = store.description;
-    storeLink.href = store.buildUrl(currentJan);
-    storeLink.textContent = `${store.name}で商品を見る →`;
+    storeLink.href = store.buildUrl(currentQuery);
+    storeLink.textContent = `${store.name}で検索する →`;
 
     storeTabs.querySelectorAll('[role="tab"]').forEach((tab, index) => {
       const selected = index === activeStoreIndex;
@@ -188,36 +189,32 @@
     selectStore(activeStoreIndex + (event.key === 'ArrowRight' ? 1 : -1), true);
   }
 
-  const showStoreSearch = (jan) => {
-    currentJan = jan;
-    currentJanEl.textContent = jan;
+  const showStoreSearch = (query) => {
+    currentQuery = query;
+    currentQueryEl.textContent = query;
     storeSearch.hidden = false;
-    copyJanButton.hidden = false;
-    status.textContent = '店舗名を押すと、このJANコードの検索結果を新しいWindowで開きます。';
+    copyQueryButton.hidden = false;
+    status.textContent = '店舗名を押すと、この検索語の結果を新しいWindowで開きます。';
     buildTabs();
     renderStore();
 
     const url = new URL(window.location.href);
-    url.searchParams.set('jan', jan);
+    url.searchParams.set('q', query);
+    url.searchParams.delete('jan');
     history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
   };
 
-  const submitJan = (jan, shouldScroll = true) => {
-    const normalized = normalizeJan(jan);
-    input.value = normalized;
+  const submitQuery = (value, shouldScroll = true) => {
+    const query = normalizeQuery(value);
+    input.value = query;
 
-    if (!/^\d{8}$|^\d{13}$/.test(normalized)) {
-      showError('JANコードは8桁または13桁の数字で入力してください。');
-      return false;
-    }
-
-    if (!isValidJan(normalized)) {
-      showError('JANコードのチェックデジットが一致しません。入力内容を確認してください。');
+    if (!query) {
+      showError('検索キーワードを入力してください。');
       return false;
     }
 
     showError('');
-    showStoreSearch(normalized);
+    showStoreSearch(query);
     if (shouldScroll) {
       document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -226,21 +223,21 @@
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    submitJan(input.value);
+    submitQuery(input.value);
   });
 
   nextStoreButton.addEventListener('click', () => selectStore(activeStoreIndex + 1, true));
 
-  copyJanButton.addEventListener('click', async () => {
-    if (!currentJan) return;
+  copyQueryButton.addEventListener('click', async () => {
+    if (!currentQuery) return;
     try {
-      await navigator.clipboard.writeText(currentJan);
-      copyJanButton.textContent = 'コピーしました';
-      window.setTimeout(() => { copyJanButton.textContent = 'JANをコピー'; }, 1400);
+      await navigator.clipboard.writeText(currentQuery);
+      copyQueryButton.textContent = 'コピーしました';
+      window.setTimeout(() => { copyQueryButton.textContent = '検索語をコピー'; }, 1400);
     } catch (_) {
       input.focus();
       input.select();
-      status.textContent = 'JANコードを選択しました。コピーしてください。';
+      status.textContent = '検索キーワードを選択しました。コピーしてください。';
     }
   });
 
@@ -269,12 +266,12 @@
     scannerStatus.textContent = 'カメラを起動しています…';
 
     if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
-      scannerStatus.textContent = 'このブラウザではカメラを利用できません。JANコードを入力してください。';
+      scannerStatus.textContent = 'このブラウザではカメラを利用できません。検索キーワードを入力してください。';
       return;
     }
 
     if (!window.ZXingBrowser?.BrowserMultiFormatReader) {
-      scannerStatus.textContent = 'バーコード読取機能を読み込めませんでした。JANコードを入力してください。';
+      scannerStatus.textContent = 'バーコード読取機能を読み込めませんでした。検索キーワードを入力してください。';
       return;
     }
 
@@ -300,16 +297,16 @@
 
           input.value = jan;
           closeScanner();
-          submitJan(jan);
+          submitQuery(jan);
         },
       );
-      scannerStatus.textContent = '商品のバーコードを枠内に合わせてください。';
+      scannerStatus.textContent = '商品のJANコードを枠内に合わせてください。';
     } catch (scannerError) {
       console.error(scannerError);
       const denied = scannerError?.name === 'NotAllowedError';
       scannerStatus.textContent = denied
         ? 'カメラの使用が許可されていません。ブラウザの権限設定を確認してください。'
-        : 'カメラを起動できませんでした。JANコードを入力してください。';
+        : 'カメラを起動できませんでした。検索キーワードを入力してください。';
     }
   };
 
@@ -322,9 +319,12 @@
     if (event.key === 'Escape' && !scannerDialog.hidden) closeScanner();
   });
 
-  const initialJan = normalizeJan(new URLSearchParams(window.location.search).get('jan'));
-  if (initialJan && isValidJan(initialJan)) {
-    input.value = initialJan;
-    submitJan(initialJan, false);
+  const params = new URLSearchParams(window.location.search);
+  const initialQuery = normalizeQuery(params.get('q'));
+  const legacyJan = normalizeJan(params.get('jan'));
+  const initialValue = initialQuery || (legacyJan && isValidJan(legacyJan) ? legacyJan : '');
+  if (initialValue) {
+    input.value = initialValue;
+    submitQuery(initialValue, false);
   }
 })();

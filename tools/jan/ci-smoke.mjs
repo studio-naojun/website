@@ -7,39 +7,47 @@ try {
   await page.route('https://unpkg.com/**', (route) => route.abort());
   await page.goto('http://127.0.0.1:4173/tools/jan/', { waitUntil: 'domcontentloaded' });
 
-  await page.locator('#jan-code').fill('123');
+  await page.locator('#jan-code').fill('   ');
   await page.locator('#jan-search-form').evaluate((form) => form.requestSubmit());
   await page.waitForFunction(() => !document.querySelector('#jan-error')?.hidden);
-  const lengthError = await page.locator('#jan-error').textContent();
-  if (!lengthError?.includes('8桁または13桁')) throw new Error('Length validation did not run');
+  const emptyError = await page.locator('#jan-error').textContent();
+  if (!emptyError?.includes('検索キーワード')) throw new Error('Empty keyword validation did not run');
 
-  const jan = '4902370550733';
-  await page.locator('#jan-code').fill(jan);
+  const query = 'ポケモンカード 151';
+  const encodedQuery = encodeURIComponent(query);
+  await page.locator('#jan-code').fill(query);
   await page.locator('#jan-search-form').evaluate((form) => form.requestSubmit());
   await page.waitForFunction(() => !document.querySelector('#store-search')?.hidden);
 
-  const currentJan = await page.locator('#current-jan').textContent();
-  if (currentJan !== jan) throw new Error(`JAN was not preserved: ${currentJan}`);
+  const currentQuery = await page.locator('#current-jan').textContent();
+  if (currentQuery !== query) throw new Error(`Keyword was not preserved: ${currentQuery}`);
+
+  const queryUrl = new URL(page.url());
+  if (queryUrl.searchParams.get('q') !== query) throw new Error(`Keyword query parameter missing: ${page.url()}`);
+  if (queryUrl.searchParams.has('jan')) throw new Error(`Legacy JAN parameter should be removed: ${page.url()}`);
+
+  const copyText = await page.locator('#copy-jan').textContent();
+  if (!copyText?.includes('検索語')) throw new Error(`Copy action was not updated for keywords: ${copyText}`);
 
   const tabs = page.locator('.jan-store-tab');
   const tabCount = await tabs.count();
   if (tabCount !== 14) throw new Error(`Expected 14 retailer tabs, got ${tabCount}`);
 
   const expectedTabs = [
-    ['ヨドバシ', 'yodobashi.com/?word=4902370550733'],
-    ['ビックカメラ', 'biccamera.com/bc/category/?q=4902370550733'],
-    ['ヤマダ', 'yamada-denkiweb.com/search/4902370550733/'],
-    ['エディオン', 'edion.com/item_list.html?keyword=4902370550733'],
-    ['Joshin', 'joshinweb.jp/srhzs.html?KEY=ZS_ALL&KEY_M=ALL&QK=4902370550733&REQUEST_CODE=1'],
-    ['ソフマップ', 'sofmap.com/search_result.aspx?keyword=4902370550733'],
-    ['駿河屋', 'suruga-ya.jp/search?category=&search_word=4902370550733'],
-    ['ゲオ', 'geo-online.co.jp/shop/goods/search.aspx?keyword=4902370550733'],
-    ['トイザらス', 'toysrus.co.jp/search/?q=4902370550733'],
-    ['ポケモンセンター', 'pokemoncenter-online.com/search/?q=4902370550733'],
-    ['あみあみ', 'slist.amiami.jp/top/search/list?s_keywords=4902370550733&pagemax=60'],
-    ['Amazon', 'amazon.co.jp/s?k=4902370550733'],
-    ['楽天市場', 'search.rakuten.co.jp/search/mall/4902370550733/'],
-    ['Yahoo!', 'shopping.yahoo.co.jp/search/4902370550733/0/'],
+    ['ヨドバシ', `yodobashi.com/?word=${encodedQuery}`],
+    ['ビックカメラ', `biccamera.com/bc/category/?q=${encodedQuery}`],
+    ['ヤマダ', `yamada-denkiweb.com/search/${encodedQuery}/`],
+    ['エディオン', `edion.com/item_list.html?keyword=${encodedQuery}`],
+    ['Joshin', `joshinweb.jp/srhzs.html?KEY=ZS_ALL&KEY_M=ALL&QK=${encodedQuery}&REQUEST_CODE=1`],
+    ['ソフマップ', `sofmap.com/search_result.aspx?keyword=${encodedQuery}`],
+    ['駿河屋', `suruga-ya.jp/search?category=&search_word=${encodedQuery}`],
+    ['ゲオ', `geo-online.co.jp/shop/goods/search.aspx?keyword=${encodedQuery}`],
+    ['トイザらス', `toysrus.co.jp/search/?q=${encodedQuery}`],
+    ['ポケモンセンター', `pokemoncenter-online.com/search/?q=${encodedQuery}`],
+    ['あみあみ', `slist.amiami.jp/top/search/list?s_keywords=${encodedQuery}&pagemax=60`],
+    ['Amazon', `amazon.co.jp/s?k=${encodedQuery}`],
+    ['楽天市場', `search.rakuten.co.jp/search/mall/${encodedQuery}/`],
+    ['Yahoo!', `shopping.yahoo.co.jp/search/${encodedQuery}/0/`],
   ];
 
   for (const [name, expectedUrl] of expectedTabs) {
@@ -50,7 +58,7 @@ try {
     const rel = await tab.getAttribute('rel');
 
     if (tagName !== 'A') throw new Error(`${name} tab must be a direct link, got ${tagName}`);
-    if (!href?.includes(expectedUrl)) throw new Error(`Unexpected ${name} tab URL: ${href}`);
+    if (!href?.includes(expectedUrl)) throw new Error(`Unexpected ${name} keyword URL: ${href}`);
     if (target !== '_blank') throw new Error(`${name} tab must open in a new window: ${target}`);
     if (!rel?.includes('noopener')) throw new Error(`${name} tab must use noopener: ${rel}`);
   }
@@ -75,8 +83,8 @@ try {
   if (joshinHref?.includes('/dps/')) throw new Error(`Joshin URL still points to Disc Pier: ${joshinHref}`);
 
   const yodobashiHref = await page.locator('#store-link').getAttribute('href');
-  if (!yodobashiHref?.includes('yodobashi.com/?word=4902370550733')) {
-    throw new Error(`Unexpected Yodobashi URL: ${yodobashiHref}`);
+  if (!yodobashiHref?.includes(`yodobashi.com/?word=${encodedQuery}`)) {
+    throw new Error(`Unexpected Yodobashi keyword URL: ${yodobashiHref}`);
   }
 
   const pokemonTab = page.getByRole('tab', { name: 'ポケモンセンター', exact: true });
@@ -85,8 +93,8 @@ try {
   });
   await pokemonTab.click();
   const pokemonHref = await page.locator('#store-link').getAttribute('href');
-  if (!pokemonHref?.includes('pokemoncenter-online.com/search/?q=4902370550733')) {
-    throw new Error(`Unexpected Pokemon Center URL: ${pokemonHref}`);
+  if (!pokemonHref?.includes(`pokemoncenter-online.com/search/?q=${encodedQuery}`)) {
+    throw new Error(`Unexpected Pokemon Center keyword URL: ${pokemonHref}`);
   }
   if ((await pokemonTab.getAttribute('aria-selected')) !== 'true') {
     throw new Error('Pokemon Center tab did not become selected after click');
@@ -98,11 +106,9 @@ try {
   });
   await amiamiTab.click();
   const amiamiHref = await page.locator('#store-link').getAttribute('href');
-  if (!amiamiHref?.includes('slist.amiami.jp/top/search/list?s_keywords=4902370550733&pagemax=60')) {
-    throw new Error(`Unexpected AmiAmi URL: ${amiamiHref}`);
+  if (!amiamiHref?.includes(`slist.amiami.jp/top/search/list?s_keywords=${encodedQuery}&pagemax=60`)) {
+    throw new Error(`Unexpected AmiAmi keyword URL: ${amiamiHref}`);
   }
-
-  if (!page.url().includes(`jan=${jan}`)) throw new Error(`JAN query parameter missing: ${page.url()}`);
 
   await page.locator('#next-store').click();
   const selectedAfterNext = await page.locator('.jan-store-tab[aria-selected="true"]').textContent();
@@ -115,7 +121,17 @@ try {
   const hiddenAfterClose = await page.locator('#scanner-dialog').getAttribute('hidden');
   if (hiddenAfterClose === null) throw new Error('Scanner dialog did not close');
 
-  console.log('JAN Joshin site-wide search and multi-row retailer grid smoke passed');
+  const legacyJan = '4902370550733';
+  await page.goto(`http://127.0.0.1:4173/tools/jan/?jan=${legacyJan}`, { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => !document.querySelector('#store-search')?.hidden);
+  const migratedValue = await page.locator('#current-jan').textContent();
+  if (migratedValue !== legacyJan) throw new Error(`Legacy JAN URL was not preserved: ${migratedValue}`);
+  const migratedUrl = new URL(page.url());
+  if (migratedUrl.searchParams.get('q') !== legacyJan || migratedUrl.searchParams.has('jan')) {
+    throw new Error(`Legacy JAN URL was not migrated to q: ${page.url()}`);
+  }
+
+  console.log('Free keyword retailer search with JAN scanner compatibility smoke passed');
 } finally {
   await browser.close();
 }
