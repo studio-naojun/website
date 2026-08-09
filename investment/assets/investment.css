@@ -120,6 +120,14 @@
   background: var(--surface);
 }
 
+.forecast-card:only-child {
+  grid-column: 1 / -1;
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+}
+
 .forecast-label {
   color: var(--muted);
   font-size: 12px;
