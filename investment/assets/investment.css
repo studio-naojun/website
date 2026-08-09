@@ -242,6 +242,28 @@
 .investment-article ul,
 .investment-article ol { margin-bottom: 1.5em; }
 
+.investment-article a {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .16em;
+  transition: color .16s ease, text-decoration-color .16s ease, background-color .16s ease;
+}
+
+.investment-article a:hover {
+  color: var(--investment-positive);
+  text-decoration-color: currentColor;
+  background: var(--accent-soft);
+}
+
+.investment-article a:focus-visible {
+  color: var(--investment-positive);
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  text-decoration-color: currentColor;
+}
+
 .investment-article table {
   width: 100%;
   margin: 28px 0;
