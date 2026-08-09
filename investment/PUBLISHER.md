@@ -97,8 +97,16 @@ Every public article must contain:
 - a concise deck / central thesis;
 - evidence-backed body;
 - explicit uncertainty, counter-case, or invalidation condition;
-- a source note based on independently publishable evidence;
+- source links located near the claims/tables they support;
 - a statement that the article is analysis, not individualized investment advice.
+
+External evidence/source links must open in a separate window/tab and use both:
+
+```html
+target="_blank" rel="noopener noreferrer"
+```
+
+Internal `naojun.jp` navigation links normally stay in the same window.
 
 Do not expose:
 
@@ -141,7 +149,8 @@ After creating the PR, the adapter must verify the exact PR head SHA and all req
 - the PR diff matches the approved source and expected public files;
 - required smoke/CI checks are successful;
 - no unresolved review/blocking condition exists;
-- target/feed provenance remains unambiguous.
+- target/feed provenance remains unambiguous;
+- external source links retain `target="_blank" rel="noopener noreferrer"`.
 
 If checks are pending, wait for a later run. If any required check fails, do not merge and report the blocking reason. A second Jun approval is not required after checks pass unless the article or material publication content changed after the original approval.
 
