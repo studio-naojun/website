@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NaoJun Investment Observatory。AIによる継続的な市場調査、シナリオ更新、予想検証を公開するStudio NaoJunの作品です。">
+  <title>NaoJun Investment Observatory | Studio NaoJun</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="assets/investment.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../">Studio NaoJun</a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="../about/">About</a>
+        <a href="../works/">Works</a>
+        <a href="./">Investment</a>
+        <a href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="investment-hero">
+      <div class="container investment-hero-grid">
+        <div>
+          <div class="eyebrow">NaoJun Work / AI-native publishing</div>
+          <h1>Investment<br>Observatory</h1>
+          <p class="lead">市場を当てるためではなく、何を見て、どの前提を置き、何が起きたら見方を変えるのかを継続記録する。AIによる調査・編集・公開フローそのものを含むStudio NaoJunの作品です。</p>
+          <p class="small-note">個別の売買推奨ではありません。掲載内容は公開時点のデータとシナリオに基づく分析です。</p>
+        </div>
+        <aside class="regime-panel" aria-labelledby="regime-title">
+          <div class="panel-label">CURRENT REGIME</div>
+          <div id="regime-title" class="regime-name">データ準備中</div>
+          <div id="regime-confidence" class="regime-confidence"></div>
+          <div id="scenario-bars" class="scenario-bars" aria-label="シナリオ確率"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section investment-state-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Year-end map</div>
+            <h2>現在の予想地図</h2>
+          </div>
+          <p id="state-updated">Research Artifactの公開準備が整うと自動更新されます。</p>
+        </div>
+        <div id="forecast-grid" class="forecast-grid"></div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Latest</div>
+            <h2>最新の観測記録</h2>
+          </div>
+          <p>週次は市場を動かした変化、月次は6〜18か月の投資環境と年末予想を中心に更新します。</p>
+        </div>
+        <div id="article-list" class="article-list">
+          <div class="empty-state">最初の記事を準備しています。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section methodology-section">
+      <div class="container methodology-grid">
+        <div>
+          <div class="eyebrow">Method</div>
+          <h2>予想より、更新可能性を残す。</h2>
+        </div>
+        <div class="method-copy">
+          <p>調査では一次資料と検証可能な公開情報を優先し、事実・市場解釈・推論を分離します。</p>
+          <p>各記事には、中心シナリオだけでなく反対材料と反証条件を残します。後から予想を書き換えるのではなく、過去時点の判断をArchiveとして保持します。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span data-year></span> Studio NaoJun</span>
+      <a href="../works/">Works</a>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="assets/investment.js"></script>
+</body>
+</html>
