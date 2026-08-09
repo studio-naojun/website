@@ -16,11 +16,14 @@ kanade-report-library
   -> Jun approval
   -> Static Publisher Adapter
   -> website pull request
-  -> Jun merge
+  -> CI verification
+  -> adapter merge
   -> GitHub Pages publication
 ```
 
-A merge to `main` is the public release operation. The adapter must never merge its own publication PR.
+Jun approval is the single human publication gate. Once Jun explicitly approves an article for publication, that approval also authorizes the Static Publisher Adapter to create and merge the corresponding website publication PR, provided all automated checks pass and no stale-approval or provenance conflict is detected.
+
+A merge to `main` is the public release operation. The adapter may merge its own publication PR only when it is operating under an explicit Jun approval for the exact source cycle and the required CI/checks have succeeded.
 
 ## Source authority
 
@@ -111,7 +114,7 @@ Third-party newsletters, public post titles, commentators, or social posts may h
 
 Public claims must stand on independent evidence from the Research Artifact/source registry.
 
-## Pull request rules
+## Pull request and merge rules
 
 The adapter creates a dedicated branch in `studio-naojun/website` and opens a PR to `main`.
 
@@ -129,9 +132,18 @@ PR body must record:
 - article title;
 - whether `state.json` changed;
 - checklist status;
-- explicit note: `Public release occurs only when Jun merges this PR.`
+- explicit note: `Jun publication approval authorizes merge after automated checks pass.`
 
-The adapter does not self-approve and does not self-merge.
+After creating the PR, the adapter must verify the exact PR head SHA and all required CI/check results. It may merge only when:
+
+- the source cycle still records `publication_approved: true`;
+- the approved draft has not changed since approval;
+- the PR diff matches the approved source and expected public files;
+- required smoke/CI checks are successful;
+- no unresolved review/blocking condition exists;
+- target/feed provenance remains unambiguous.
+
+If checks are pending, wait for a later run. If any required check fails, do not merge and report the blocking reason. A second Jun approval is not required after checks pass unless the article or material publication content changed after the original approval.
 
 ## Design evolution
 
