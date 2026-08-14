@@ -1,5 +1,15 @@
 {
   "schema_version": 1,
-  "updated_at": null,
-  "entries": []
+  "updated_at": "2026-08-15T07:04:00+09:00",
+  "entries": [
+    {
+      "id": "special-r4-2009-2026",
+      "type": "special",
+      "published_at": "2026-08-15",
+      "title": "2009–2026 中学受験18年史 — 結果R4で読む、学校勢力図と「入試ポートフォリオ」の変化",
+      "summary": "結果R4の18年推移から、入試枠の増加と学校内の「入試ポートフォリオ」化、共学・別学の構造変化を読む。",
+      "path": "special/r4-2009-2026/",
+      "source_cycle": "admissions-special-r4-2009-2026"
+    }
+  ]
 }
