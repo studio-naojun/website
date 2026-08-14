@@ -1,1 +1,0 @@
-No effect on public content; infrastructure-only documentation.

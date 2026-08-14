@@ -1,1 +1,0 @@
-This is the last infrastructure note before opening the shell PR.
