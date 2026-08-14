@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{DESCRIPTION}}">
+  <title>{{TITLE}} | K.A.N.A.D.E. 中学受験レポート</title>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/admissions.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../../../">Studio NaoJun</a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="../../../works/">Works</a>
+        <a href="../../">Admissions</a>
+        <a href="../../../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="admissions-article-hero">
+      <div class="container admissions-article-head">
+        <div class="eyebrow">{{REPORT_TYPE}} / {{PUBLISHED_AT}}</div>
+        <h1>{{TITLE}}</h1>
+        <p class="article-deck">{{DECK}}</p>
+        <div class="article-metadata">
+          <span>{{COVERAGE}}</span>
+          <span>{{SOURCE_SCOPE}}</span>
+        </div>
+      </div>
+    </header>
+
+    <article class="admissions-article">
+      {{REPORT_BODY}}
+
+      <aside class="source-note">
+        <strong>調査方法と出典について</strong>
+        {{SOURCE_NOTE}}
+        <p>本レポートは公開時点で確認できた資料とデータに基づく分析です。偏差値・倍率・制度変更等は、それ単独で学校の教育品質や本人との適合性を示すものではありません。</p>
+      </aside>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span data-year></span> Studio NaoJun</span>
+      <a href="../../">K.A.N.A.D.E. 中学受験レポート</a>
+    </div>
+  </footer>
+  <script src="../../../assets/js/main.js"></script>
+</body>
+</html>
