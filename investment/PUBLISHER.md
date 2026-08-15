@@ -8,11 +8,7 @@ The public site is deliberately static. There is no CMS runtime, plugin dependen
 
 ## Publication policy
 
-Publication authority depends on cadence.
-
-### Weekly
-
-Weekly investment reports use standing automatic publication policy:
+Weekly and monthly investment reports both use standing automatic publication policy:
 
 ```text
 kanade-report-library
@@ -28,52 +24,24 @@ kanade-report-library
   -> Jun post-publication review / correction if needed
 ```
 
-No per-article Jun pre-approval is required while the source cycle records `publication_policy: auto-after-checks`. Jun owns this standing policy and may change it at any time.
+No per-article Jun pre-approval is required while the source cycle records `publication_policy: auto-after-checks`. Jun owns this standing policy and may change it explicitly at any time.
 
-### Monthly
-
-Monthly investment reports retain explicit Jun pre-publication approval:
-
-```text
-kanade-report-library
-  Research Artifact
-  -> K.A.N.A.D.E. editorial draft
-  -> publication checklist
-  -> Jun approval
-  -> Static Publisher Adapter
-  -> website pull request
-  -> CI verification
-  -> adapter merge
-  -> GitHub Pages publication
-```
-
-A merge to `main` is the public release operation. The adapter may merge its own publication PR only when the applicable weekly or monthly publication authority is valid and all required checks have succeeded.
+A merge to `main` is the public release operation. The adapter may merge its own publication PR only when the standing publication authority is valid and all required checks have succeeded.
 
 ## Source authority
 
-### Weekly source gate
-
-The Static Publisher Adapter may publish a weekly cycle only when the source repository records all of the following:
+The Static Publisher Adapter may publish a weekly or monthly cycle only when the source repository records all of the following:
 
 - `06_publication/editorial-status.md` has `status: draft-ready`;
-- `mode: weekly`;
+- `mode` is `weekly` or `monthly`;
 - `publication_policy: auto-after-checks`;
+- `review_mode: post-publish`;
 - the publication checklist contains no unresolved blocking item;
 - `03_manuscript/blog-draft.md` is present;
 - material factual claims are traceable to the source registry;
 - the source draft/evidence remain stable during the publication transaction.
 
-### Monthly source gate
-
-The adapter may publish a monthly cycle only when:
-
-- `status: draft-ready`;
-- `mode: monthly`;
-- `publication_approved: true`;
-- the publication checklist contains no unresolved blocking item;
-- the required draft and source registry exist and are stable.
-
-If the applicable conditions are missing, stop without creating public content.
+If any condition is missing, stop without creating public content.
 
 ## Public files
 
@@ -97,19 +65,7 @@ Articles are complete static HTML documents. Start from `_templates/article-temp
 
 Every new article must add one entry to `investment/feed.json`.
 
-Required entry fields:
-
-```json
-{
-  "id": "weekly-2026-08-15",
-  "type": "weekly",
-  "published_at": "2026-08-15",
-  "title": "...",
-  "summary": "...",
-  "path": "weekly/2026-08-15/",
-  "source_cycle": "investment-weekly-2026-08-15"
-}
-```
+Required entry fields include stable id, type, published_at, title, summary, path, and source_cycle.
 
 Rules:
 
@@ -120,11 +76,11 @@ Rules:
 
 ### Market state
 
-`investment/state.json` is the public summary of the latest approved monthly strategy state.
+`investment/state.json` is the public summary of the latest successfully published monthly strategy state.
 
-It may be updated only from an approved monthly cycle. Weekly articles must not rewrite long-horizon forecasts merely because short-term markets moved.
+It may be updated only from an eligible monthly source cycle during the same publication transaction. Weekly articles must not rewrite long-horizon forecasts merely because short-term markets moved.
 
-Scenario probabilities must total 100 when scenarios are present.
+Scenario probabilities must total 100 when scenarios are present. Every state value must remain traceable to the same monthly Research Artifact.
 
 ## Article requirements
 
@@ -168,7 +124,7 @@ A normal publication PR changes only:
 
 - one new article directory;
 - `investment/feed.json`;
-- optionally `investment/state.json` for an approved monthly strategy;
+- optionally `investment/state.json` for monthly;
 - assets only when a deliberate design evolution is part of the publication.
 
 PR body must record:
@@ -179,19 +135,15 @@ PR body must record:
 - target path;
 - whether `state.json` changed;
 - checklist status;
-- applicable publication authority.
+- standing publication authority.
 
-For weekly, include the explicit note:
+Include the explicit note:
 
-`Standing weekly auto-publication policy authorizes merge after automated checks pass.`
-
-For monthly, include:
-
-`Jun publication approval authorizes merge after automated checks pass.`
+`Standing investment auto-publication policy authorizes merge after automated checks pass.`
 
 After creating the PR, the adapter must verify the exact PR head SHA and all required CI/check results. It may merge only when:
 
-- the source cycle still satisfies the applicable weekly or monthly publication gate;
+- the source cycle still satisfies the standing auto-publication gate;
 - the source draft/evidence has not changed during the release transaction;
 - the PR diff matches the source and expected public files;
 - required smoke/CI checks are successful;
@@ -203,15 +155,15 @@ If checks are pending, leave the PR open for the recovery watcher or a later run
 
 ## GitHub Pages and terminal state
 
-After merge, verify the GitHub Pages build corresponding to the merged commit. A weekly publication is not terminal until the Pages build succeeds and the live article URL is recorded in the source cycle.
+After merge, verify the GitHub Pages build corresponding to the merged commit. A publication is not terminal until the Pages build succeeds and the live article URL is recorded in the source cycle.
 
-Once verified, send Jun the live URL. The normal weekly review happens on the public page, not on a draft gate.
+Once verified, send Jun the live URL. Normal review happens on the public page, not on a draft gate.
 
 ## Post-publication corrections
 
 If Jun identifies a problem after publication, K.A.N.A.D.E. creates a correction through the same auditable path:
 
-1. update the source-of-truth record when the correction affects facts, evidence, or approved editorial meaning;
+1. update the source-of-truth record when the correction affects facts, evidence, or editorial meaning;
 2. create a dedicated Website correction branch/PR;
 3. verify expected diff, source links, provenance, and required CI;
 4. merge after checks succeed;
@@ -222,7 +174,7 @@ Do not silently patch the website in a way that makes the public page diverge fr
 
 ## Hard blockers
 
-Stop before merge if there is a material research inconsistency, missing evidence, ambiguous provenance, invalid JSON, unexpected publication diff, required CI failure, lost source links, invalid external-link attributes, or source mutation during publication. Monthly cycles additionally stop when Jun approval is missing or stale.
+Stop before merge if there is a material research inconsistency, missing evidence, ambiguous provenance, invalid JSON, unexpected publication diff, required CI failure, lost source links, invalid external-link attributes, or source mutation during publication.
 
 ## Design evolution
 
