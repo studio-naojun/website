@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-09T21:44:00+09:00",
+  "updated_at": "2026-08-15T10:08:00+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-08-15",
+      "type": "weekly",
+      "published_at": "2026-08-15",
+      "title": "インフレは鈍化、消費は減速。それでも長期金利は上がった",
+      "summary": "7月CPI・PPIの鈍化と小売売上高の減速を確認する一方、長期金利と原油は上昇。ソフトランディングを中心に、景気後退・スタグフレーションの分岐条件を整理する。",
+      "path": "weekly/2026-08-15/",
+      "source_cycle": "investment-weekly-2026-08-15"
+    },
     {
       "id": "weekly-2026-08-09",
       "type": "weekly",
