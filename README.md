@@ -21,4 +21,6 @@ GitHub Pages向けの静的サイトです。
 - `investment/_templates/`: 記事テンプレート
 - `investment/smoke.mjs`: 公開物の整合性チェック
 
-記事公開はWebsiteへのPull Requestを作成し、Junが`main`へmergeすることで行います。
+週次投資レポートは、K.A.N.A.D.E.の編集・公開前チェック完了後、Static PublisherがWebsite PRを作成し、required CIと差分・provenance確認が成功すれば自動で`main`へmergeします。GitHub Pagesの公開成功を確認した後、Junへ公開URLを送り、Junは公開ページを確認して必要なら修正を指示します。
+
+月次投資レポートは別ポリシーで、従来どおりJunの明示的な事前承認後に公開します。
