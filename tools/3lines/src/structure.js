@@ -67,6 +67,9 @@ function sectionScore(section,style){
   const heading=normalizeMatch(section.heading); const body=normalizeMatch(section.body.join(' ')); let score=0;
   if(SUMMARY_RE.test(heading)) score+=style==='gist'?14:10;
   if(CORE_RE.test(heading)) score+=style==='gist'?11:10;
+  if(/分水嶺|価値中立/u.test(heading)) score+=4;
+  if(/用法|運用/u.test(heading)) score+=4;
+  if(/入力.*利用者|提供者は無関係/u.test(heading)) score+=2;
   if(PRACTICAL_RE.test(heading)) score+=style==='points'?9:7;
   if(/^前提/u.test(heading)) score+=8;
   if(/^本文$/u.test(heading)) score+=2;
@@ -83,6 +86,7 @@ function sentenceScore(sentence,section){
   if(META_RE.test(s)) score-=6;
   if(/価値中立|事件性|用法|運用|設計|提供者|利用者|認識・認容|評価され|ガバナンス|弁護士/u.test(s)) score+=4;
   if(/したがって|つまり|終わらない|必要|べき|困難|評価され得る|明文化|整える|手を止め/u.test(s)) score+=3;
+  if(/基準|分水嶺|考え方|運用の実態/u.test(s)) score+=4;
   if(/^ポイント1/u.test(h) && /提供者|利用者|ユーザー/u.test(s)) score+=4;
   if(/^ポイント2/u.test(h) && /価値中立|設計|作った時点|事件性/u.test(s)) score+=4;
   if(/^ポイント3/u.test(h) && /用法|運用|認識・認容|評価/u.test(s)) score+=4;
@@ -100,6 +104,14 @@ function representativeSentences(section,style){
   if(!sentences.length) return [];
   const ranked=sentences.map((sentence,index)=>({sentence,index,score:sentenceScore(sentence,section)})).sort((a,b)=>b.score-a.score||a.index-b.index);
   return ranked.slice(0,2).sort((a,b)=>a.index-b.index).map(({sentence})=>sentence);
+}
+
+function bestRepresentative(section){
+  const parts=rawSentenceParts(section.body).filter(Boolean);
+  const compactLines=coalesceLines(section.body).filter((line)=>[...line].length>=12 && [...line].length<=140 && /[。！？!?]/u.test(line));
+  const candidates=[...parts,...compactLines].filter((value,index,list)=>list.indexOf(value)===index);
+  if(!candidates.length) return '';
+  return candidates.map((sentence,index)=>({sentence,index,score:sentenceScore(sentence,section)})).sort((a,b)=>b.score-a.score||a.index-b.index)[0]?.sentence || '';
 }
 
 export function buildStructuredSlate(text,style='gist',maxChars=4000){
@@ -124,17 +136,26 @@ export function buildStructuredSlate(text,style='gist',maxChars=4000){
 
 export function structuralFallbackCandidates(text,style='gist'){
   const {sections}=parseSections(text);
-  const summary=sections.find((s)=>SUMMARY_RE.test(normalizeMatch(s.heading)));
+  const ranked=sections.map((section,index)=>({section,index,score:sectionScore(section,style)})).sort((a,b)=>b.score-a.score||a.index-b.index);
+  const summary=ranked.find(({section})=>SUMMARY_RE.test(normalizeMatch(section.heading)))?.section;
+  const core=ranked.filter(({section})=>CORE_RE.test(normalizeMatch(section.heading)));
+  const pointCore=core.filter(({section})=>/^ポイント/u.test(normalizeMatch(section.heading)));
+  const preferredCore=pointCore.length>=2 ? pointCore : core;
+  if(style!=='points' && summary && preferredCore.length>=2){
+    const summaryActions=coalesceLines(summary.body).filter((line)=>/^(?:提供する側なら|導入する側なら|共通して)/u.test(line));
+    const action=summaryActions.find((line)=>/^共通して/u.test(line)) || summaryActions.at(-1) || representativeSentences(summary,style)[0];
+    const result=[bestRepresentative(preferredCore[0].section),bestRepresentative(preferredCore[1].section),action].filter(Boolean);
+    if(result.length===3 && new Set(result).size===3) return result;
+  }
   if(summary){
     const actions=coalesceLines(summary.body).filter((line)=>/^(?:提供する側なら|導入する側なら|共通して)/u.test(line));
     if(actions.length>=3) return actions.slice(0,3);
   }
-  const ranked=sections.map((section,index)=>({section,index,score:sectionScore(section,style)})).sort((a,b)=>b.score-a.score||a.index-b.index);
   const result=[]; const categories=new Set();
   for(const {section} of ranked){
     const h=normalizeMatch(section.heading); const cat=SUMMARY_RE.test(h)?'summary':CORE_RE.test(h)?'core':PRACTICAL_RE.test(h)?'practical':'context';
     if(categories.has(cat)&&cat!=='core') continue;
-    const rep=representativeSentences(section,style)[0];
+    const rep=bestRepresentative(section) || representativeSentences(section,style)[0];
     if(rep&&[...rep].length>=8&&!result.includes(rep)){result.push(rep);categories.add(cat);}
     if(result.length===3) break;
   }
