@@ -66,9 +66,9 @@ function quotedConcept(value) {
 
 function negativeDesignDefinition(body) {
   const value = clean(body);
-  const match = value.match(/(?:そもそも)?(.{2,64}?)に利用させることを目指して設計されたサービスでない場合/u);
+  const match = value.match(/(?:^|[。！？]\s*)(?:そもそも)?([^。！？]{2,64}?)に利用させることを目指して設計されたサービスでない場合/u);
   if (!match) return '';
-  const target = clean(match[1]).replace(/^そもそも/u, '');
+  const target = clean(match[1]);
   return target ? `${target}に利用させることを目指さない設計` : '';
 }
 
