@@ -74,27 +74,39 @@ try {
   const firstJoined = firstItems.join(' ');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Input was not preserved');
   if (firstItems.length !== 3) throw new Error('Result is not exactly three items');
-  if (!/法務省/u.test(firstItems[0]) || !/弁護士法72条/u.test(firstItems[0])) throw new Error(`Topic line failed: ${firstItems[0]}`);
-  if (!/価値中立/u.test(firstItems[1]) || !/アウト/u.test(firstItems[1])) throw new Error(`Boundary line failed: ${firstItems[1]}`);
-  if (!/弁護士/u.test(firstItems[2]) || !/(?:紛争|裁判所|和解)/u.test(firstItems[2])) throw new Error(`Action line failed: ${firstItems[2]}`);
+  if (!/^全体[:：]/u.test(firstItems[0]) || !/法務省/u.test(firstItems[0]) || !/弁護士法72条/u.test(firstItems[0]) || !/実務/u.test(firstItems[0])) {
+    throw new Error(`Overview line failed: ${firstItems[0]}`);
+  }
+  if (!/^肝[:：]/u.test(firstItems[1]) || !/価値中立/u.test(firstItems[1]) || !/提供者/u.test(firstItems[1]) || !/用法/u.test(firstItems[1])) {
+    throw new Error(`Core-thesis line failed: ${firstItems[1]}`);
+  }
+  if (!/^結局[:：]/u.test(firstItems[2]) || !/言いたい/u.test(firstItems[2]) || !/全面禁止/u.test(firstItems[2]) || !/弁護士/u.test(firstItems[2])) {
+    throw new Error(`Bottom-line failed: ${firstItems[2]}`);
+  }
   if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
   const pointItems = await styleItems('論点3つ', 'points');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
-  if (JSON.stringify(pointItems) === JSON.stringify(firstItems)) throw new Error('points style duplicated gist output');
+  if (!/入力したのは利用者.*提供者は無関係/u.test(pointItems[0]) || !/価値中立/u.test(pointItems[1]) || !/用法.*アウト/u.test(pointItems[2])) {
+    throw new Error(`points style did not return the three core points: ${JSON.stringify(pointItems)}`);
+  }
 
   const easyItems = await styleItems('やさしく', 'easy');
-  if (JSON.stringify(easyItems) === JSON.stringify(firstItems)) throw new Error('easy style duplicated gist output');
-  if (JSON.stringify(easyItems) === JSON.stringify(pointItems)) throw new Error('easy style duplicated points output');
-  if (!/どこまでならよいか/u.test(easyItems[0]) || !/かんたんに/u.test(easyItems[1]) || !/使う側/u.test(easyItems[2])) {
-    throw new Error(`easy style did not use reader-friendly route: ${JSON.stringify(easyItems)}`);
-  }
+  if (!/^全体[:：]/u.test(easyItems[0]) || !/どこまでよいのか/u.test(easyItems[0])) throw new Error(`easy overview failed: ${easyItems[0]}`);
+  if (!/^大事[:：]/u.test(easyItems[1]) || !/紛争案件/u.test(easyItems[1]) || !/使われ方/u.test(easyItems[1])) throw new Error(`easy core failed: ${easyItems[1]}`);
+  if (!/^つまり[:：]/u.test(easyItems[2]) || !/全面禁止/u.test(easyItems[2]) || !/弁護士/u.test(easyItems[2])) throw new Error(`easy bottom line failed: ${easyItems[2]}`);
 
   const faithfulItems = await styleItems('忠実に', 'faithful');
-  for (const [name, items] of [['gist', firstItems], ['points', pointItems], ['easy', easyItems]]) {
-    if (JSON.stringify(faithfulItems) === JSON.stringify(items)) throw new Error(`faithful style duplicated ${name} output`);
+  if (!/^全体[:：]/u.test(faithfulItems[0])) throw new Error(`faithful overview failed: ${faithfulItems[0]}`);
+  if (!/^肝[:：]/u.test(faithfulItems[1]) || !/価値中立的なサービス提供/u.test(faithfulItems[1]) || !/提供者の行為/u.test(faithfulItems[1]) || !/用法/u.test(faithfulItems[1])) {
+    throw new Error(`faithful core failed: ${faithfulItems[1]}`);
   }
-  if (/かんたんに：|使う側：/u.test(faithfulItems.join(' '))) throw new Error(`faithful style contained easy rewrite labels: ${JSON.stringify(faithfulItems)}`);
+  if (!/^結論[:：]/u.test(faithfulItems[2]) || !/全面禁止/u.test(faithfulItems[2]) || !/弁護士/u.test(faithfulItems[2])) {
+    throw new Error(`faithful bottom line failed: ${faithfulItems[2]}`);
+  }
+
+  const signatures = [firstItems, pointItems, easyItems, faithfulItems].map((items) => JSON.stringify(items));
+  if (new Set(signatures).size !== 4) throw new Error(`Styles were not materially distinct: ${JSON.stringify(signatures)}`);
   if (navigations !== 1) throw new Error(`Unexpected page reload during style switches: ${navigations}`);
 
   await page.getByRole('radio', { name: '要するに' }).click();
@@ -130,7 +142,7 @@ try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
   if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
 
-  console.log('3lines deterministic Jun-fixture mobile smoke passed');
+  console.log('3lines semantic-ladder Jun-fixture mobile smoke passed');
   console.log(firstJoined);
   console.log(`points=${JSON.stringify(pointItems)}`);
   console.log(`easy=${JSON.stringify(easyItems)}`);
