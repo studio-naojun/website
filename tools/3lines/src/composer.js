@@ -102,11 +102,7 @@ function findActor(parsed) {
 function bodyGroundedProfile(parsed) {
   const documentTitle = extractOfficialDocument(parsed);
   if (!documentTitle) return null;
-  return {
-    documentTitle,
-    relation: relationFrame(documentTitle),
-    actor: findActor(parsed),
-  };
+  return { documentTitle, relation: relationFrame(documentTitle), actor: findActor(parsed) };
 }
 
 function composeOverviewLine(parsed, style = 'gist') {
@@ -119,9 +115,9 @@ function composeOverviewLine(parsed, style = 'gist') {
       return clip(`全体：${actor}が公表した「${profile.documentTitle}」をもとに、${service}が${right}に照らしてどこまで${activity}を扱えるかを整理した文章。`);
     }
     if (style === 'easy') {
-      return clip(`全体：${actor}が、${service}をどこまで使えるのか、${right}との線引きと注意点を整理した内容。`);
+      return clip(`全体：${actor}が、${service}をどこまで使えるのか、${right}に触れない範囲と注意点を整理した内容。`);
     }
-    return clip(`全体：${actor}が、${service}と${right}の関係を整理した内容。${service}がどこまで${activity}を扱えるか、その線引きが主題。`);
+    return clip(`全体：${actor}が、${service}が${right}に触れずにどこまで${activity}を扱えるか、その線引きを整理した内容。`);
   }
 
   const boundaryTitle = parseBoundaryTitle(parsed.title);
@@ -184,6 +180,7 @@ function prefaceMeaning(sections) {
   if (term) {
     const definitionLine = body.find((line) => /紛争性のある案件/u.test(line));
     definition = definitionLine?.match(/(紛争性のある案件)/u)?.[1] || '';
+    if (definition === '紛争性のある案件') definition = '紛争性のある法律案件';
   }
   const rule = clean(preface.heading).match(/((?:弁護士|法律)[^：:]{0,24}法\s*\d+条)/u)?.[1] || '';
   return term ? { term, definition, rule } : null;
@@ -218,7 +215,7 @@ function findIntentLine(parsed, style = 'gist') {
   const headingConcept = quotedConcept(candidate.essence);
   const bodyConcept = quotedConcept(candidate.body);
   const designTarget = negativeDesignDefinition(candidate.body)
-    .replace(/「[^」]+」のある案件/u, preface?.definition || '紛争性のある案件')
+    .replace(/「[^」]+」のある案件/u, preface?.definition || '紛争性のある法律案件')
     .replace(/に利用させることを目指さない設計$/u, 'に使わせる前提で作らないこと');
 
   if (preface?.term && preface.definition) {
@@ -228,7 +225,7 @@ function findIntentLine(parsed, style = 'gist') {
       return clip(`肝：${rule}のキモは「${preface.term}」、つまり${preface.definition}。基準は${concept ? `「${concept}」` : '中立的な設計'}で、設計だけでなく提供後の用法・運用実態も見られる。`);
     }
     if (style === 'easy') {
-      return clip(`大事：${rule}で弁護士以外が扱えないのは、紛争性のある法律案件。${service}はそこに使う前提で作らず、実際の使われ方でも紛争対応へ踏み込まないことが大事。`);
+      return clip(`大事：${rule}で弁護士以外が扱えないのは、${preface.definition}。${service}はそこに使う前提で作らず、実際の使われ方でも紛争対応へ踏み込まないことが大事。`);
     }
     const responsibilityText = responsibility ? '利用者任せでは逃れられず' : '';
     const caveatText = caveat ? '実際の使われ方も見られる' : '';
@@ -238,7 +235,7 @@ function findIntentLine(parsed, style = 'gist') {
   const concept = bodyConcept || headingConcept;
   const responsibilityText = responsibilityClause(responsibility, style);
   const caveatText = caveatClause(caveat, style);
-  let first = designTarget ? `${concept ? `「${concept}」＝` : ''}${designTarget}が基準` : candidate.essence.replace(/[。！？!?]+$/u, '').replace(/セーフの分水嶺/u, '判断の基準').replace(/分水嶺/u, '判断の境界');
+  const first = designTarget ? `${concept ? `「${concept}」＝` : ''}${designTarget}が基準` : candidate.essence.replace(/[。！？!?]+$/u, '').replace(/セーフの分水嶺/u, '判断の基準').replace(/分水嶺/u, '判断の境界');
   const label = style === 'easy' ? '大事' : '肝';
   return clip(`${label}：${first}。${[responsibilityText, caveatText].filter(Boolean).join('、')}。`);
 }
@@ -267,11 +264,7 @@ function extractConcreteExamples(adoption) {
   const parts = clean(adoption).split(/。/u).map(clean).filter(Boolean);
   const candidate = parts.find((part) => (part.match(/、/gu)?.length || 0) >= 2 && !/(?:類型|全面禁止|一律禁止)/u.test(part));
   if (!candidate) return '';
-  return candidate
-    .replace(/あたりは.*$/u, '')
-    .replace(/などは.*$/u, '')
-    .replace(/、会議支援/u, '、会議支援')
-    .trim();
+  return candidate.replace(/あたりは.*$/u, '').replace(/などは.*$/u, '').trim();
 }
 
 function compactCommonAction(line, style = 'gist') {
@@ -295,12 +288,8 @@ function findTakeawayLine(parsed, style = 'gist') {
 
   if (adoption && common) {
     const exampleText = examples || '本文で認められた範囲の業務';
-    if (style === 'easy') {
-      return clip(`つまり：${service}を全部禁止する必要はない。${exampleText}などは社内で使い方を決めて活用し、${action}。`);
-    }
-    if (style === 'faithful') {
-      return clip(`結論：${banPhrase ? `「${banPhrase}」をやめ、` : ''}${exampleText}など使える業務を社内規程に明文化し、${action}。`);
-    }
+    if (style === 'easy') return clip(`つまり：${service}を全部禁止する必要はない。${exampleText}などは社内で使い方を決めて活用し、${action}。`);
+    if (style === 'faithful') return clip(`結論：${banPhrase ? `「${banPhrase}」をやめ、` : ''}${exampleText}など使える業務を社内規程に明文化し、${action}。`);
     return clip(`結局：${service}を全面禁止する必要はない。${exampleText}など使える業務は社内でルールを決めて活用し、${action}、という話。`);
   }
 
@@ -361,10 +350,5 @@ function unstructuredItems(text, style) {
 
 export function composeThreeLines(text, style = 'gist') {
   const items = structuredItems(text, style) || unstructuredItems(text, style);
-  return {
-    items,
-    notes: [],
-    engine: 'deterministic-semantic-composer',
-    modelId: 'none',
-  };
+  return { items, notes: [], engine: 'deterministic-semantic-composer', modelId: 'none' };
 }
