@@ -96,7 +96,8 @@ function findBoundaryLine(sections) {
     .filter((section) => section.heading && section.heading !== '本文')
     .map((section) => ({ section, essence: headingEssence(section.heading), body: bodySignals(section) }));
 
-  const primary = entries.find(({ essence }) => BOUNDARY_RE.test(essence) || /「[^」]+」/u.test(essence));
+  const primary = entries.find(({ essence }) => BOUNDARY_RE.test(essence))
+    || entries.find(({ essence }) => /「[^」]+」/u.test(essence));
   const caveat = entries.find(({ essence, section }) => section !== primary?.section && CAVEAT_RE.test(essence));
 
   if (primary && caveat) {
