@@ -34,15 +34,6 @@ const standaloneGoodItems = [
 
 const toRaw = (items) => items.map((item, index) => `${index + 1}. ${item}`).join('\n');
 
-function installWebGPU() {
-  const originalNavigator = globalThis.navigator;
-  Object.defineProperty(globalThis, 'navigator', {
-    configurable: true,
-    value: { gpu: { requestAdapter: async () => ({}) } },
-  });
-  return () => Object.defineProperty(globalThis, 'navigator', { configurable: true, value: originalNavigator });
-}
-
 test('Jun legaltech acceptance fixture identity is fixed', () => {
   assert.ok([...source].length > 5000);
   assert.equal(createHash('sha256').update(source).digest('hex'), '6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0');
@@ -50,106 +41,82 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
   assert.match(source, /まとめ：明日から何をするか/u);
 });
 
-test('D2 pins WebLLM 0.2.82 and Qwen3 1.7B assets', () => {
-  assert.equal(APP_VERSION, '1.1.0');
-  assert.equal(MODEL_ID, 'Qwen3-1.7B-q4f16_1-MLC');
-  assert.match(workerSource, /@mlc-ai\/web-llm@0\.2\.82/u);
-  assert.match(workerSource, /80b3abc23aacab805bc16d33cf619fa7c0dcf720/u);
-  assert.match(workerSource, /Qwen3-1\.7B-q4f16_1-ctx4k_cs1k-webgpu\.wasm/u);
-  assert.match(workerSource, /2036\.66/u);
+test('D3 pins Transformers.js WASM and Japanese 150M model assets', () => {
+  assert.equal(APP_VERSION, '1.2.0');
+  assert.equal(MODEL_ID, 'onnx-community/llm-jp-3-150m-instruct3-ONNX');
+  assert.match(workerSource, /@huggingface\/transformers@4\.2\.0/u);
+  assert.match(workerSource, /device:\s*'wasm'/u);
+  assert.match(workerSource, /dtype:\s*MODEL_DTYPE/u);
+  assert.match(workerSource, /MODEL_DTYPE = 'q8'/u);
+  assert.match(workerSource, /762812c8ba117b760d31d537b0bbeb2f3b2b01ee/u);
+  assert.match(workerSource, /12b5772a9f242607774d19f75e8395ab05ca33f6c7071303158ba4380dce7ad9/u);
+  assert.doesNotMatch(workerSource, /webgpu|WebGPU/u);
 });
 
-test('D2 model slate stays small while preserving major article structure', () => {
-  const slate = buildSlate(source, 'gist');
+test('Stage A keeps the Jun article core meaning within 1500 chars', () => {
+  const digest = buildSlate(source, 'gist');
   assert.equal(MODEL_INPUT_MAX_CHARS, 1500);
-  assert.ok([...slate].length <= MODEL_INPUT_MAX_CHARS);
-  assert.match(slate, /\[SUMMARY\]/u);
-  assert.match(slate, /\[CORE\]/u);
-  assert.match(slate, /価値中立/u);
-  assert.match(slate, /弁護士へ/u);
+  assert.ok([...digest].length <= MODEL_INPUT_MAX_CHARS, [...digest].length);
+  assert.match(digest, /\[TITLE\]/u);
+  assert.match(digest, /価値中立/u);
+  assert.match(digest, /(?:用法|運用)/u);
+  assert.match(digest, /(?:弁護士|紛争|裁判所|和解)/u);
+  assert.ok(digest.split('\n').length >= 7, digest);
 });
 
-test('both Jun-observed unintelligible outputs fail the D2 quality gate', () => {
+test('both Jun-observed unintelligible outputs remain rejected', () => {
   const first = assessModelOutput({ raw: toRaw(firstObservedBadItems) }, source, 'gist');
   const latest = assessModelOutput({ raw: toRaw(latestObservedBadItems) }, source, 'gist');
   assert.equal(first.ok, false);
   assert.equal(latest.ok, false);
-  assert.match(latest.reason, /standalone:/u);
 });
 
-test('standalone-comprehensible document summary passes D2 quality gate', () => {
+test('standalone-comprehensible document summary passes the D3 quality gate', () => {
   const assessment = assessModelOutput({ raw: toRaw(standaloneGoodItems) }, source, 'gist');
   assert.equal(assessment.ok, true, assessment.reason);
   assert.deepEqual(assessment.items, standaloneGoodItems);
 });
 
-test('bad local output is never surfaced as a fallback success', async () => {
-  const restore = installWebGPU();
+test('bad model output is never surfaced as successful output', async () => {
   let calls = 0;
-  try {
-    await assert.rejects(
-      summarize({
-        text: source,
-        style: 'gist',
-        localRunner: async () => {
-          calls += 1;
-          return { raw: toRaw(latestObservedBadItems), modelId: MODEL_ID };
-        },
-      }),
-      (error) => error?.code === 'quality-unavailable',
-    );
-    assert.equal(calls, 1);
-  } finally {
-    restore();
-  }
-});
-
-test('good local output succeeds in one generation with the D2 model identity', async () => {
-  const restore = installWebGPU();
-  let calls = 0;
-  try {
-    const result = await summarize({
+  await assert.rejects(
+    summarize({
       text: source,
       style: 'gist',
-      localRunner: async () => {
+      localRunner: async (digest) => {
         calls += 1;
-        return { raw: toRaw(standaloneGoodItems), modelId: MODEL_ID };
+        assert.ok([...digest].length <= 1500);
+        return { raw: toRaw(latestObservedBadItems), modelId: MODEL_ID };
       },
-    });
-    assert.equal(calls, 1);
-    assert.equal(result.engine, 'local-qwen');
-    assert.equal(result.modelId, MODEL_ID);
-    assert.deepEqual(result.items, standaloneGoodItems);
-  } finally {
-    restore();
-  }
+    }),
+    (error) => error?.code === 'quality-unavailable',
+  );
+  assert.equal(calls, 1);
 });
 
-test('WebGPU absence is explicit unsupported behavior, never fallback output', async () => {
-  const originalNavigator = globalThis.navigator;
-  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: {} });
-  try {
-    await assert.rejects(
-      summarize({ text: source, style: 'gist' }),
-      (error) => error?.code === 'local-model-unavailable',
-    );
-  } finally {
-    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: originalNavigator });
-  }
+test('good model output succeeds without any WebGPU capability check', async () => {
+  let seenDigest = '';
+  const result = await summarize({
+    text: source,
+    style: 'gist',
+    localRunner: async (digest) => {
+      seenDigest = digest;
+      return { raw: toRaw(standaloneGoodItems), modelId: MODEL_ID };
+    },
+  });
+  assert.match(seenDigest, /価値中立/u);
+  assert.equal(result.engine, 'local-llm-jp-wasm');
+  assert.equal(result.modelId, MODEL_ID);
+  assert.deepEqual(result.items, standaloneGoodItems);
 });
 
 test('local inference timeout is typed and never returns extractive success', async () => {
-  const restore = installWebGPU();
-  try {
-    await assert.rejects(
-      summarize({
-        text: source,
-        style: 'gist',
-        localRunner: async () => { throw new Error('Local inference timed out.'); },
-      }),
-      (error) => error?.code === 'local-model-timeout',
-    );
-  } finally {
-    restore();
-  }
+  await assert.rejects(
+    summarize({
+      text: source,
+      style: 'gist',
+      localRunner: async () => { throw new Error('Local inference timed out.'); },
+    }),
+    (error) => error?.code === 'local-model-timeout',
+  );
 });
