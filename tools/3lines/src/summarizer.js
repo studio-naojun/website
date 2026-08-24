@@ -1,21 +1,15 @@
 import { validateInput } from './normalizer.js';
 import { parseModelOutput, validateSummary } from './validator.js';
-import { buildStructuredSlate, validateStructuredCoverage } from './structure.js?v=1.1.0';
+import { validateStructuredCoverage } from './structure.js?v=1.2.0';
+import { buildHierarchicalDigest, STAGE_A_MAX_CHARS } from './stage-a.js?v=1.2.0';
 
-export const MODEL_ID = 'Qwen3-1.7B-q4f16_1-MLC';
-export const LOCAL_GENERATION_BUDGET_MS = 25000;
+export const MODEL_ID = 'onnx-community/llm-jp-3-150m-instruct3-ONNX';
+export const LOCAL_GENERATION_BUDGET_MS = 28000;
 export const MODEL_PREPARATION_BUDGET_MS = 300000;
-export const MODEL_INPUT_MAX_CHARS = 1500;
-export const APP_VERSION = '1.1.0';
+export const MODEL_INPUT_MAX_CHARS = STAGE_A_MAX_CHARS;
+export const APP_VERSION = '1.2.0';
 
-function canUseWebGPU() { return typeof navigator !== 'undefined' && 'gpu' in navigator; }
-
-async function hasWebGPUAdapter() {
-  if (!canUseWebGPU() || !navigator.gpu || typeof navigator.gpu.requestAdapter !== 'function') return false;
-  try { return Boolean(await navigator.gpu.requestAdapter()); } catch { return false; }
-}
-
-function buildSlate(text, style) { return buildStructuredSlate(text, style, MODEL_INPUT_MAX_CHARS); }
+function buildSlate(text, style) { return buildHierarchicalDigest(text, style, MODEL_INPUT_MAX_CHARS); }
 
 function comparable(value) {
   return String(value)
@@ -40,7 +34,7 @@ function validateStandaloneComprehension(items, text, style) {
   if (style !== 'gist' && style !== 'easy') return { ok: true };
 
   const firstSentence = String(items[0]).split(/[。！？!?]/u)[0] || '';
-  const topicPredicate = /明確|具体化|示|整理|公表|発表|決め|変わ|判明|分か|説明|解説|主張|報告|提案|定め|明らか|更新|発見|導入|認め|禁止|可能|求め/u;
+  const topicPredicate = /明確|具体化|示|整理|公表|発表|決め|変わ|判明|分か|説明|解説|主張|報告|提案|定め|明らか|更新|発見|導入|認め|禁止|可能|求め|扱|判断|線引|境界/u;
   if (!topicPredicate.test(firstSentence)) return { ok: false, reason: 'missing-topic-statement' };
 
   const copiedLines = items.filter((item) => containsLongSourceRun(item, text, 36)).length;
@@ -72,7 +66,7 @@ function typedError(code, message, cause) {
 
 function defaultWorkerFactory() {
   if (typeof Worker === 'undefined') throw typedError('local-model-unavailable', 'Worker is not supported.');
-  return new Worker(new URL('./local-worker.js?v=1.1.0', import.meta.url), { type: 'module' });
+  return new Worker(new URL('./local-worker.js?v=1.2.0', import.meta.url), { type: 'module' });
 }
 
 export class LocalWorkerClient {
@@ -98,20 +92,20 @@ export class LocalWorkerClient {
     return worker;
   }
 
-  run(slate, style, onStatus = () => {}) {
-    const execute = () => this.execute(slate, style, onStatus);
+  run(digest, style, onStatus = () => {}) {
+    const execute = () => this.execute(digest, style, onStatus);
     const result = this.queue.then(execute, execute);
     this.queue = result.catch(() => undefined);
     return result;
   }
 
-  execute(slate, style, onStatus) {
+  execute(digest, style, onStatus) {
     return new Promise((resolve, reject) => {
       const worker = this.ensureWorker();
       const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`;
       const preparationTimer = setTimeout(() => this.failPending(new Error('Model preparation timed out.'), true), this.preparationBudgetMs);
       this.pending = { requestId, resolve, reject, onStatus, preparationTimer, generationTimer: null };
-      worker.postMessage({ type: 'summarize', requestId, style, slate });
+      worker.postMessage({ type: 'summarize', requestId, style, digest });
     });
   }
 
@@ -121,15 +115,15 @@ export class LocalWorkerClient {
     if (!pending || (data.requestId && data.requestId !== pending.requestId)) return;
     if (data.type === 'progress' || data.type === 'preparing') {
       const detail = data.warm || this.ready
-        ? '準備済みのブラウザ内モデルを使います…'
-        : (data.progress || '初回のみ約1GBのブラウザ内モデルを準備しています…');
+        ? '準備済みの要約モデルを使います…'
+        : (data.progress || '初回のみ約160MBの要約モデルを準備しています…');
       pending.onStatus('preparing-model', detail);
       return;
     }
     if (data.type === 'ready') {
       this.ready = true;
       clearTimeout(pending.preparationTimer);
-      pending.onStatus('summarizing', '文章全体の意味を3行にまとめています…');
+      pending.onStatus('summarizing', '整理した重要部分を、分かる3行に書き直しています…');
       pending.generationTimer = setTimeout(() => this.failPending(new Error('Local inference timed out.'), true), this.generationBudgetMs);
       return;
     }
@@ -177,8 +171,8 @@ export class LocalWorkerClient {
 
 const sharedWorkerClient = new LocalWorkerClient();
 
-function runWorker(text, style, onStatus) {
-  return sharedWorkerClient.run(buildSlate(text, style), style, onStatus);
+function runWorker(digest, style, onStatus) {
+  return sharedWorkerClient.run(digest, style, onStatus);
 }
 
 if (typeof window !== 'undefined') window.addEventListener('pagehide', () => sharedWorkerClient.dispose(), { once: true });
@@ -189,26 +183,22 @@ export async function summarize({ text, style = 'gist', onStatus = () => {}, loc
 
   const started = performance.now();
   onStatus('validating', '入力を確認しています…');
+  onStatus('extracting', '長文から重要部分を整理しています…');
+  const digest = buildSlate(text, style);
+  if (!digest.trim()) throw typedError('quality-unavailable', '文章の重要部分を十分に整理できませんでした。入力は残っています。');
 
-  if (!(await hasWebGPUAdapter())) {
-    throw typedError(
-      'local-model-unavailable',
-      'この端末では高品質なブラウザ内要約モデルを利用できません。入力は残っています。',
-    );
-  }
-
-  onStatus('preparing-model', '対応端末では初回のみ約1GBのブラウザ内モデルを準備します…');
+  onStatus('preparing-model', '初回のみ約160MBの要約モデルを準備します…');
 
   let modelOutput;
   try {
-    modelOutput = await localRunner(text, style, onStatus);
+    modelOutput = await localRunner(digest, style, onStatus);
   } catch (error) {
     const timeout = /timed out/i.test(error?.message || '');
     throw typedError(
       timeout ? 'local-model-timeout' : 'local-model-unavailable',
       timeout
         ? 'ブラウザ内モデルの処理が時間内に完了しませんでした。入力は残っています。'
-        : 'ブラウザ内モデルを利用できませんでした。入力は残っています。',
+        : 'このブラウザで要約モデルを起動できませんでした。入力は残っています。',
       error,
     );
   }
@@ -217,14 +207,14 @@ export async function summarize({ text, style = 'gist', onStatus = () => {}, loc
   if (!assessment.ok) {
     throw typedError(
       'quality-unavailable',
-      '十分に分かりやすい3行を作れませんでした。入力は残っています。もう一度試せます。',
+      '十分に分かりやすい3行を作れませんでした。入力は残っています。',
     );
   }
 
   return {
     items: assessment.items,
     notes: assessment.notes,
-    engine: 'local-qwen',
+    engine: 'local-llm-jp-wasm',
     modelId: modelOutput.modelId || MODEL_ID,
     elapsedMs: Math.max(0, Math.round(performance.now() - started)),
     preparationState: 'ready',
@@ -232,8 +222,6 @@ export async function summarize({ text, style = 'gist', onStatus = () => {}, loc
 }
 
 export {
-  canUseWebGPU,
-  hasWebGPUAdapter,
   buildSlate,
   assessModelOutput,
   containsLongSourceRun,
