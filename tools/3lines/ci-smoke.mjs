@@ -99,13 +99,13 @@ try {
 
   const pointItems = await styleItems('論点3つ', 'points');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
-  if (!/^論点1｜/u.test(pointItems[0]) || !/弁護士法第?72条/u.test(pointItems[0]) || !/紛争性のある法律案件/u.test(pointItems[0])) throw new Error(`points issue 1 failed: ${pointItems[0]}`);
-  if (!/^論点2｜/u.test(pointItems[1]) || !/提供側/u.test(pointItems[1]) || !/向けに作らない/u.test(pointItems[1]) || !/使われ方/u.test(pointItems[1])) throw new Error(`points issue 2 failed: ${pointItems[1]}`);
-  if (!/^論点3｜/u.test(pointItems[2]) || !/どこまでAI/u.test(pointItems[2]) || !/リサーチ/u.test(pointItems[2]) || !/弁護士/u.test(pointItems[2])) throw new Error(`points issue 3 failed: ${pointItems[2]}`);
+  if (!/^論点1[|｜]/u.test(pointItems[0]) || !/弁護士法第?72条/u.test(pointItems[0]) || !/紛争性のある法律案件/u.test(pointItems[0])) throw new Error(`points issue 1 failed: ${pointItems[0]}`);
+  if (!/^論点2[|｜]/u.test(pointItems[1]) || !/提供側/u.test(pointItems[1]) || !/向けに作らない/u.test(pointItems[1]) || !/使われ方/u.test(pointItems[1])) throw new Error(`points issue 2 failed: ${pointItems[1]}`);
+  if (!/^論点3[|｜]/u.test(pointItems[2]) || !/どこまでAI/u.test(pointItems[2]) || !/リサーチ/u.test(pointItems[2]) || !/弁護士/u.test(pointItems[2])) throw new Error(`points issue 3 failed: ${pointItems[2]}`);
   if (/セーフの分水嶺|設計がセーフでも「用法」でアウト/u.test(pointItems.join(' '))) throw new Error(`points leaked old source-heading summary: ${JSON.stringify(pointItems)}`);
 
   const easyItems = await styleItems('やさしく', 'easy');
-  if (!/^何の話？/u.test(easyItems[0]) || !/AIを使う法務支援サービス/u.test(easyItems[0])) throw new Error(`easy overview failed: ${easyItems[0]}`);
+  if (!/^何の話[?？]/u.test(easyItems[0]) || !/AIを使う法務支援サービス/u.test(easyItems[0])) throw new Error(`easy overview failed: ${easyItems[0]}`);
   if (!/^大事なのは、/u.test(easyItems[1]) || !/紛争性のある法律案件/u.test(easyItems[1]) || !/使われ方/u.test(easyItems[1])) throw new Error(`easy core failed: ${easyItems[1]}`);
   if (!/^つまり、/u.test(easyItems[2]) || !/リサーチ/u.test(easyItems[2]) || !/弁護士/u.test(easyItems[2])) throw new Error(`easy bottom line failed: ${easyItems[2]}`);
   if (/事件性|価値中立性|セーフ7類型/u.test(easyItems.join(' '))) throw new Error(`easy mode kept unexplained jargon: ${JSON.stringify(easyItems)}`);
