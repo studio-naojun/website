@@ -1,7 +1,7 @@
 import { buildRankedSlate } from './fallback.js';
 import { normalizeForAnalysis, segmentSentences, tokenize } from './normalizer.js';
 
-const QUALIFIER_RE = /(?:ただし|しかし|一方|例外|場合|限り|可能性|とは限ら|必ずしも|原則|条件|なお|留意|注意|認識・認容|認識し|認容|運用|実際の使われ方)/u;
+const QUALIFIER_RE = /(?:ただし|しかし|一方|例外|場合|限り|可能性|とは限ら|必ずしも|原則|条件|注意|警告|利用停止|認識・認容|認識し|認容|実際の使われ方)/u;
 const CONTEXT_DEPENDENT_RE = /(?:前述|上記|下記|以下|この[0-9０-９一二三四五六七八九十]+つ|(?:^|\s|しかも|また|なお)\s*[0-9０-９]+(?:は|と|、|について|を満た))/u;
 const MAX_NOTES = 3;
 const MAX_NOTES_TOTAL = 300;
@@ -73,7 +73,7 @@ function deriveNotes(text, items) {
       score: tokenOverlap(candidate.text, focus) * 4
         + (/(?:ただし|例外|とは限ら|必ずしも)/u.test(candidate.text) ? 2 : 0)
         + (/(?:条件|場合|限り|原則)/u.test(candidate.text) ? 1.2 : 0)
-        + (/(?:認識・認容|認識し|認容|運用|実際の使われ方)/u.test(candidate.text) ? 1 : 0),
+        + (/(?:注意|警告|利用停止|認識・認容|認識し|認容|実際の使われ方)/u.test(candidate.text) ? 1 : 0),
     }))
     .sort((a, b) => b.score - a.score || a.index - b.index);
 
