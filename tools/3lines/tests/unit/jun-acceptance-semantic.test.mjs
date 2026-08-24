@@ -22,7 +22,7 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
 });
 
 test('style-focus route remains model-free and download-free', () => {
-  assert.equal(APP_VERSION, '1.6.0');
+  assert.equal(APP_VERSION, '1.7.0');
   assert.equal(MODEL_ID, 'none');
 });
 
