@@ -55,6 +55,11 @@ try {
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
   await page.locator('#copy-button').click();
   await page.waitForFunction(() => document.querySelector('#copy-button').textContent.includes('コピーしました'));
+  await page.locator('#good-button').click();
+  await page.waitForFunction(() => document.querySelector('#feedback-status').textContent.includes('受け付け'));
+
+  await page.getByRole('radio', { name: 'やさしく' }).click();
+  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3);
   await page.locator('#bad-button').click();
   if (await page.locator('#bad-reasons').isHidden()) throw new Error('Bad reasons did not appear');
   await page.locator('[data-reason="missing"]').click();
@@ -70,6 +75,9 @@ try {
   const leaked = requests.find(({ url, body }) => url.includes(canary) || body.includes(canary));
   if (leaked) throw new Error(`Raw input leaked into request: ${JSON.stringify(leaked)}`);
   if (requests.some(({ url }) => /openai|anthropic|gemini|generativelanguage|cohere/iu.test(url))) throw new Error('External generative endpoint was called');
+
+  await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
+  if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
   console.log('3lines mobile fallback smoke passed');
 } finally {
   await browser.close();
