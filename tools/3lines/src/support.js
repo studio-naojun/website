@@ -2,7 +2,7 @@ import { buildRankedSlate } from './fallback.js';
 import { normalizeForAnalysis, segmentSentences, tokenize } from './normalizer.js';
 
 const QUALIFIER_RE = /(?:ただし|しかし|一方|例外|場合|限り|可能性|とは限ら|必ずしも|原則|条件|なお|留意|注意|認識・認容|認識し|認容|運用|実際の使われ方)/u;
-const CONTEXT_DEPENDENT_RE = /(?:^|\s)(?:[0-9０-９]+(?:と|、|について|を満た)|前述|上記|下記|以下|この[0-9０-９一二三四五六七八九十]+つ)/u;
+const CONTEXT_DEPENDENT_RE = /(?:前述|上記|下記|以下|この[0-9０-９一二三四五六七八九十]+つ|(?:^|\s|しかも|また|なお)\s*[0-9０-９]+(?:は|と|、|について|を満た))/u;
 const MAX_NOTES = 3;
 const MAX_NOTES_TOTAL = 300;
 const MIN_NOTE_LENGTH = 25;
