@@ -24,7 +24,7 @@ test('D3 final route is model-free and download-free', () => {
   assert.equal(MODEL_ID, 'none');
 });
 
-test('Jun fixture produces a standalone topic / boundary / action gist', () => {
+test('Jun fixture produces a standalone topic / explained boundary / action gist', () => {
   const result = composeThreeLines(source, 'gist');
   assert.equal(result.items.length, 3);
   assert.ok(result.items.every((item) => [...item].length <= 120));
@@ -34,7 +34,9 @@ test('Jun fixture produces a standalone topic / boundary / action gist', () => {
   assert.match(result.items[0], /弁護士法72条/u);
   assert.match(result.items[0], /線引/u);
   assert.match(result.items[1], /価値中立/u);
-  assert.match(result.items[1], /(?:用法|使われ方|実際)/u);
+  assert.match(result.items[1], /事件性/u);
+  assert.match(result.items[1], /目指さない設計/u);
+  assert.match(result.items[1], /用法/u);
   assert.match(result.items[1], /アウト/u);
   assert.match(result.items[2], /(?:紛争|裁判所)/u);
   assert.match(result.items[2], /弁護士/u);
