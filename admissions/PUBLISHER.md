@@ -2,25 +2,32 @@
 
 ## Purpose
 
-This directory publishes approved K.A.N.A.D.E. middle-school admissions reports from the private source repository `ffz2bpjyj4-bot/kanade-report-library`.
+This directory publishes K.A.N.A.D.E. middle-school admissions reports from the private source repository `ffz2bpjyj4-bot/kanade-report-library`.
 
 The public product has two report types:
 
 - `weekly`: material changes from the latest seven-day research window;
 - `special`: durable structural analysis that should remain useful beyond one week.
 
-## Approval boundary
+## Publication boundary
 
-No report may be added to this directory or `feed.json` merely because research or editing is complete.
+Research or editing completion alone does not authorize publication.
 
-Publication requires the source cycle/report to record all of the following:
+Normal Admissions Weekly publication uses the standing policy:
 
 ```yaml
-publication_approved: true
+publication_policy: auto-after-checks
+review_mode: post-publish
+auto_publish: true
+static_publish_status: authorized
 published: false
 ```
 
-The corresponding publication checklist must contain no unresolved blocking item. Explicit Jun approval applies to the exact draft/evidence version. If that content changes materially after approval, return to review.
+The corresponding publication checklist must contain no unresolved blocking item. When the source cycle remains eligible and all required publication checks pass, the publication PR may be merged without report-by-report Jun approval.
+
+Jun's routine review happens after publication on the live URL. Jun retains correction, withdrawal, and policy-change authority.
+
+If the source draft or evidence changes materially during publication processing, return to review before merge.
 
 ## Source repository
 
@@ -78,11 +85,11 @@ admissions/feed.json
 }
 ```
 
-A feed id and target path are immutable after publication except for an explicitly reviewed correction/migration.
+A feed id and target path are immutable after publication except for a correction, withdrawal, or reviewed migration recorded in source provenance.
 
 ## Evidence and citation rules
 
-- Preserve factual meaning from the approved Markdown.
+- Preserve factual meaning from the authorized Markdown.
 - Do not add unsupported school facts, admissions rules, statistics, or causal claims during HTML conversion.
 - Keep public source links close to the claims they support.
 - Prefer school/school-corporation/university/public-agency/official-test-provider sources.
@@ -114,7 +121,7 @@ The HTML should preserve:
 - source proximity;
 - report-series identity (`WEEKLY` or `SPECIAL`).
 
-Presentation may improve readability but must not compress away material evidence merely to shorten the page.
+Presentation may improve readability but must not compress away material evidence merely to shorten the page. A supported low-news conclusion is valid; do not invent filler merely to make a weekly issue look busier.
 
 ## Publication PR
 
@@ -130,15 +137,33 @@ The initial launch may additionally include the landing page, publisher contract
 
 Before merge verify:
 
-- exact source approval still exists;
-- source draft/evidence has not changed after approval;
+- the exact source cycle remains auto-publication eligible;
+- source draft/evidence has not materially changed during publication processing;
 - target/feed provenance is unambiguous;
 - `feed.json` parses;
 - linked report paths exist;
 - public source links remain clickable;
 - no internal/private provenance is exposed;
+- proprietary/commercial source reuse stays within the allowed boundary;
 - required smoke/CI checks pass.
+
+If all required checks pass, merge without additional Jun approval. If CI is pending, leave the PR open for recovery. If a hard blocker exists, do not merge and report it.
+
+## Post-publication correction and withdrawal
+
+Jun reviews the live report after publication.
+
+For corrections, update the source-of-truth and republish through the same PR/check path.
+
+If Jun requests that a report be made non-public, or a material issue requires immediate removal before correction:
+
+- remove the report from `admissions/feed.json`;
+- remove or disable the corresponding public report path;
+- record withdrawal status, timestamp, and reason in the private source cycle;
+- preserve Git history and provenance.
+
+A withdrawn report may be republished later after the issue is resolved and checks pass.
 
 ## Failure behavior
 
-Stop before merge if approval is absent, source evidence changed, feed/path conflicts exist, citations were lost, private material leaked, a proprietary source table would be reproduced beyond the approved boundary, or required checks fail.
+Stop before merge if the source cycle is not eligible, source evidence changed materially, feed/path conflicts exist, citations were lost, private material leaked, a proprietary source table would be reproduced beyond the allowed boundary, or required checks fail.
