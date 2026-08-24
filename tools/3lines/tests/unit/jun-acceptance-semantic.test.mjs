@@ -47,13 +47,13 @@ test('the exact Jun-observed detail-only output is semantically rejected', () =>
   assert.equal(coverage.reason, 'detail-only');
 });
 
-test('structured fallback returns the article own three action conclusions', () => {
+test('structured fallback returns core principle, usage boundary, and practical action', () => {
   const result = summarizeStructurally(source, 'gist');
   assert.ok(result);
   assert.equal(result.items.length, 3);
-  assert.match(result.items[0], /^提供する側なら/u);
-  assert.match(result.items[1], /^導入する側なら/u);
-  assert.match(result.items[2], /^共通して/u);
+  assert.match(result.items[0], /価値中立/u);
+  assert.match(result.items[1], /運用の実態/u);
+  assert.match(result.items[2], /弁護士へ/u);
   assert.doesNotMatch(result.items.join('\n'), /原文に含まれる主張/u);
 });
 
@@ -70,9 +70,10 @@ test('summarize never surfaces the Jun-observed detail-only model output', async
       }),
     });
     assert.equal(result.engine, 'extractive-fallback');
-    assert.match(result.items[0], /^提供する側なら/u);
-    assert.match(result.items[1], /^導入する側なら/u);
-    assert.match(result.items[2], /^共通して/u);
+    assert.match(result.items[0], /価値中立/u);
+    assert.match(result.items[1], /運用の実態/u);
+    assert.match(result.items[2], /弁護士へ/u);
+    assert.doesNotMatch(result.items.join('\n'), /出力制限.*推奨事項/u);
   } finally {
     Object.defineProperty(globalThis, 'navigator', { configurable: true, value: originalNavigator });
   }
