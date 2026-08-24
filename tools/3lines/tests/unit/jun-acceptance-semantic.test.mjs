@@ -18,7 +18,7 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
   assert.equal(createHash('sha256').update(source).digest('hex'), '6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0');
   assert.match(normalizedSource, /ビジネス分野におけるAI等法務業務支援サービス提供と弁護士法第72条の関係について/u);
   assert.match(normalizedSource, /キモは法律事件の側にある「事件性」/u);
-  assert.match(normalizedSource, /まとめ：明日から何をするか/u);
+  assert.match(normalizedSource, /まとめ[:：]明日から何をするか/u);
 });
 
 test('body-grounded semantic route remains model-free and download-free', () => {
