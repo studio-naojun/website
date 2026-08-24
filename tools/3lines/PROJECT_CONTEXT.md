@@ -1,150 +1,149 @@
 # 究極の3行 — Project Context / Recovery State
 
-- Candidate ID: `ultimate-3lines-fpv-2026-08-24-d2`
+- Candidate ID: `ultimate-3lines-fpv-2026-08-24-d3`
 - Product: `究極の3行`
 - Repository: `studio-naojun/website`
 - Product path: `tools/3lines/`
 - Public URL: `https://naojun.jp/tools/3lines/`
 - Accepted requirements: `tools/3lines/REQUIREMENTS_SPEC.md`
-- Current settled design: `tools/3lines/METIS_HANDOFF_D2.md`
-- Design revision: `METIS-3LINES-D2`
-- Previous design: `METIS-3LINES-D1` superseded for model/runtime success policy
+- Current settled design: `tools/3lines/METIS_HANDOFF_D3.md`
+- Design revision: `METIS-3LINES-D3`
+- Previous designs: D1 and D2 superseded for runtime/model architecture
 - Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**D1 model/runtime limit confirmed by Jun real-device evidence. D2 implementation verified in GitHub CI; PR #35 is pending final inspection/merge. Candidate remains NOT review-ready.**
+**D2 closed by Jun real-device evidence. D3 design frozen. Implementation not yet verified. NOT review-ready.**
 
-Jun tested the same real legaltech article repeatedly on iPhone. D1/v1.0.3 still returned a source-faithful but legalistic/extractive three-line result that was not understandable to a reader who had not read the source. The latest failed result is permanently stored as a negative regression.
+## D1 RESULT
 
-This satisfied the D1 design-return condition. No more article-specific heuristic corrections are permitted for this failure class.
+D1 used WebLLM 0.2.82 + Qwen3-0.6B and multiple bounded semantic corrections.
 
-## D1 DELIVERY / FAILURE HISTORY
+Jun's exact legaltech fixture remained source-faithful but not understandable as a standalone three-line explanation. This triggered the D1 design-return condition. No further D1 article-specific heuristics are allowed.
 
-- Initial candidate: PR `#29`, merge `defad6de03637b396cdf53e87eb21587d2e07c00`
-- Mobile/reuse correction: PR `#31`, merge `bbefb03605c047c88d52eb1794b010eccf4703df`
-- Structural semantic correction: PR `#32`, merge `d5071f07c48266f3a3800154284200fb42a59fe8`
-- Cache-bust: PR `#33`, merged head `5d0728e9538b979f5ff22da3013610987da49179`
-- Final D1 meaningful-summary correction: PR `#34`, merge `8383340c29bed7fdf8f9b9103aee0538eae2cf64`
-- D1 public app version: `1.0.3`
-- D1 primary model: `Qwen3-0.6B-q4f16_1-MLC`
-- D1 acceptance result: **FAIL / architecture return**
+## D2 RESULT
 
-## FIXED JUN ACCEPTANCE FIXTURE
+D2 was merged through PR #35 with Qwen3-1.7B and no misleading fallback.
 
-- `tests/fixtures/jun-legaltech-72-20260824.txt`
-- UTF-8 size: 14,506 bytes
-- SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
-- Git blob SHA: `1e322e4437909c7900912b3d4c5cd696738d7129`
+Repository verification before merge:
 
-`tests/unit/jun-acceptance-semantic.test.mjs` retains both actual Jun-observed unintelligible outputs as negative regressions.
+- `npm test`: 23/23 PASS
+- `npm run quality`: 20/20 automated invariants PASS
+- JS syntax: PASS
+- no metered external generative endpoint: PASS
 
-## D2 SETTLED DESIGN
+Actual target-device evidence after merge:
 
-D2 preserves the accepted no-metered-external-AI requirement while changing the browser-local model capability and success policy.
+- Jun tested on iPhone Safari: product returned `このブラウザでは使えません` / local model unavailable.
+- Jun tested on iPhone Brave: same result.
+- ~1 GB first model download was also judged unsuitable for the intended simple public tool.
 
-1. Runtime remains exactly `@mlc-ai/web-llm 0.2.82`.
-2. Primary model becomes `Qwen3-1.7B-q4f16_1-MLC`.
-3. Model revision: `80b3abc23aacab805bc16d33cf619fa7c0dcf720`.
-4. Binary library revision: `025bcaf3780fa8254f5e5efd3bfea0a5397248f4`.
-5. WASM: `Qwen3-1.7B-q4f16_1-ctx4k_cs1k-webgpu.wasm`.
-6. Configured VRAM requirement: `2036.66 MB`; low-resource mode enabled; context 4096.
-7. First model preparation is disclosed as approximately **1 GB**.
-8. One persistent Worker/engine is retained and runs are serialized.
-9. Structured input slate is capped at **1,500 Unicode characters** to leave context margin.
-10. Prepared generation gets one 25-second budget; no repair generation is used in D2.
-11. `gist` must communicate topic/change, key boundary/meaning, and practical takeaway in independently understandable Japanese.
-12. D1 deterministic/structured fallback remains only as internal test utility; it is **not a user-visible successful normal summarization path**.
-13. WebGPU/model/timeout/quality failure returns a typed retryable/unsupported error while preserving input. It never masquerades as a valid three-line result.
-14. No remote/metered generative AI, API key, credential, backend inference, private LocalAI dependency, or paid fallback was added.
+This is a material REQ-009 failure. D2 is closed as `ARCHITECTURE FAIL` before quality acceptance.
 
-## D2 IMPLEMENTATION
+Do not ask Jun to enable browser feature flags or retry another WebGPU-only library.
 
-- Branch: `metis/3lines-d2-qwen17b`
-- PR: `#35`
-- App version: `1.1.0`
-- D2 design freeze: `METIS_HANDOFF_D2.md`
+## D3 SETTLED DESIGN
 
-Key code changes:
+D3 removes WebGPU as a requirement and uses a two-stage local pipeline.
 
-- `src/local-worker.js`: Qwen3 1.7B pinned model/runtime, standalone-comprehension prompt, one generation.
-- `src/summarizer.js`: 1,500-char structured slate, 25s generation budget, standalone quality gate, typed errors, no successful fallback.
-- `src/main.js`: typed error display; stale previous result is hidden/cleared on failure while textarea remains.
-- `index.html`: ~1 GB first-load disclosure and v1.1.0 cache bust.
-- unit tests: D2 pins, latest Jun failures as negative regressions, good standalone result as positive reference, WebGPU/model/timeout failure behavior.
+### Stage A — tiny Japanese source compression
 
-## ACTUAL VERIFICATION EVIDENCE
+Use/adapt public permissively licensed browser-side Japanese summarization/tokenization lineage:
 
-A temporary one-job GitHub-native workflow was used because the current Chat execution environment cannot clone the repository. The workflow was removed from the branch after evidence was captured and is not part of the product PR.
+- `hitoshin/tiny_summarizer` — Apache-2.0
+- TinySegmenter — permissive MIT/BSD lineage
 
-Final verification run:
+Combine its term-frequency important-sentence scoring with the existing document-structure signals.
 
-- Workflow run: `32689057873`
-- Job: `97319304908`
-- Node: `22.23.2`
-- `npm test`: **23/23 PASS**
-- `npm run quality`: **20/20 automated invariants PASS**
-- `node --check src/main.js`: PASS
-- `node --check src/summarizer.js`: PASS
-- `node --check src/local-worker.js`: PASS
+Long input -> 8–12 diverse source-derived sentences/fragments -> 800–1,200 chars normally, hard cap 1,500 chars.
 
-Important D2 regression evidence included in the passing 23 tests:
+Stage A is internal only; it is not the user-visible three-line output.
 
-- exact Jun fixture identity: PASS
-- WebLLM 0.2.82 / Qwen3 1.7B / revisions / WASM / VRAM pins: PASS
-- model slate <= 1,500 chars with major article structure retained: PASS
-- both actual Jun-observed unintelligible outputs rejected: PASS
-- standalone-comprehensible reference result accepted: PASS
-- bad local output never surfaces as fallback success: PASS
-- good local output succeeds in one generation: PASS
-- WebGPU absence is explicit unsupported behavior: PASS
-- local timeout is typed and never returns extractive success: PASS
-- no metered generative AI endpoint in normal source path: PASS
-- persistent worker reuse / request serialization regression: PASS
-- privacy feedback raw-text exclusion: PASS
+### Stage B — small generator on CPU/WASM
 
-The initial D2 CI attempt failed only because three old D1 tests still expected the superseded fallback-success contract. Those tests were updated to D2 behavior; product implementation was not reverted. The final run then passed completely.
+Primary candidate:
 
-## STILL UNVERIFIED
+- `LiquidAI/LFM2.5-350M-ONNX`
+- Q4 artifact ~294 MB
+- Japanese documented among supported languages
+- instruction-tuned / on-device-oriented model family
+- Transformers.js + ONNX Runtime Web
+- explicit CPU/WebAssembly path; no WebGPU or `auto` route that may choose WebGPU
+- worker execution; single-thread path must work without SharedArrayBuffer/COOP/COEP requirements
 
-Do not infer these as PASS:
+Known Q4 data artifact SHA-256 at design time:
 
-- actual Qwen3-1.7B initialization on Jun's iPhone Safari;
-- actual first-load download/memory behavior on the target iPhone;
-- prepared inference <=30 seconds on the target iPhone;
-- second-run model reuse on the target iPhone;
-- style-change stability without reload/input loss on the target iPhone;
-- actual semantic usefulness of the 1.7B output on the fixed Jun fixture;
-- Android real-device behavior;
-- 20-case human usefulness acceptance;
-- Pages external HTTP/source-live provenance after D2 merge.
+`71ec6ad38a4c463dcb3dba671d06a1d9861be3a23e51290d818b95c0b7d2a5db`
 
-## REQUIREMENT STATUS
+Runtime/model exact revision pins must be frozen in implementation/tests before merge.
 
-- REQ-001–006: implementation evidence retained; affected D2 behavior covered by unit checks where applicable.
-- REQ-007: **UNVERIFIED** — automated guards pass; Jun/human usefulness remains decisive.
-- REQ-008: PASS in source/test evidence — no API key / metered external generative AI / silent paid fallback.
-- REQ-009: **UNVERIFIED** on real target devices.
-- REQ-010: implementation regression evidence retained.
-- REQ-011: **UNVERIFIED** on real iPhone; prepared generation budget is 25 seconds.
-- REQ-012–017: retained unless affected; privacy boundary remains local-first.
-- REQ-018: **UNVERIFIED / NOT review-ready**.
+### Download constraint
 
-## NEXT ACCEPTANCE / HARD STOP RULE
+- expected normal first-use model/runtime transfer: roughly 300–330 MB
+- hard return threshold: >350 MB
+- download amount/progress must be shown before/during download
+- browser cache reuse where available; persistence must not be assumed forever
 
-After D2 is merged and observable, Jun should use the **same fixed legaltech article** once on iPhone.
+### Success policy
 
-Pass requires:
+- exactly three standalone understandable semantic units
+- no silent extractive fallback success
+- quality failure -> explicit `quality-unavailable`, input preserved
+- no remote paid AI/API-key fallback
 
-- the three lines alone let a reader explain what the article is about;
-- the key legal/product boundary is understandable rather than merely named;
-- the practical takeaway is clear;
-- prepared generation completes within the accepted performance target;
-- no page reload/input loss/memory failure.
+## WHY D3
 
-If Qwen3-1.7B cannot initialize reliably, materially exceeds the performance target, reloads the page, or still produces materially unintelligible output, **stop the browser-local patch loop**. Do not try more heuristics or silently add remote AI.
+External implementation evidence supports this route:
 
-That result is an accepted-requirement conflict for Jun: useful semantic quality + target-mobile stability + no normal metered external generative AI cannot all be met by this browser-local architecture as currently available.
+- ONNX Runtime Web explicitly lists WebAssembly CPU support for Safari iOS, Chrome/Edge iOS, Android Chrome and desktop, while Safari WebGPU is not supported in its compatibility matrix.
+- Transformers.js supports CPU/WASM browser inference and quantized models.
+- TinySummarizer is explicitly designed for fully client-side Japanese extractive summarization.
+- LFM2.5-350M provides a substantially smaller (~294 MB Q4 ONNX) instruction generator with Japanese support.
+
+This directly matches Jun's proposed direction: first compress/summarize using a public free implementation, then perform the final three-line semantic rewrite.
+
+## D3 VERIFICATION REQUIRED
+
+Before Jun sees another candidate, internal evidence must cover:
+
+- Stage A fixed-fixture behavior and digest cap/diversity
+- no WebGPU dependency in normal route
+- no raw source text in network requests
+- model/runtime/hash pins
+- unit + quality regression suite
+- browser smoke where executable
+- actual transfer-size measurement
+
+Jun-facing acceptance is only after a coherent candidate exists.
+
+On actual devices verify:
+
+- iOS Safari
+- iOS Brave if available
+- Android Chrome
+- desktop Chrome/Safari
+- prepared 3,000-char generation <=30 s
+- no reload/memory kill
+- exact legaltech fixture understandable standalone
+
+## HARD RETURN CONDITIONS
+
+Return to M.E.T.I.S. instead of another local-model patch loop if:
+
+1. Safari/Brave cannot run the explicit WASM CPU route.
+2. normal first-use transfer materially exceeds 350 MB.
+3. prepared generation consistently exceeds 30 s.
+4. normal use causes memory kill/page reload.
+5. exact Jun fixture remains unintelligible despite successful two-stage execution.
+6. REQ-007 human usefulness gate cannot be met.
+7. solving the above requires paid/metered remote AI, a credential, or a material requirements change.
+
+If D3 fails these boundaries, classify the result as an accepted-requirement/architecture conflict rather than starting arbitrary D4 model swapping.
+
+## LICENSE / COMMERCIAL NOTE
+
+- TinySummarizer: Apache-2.0; attribution/license handling required.
+- LFM2.5: LFM Open License v1.0. Current public terms permit commercial use without model-license fee below the stated USD 10M annual-revenue threshold, with redistribution/attribution obligations. If that threshold becomes material to the product owner/legal entity, return before continued commercial release.
 
 ## S.Y.B.I.L. STATUS
 
