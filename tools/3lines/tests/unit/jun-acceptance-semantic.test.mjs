@@ -20,7 +20,7 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
 });
 
 test('D3 final route is model-free and download-free', () => {
-  assert.equal(APP_VERSION, '1.3.0');
+  assert.equal(APP_VERSION, '1.3.1');
   assert.equal(MODEL_ID, 'none');
 });
 
@@ -57,4 +57,26 @@ test('all four styles return exactly three bounded semantic units without re-pas
     assert.equal(result.items.length, 3, style);
     assert.ok(result.items.every((item) => [...item].length <= 120), style);
   }
+});
+
+test('structured styles are materially distinct, not three labels over the same result', async () => {
+  const results = {};
+  for (const style of ['gist', 'points', 'easy', 'faithful']) {
+    results[style] = (await summarize({ text: source, style })).items;
+  }
+
+  const signatures = Object.values(results).map((items) => JSON.stringify(items));
+  assert.equal(new Set(signatures).size, 4);
+  assert.notDeepEqual(results.gist, results.easy);
+  assert.notDeepEqual(results.gist, results.faithful);
+  assert.notDeepEqual(results.easy, results.faithful);
+
+  assert.match(results.easy[0], /どこまでならよいか/u);
+  assert.match(results.easy[1], /かんたんに/u);
+  assert.match(results.easy[1], /使われ方/u);
+  assert.match(results.easy[2], /使う側/u);
+
+  const faithful = results.faithful.join(' ');
+  assert.match(faithful, /(?:価値中立|事件性|用法|提供者|利用者)/u);
+  assert.doesNotMatch(faithful, /かんたんに：|使う側：/u);
 });

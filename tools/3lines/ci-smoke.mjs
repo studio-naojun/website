@@ -45,6 +45,12 @@ async function waitForCompletedResult(style) {
   if (!(await page.locator('#error-section').isHidden())) throw new Error(`Browser summarization failed: ${await page.locator('#error-detail').textContent()}`);
 }
 
+async function styleItems(label, style) {
+  await page.getByRole('radio', { name: label }).click();
+  await waitForCompletedResult(style);
+  return page.locator('#result-items > li').allTextContents();
+}
+
 try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/', { waitUntil: 'domcontentloaded' });
   console.log('smoke: loaded');
@@ -73,10 +79,23 @@ try {
   if (!/弁護士/u.test(firstItems[2]) || !/(?:紛争|裁判所|和解)/u.test(firstItems[2])) throw new Error(`Action line failed: ${firstItems[2]}`);
   if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
-  await page.getByRole('radio', { name: '論点3つ' }).click();
-  await waitForCompletedResult('points');
+  const pointItems = await styleItems('論点3つ', 'points');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
-  if (navigations !== 1) throw new Error(`Unexpected page reload during style switch: ${navigations}`);
+  if (JSON.stringify(pointItems) === JSON.stringify(firstItems)) throw new Error('points style duplicated gist output');
+
+  const easyItems = await styleItems('やさしく', 'easy');
+  if (JSON.stringify(easyItems) === JSON.stringify(firstItems)) throw new Error('easy style duplicated gist output');
+  if (JSON.stringify(easyItems) === JSON.stringify(pointItems)) throw new Error('easy style duplicated points output');
+  if (!/どこまでならよいか/u.test(easyItems[0]) || !/かんたんに/u.test(easyItems[1]) || !/使う側/u.test(easyItems[2])) {
+    throw new Error(`easy style did not use reader-friendly route: ${JSON.stringify(easyItems)}`);
+  }
+
+  const faithfulItems = await styleItems('忠実に', 'faithful');
+  for (const [name, items] of [['gist', firstItems], ['points', pointItems], ['easy', easyItems]]) {
+    if (JSON.stringify(faithfulItems) === JSON.stringify(items)) throw new Error(`faithful style duplicated ${name} output`);
+  }
+  if (/かんたんに：|使う側：/u.test(faithfulItems.join(' '))) throw new Error(`faithful style contained easy rewrite labels: ${JSON.stringify(faithfulItems)}`);
+  if (navigations !== 1) throw new Error(`Unexpected page reload during style switches: ${navigations}`);
 
   await page.getByRole('radio', { name: '要するに' }).click();
   await waitForCompletedResult('gist');
@@ -113,6 +132,9 @@ try {
 
   console.log('3lines deterministic Jun-fixture mobile smoke passed');
   console.log(firstJoined);
+  console.log(`points=${JSON.stringify(pointItems)}`);
+  console.log(`easy=${JSON.stringify(easyItems)}`);
+  console.log(`faithful=${JSON.stringify(faithfulItems)}`);
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

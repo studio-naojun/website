@@ -1,5 +1,5 @@
 import { summarizeExtractively } from './fallback.js';
-import { parseSections } from './structure.js';
+import { parseSections, structuralFallbackCandidates } from './structure.js';
 
 const SUMMARY_RE = /(?:まとめ|要点|結論|明日から|何をするか)/u;
 const BOUNDARY_RE = /(?:分水嶺|基準|原則|セーフ|条件|境界|線引き)/u;
@@ -29,17 +29,25 @@ function stripMarketingTitle(title) {
     .trim();
 }
 
+function parseBoundaryTitle(title) {
+  const value = stripMarketingTitle(title);
+  const match = value.match(/^「([^」]+)」に[、,]?([^、。]{2,36}?)が(?:ついに)?線を引いた[─—―-]+(.+)$/u);
+  if (!match) return null;
+  const [, issue, actor, rawDocument] = match;
+  const document = clean(rawDocument)
+    .replace(/を(?:全部)?まとめ(?:た|る).*$/u, '')
+    .replace(/を(?:徹底)?解説(?:した|する).*$/u, '')
+    .trim();
+  return { issue: clean(issue), actor: clean(actor), document };
+}
+
 export function composeTopicLine(title) {
   const value = stripMarketingTitle(title);
   if (!value) return '';
 
-  const boundaryTitle = value.match(/^「([^」]+)」に[、,]?([^、。]{2,36}?)が(?:ついに)?線を引いた[─—―-]+(.+)$/u);
+  const boundaryTitle = parseBoundaryTitle(title);
   if (boundaryTitle) {
-    const [, issue, actor, rawDocument] = boundaryTitle;
-    const document = clean(rawDocument)
-      .replace(/を(?:全部)?まとめ(?:た|る).*$/u, '')
-      .replace(/を(?:徹底)?解説(?:した|する).*$/u, '')
-      .trim();
+    const { issue, actor, document } = boundaryTitle;
     if (document) return clip(`${actor}が「${issue}」の線引きを、${document}で示した。`);
     return clip(`${actor}が「${issue}」の線引きを示した。`);
   }
@@ -47,6 +55,17 @@ export function composeTopicLine(title) {
   const dashParts = value.split(/[─—―]{2,}|\s[-–—]\s/u).map(clean).filter(Boolean);
   if (dashParts.length >= 2) return clip(ensurePeriod(`${dashParts[0]}：${dashParts.slice(1).join('：')}`));
   return clip(ensurePeriod(value));
+}
+
+function composeEasyTopicLine(title) {
+  const boundaryTitle = parseBoundaryTitle(title);
+  if (boundaryTitle) {
+    const issue = boundaryTitle.issue.replace(/問題$/u, '');
+    const where = boundaryTitle.document ? `${boundaryTitle.document}で` : '';
+    return clip(`${boundaryTitle.actor}が、${issue}について「どこまでならよいか」を${where}示した。`);
+  }
+  const value = stripMarketingTitle(title);
+  return value ? clip(`かんたんに：${ensurePeriod(value)}`) : '';
 }
 
 function headingEssence(heading) {
@@ -72,6 +91,16 @@ function negativeDesignDefinition(body) {
   return target ? `${target}に利用させることを目指さない設計` : '';
 }
 
+function boundaryEntries(sections) {
+  const entries = sections
+    .filter((section) => section.heading && section.heading !== '本文')
+    .map((section) => ({ section, essence: headingEssence(section.heading), body: bodySignals(section) }));
+  const primary = entries.find(({ essence }) => BOUNDARY_RE.test(essence))
+    || entries.find(({ essence }) => /「[^」]+」/u.test(essence));
+  const caveat = entries.find(({ essence, section }) => section !== primary?.section && CAVEAT_RE.test(essence));
+  return { entries, primary, caveat };
+}
+
 function explainPrimaryBoundary(entry) {
   let essence = entry.essence.replace(/[。！？!?]+$/u, '');
   const concept = quotedConcept(essence);
@@ -92,27 +121,49 @@ function explainCaveat(entry) {
 }
 
 function findBoundaryLine(sections) {
-  const entries = sections
-    .filter((section) => section.heading && section.heading !== '本文')
-    .map((section) => ({ section, essence: headingEssence(section.heading), body: bodySignals(section) }));
-
-  const primary = entries.find(({ essence }) => BOUNDARY_RE.test(essence))
-    || entries.find(({ essence }) => /「[^」]+」/u.test(essence));
-  const caveat = entries.find(({ essence, section }) => section !== primary?.section && CAVEAT_RE.test(essence));
-
+  const { entries, primary, caveat } = boundaryEntries(sections);
   if (primary && caveat) {
     return clip(`重要：${explainPrimaryBoundary(primary)}。ただし、${explainCaveat(caveat)}。`);
   }
-
   const candidate = primary || entries.find(({ essence, body }) => BOUNDARY_RE.test(body) || CAVEAT_RE.test(essence));
   return candidate ? clip(`重要：${ensurePeriod(explainPrimaryBoundary(candidate))}`) : '';
+}
+
+function findEasyBoundaryLine(sections) {
+  const { entries, primary, caveat } = boundaryEntries(sections);
+  if (!primary) {
+    const candidate = entries.find(({ essence, body }) => BOUNDARY_RE.test(body) || CAVEAT_RE.test(essence));
+    return candidate ? clip(`かんたんに：${ensurePeriod(candidate.essence)}`) : '';
+  }
+
+  const concept = quotedConcept(primary.essence);
+  const definition = negativeDesignDefinition(primary.body);
+  const simpleDefinition = definition
+    .replace(/に利用させることを目指さない設計$/u, '向けに作らないこと');
+  let first = concept && simpleDefinition
+    ? `「${concept}」＝${simpleDefinition}`
+    : simpleDefinition
+      ? `${simpleDefinition}が判断のポイント`
+      : concept
+        ? `「${concept}」が判断のポイント`
+        : explainPrimaryBoundary(primary);
+
+  let second = caveat ? explainCaveat(caveat) : '';
+  second = second
+    .replace(/設計がセーフでも/u, '作り方に問題がなくても')
+    .replace(/「用法」/gu, '実際の使われ方')
+    .replace(/用法/gu, '使われ方')
+    .replace(/運用/gu, '実際の運用');
+
+  if (second) return clip(`かんたんに：${first}。でも、${second}。`);
+  return clip(`かんたんに：${ensurePeriod(first)}`);
 }
 
 function summarySections(sections) {
   return sections.filter((section) => SUMMARY_RE.test(clean(section.heading)));
 }
 
-function findActionLine(sections) {
+function collectActionLines(sections) {
   const preferred = summarySections(sections);
   const search = preferred.length ? preferred : sections;
   const lines = [];
@@ -122,7 +173,11 @@ function findActionLine(sections) {
       if (value) lines.push(value);
     }
   }
+  return lines;
+}
 
+function findActionLine(sections) {
+  const lines = collectActionLines(sections);
   let action = lines.find((line) => /^共通して\s*[:：]/u.test(line) && ACTION_RE.test(line));
   if (!action) action = lines.find((line) => ACTION_RE.test(line));
   if (!action) return '';
@@ -137,6 +192,21 @@ function findActionLine(sections) {
   return clip(`結論：${ensurePeriod(action)}`);
 }
 
+function findEasyActionLine(sections) {
+  const lines = collectActionLines(sections);
+  let action = lines.find((line) => /^(?:導入する側なら|使う側なら|利用する側なら)\s*[:：]/u.test(line));
+  if (!action) action = lines.find((line) => /^提供する側なら\s*[:：]/u.test(line));
+  if (!action) action = lines.find((line) => /^共通して\s*[:：]/u.test(line));
+  if (!action) action = lines.find((line) => ACTION_RE.test(line));
+  if (!action) return '';
+
+  action = action
+    .replace(/^(?:導入する側なら|使う側なら|利用する側なら|提供する側なら|共通して|結局)\s*[:：]\s*/u, '')
+    .replace(/^「[^」]+」をやめて、?\s*/u, '')
+    .trim();
+  return clip(`使う側：${ensurePeriod(action)}`);
+}
+
 function hasUsefulStructure(parsed) {
   const headed = parsed.sections.filter((section) => clean(section.heading) !== '本文');
   return headed.length >= 2 && (summarySections(parsed.sections).length > 0 || headed.some((section) => /ポイント|要点|結論/u.test(clean(section.heading))));
@@ -148,24 +218,48 @@ function distinct(items) {
   return result;
 }
 
+function pointsItems(parsed) {
+  const headings = parsed.sections
+    .map((section) => headingEssence(section.heading))
+    .filter((heading) => heading && heading !== '本文' && !SUMMARY_RE.test(heading))
+    .slice(0, 3)
+    .map((heading) => clip(ensurePeriod(heading)));
+  return new Set(headings).size === 3 ? headings : null;
+}
+
+function easyItems(parsed) {
+  const result = distinct([
+    composeEasyTopicLine(parsed.title),
+    findEasyBoundaryLine(parsed.sections),
+    findEasyActionLine(parsed.sections),
+  ]);
+  return result.length === 3 ? result : null;
+}
+
+function faithfulItems(text) {
+  const candidates = structuralFallbackCandidates(text, 'faithful')
+    .map((item) => clip(ensurePeriod(item)));
+  const result = distinct(candidates);
+  return result.length === 3 ? result : null;
+}
+
+function gistItems(parsed) {
+  const result = distinct([
+    composeTopicLine(parsed.title),
+    findBoundaryLine(parsed.sections),
+    findActionLine(parsed.sections),
+  ]);
+  return result.length === 3 ? result : null;
+}
+
 function structuredItems(text, style) {
   const parsed = parseSections(text);
   if (!hasUsefulStructure(parsed)) return null;
 
-  if (style === 'points') {
-    const headings = parsed.sections
-      .map((section) => headingEssence(section.heading))
-      .filter((heading) => heading && heading !== '本文' && !SUMMARY_RE.test(heading))
-      .slice(0, 3)
-      .map((heading) => clip(ensurePeriod(heading)));
-    if (new Set(headings).size === 3) return headings;
-  }
-
-  const topic = composeTopicLine(parsed.title);
-  const boundary = findBoundaryLine(parsed.sections);
-  const action = findActionLine(parsed.sections);
-  const result = distinct([topic, boundary, action]);
-  return result.length === 3 ? result : null;
+  if (style === 'points') return pointsItems(parsed);
+  if (style === 'easy') return easyItems(parsed);
+  if (style === 'faithful') return faithfulItems(text);
+  return gistItems(parsed);
 }
 
 function unstructuredItems(text, style) {
