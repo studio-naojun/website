@@ -21,6 +21,8 @@ test('support layer restores conditional supplements and a longer source-grounde
   assert.ok(support.notes.every((note) => [...note].length >= 25 && [...note].length <= 100));
   assert.ok(support.notes.every((note) => /[。！？!?]$/u.test(note) && !note.includes('…')), `notes=${JSON.stringify(support.notes)}`);
   assert.ok(support.notes.every((note) => !/(?:前述|上記|下記|以下|(?:しかも|また|なお)\s*[0-9０-９]+(?:は|と|、|について))/u.test(note)), `notes=${JSON.stringify(support.notes)}`);
+  assert.ok(support.notes.every((note) => /(?:ただし|しかし|一方|例外|場合|限り|可能性|とは限ら|必ずしも|原則|条件|注意|警告|利用停止|認識・認容|認識し|認容|実際の使われ方)/u.test(note)), `notes=${JSON.stringify(support.notes)}`);
+  assert.doesNotMatch(support.notes.join(' '), /第3章をまるごと「留意・推奨事項」/u);
   assert.ok(typeof support.detail === 'string' && support.detail.length >= 180, `detail=${support.detail}`);
   assert.match(support.detail, /弁護士|AI|法律/u);
 });
