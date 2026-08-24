@@ -1,13 +1,15 @@
 import { summarizeExtractively } from './fallback.js';
 import { validateInput } from './normalizer.js';
 import { parseModelOutput, validateSummary } from './validator.js';
-import { buildStructuredSlate, validateStructuredCoverage } from './structure.js?v=1.0.2';
-import { summarizeStructurally } from './structured-fallback.js?v=1.0.2';
+import { buildStructuredSlate, validateStructuredCoverage } from './structure.js?v=1.0.3';
+import { summarizeStructurally } from './structured-fallback.js?v=1.0.3';
 
 export const MODEL_ID = 'Qwen3-0.6B-q4f16_1-MLC';
-export const LOCAL_GENERATION_BUDGET_MS = 25000;
+export const LOCAL_GENERATION_BUDGET_MS = 16000;
+export const LOCAL_REPAIR_BUDGET_MS = 8000;
 export const MODEL_PREPARATION_BUDGET_MS = 120000;
-export const APP_VERSION = '1.0.2';
+export const MODEL_INPUT_MAX_CHARS = 1800;
+export const APP_VERSION = '1.0.3';
 
 function canUseWebGPU() { return typeof navigator !== 'undefined' && 'gpu' in navigator; }
 
@@ -16,16 +18,25 @@ async function hasWebGPUAdapter() {
   try { return Boolean(await navigator.gpu.requestAdapter()); } catch { return false; }
 }
 
-function buildSlate(text, style) { return buildStructuredSlate(text, style, 4000); }
+function buildSlate(text, style) { return buildStructuredSlate(text, style, MODEL_INPUT_MAX_CHARS); }
 
 function fallbackResult(text, style, started, preparationState) {
   const result = summarizeStructurally(text, style) || summarizeExtractively(text, style);
   return { ...result, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState: result.preparationState || preparationState };
 }
 
+function assessModelOutput(modelOutput, text, style) {
+  const parsed = parseModelOutput(modelOutput?.raw);
+  const valid = validateSummary(parsed, text);
+  if (!valid.ok) return { ok: false, reason: `format:${valid.reason}` };
+  const coverage = validateStructuredCoverage(valid, text, style);
+  if (!coverage.ok) return { ok: false, reason: `semantic:${coverage.reason}` };
+  return { ok: true, items: valid.items, notes: valid.notes };
+}
+
 function defaultWorkerFactory() {
   if (typeof Worker === 'undefined') throw new Error('Worker is not supported.');
-  return new Worker(new URL('./local-worker.js?v=1.0.2', import.meta.url), { type: 'module' });
+  return new Worker(new URL('./local-worker.js?v=1.0.3', import.meta.url), { type: 'module' });
 }
 
 export class LocalWorkerClient {
@@ -51,20 +62,27 @@ export class LocalWorkerClient {
     return worker;
   }
 
-  run(slate, style, onStatus = () => {}) {
-    const execute = () => this.execute(slate, style, onStatus);
+  run(slate, style, onStatus = () => {}, options = {}) {
+    const execute = () => this.execute(slate, style, onStatus, options);
     const result = this.queue.then(execute, execute);
     this.queue = result.catch(() => undefined);
     return result;
   }
 
-  execute(slate, style, onStatus) {
+  execute(slate, style, onStatus, options) {
     return new Promise((resolve, reject) => {
       const worker = this.ensureWorker();
       const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`;
       const preparationTimer = setTimeout(() => this.failPending(new Error('Model preparation timed out.'), true), this.preparationBudgetMs);
-      this.pending = { requestId, resolve, reject, onStatus, preparationTimer, generationTimer: null };
-      worker.postMessage({ type: 'summarize', requestId, style, slate });
+      this.pending = {
+        requestId, resolve, reject, onStatus, preparationTimer, generationTimer: null,
+        generationBudgetMs: Number(options?.generationBudgetMs) || this.generationBudgetMs,
+      };
+      worker.postMessage({
+        type: 'summarize', requestId, style, slate,
+        repairFrom: typeof options?.repairFrom === 'string' ? options.repairFrom : '',
+        repairReason: typeof options?.repairReason === 'string' ? options.repairReason : '',
+      });
     });
   }
 
@@ -82,8 +100,8 @@ export class LocalWorkerClient {
     if (data.type === 'ready') {
       this.ready = true;
       clearTimeout(pending.preparationTimer);
-      pending.onStatus('summarizing', '文章を3つの意味単位にまとめています…');
-      pending.generationTimer = setTimeout(() => this.failPending(new Error('Local inference timed out.'), true), this.generationBudgetMs);
+      pending.onStatus('summarizing', data.repair ? '全体の意味に寄せて3行を再調整しています…' : '文章全体を3行にまとめています…');
+      pending.generationTimer = setTimeout(() => this.failPending(new Error('Local inference timed out.'), true), pending.generationBudgetMs);
       return;
     }
     if (data.type === 'result') {
@@ -130,7 +148,9 @@ export class LocalWorkerClient {
 
 const sharedWorkerClient = new LocalWorkerClient();
 
-function runWorker(text, style, onStatus) { return sharedWorkerClient.run(buildSlate(text, style), style, onStatus); }
+function runWorker(text, style, onStatus, options = {}) {
+  return sharedWorkerClient.run(buildSlate(text, style), style, onStatus, options);
+}
 
 if (typeof window !== 'undefined') window.addEventListener('pagehide', () => sharedWorkerClient.dispose(), { once: true });
 
@@ -144,18 +164,33 @@ export async function summarize({ text, style = 'gist', onStatus = () => {}, loc
     return fallbackResult(text, style, started, 'webgpu-unavailable');
   }
   onStatus('preparing-model', '対応端末では初回のみ約350MBのブラウザ内モデルを準備します…');
+
   try {
-    const modelOutput = await localRunner(text, style, onStatus);
-    const parsed = parseModelOutput(modelOutput.raw);
-    const valid = validateSummary(parsed, text);
-    if (!valid.ok) throw new Error(`Local output rejected: ${valid.reason}`);
-    const coverage = validateStructuredCoverage(valid, text, style);
-    if (!coverage.ok) throw new Error(`Local output rejected: semantic-${coverage.reason}`);
-    return { items: valid.items, notes: valid.notes, engine: 'local-qwen', modelId: modelOutput.modelId, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState: 'ready' };
+    const first = await localRunner(text, style, onStatus, { generationBudgetMs: LOCAL_GENERATION_BUDGET_MS });
+    const firstAssessment = assessModelOutput(first, text, style);
+    if (firstAssessment.ok) {
+      return { items: firstAssessment.items, notes: firstAssessment.notes, engine: 'local-qwen', modelId: first.modelId, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState: 'ready' };
+    }
+
+    onStatus('summarizing', '細部への偏りを検出しました。全体の意味に寄せて再調整しています…');
+    try {
+      const repaired = await localRunner(text, style, onStatus, {
+        generationBudgetMs: LOCAL_REPAIR_BUDGET_MS,
+        repairFrom: first.raw,
+        repairReason: firstAssessment.reason,
+      });
+      const repairedAssessment = assessModelOutput(repaired, text, style);
+      if (repairedAssessment.ok) {
+        return { items: repairedAssessment.items, notes: repairedAssessment.notes, engine: 'local-qwen', modelId: repaired.modelId, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState: 'ready-repaired' };
+      }
+      return fallbackResult(text, style, started, `fallback:${repairedAssessment.reason}`);
+    } catch (repairError) {
+      return fallbackResult(text, style, started, `fallback:repair:${repairError.message}`);
+    }
   } catch (error) {
-    onStatus('summarizing', '要点の偏りを検出したため、構造化簡易モードに切り替えています…');
+    onStatus('summarizing', 'ブラウザ内モデルを使えないため、意味構造から3行を組み立てています…');
     return fallbackResult(text, style, started, `fallback:${error.message}`);
   }
 }
 
-export { canUseWebGPU, hasWebGPUAdapter, buildSlate };
+export { canUseWebGPU, hasWebGPUAdapter, buildSlate, assessModelOutput };
