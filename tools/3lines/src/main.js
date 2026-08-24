@@ -22,7 +22,7 @@ const retryButton = document.querySelector('#retry-button');
 const feedbackStatus = document.querySelector('#feedback-status');
 const badReasons = document.querySelector('#bad-reasons');
 const styles = [...document.querySelectorAll('.style-option')];
-const state = { style: 'gist', result: null, generationId: null, feedbackRating: null };
+const state = { style: 'gist', result: null, generationId: null, feedbackRating: null, running: false };
 
 function setStatus(label, detail, mode = 'ready') {
   statusLabel.textContent = label;
@@ -31,15 +31,21 @@ function setStatus(label, detail, mode = 'ready') {
   statusCard.classList.toggle('is-error', mode === 'error');
 }
 
-function setInputError(message = '') {
-  inputError.textContent = message;
-  inputError.hidden = !message;
-}
+function setInputError(message = '') { inputError.textContent = message; inputError.hidden = !message; }
 
 function updateCount() {
   const length = [...source.value].length;
   charCount.textContent = `${length.toLocaleString('ja-JP')} / ${MAX_INPUT_CHARS.toLocaleString('ja-JP')}`;
   charCount.classList.toggle('is-over', length > MAX_INPUT_CHARS);
+}
+
+function setBusy(busy) {
+  state.running = busy;
+  submitButton.disabled = busy;
+  retryButton.disabled = busy;
+  source.readOnly = busy;
+  form.setAttribute('aria-busy', String(busy));
+  for (const button of styles) button.disabled = busy;
 }
 
 function selectStyle(style) {
@@ -53,17 +59,9 @@ function selectStyle(style) {
 
 function renderResult(result) {
   resultItems.replaceChildren();
-  for (const item of result.items) {
-    const li = document.createElement('li');
-    li.textContent = item;
-    resultItems.append(li);
-  }
+  for (const item of result.items) { const li = document.createElement('li'); li.textContent = item; resultItems.append(li); }
   notesItems.replaceChildren();
-  for (const note of result.notes) {
-    const li = document.createElement('li');
-    li.textContent = note;
-    notesItems.append(li);
-  }
+  for (const note of result.notes) { const li = document.createElement('li'); li.textContent = note; notesItems.append(li); }
   notesSection.hidden = result.notes.length === 0;
   resultMeta.textContent = `${result.engine === 'local-qwen' ? 'ブラウザ内モデル' : 'ローカル簡易モード'} / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
@@ -86,31 +84,30 @@ function showError(error) {
 }
 
 async function runSummary() {
+  if (state.running) return;
+  const requestedStyle = state.style;
+  const requestedText = source.value;
+  setBusy(true);
   setInputError('');
   errorSection.hidden = true;
-  submitButton.disabled = true;
   setStatus('処理を開始しました', '入力を確認しています…', 'busy');
   await new Promise((resolve) => requestAnimationFrame(resolve));
   try {
     const result = await summarize({
-      text: source.value,
-      style: state.style,
+      text: requestedText,
+      style: requestedStyle,
       onStatus: (mode, detail) => {
-        const labels = {
-          validating: '入力を確認しています',
-          'preparing-model': '初回準備中',
-          summarizing: '3行を作成中',
-        };
+        const labels = { validating: '入力を確認しています', 'preparing-model': '初回準備中', summarizing: '3行を作成中' };
         setStatus(labels[mode] || '処理中', detail, 'busy');
       },
     });
     renderResult(result);
-    setStatus('できました', '原文はこのブラウザ内に残っています。別のまとめ方も選べます。');
+    setStatus('できました', '原文と準備済みモデルはこのページ内に保持しています。別のまとめ方も選べます。');
   } catch (error) {
     if (error?.code === 'blank' || error?.code === 'too-long') setInputError(error.message);
     showError(error);
   } finally {
-    submitButton.disabled = false;
+    setBusy(false);
   }
 }
 
@@ -122,62 +119,27 @@ function resultText() {
 }
 
 async function copyResult() {
-  try {
-    await navigator.clipboard.writeText(resultText());
-  } catch {
-    const helper = document.createElement('textarea');
-    helper.value = resultText();
-    helper.style.position = 'fixed';
-    helper.style.opacity = '0';
-    document.body.append(helper);
-    helper.select();
-    document.execCommand('copy');
-    helper.remove();
+  try { await navigator.clipboard.writeText(resultText()); }
+  catch {
+    const helper = document.createElement('textarea'); helper.value = resultText(); helper.style.position = 'fixed'; helper.style.opacity = '0'; document.body.append(helper); helper.select(); document.execCommand('copy'); helper.remove();
   }
-  const original = copyButton.textContent;
-  copyButton.textContent = 'コピーしました';
-  setTimeout(() => { copyButton.textContent = original; }, 1600);
+  const original = copyButton.textContent; copyButton.textContent = 'コピーしました'; setTimeout(() => { copyButton.textContent = original; }, 1600);
 }
 
 async function sendRating(rating, badReason = 'empty') {
   if (!state.result || state.feedbackRating) return;
   state.feedbackRating = rating;
-  const button = document.querySelector(`[data-rating="${rating}"]`);
-  button?.classList.add('is-selected');
+  document.querySelector(`[data-rating="${rating}"]`)?.classList.add('is-selected');
   if (rating === 'bad') badReasons.hidden = false;
-  const outcome = await submitFeedback({
-    event_id: state.generationId,
-    rating,
-    style: state.style,
-    bad_reason: badReason,
-    engine: state.result.engine,
-    model_id: state.result.modelId,
-    elapsedMs: state.result.elapsedMs,
-  });
-  feedbackStatus.textContent = outcome.status === 'unavailable'
-    ? '評価を受け付けました（集計先は未設定です）。'
-    : outcome.status === 'failed'
-      ? '評価は端末内で確認しましたが、集計先へ送信できませんでした。'
-      : '評価を受け付けました。';
+  const outcome = await submitFeedback({ event_id: state.generationId, rating, style: state.style, bad_reason: badReason, engine: state.result.engine, model_id: state.result.modelId, elapsedMs: state.result.elapsedMs });
+  feedbackStatus.textContent = outcome.status === 'unavailable' ? '評価を受け付けました（集計先は未設定です）。' : outcome.status === 'failed' ? '評価は端末内で確認しましたが、集計先へ送信できませんでした。' : '評価を受け付けました。';
 }
 
 async function sendBadReason(reason) {
   if (state.feedbackRating !== 'bad' || !state.result) return;
   document.querySelectorAll('[data-reason]').forEach((button) => button.classList.toggle('is-selected', button.dataset.reason === reason));
-  const outcome = await submitFeedback({
-    event_id: state.generationId,
-    rating: 'bad',
-    bad_reason: reason,
-    style: state.style,
-    engine: state.result.engine,
-    model_id: state.result.modelId,
-    elapsedMs: state.result.elapsedMs,
-  });
-  feedbackStatus.textContent = outcome.status === 'unavailable'
-    ? '理由を受け付けました（集計先は未設定です）。'
-    : outcome.status === 'failed'
-      ? '理由は確認しましたが、集計先へ送信できませんでした。'
-      : '理由も受け付けました。';
+  const outcome = await submitFeedback({ event_id: state.generationId, rating: 'bad', bad_reason: reason, style: state.style, engine: state.result.engine, model_id: state.result.modelId, elapsedMs: state.result.elapsedMs });
+  feedbackStatus.textContent = outcome.status === 'unavailable' ? '理由を受け付けました（集計先は未設定です）。' : outcome.status === 'failed' ? '理由は確認しましたが、集計先へ送信できませんでした。' : '理由も受け付けました。';
 }
 
 source.addEventListener('input', updateCount);
@@ -188,7 +150,10 @@ document.querySelector('#good-button').addEventListener('click', () => sendRatin
 document.querySelector('#bad-button').addEventListener('click', () => sendRating('bad'));
 document.querySelectorAll('[data-reason]').forEach((button) => button.addEventListener('click', () => sendBadReason(button.dataset.reason)));
 styles.forEach((button) => button.addEventListener('click', () => {
-  selectStyle(button.dataset.style);
+  if (state.running) return;
+  const nextStyle = button.dataset.style;
+  if (nextStyle === state.style && state.result) return;
+  selectStyle(nextStyle);
   if (source.value.trim() && state.result) runSummary();
 }));
 updateCount();
