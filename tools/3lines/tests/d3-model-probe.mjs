@@ -10,6 +10,7 @@ const digest = buildHierarchicalDigest(source, 'gist');
 
 console.log('--- STAGE A DIGEST ---');
 console.log(digest);
+console.log(`digest-chars:${[...digest].length}`);
 console.log('--- END DIGEST ---');
 
 // Node's Transformers.js build exposes this execution provider as "cpu".
@@ -19,24 +20,22 @@ const generator = await pipeline('text-generation', MODEL_ID, {
   revision: MODEL_REVISION,
   device: 'cpu',
   dtype: 'q8',
-  progress_callback: (progress) => {
-    if (progress?.status === 'progress' && Number.isFinite(progress.progress)) {
-      const value = Math.round(progress.progress);
-      if (value % 20 === 0) console.log(`model-progress:${value}%`);
-    }
-  },
 });
 
-const prompt = `以下は長文から重要部分を選んだ内部ダイジェストです。抜粋をそのまま3本並べず、文章全体の意味を初見の人にも分かる自然な日本語へ言い直してください。\n\n1行目=何についての文章で何が示されたか。2行目=理解を左右する最重要の条件・線引き。3行目=読者が結局どう理解・行動すればよいか。\n\n必須条件:\n- 3行だけを読めば、元の長文を読んでいない人でも何の話か説明できる。\n- 抽象語・専門用語を置くだけで終わらず、それが何を意味するか短く説明する。\n- 同じ節の細部だけで3行を埋めない。\n- 原文にない事実、数字、固有名詞、評価を加えない。\n- 原文の否定、条件、例外を逆転させない。\n- 各行120文字以内。\n\n次の形式だけを返す:\n1. ...\n2. ...\n3. ...\n\n内部ダイジェスト:\n${digest}`;
+const prompt = `次の「要点メモ」を、元の文章を読んでいない人にも分かる3行に言い換えてください。\n1行目は「何の話で、何が示されたか」。2行目は「一番重要な条件・線引き」。3行目は「結局どう理解・行動するか」。\n要点メモの見出し語をそのまま繰り返すだけにせず、意味が通る短い文にしてください。原文にない事実は足さないでください。\n出力は必ず次の3行だけです。\n1. ...\n2. ...\n3. ...\n\n要点メモ:\n${digest}`;
 
+const started = performance.now();
 const result = await generator([
   { role: 'system', content: '以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。' },
   { role: 'user', content: prompt },
 ], {
-  max_new_tokens: 180,
-  do_sample: false,
-  repetition_penalty: 1.08,
+  max_new_tokens: 120,
+  do_sample: true,
+  top_p: 0.95,
+  temperature: 0.7,
+  repetition_penalty: 1.05,
 });
+const elapsedMs = Math.round(performance.now() - started);
 
 const generated = result?.[0]?.generated_text;
 const raw = typeof generated === 'string'
@@ -45,6 +44,7 @@ const raw = typeof generated === 'string'
     ? String([...generated].reverse().find((message) => message?.role === 'assistant')?.content || '').trim()
     : '';
 
+console.log(`generation-ms:${elapsedMs}`);
 console.log('--- MODEL OUTPUT ---');
 console.log(raw);
 console.log('--- END OUTPUT ---');
