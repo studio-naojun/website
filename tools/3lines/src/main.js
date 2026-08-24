@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js?v=1.2.0';
+import { summarize } from './summarizer.js?v=1.3.0';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
@@ -63,7 +63,7 @@ function renderResult(result) {
   notesItems.replaceChildren();
   for (const note of result.notes) { const li = document.createElement('li'); li.textContent = note; notesItems.append(li); }
   notesSection.hidden = result.notes.length === 0;
-  resultMeta.textContent = `端末内WASM要約 / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
+  resultMeta.textContent = `端末内要約 / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
   errorSection.hidden = true;
   state.result = result;
@@ -76,12 +76,9 @@ function renderResult(result) {
 }
 
 function showError(error) {
-  const knownMessage = error?.message && ['quality-unavailable', 'local-model-unavailable', 'local-model-timeout'].includes(error?.code)
-    ? error.message
-    : null;
+  const knownMessage = error?.message && ['quality-unavailable'].includes(error?.code) ? error.message : null;
   const message = error?.code === 'too-long' ? error.message : knownMessage || '入力した文章は残っています。もう一度試してください。';
-  const label = error?.code === 'local-model-unavailable' ? '要約モデルを起動できませんでした' : '再実行できます';
-  setStatus(label, message, 'error');
+  setStatus('再実行できます', message, 'error');
   errorDetail.textContent = message;
   errorSection.hidden = false;
   resultSection.hidden = true;
@@ -105,17 +102,12 @@ async function runSummary() {
       text: requestedText,
       style: requestedStyle,
       onStatus: (mode, detail) => {
-        const labels = {
-          validating: '入力を確認しています',
-          extracting: '重要部分を整理中',
-          'preparing-model': '初回準備中',
-          summarizing: '3行に整理中',
-        };
+        const labels = { validating: '入力を確認しています', extracting: '重要部分を整理中' };
         setStatus(labels[mode] || '処理中', detail, 'busy');
       },
     });
     renderResult(result);
-    setStatus('できました', '原文と準備済みモデルはこのページ内に保持しています。別のまとめ方も選べます。');
+    setStatus('できました', '入力した文章は外部AIへ送らず、このページ内だけで整理しました。別のまとめ方も選べます。');
   } catch (error) {
     if (error?.code === 'blank' || error?.code === 'too-long') setInputError(error.message);
     showError(error);
