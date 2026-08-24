@@ -1,8 +1,8 @@
 import { parseSections } from './structure.js';
 
-export const STAGE_A_MAX_CHARS = 1500;
-export const STAGE_A_TARGET_MIN_ITEMS = 8;
-export const STAGE_A_TARGET_MAX_ITEMS = 12;
+export const STAGE_A_MAX_CHARS = 1000;
+export const STAGE_A_TARGET_MIN_ITEMS = 6;
+export const STAGE_A_TARGET_MAX_ITEMS = 8;
 
 const STOP_WORDS = new Set([
   'これ', 'それ', 'この', 'その', 'ため', 'こと', 'もの', 'よう', 'など', 'そして', 'また', 'から', 'まで',
@@ -26,7 +26,7 @@ function normalizeMatch(value) {
   return cleanDisplay(value).normalize('NFKC');
 }
 
-function clip(value, max = 220) {
+function clip(value, max = 180) {
   const chars = [...cleanDisplay(value)];
   if (chars.length <= max) return chars.join('');
   return `${chars.slice(0, max - 1).join('')}…`;
@@ -177,7 +177,11 @@ function selectCandidates(candidates, style) {
     ids.add(id);
   };
 
-  if (style === 'gist' || style === 'easy' || style === 'faithful') {
+  if (style === 'gist' || style === 'easy') {
+    distinctBySection(ranked, 'summary', 2).forEach(add);
+    distinctBySection(ranked, 'core', 3).forEach(add);
+    distinctBySection(ranked, 'practical', 1).forEach(add);
+  } else if (style === 'faithful') {
     distinctBySection(ranked, 'core', 3).forEach(add);
     distinctBySection(ranked, 'summary', 2).forEach(add);
     distinctBySection(ranked, 'practical', 1).forEach(add);
@@ -204,45 +208,57 @@ function selectCandidates(candidates, style) {
     add(best);
   }
 
-  return selected.sort((a, b) => a.order - b.order);
+  return selected;
+}
+
+function roleLabel(category) {
+  if (category === 'summary') return '結論';
+  if (category === 'core') return '要点';
+  if (category === 'practical') return '実務';
+  return '補足';
+}
+
+function candidateLine(candidate) {
+  const heading = clip(candidate.heading || '本文', 65);
+  const sentence = clip(candidate.sentence, 175);
+  return `${roleLabel(candidate.category)}（${heading}）: ${sentence}`;
 }
 
 export function buildHierarchicalDigest(text, style = 'gist', maxChars = STAGE_A_MAX_CHARS) {
   const { title, candidates } = makeCandidates(text, style);
   const selected = selectCandidates(candidates, style);
-  const lines = [];
   let used = 0;
+  const chosen = [];
 
-  if (title) {
-    const titleLine = `[TITLE] ${clip(title, 160)}`;
-    if ([...titleLine].length <= maxChars) {
-      lines.push(titleLine);
-      used += [...titleLine].length + 1;
-    }
-  }
+  const titleLine = title ? `題名: ${clip(title, 150)}` : '';
+  if (titleLine && [...titleLine].length <= maxChars) used = [...titleLine].length + 1;
 
-  let included = 0;
   for (const candidate of selected) {
-    const line = `[${candidate.heading || '本文'}] ${clip(candidate.sentence, 220)}`;
+    const line = candidateLine(candidate);
     const length = [...line].length + 1;
     if (used + length > maxChars) continue;
-    lines.push(line);
+    chosen.push(candidate);
     used += length;
-    included += 1;
+    if (chosen.length >= STAGE_A_TARGET_MAX_ITEMS) break;
   }
 
-  if (included < Math.min(STAGE_A_TARGET_MIN_ITEMS, candidates.length)) {
+  if (chosen.length < Math.min(STAGE_A_TARGET_MIN_ITEMS, candidates.length)) {
+    const chosenIds = new Set(chosen.map((candidate) => `${candidate.sectionIndex}:${candidate.sentenceIndex}`));
     for (const candidate of [...candidates].sort((a, b) => b.score - a.score || a.order - b.order)) {
-      if (lines.some((line) => line.includes(clip(candidate.sentence, 220)))) continue;
-      const line = `[${candidate.heading || '本文'}] ${clip(candidate.sentence, 220)}`;
+      const id = `${candidate.sectionIndex}:${candidate.sentenceIndex}`;
+      if (chosenIds.has(id)) continue;
+      const line = candidateLine(candidate);
       const length = [...line].length + 1;
       if (used + length > maxChars) continue;
-      lines.push(line);
+      chosen.push(candidate);
+      chosenIds.add(id);
       used += length;
-      included += 1;
-      if (included >= STAGE_A_TARGET_MIN_ITEMS) break;
+      if (chosen.length >= STAGE_A_TARGET_MIN_ITEMS) break;
     }
   }
 
+  const lines = [];
+  if (titleLine) lines.push(titleLine);
+  for (const candidate of [...chosen].sort((a, b) => a.order - b.order)) lines.push(candidateLine(candidate));
   return lines.join('\n');
 }
