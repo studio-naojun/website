@@ -183,7 +183,9 @@ function prefaceMeaning(sections) {
     if (definition === '紛争性のある案件') definition = '紛争性のある法律案件';
   }
   const rule = clean(preface.heading).match(/((?:弁護士|法律)[^：:]{0,24}法\s*\d+条)/u)?.[1] || '';
-  return term ? { term, definition, rule } : null;
+  const scopeLine = body.find((line) => /弁護士でない者.*報酬.*法律事務/u.test(line));
+  const scope = scopeLine ? '弁護士でない者が、報酬目的で紛争性のある法律案件の法律事務を扱うこと' : '';
+  return term ? { term, definition, rule, scope } : null;
 }
 
 function responsibilityClause(entry, style = 'gist') {
@@ -276,13 +278,18 @@ function compactCommonAction(line, style = 'gist') {
   return action;
 }
 
-function findTakeawayLine(parsed, style = 'gist') {
+function takeawayParts(parsed, style = 'gist') {
   const lines = collectActionLines(parsed.sections);
   const adoption = lines.find((line) => /^(?:導入する側なら|使う側なら|利用する側なら)/u.test(line));
   const common = lines.find((line) => /^共通して\s*[:：]/u.test(line));
-  const banPhrase = adoption?.match(/「([^」]*(?:全面禁止|一律禁止)[^」]*)」/u)?.[1] || '';
   const examples = extractConcreteExamples(adoption);
   const action = common ? compactCommonAction(common, style) : '';
+  return { lines, adoption, common, examples, action };
+}
+
+function findTakeawayLine(parsed, style = 'gist') {
+  const { lines, adoption, common, examples, action } = takeawayParts(parsed, style);
+  const banPhrase = adoption?.match(/「([^」]*(?:全面禁止|一律禁止)[^」]*)」/u)?.[1] || '';
   const profile = bodyGroundedProfile(parsed);
   const service = plainServiceName(profile?.relation?.left || 'AI', style);
 
@@ -311,20 +318,81 @@ function distinct(items) {
   return result;
 }
 
+function representativeSentence(section, preferred = null) {
+  const lines = (section?.body || []).map(clean).filter((line) => [...line].length >= 12);
+  const picked = (preferred && lines.find((line) => preferred.test(line))) || lines[0] || '';
+  return clip(ensurePeriod(picked));
+}
+
+function genericPointsItems(parsed) {
+  const sections = parsed.sections
+    .filter((section) => clean(section.heading) && clean(section.heading) !== '本文' && !SUMMARY_RE.test(clean(section.heading)))
+    .slice(0, 3);
+  if (sections.length !== 3) return null;
+  const items = sections.map((section, index) => {
+    const heading = headingEssence(section.heading);
+    const detail = representativeSentence(section);
+    return clip(`論点${index + 1}｜${heading}：${detail}`);
+  });
+  return new Set(items).size === 3 ? items : null;
+}
+
 function pointsItems(parsed) {
-  const pointHeadings = parsed.sections
-    .filter((section) => /^ポイント\s*[①-⑳0-9０-９]*/u.test(clean(section.heading)))
-    .map((section) => headingEssence(section.heading))
-    .filter(Boolean)
-    .slice(0, 3)
-    .map((heading) => clip(ensurePeriod(heading)));
-  if (new Set(pointHeadings).size === 3) return pointHeadings;
-  const headings = parsed.sections
-    .map((section) => headingEssence(section.heading))
-    .filter((heading) => heading && heading !== '本文' && !SUMMARY_RE.test(heading))
-    .slice(0, 3)
-    .map((heading) => clip(ensurePeriod(heading)));
-  return new Set(headings).size === 3 ? headings : null;
+  const preface = prefaceMeaning(parsed.sections);
+  const { primary, caveat, responsibility } = boundaryEntries(parsed.sections);
+  const profile = bodyGroundedProfile(parsed);
+  const { examples, action } = takeawayParts(parsed, 'gist');
+
+  if (preface?.definition && primary && profile?.relation) {
+    const rule = preface.rule || 'このルール';
+    const service = plainServiceName(profile.relation.left, 'gist');
+    const design = negativeDesignDefinition(primary.body)
+      .replace(/「[^」]+」のある案件/u, preface.definition)
+      .replace(/に利用させることを目指さない設計$/u, '向けに作らないこと');
+    const point1 = clip(`論点1｜何が${rule}で問題になる？ ${preface.scope || `${preface.definition}を法律事務として扱うこと`}。`);
+    const point2 = clip(`論点2｜提供側は何を基準に見られる？ ${service}は${design || `${preface.definition}向けに作らないこと`}が基準。${responsibility ? '利用者が入力しただけでも提供者は無関係とは言えず、' : ''}${caveat ? '実際の使われ方も見られる。' : ''}`);
+    const point3 = (examples && action)
+      ? clip(`論点3｜どこまでAIで、どこから人に切り替える？ ${examples}などは活用できる一方、${action}。`)
+      : '';
+    const result = distinct([point1, point2, point3]);
+    if (result.length === 3) return result;
+  }
+
+  return genericPointsItems(parsed);
+}
+
+function easyItems(parsed) {
+  const overview = composeOverviewLine(parsed, 'easy').replace(/^全体[:：]\s*/u, '何の話？ ');
+  const core = findIntentLine(parsed, 'easy').replace(/^大事[:：]\s*/u, '大事なのは、');
+  const takeaway = findTakeawayLine(parsed, 'easy').replace(/^つまり[:：]\s*/u, 'つまり、');
+  const result = distinct([overview, core, takeaway]);
+  return result.length === 3 ? result : null;
+}
+
+function faithfulBoundaryLine(entry, preface) {
+  if (!entry) return '';
+  if (preface?.definition && /設計されたサービスでない場合/u.test(entry.body) && /評価するのは困難/u.test(entry.body)) {
+    return clip('基準：事件性のある案件向けに設計されていない場合、結果的に紛争案件へ使われただけで、提供者が法律事務を取り扱ったとは評価しにくい。');
+  }
+  return clip(`基準：${representativeSentence(entry.section, /(?:基準|設計|評価|場合)/u)}`);
+}
+
+function faithfulCaveatLine(entry) {
+  if (!entry) return '';
+  if (/認識・認容/u.test(entry.body) && /法律事務を取り扱ったと評価/u.test(entry.body)) {
+    return clip('留保：設計が価値中立的でも、事件性のある利用を認識・認容しながら提供すれば、用法上、法律事務を取り扱ったと評価され得る。');
+  }
+  return clip(`留保：${representativeSentence(entry.section, /(?:ただし|一方|認識|評価|用法|運用)/u)}`);
+}
+
+function faithfulItems(parsed) {
+  const overview = composeOverviewLine(parsed, 'faithful');
+  const preface = prefaceMeaning(parsed.sections);
+  const { primary, caveat, responsibility } = boundaryEntries(parsed.sections);
+  const boundary = faithfulBoundaryLine(primary, preface);
+  const qualification = faithfulCaveatLine(caveat || responsibility);
+  const result = distinct([overview, boundary, qualification]);
+  return result.length === 3 ? result : null;
 }
 
 function ladderItems(parsed, style = 'gist') {
@@ -340,7 +408,9 @@ function structuredItems(text, style) {
   const parsed = parseSections(text);
   if (!hasUsefulStructure(parsed)) return null;
   if (style === 'points') return pointsItems(parsed);
-  return ladderItems(parsed, style);
+  if (style === 'easy') return easyItems(parsed);
+  if (style === 'faithful') return faithfulItems(parsed);
+  return ladderItems(parsed, 'gist');
 }
 
 function unstructuredItems(text, style) {

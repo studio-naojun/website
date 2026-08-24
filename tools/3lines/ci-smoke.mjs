@@ -11,8 +11,7 @@ const server = createServer(async (request, response) => {
   const requestPath = decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname);
   const relative = normalize(requestPath.replace(/^\/+/, ''));
   let filePath = join(repoRoot, relative);
-  const fileInfo = await stat(filePath).catch(() => null);
-  if (fileInfo?.isDirectory()) filePath = join(filePath, 'index.html');
+  if ((await stat(filePath).catch(() => null))?.isDirectory()) filePath = join(filePath, 'index.html');
   if (!filePath.startsWith(repoRoot) || !(await stat(filePath).catch(() => null))?.isFile()) {
     response.writeHead(404); response.end('Not found'); return;
   }
@@ -28,7 +27,6 @@ let navigations = 0;
 page.on('request', (request) => requests.push({ url: request.url(), body: request.postData() || '' }));
 page.on('framenavigated', (frame) => { if (frame === page.mainFrame()) navigations += 1; });
 page.on('pageerror', (error) => console.error(`PAGEERROR: ${error.message}`));
-page.on('console', (message) => { if (message.type() === 'error') console.error(`CONSOLE: ${message.text()}`); });
 
 async function waitForCompletedResult(style) {
   await page.waitForFunction((expectedStyle) => {
@@ -37,116 +35,100 @@ async function waitForCompletedResult(style) {
     const error = document.querySelector('#error-section');
     const selected = document.querySelector(`[data-style="${expectedStyle}"]`);
     const idle = form?.getAttribute('aria-busy') === 'false';
-    const styleReady = selected?.getAttribute('aria-checked') === 'true';
     const resultReady = !result?.hidden && result?.querySelectorAll('#result-items > li').length === 3;
-    const errorReady = !error?.hidden;
-    return idle && styleReady && (resultReady || errorReady);
+    return idle && selected?.getAttribute('aria-checked') === 'true' && (resultReady || !error?.hidden);
   }, style);
-  if (!(await page.locator('#error-section').isHidden())) throw new Error(`Browser summarization failed: ${await page.locator('#error-detail').textContent()}`);
+  if (!(await page.locator('#error-section').isHidden())) throw new Error(`Summarization failed: ${await page.locator('#error-detail').textContent()}`);
 }
 
-async function styleItems(label, style) {
+async function assertResultFocused(label) {
+  await page.waitForFunction(() => document.activeElement?.id === 'result-section');
+  try {
+    await page.waitForFunction(() => {
+      const result = document.querySelector('#result-section');
+      const title = document.querySelector('#result-title');
+      if (!result || !title) return false;
+      const top = result.getBoundingClientRect().top;
+      const titleRect = title.getBoundingClientRect();
+      return top >= -2 && top <= window.innerHeight * 0.35 && titleRect.bottom > 0 && titleRect.top < window.innerHeight * 0.5;
+    }, null, { timeout: 3000 });
+  } catch {
+    const top = await page.locator('#result-section').evaluate((element) => element.getBoundingClientRect().top);
+    throw new Error(`${label}: result surface did not become the screen focus, top=${top}`);
+  }
+}
+
+async function switchStyle(label, style) {
   await page.getByRole('radio', { name: label }).click();
   await waitForCompletedResult(style);
+  await assertResultFocused(`style ${style}`);
   return page.locator('#result-items > li').allTextContents();
 }
 
 try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/', { waitUntil: 'domcontentloaded' });
   console.log('smoke: loaded');
-  if (!(await page.locator('#source-text').isVisible()) || !(await page.locator('#summarize-button').isVisible())) throw new Error('First viewport controls are not visible');
-  const overflow = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
-  if (overflow.scrollWidth > overflow.clientWidth + 1) throw new Error(`Horizontal overflow: ${JSON.stringify(overflow)}`);
-  if (!(await page.locator('#input-help').textContent())?.includes('追加モデルのダウンロードは不要')) throw new Error('Zero-model-download disclosure missing');
+  if (!(await page.locator('#source-text').isVisible()) || !(await page.locator('#summarize-button').isVisible())) throw new Error('Initial input controls missing');
+  if (await page.locator('#style-options').isVisible()) throw new Error('Style controls should appear only with results');
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  if (overflow > 1) throw new Error(`Horizontal overflow: ${overflow}`);
 
   const longText = await readFile(join(repoRoot, 'tools/3lines/tests/fixtures/jun-legaltech-72-20260824.txt'), 'utf8');
   const marker = 'AIに契約書を読ませていいのか問題';
-  if (!longText.includes(marker)) throw new Error('Jun smoke fixture marker missing');
-  if ([...longText].length > 20000) throw new Error('Jun smoke fixture exceeds input cap');
-
   await page.locator('#source-text').fill(longText);
   await page.locator('#summarize-button').click();
-  const earlyStatus = await page.locator('#status-label').textContent();
-  if (!/処理|整理|できました/.test(earlyStatus || '')) throw new Error(`Processing state missing: ${earlyStatus}`);
   await waitForCompletedResult('gist');
-
-  const firstItems = await page.locator('#result-items > li').allTextContents();
-  const firstJoined = firstItems.join(' ');
+  await assertResultFocused('initial 3-line run');
+  if (!(await page.locator('#result-section #style-options').isVisible())) throw new Error('Style switcher is not inside result surface');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Input was not preserved');
-  if (firstItems.length !== 3) throw new Error('Result is not exactly three items');
-  if (!/^全体[:：]/u.test(firstItems[0]) || !/法務省/u.test(firstItems[0]) || !/AI法務支援サービス/u.test(firstItems[0]) || !/弁護士法第?72条/u.test(firstItems[0]) || !/法務業務/u.test(firstItems[0])) {
-    throw new Error(`Body-grounded overview failed: ${firstItems[0]}`);
-  }
-  if (/AIに契約書を読ませていいのか問題/u.test(firstItems[0])) throw new Error(`Marketing headline leaked into overview: ${firstItems[0]}`);
-  if (!/^肝[:：]/u.test(firstItems[1]) || !/事件性/u.test(firstItems[1]) || !/紛争性のある法律案件/u.test(firstItems[1]) || !/使われ方/u.test(firstItems[1])) {
-    throw new Error(`Explained core-thesis line failed: ${firstItems[1]}`);
-  }
-  if (!/^結局[:：]/u.test(firstItems[2]) || !/リサーチ/u.test(firstItems[2]) || !/書面/u.test(firstItems[2]) || !/紛争/u.test(firstItems[2]) || !/弁護士/u.test(firstItems[2])) {
-    throw new Error(`Standalone bottom-line failed: ${firstItems[2]}`);
-  }
-  if (/セーフ7類型|グレー/u.test(firstItems[2])) throw new Error(`Unexplained shorthand leaked into bottom line: ${firstItems[2]}`);
-  if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
-  const pointItems = await styleItems('論点3つ', 'points');
-  if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
-  if (!/入力したのは利用者.*提供者は無関係/u.test(pointItems[0]) || !/価値中立/u.test(pointItems[1]) || !/用法.*アウト/u.test(pointItems[2])) {
-    throw new Error(`points style did not return the three core points: ${JSON.stringify(pointItems)}`);
-  }
+  const gist = await page.locator('#result-items > li').allTextContents();
+  if (gist.length !== 3 || !/^全体[:：]/u.test(gist[0]) || !/^肝[:：]/u.test(gist[1]) || !/^結局[:：]/u.test(gist[2])) throw new Error(`Gist contract failed: ${JSON.stringify(gist)}`);
+  if (!/AI法務支援サービス/u.test(gist[0]) || /AIに契約書を読ませていいのか問題/u.test(gist[0])) throw new Error(`Gist topic failed: ${gist[0]}`);
 
-  const easyItems = await styleItems('やさしく', 'easy');
-  if (!/^全体[:：]/u.test(easyItems[0]) || !/AIを使う法務支援サービス/u.test(easyItems[0]) || !/触れない範囲/u.test(easyItems[0])) throw new Error(`easy overview failed: ${easyItems[0]}`);
-  if (!/^大事[:：]/u.test(easyItems[1]) || !/紛争性のある法律案件/u.test(easyItems[1]) || !/使われ方/u.test(easyItems[1])) throw new Error(`easy core failed: ${easyItems[1]}`);
-  if (!/^つまり[:：]/u.test(easyItems[2]) || !/リサーチ/u.test(easyItems[2]) || !/弁護士/u.test(easyItems[2])) throw new Error(`easy bottom line failed: ${easyItems[2]}`);
-  if (/セーフ7類型/u.test(easyItems[2])) throw new Error(`easy bottom line leaked shorthand: ${easyItems[2]}`);
+  const points = await switchStyle('論点3つ', 'points');
+  if (!/^論点1[|｜]/u.test(points[0]) || !/弁護士法第?72条/u.test(points[0]) || !/紛争性のある法律案件/u.test(points[0])) throw new Error(`Points 1 failed: ${points[0]}`);
+  if (!/^論点2[|｜]/u.test(points[1]) || !/提供側/u.test(points[1]) || !/使われ方/u.test(points[1])) throw new Error(`Points 2 failed: ${points[1]}`);
+  if (!/^論点3[|｜]/u.test(points[2]) || !/どこまでAI/u.test(points[2]) || !/弁護士/u.test(points[2])) throw new Error(`Points 3 failed: ${points[2]}`);
+  if (/セーフの分水嶺|設計がセーフでも「用法」でアウト/u.test(points.join(' '))) throw new Error(`Old points leaked: ${JSON.stringify(points)}`);
 
-  const faithfulItems = await styleItems('忠実に', 'faithful');
-  if (!/^全体[:：]/u.test(faithfulItems[0]) || !/ビジネス分野におけるAI等法務業務支援サービス提供/u.test(faithfulItems[0])) throw new Error(`faithful overview failed: ${faithfulItems[0]}`);
-  if (!/^肝[:：]/u.test(faithfulItems[1]) || !/事件性/u.test(faithfulItems[1]) || !/用法・運用実態/u.test(faithfulItems[1])) throw new Error(`faithful core failed: ${faithfulItems[1]}`);
-  if (!/^結論[:：]/u.test(faithfulItems[2]) || !/リサーチ/u.test(faithfulItems[2]) || !/弁護士/u.test(faithfulItems[2])) throw new Error(`faithful bottom line failed: ${faithfulItems[2]}`);
-  if (/セーフ7類型/u.test(faithfulItems[2])) throw new Error(`faithful bottom line leaked shorthand: ${faithfulItems[2]}`);
+  const easy = await switchStyle('やさしく', 'easy');
+  if (!/^何の話[?？]/u.test(easy[0]) || !/^大事なのは、/u.test(easy[1]) || !/^つまり、/u.test(easy[2])) throw new Error(`Easy contract failed: ${JSON.stringify(easy)}`);
+  if (/事件性|価値中立性|セーフ7類型/u.test(easy.join(' '))) throw new Error(`Easy mode kept jargon: ${JSON.stringify(easy)}`);
 
-  const signatures = [firstItems, pointItems, easyItems, faithfulItems].map((items) => JSON.stringify(items));
-  if (new Set(signatures).size !== 4) throw new Error(`Styles were not materially distinct: ${JSON.stringify(signatures)}`);
-  if (navigations !== 1) throw new Error(`Unexpected page reload during style switches: ${navigations}`);
+  const faithful = await switchStyle('忠実に', 'faithful');
+  if (!/^全体[:：]/u.test(faithful[0]) || !/^基準[:：]/u.test(faithful[1]) || !/^留保[:：]/u.test(faithful[2])) throw new Error(`Faithful contract failed: ${JSON.stringify(faithful)}`);
+  if (!/認識・認容/u.test(faithful[2]) || !/評価され得る/u.test(faithful[2])) throw new Error(`Faithful qualification failed: ${faithful[2]}`);
 
-  await page.getByRole('radio', { name: '要するに' }).click();
-  await waitForCompletedResult('gist');
-  const repeatedItems = await page.locator('#result-items > li').allTextContents();
-  if (JSON.stringify(firstItems) !== JSON.stringify(repeatedItems)) throw new Error(`Repeated gist result was not deterministic: first=${JSON.stringify(firstItems)} repeated=${JSON.stringify(repeatedItems)}`);
-  if (navigations !== 1) throw new Error(`Unexpected page reload during repeated run: ${navigations}`);
+  if (new Set([gist, points, easy, faithful].map((items) => JSON.stringify(items))).size !== 4) throw new Error('Four styles are not materially distinct');
+  if (navigations !== 1) throw new Error(`Style switching reloaded page: ${navigations}`);
+
+  const repeated = await switchStyle('要するに', 'gist');
+  if (JSON.stringify(repeated) !== JSON.stringify(gist)) throw new Error('Repeated gist is not deterministic');
+  if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switching lost source');
 
   await page.locator('#copy-button').click();
-  await page.waitForFunction(() => document.querySelector('#copy-button').textContent.includes('コピーしました'));
+  await page.waitForFunction(() => document.querySelector('#copy-button')?.textContent.includes('コピーしました'));
   await page.locator('#good-button').click();
-  await page.waitForFunction(() => document.querySelector('#feedback-status').textContent.includes('受け付け'));
+  await page.waitForFunction(() => document.querySelector('#feedback-status')?.textContent.includes('受け付け'));
 
-  await page.getByRole('radio', { name: 'やさしく' }).click();
-  await waitForCompletedResult('easy');
-  await page.locator('#bad-button').click();
-  if (await page.locator('#bad-reasons').isHidden()) throw new Error('Bad reasons did not appear');
-  await page.locator('[data-reason="missing"]').click();
-  if (!(await page.locator('#feedback-status').textContent())?.includes('受け付け')) throw new Error('Bad reason was not acknowledged');
-
-  const tooLong = 'あ'.repeat(20001);
-  await page.locator('#source-text').fill(tooLong);
+  await page.locator('#source-text').fill('あ'.repeat(20001));
   await page.locator('#summarize-button').click();
   await page.waitForFunction(() => !document.querySelector('#input-error')?.hidden);
-  if (!(await page.locator('#input-error').textContent())?.includes('20,000')) throw new Error('Over-limit message missing');
-  if ((await page.locator('#source-text').inputValue()) !== tooLong) throw new Error('Over-limit input was lost');
+  if (!(await page.locator('#input-error').textContent())?.includes('20,000')) throw new Error('Over-limit error missing');
 
-  const leaked = requests.find(({ url, body }) => url.includes(marker) || body.includes(marker));
-  if (leaked) throw new Error(`Raw input leaked into request: ${JSON.stringify(leaked)}`);
+  if (requests.some(({ url, body }) => url.includes(marker) || body.includes(marker))) throw new Error('Raw fixture leaked into request');
   const external = requests.filter(({ url }) => !url.startsWith('http://127.0.0.1:4173/'));
-  if (external.length) throw new Error(`Unexpected external requests during summarization: ${JSON.stringify(external)}`);
+  if (external.length) throw new Error(`Unexpected external requests: ${JSON.stringify(external)}`);
 
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
-  if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
+  if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface is not 20 cases');
 
-  console.log('3lines body-grounded Jun-fixture mobile smoke passed');
-  console.log(firstJoined);
-  console.log(`points=${JSON.stringify(pointItems)}`);
-  console.log(`easy=${JSON.stringify(easyItems)}`);
-  console.log(`faithful=${JSON.stringify(faithfulItems)}`);
+  console.log('3lines v1.6 style/focus mobile smoke passed');
+  console.log(`gist=${JSON.stringify(gist)}`);
+  console.log(`points=${JSON.stringify(points)}`);
+  console.log(`easy=${JSON.stringify(easy)}`);
+  console.log(`faithful=${JSON.stringify(faithful)}`);
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

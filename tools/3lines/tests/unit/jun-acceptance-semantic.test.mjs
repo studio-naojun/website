@@ -21,8 +21,8 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
   assert.match(normalizedSource, /まとめ[:：]明日から何をするか/u);
 });
 
-test('body-grounded semantic route remains model-free and download-free', () => {
-  assert.equal(APP_VERSION, '1.5.0');
+test('style-focus route remains model-free and download-free', () => {
+  assert.equal(APP_VERSION, '1.6.0');
   assert.equal(MODEL_ID, 'none');
 });
 
@@ -79,32 +79,46 @@ test('all four styles return exactly three bounded semantic units without re-pas
   }
 });
 
-test('points mode is three real core points', async () => {
+test('points mode frames three standalone issues instead of copying source headings', async () => {
   const items = (await summarize({ text: source, style: 'points' })).items;
   assert.equal(items.length, 3);
-  assert.match(items[0], /入力したのは利用者.*提供者は無関係/u);
-  assert.match(items[1], /価値中立/u);
-  assert.match(items[2], /用法.*アウト/u);
+  assert.match(items[0], /^論点1[|｜]/u);
+  assert.match(items[0], /弁護士法第?72条/u);
+  assert.match(items[0], /紛争性のある法律案件/u);
+  assert.match(items[1], /^論点2[|｜]/u);
+  assert.match(items[1], /提供側/u);
+  assert.match(items[1], /向けに作らない/u);
+  assert.match(items[1], /使われ方/u);
+  assert.match(items[2], /^論点3[|｜]/u);
+  assert.match(items[2], /どこまでAI/u);
+  assert.match(items[2], /リサーチ/u);
+  assert.match(items[2], /弁護士/u);
+  assert.doesNotMatch(items.join(' '), /セーフの分水嶺|設計がセーフでも「用法」でアウト/u);
 });
 
-test('non-points styles preserve the same meaning ladder with different wording', async () => {
+test('four styles have visibly different jobs, not label-only rewrites', async () => {
   const results = {};
-  for (const style of ['gist', 'easy', 'faithful']) results[style] = (await summarize({ text: source, style })).items;
-  assert.equal(new Set(Object.values(results).map((items) => JSON.stringify(items))).size, 3);
+  for (const style of ['gist', 'points', 'easy', 'faithful']) results[style] = (await summarize({ text: source, style })).items;
+  assert.equal(new Set(Object.values(results).map((items) => JSON.stringify(items))).size, 4);
 
-  for (const style of ['gist', 'easy', 'faithful']) {
-    assert.match(results[style][0], /^全体[:：]/u, style);
-    assert.ok(/^(?:肝|大事)[:：]/u.test(results[style][1]), style);
-    assert.ok(/^(?:結局|つまり|結論)[:：]/u.test(results[style][2]), style);
-    assert.doesNotMatch(results[style][2], /セーフ7類型/u, style);
-  }
+  assert.match(results.gist[0], /^全体[:：]/u);
+  assert.match(results.gist[1], /^肝[:：]/u);
+  assert.match(results.gist[2], /^結局[:：]/u);
 
-  assert.match(results.easy[0], /AIを使う法務支援サービス/u);
-  assert.match(results.easy[1], /紛争性のある法律案件/u);
-  assert.match(results.easy[2], /裁判所に出す書面/u);
+  assert.match(results.points[0], /^論点1[|｜]/u);
+  assert.match(results.points[1], /^論点2[|｜]/u);
+  assert.match(results.points[2], /^論点3[|｜]/u);
 
-  const faithful = results.faithful.join(' ');
-  assert.match(faithful, /ビジネス分野におけるAI等法務業務支援サービス提供と弁護士法第72条の関係について/u);
-  assert.match(faithful, /事件性/u);
-  assert.match(faithful, /用法・運用実態/u);
+  assert.match(results.easy[0], /^何の話[?？]/u);
+  assert.match(results.easy[1], /^大事なのは、/u);
+  assert.match(results.easy[2], /^つまり、/u);
+  assert.doesNotMatch(results.easy.join(' '), /事件性|価値中立性|セーフ7類型/u);
+
+  assert.match(results.faithful[0], /^全体[:：]/u);
+  assert.match(results.faithful[0], /ビジネス分野におけるAI等法務業務支援サービス提供/u);
+  assert.match(results.faithful[1], /^基準[:：]/u);
+  assert.match(results.faithful[1], /事件性/u);
+  assert.match(results.faithful[2], /^留保[:：]/u);
+  assert.match(results.faithful[2], /認識・認容/u);
+  assert.match(results.faithful[2], /評価され得る/u);
 });
