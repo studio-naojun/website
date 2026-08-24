@@ -5,6 +5,7 @@ const QUALIFIER_RE = /(?:ただし|しかし|一方|例外|場合|限り|可能�
 const CONTEXT_DEPENDENT_RE = /(?:^|\s)(?:[0-9０-９]+(?:と|、|について|を満た)|前述|上記|下記|以下|この[0-9０-９一二三四五六七八九十]+つ)/u;
 const MAX_NOTES = 3;
 const MAX_NOTES_TOTAL = 300;
+const MIN_NOTE_LENGTH = 25;
 const MAX_NOTE_LENGTH = 100;
 const MAX_DETAIL_LENGTH = 900;
 const DETAIL_SENTENCES = 7;
@@ -56,11 +57,16 @@ function deriveNotes(text, items) {
   const focus = items.join(' ');
   const candidates = sentences
     .map((sentence, index) => ({ text: stripBullet(sentence.text), index }))
-    .filter(({ text: value }) => value
-      && QUALIFIER_RE.test(value)
-      && /[。！？!?]$/u.test(value)
-      && !CONTEXT_DEPENDENT_RE.test(value)
-      && !isAlreadyCovered(value, items))
+    .filter(({ text: value }) => {
+      const length = [...value].length;
+      return value
+        && length >= MIN_NOTE_LENGTH
+        && length <= MAX_NOTE_LENGTH
+        && QUALIFIER_RE.test(value)
+        && /[。！？!?]$/u.test(value)
+        && !CONTEXT_DEPENDENT_RE.test(value)
+        && !isAlreadyCovered(value, items);
+    })
     .map((candidate) => ({
       ...candidate,
       score: tokenOverlap(candidate.text, focus) * 4
@@ -73,7 +79,7 @@ function deriveNotes(text, items) {
   const notes = [];
   let total = 0;
   for (const candidate of candidates) {
-    const note = shorten(candidate.text);
+    const note = candidate.text;
     if (!note || notes.includes(note)) continue;
     if (notes.some((existing) => tokenOverlap(existing, note) >= 0.75)) continue;
     if (total + [...note].length > MAX_NOTES_TOTAL) continue;
