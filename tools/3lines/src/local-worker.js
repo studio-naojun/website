@@ -45,15 +45,15 @@ async function loadGenerator() {
 
 function instructionFor(style) {
   return {
-    gist: '1行目=何についての文章で何が示されたか。2行目=理解を左右する最重要の条件・線引き。3行目=読者が結局どう理解・行動すればよいか。',
-    points: '文章全体の重要論点を、互いに重ならない3点として整理する。枝葉の具体例3つではなく、全体像が分かる3点にする。',
-    easy: '専門知識のない人向けに、1行目=何の話か、2行目=大事な条件、3行目=結局どうすればよいか、を平易な日本語で説明する。',
-    faithful: '原文の立場・条件・留保を変えず、中心結論、重要条件、実務上の意味の3点にまとめる。',
-  }[style] || '文章全体を、初見の人にも分かる3つの意味単位にまとめる。';
+    gist: '1行目は「何の話で、何が示されたか」。2行目は「一番重要な条件・線引き」。3行目は「結局どう理解・行動するか」。',
+    points: '文章全体の重要論点を、重ならない3点にする。細かい例を3つ並べない。',
+    easy: '専門知識がない人にも分かる言葉で、何の話か・大事な条件・結局どうするかの3行にする。',
+    faithful: '原文の立場や条件を変えず、中心結論・重要条件・実務上の意味の3行にする。',
+  }[style] || '文章全体の意味が初見の人にも分かる3行にする。';
 }
 
 function promptFor(style, digest) {
-  return `以下は長文から重要部分を選んだ内部ダイジェストです。抜粋をそのまま3本並べず、文章全体の意味を初見の人にも分かる自然な日本語へ言い直してください。\n\n${instructionFor(style)}\n\n必須条件:\n- 3行だけを読めば、元の長文を読んでいない人でも何の話か説明できる。\n- 抽象語・専門用語を置くだけで終わらず、それが何を意味するか短く説明する。\n- 同じ節の細部だけで3行を埋めない。\n- 原文にない事実、数字、固有名詞、評価を加えない。\n- 原文の否定、条件、例外を逆転させない。\n- 各行120文字以内。\n\n次の形式だけを返す:\n1. ...\n2. ...\n3. ...\n備考: ...（重大な例外が本当に必要な場合だけ）\n\n内部ダイジェスト:\n${digest}`;
+  return `次の「要点メモ」を、元の文章を読んでいない人にも分かる3行に言い換えてください。\n${instructionFor(style)}\n要点メモの見出し語をそのまま繰り返すだけにせず、意味が通る短い文にしてください。原文にない事実は足さないでください。\n出力は必ず次の3行だけです。\n1. ...\n2. ...\n3. ...\n\n要点メモ:\n${digest}`;
 }
 
 function extractGeneratedText(result) {
@@ -78,9 +78,11 @@ async function handleSummarize(data) {
       { role: 'user', content: promptFor(style, digest) },
     ];
     const result = await generator(messages, {
-      max_new_tokens: 180,
-      do_sample: false,
-      repetition_penalty: 1.08,
+      max_new_tokens: 120,
+      do_sample: true,
+      top_p: 0.95,
+      temperature: 0.7,
+      repetition_penalty: 1.05,
     });
     const raw = extractGeneratedText(result);
     if (!raw) throw new Error('要約モデルが空の結果を返しました。');
