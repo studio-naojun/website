@@ -12,9 +12,12 @@ console.log('--- STAGE A DIGEST ---');
 console.log(digest);
 console.log('--- END DIGEST ---');
 
+// Node's Transformers.js build exposes this execution provider as "cpu".
+// The product worker remains explicitly browser WASM. This probe isolates
+// the pinned model + prompt + semantic quality before browser-runtime testing.
 const generator = await pipeline('text-generation', MODEL_ID, {
   revision: MODEL_REVISION,
-  device: 'wasm',
+  device: 'cpu',
   dtype: 'q8',
   progress_callback: (progress) => {
     if (progress?.status === 'progress' && Number.isFinite(progress.progress)) {
