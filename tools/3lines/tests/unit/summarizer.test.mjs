@@ -22,7 +22,7 @@ test('Japanese sentence segmentation handles punctuation, newlines, quotes, URL 
   assert.deepEqual(sentences.map(({ offset }) => offset), [...sentences].map(({ offset }) => offset).sort((a, b) => a - b));
 });
 
-test('fallback is deterministic and always returns three bounded items', () => {
+test('fallback utility remains deterministic and source-derived but is not the D2 success path', () => {
   const source = '結論として、図書館の改修は必要だ。席を増やせるが、児童室との調整が必要になる。ただし、夜間開館には職員配置の課題がある。';
   const first = summarizeExtractively(source, 'gist');
   const second = summarizeExtractively(source, 'gist');
@@ -33,7 +33,7 @@ test('fallback is deterministic and always returns three bounded items', () => {
   assert.equal(validateSummary(first, source).ok, true);
 });
 
-test('four styles route through the same invariant without re-pasting', () => {
+test('four fallback utility styles remain deterministic test helpers', () => {
   const source = 'この制度は窓口を速くする。費用は増える可能性がある。一方、利用者の手続きは簡単になる。';
   for (const style of ['gist', 'points', 'easy', 'faithful']) {
     const result = summarizeExtractively(source, style);
@@ -61,22 +61,30 @@ test('feedback schema drops text, summary, user identity and unknown fields', ()
   assert.equal('user_id' in payload, false);
 });
 
-test('Node/unsupported capability takes local fallback path and preserves source', async () => {
+test('Node/unsupported capability is explicit and never masquerades as fallback success', async () => {
   assert.equal(canUseWebGPU(), false);
   const source = '原文の固有キャナリー文字を失わず、条件がある場合は保持する。';
-  const result = await summarize({ text: source, style: 'faithful' });
-  assert.equal(result.engine, 'extractive-fallback');
-  assert.equal(result.items.length, 3);
   assert.ok(buildSlate(source, 'gist').includes('固有キャナリー文字'));
+  await assert.rejects(
+    summarize({ text: source, style: 'faithful' }),
+    (error) => error?.code === 'local-model-unavailable',
+  );
 });
 
-test('malformed local output and timeout-shaped local failure fail soft to fallback', async () => {
+test('malformed local output is quality-unavailable and timeout is typed', async () => {
   const originalNavigator = globalThis.navigator;
   Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { gpu: { requestAdapter: async () => ({}) } } });
   const source = 'ローカルモデルが失敗しても、この原文は残る。条件があれば保持する。';
-  const malformed = await summarize({ text: source, style: 'gist', localRunner: async () => ({ raw: 'not a numbered result', modelId: 'test' }) });
-  assert.equal(malformed.engine, 'extractive-fallback');
-  const timedOut = await summarize({ text: source, style: 'gist', localRunner: async () => { throw new Error('Local inference timed out.'); } });
-  assert.equal(timedOut.engine, 'extractive-fallback');
-  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: originalNavigator });
+  try {
+    await assert.rejects(
+      summarize({ text: source, style: 'gist', localRunner: async () => ({ raw: 'not a numbered result', modelId: 'test' }) }),
+      (error) => error?.code === 'quality-unavailable',
+    );
+    await assert.rejects(
+      summarize({ text: source, style: 'gist', localRunner: async () => { throw new Error('Local inference timed out.'); } }),
+      (error) => error?.code === 'local-model-timeout',
+    );
+  } finally {
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: originalNavigator });
+  }
 });
