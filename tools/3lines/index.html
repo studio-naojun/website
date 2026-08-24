@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="長い日本語文章を、3つの意味単位にまとめるブラウザ内要約ツール。">
+  <title>究極の3行 | Studio NaoJun</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <a class="back-link" href="../../">Studio NaoJun</a>
+      <span class="tool-label">Tool / Free</span>
+    </header>
+
+    <section class="hero" aria-labelledby="app-title">
+      <p class="eyebrow">長文を貼る → 3行！ → 分かる</p>
+      <h1 id="app-title">究極の3行</h1>
+      <p class="lead">長い文章が何を言っているのか、3つの意味単位にまとめます。</p>
+    </section>
+
+    <form id="summary-form" class="input-card" novalidate>
+      <div class="field-heading">
+        <label for="source-text">文章を貼り付ける</label>
+        <span id="char-count" class="char-count">0 / 20,000</span>
+      </div>
+      <textarea id="source-text" name="source" rows="11"
+        placeholder="Xなどからコピーした文章をここに貼り付けてください。"
+        aria-describedby="input-help input-error"></textarea>
+      <p id="input-help" class="field-help">10,000文字以上の長文にも対応。入力した文章はこのブラウザ内で処理します。</p>
+      <p id="input-error" class="error-message" role="alert" hidden></p>
+      <button id="summarize-button" class="primary-button" type="submit">3行！</button>
+    </form>
+
+    <section class="status-card" aria-live="polite" aria-atomic="true">
+      <div class="status-dot" aria-hidden="true"></div>
+      <div>
+        <p id="status-label" class="status-label">準備完了</p>
+        <p id="status-detail" class="status-detail">文章を貼り付けて「3行！」を押してください。</p>
+      </div>
+    </section>
+
+    <section class="style-section" aria-labelledby="style-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Summary style</p>
+          <h2 id="style-title">まとめ方</h2>
+        </div>
+        <span class="section-note">原文を貼り直さず切替できます</span>
+      </div>
+      <div id="style-options" class="style-options" role="radiogroup" aria-label="まとめ方">
+        <button class="style-option is-selected" type="button" role="radio" aria-checked="true" data-style="gist">要するに</button>
+        <button class="style-option" type="button" role="radio" aria-checked="false" data-style="points">論点3つ</button>
+        <button class="style-option" type="button" role="radio" aria-checked="false" data-style="easy">やさしく</button>
+        <button class="style-option" type="button" role="radio" aria-checked="false" data-style="faithful">忠実に</button>
+      </div>
+    </section>
+
+    <section id="result-section" class="result-section" aria-labelledby="result-title" hidden>
+      <div class="section-heading result-heading">
+        <div>
+          <p class="eyebrow">Your three lines</p>
+          <h2 id="result-title">3行</h2>
+        </div>
+        <button id="copy-button" class="secondary-button" type="button">コピー</button>
+      </div>
+      <ol id="result-items" class="result-items"></ol>
+      <section id="notes-section" class="notes-section" aria-labelledby="notes-title" hidden>
+        <h3 id="notes-title">備考</h3>
+        <ul id="notes-items"></ul>
+      </section>
+      <p id="result-meta" class="result-meta"></p>
+      <div class="feedback-card" aria-labelledby="feedback-title">
+        <div>
+          <p id="feedback-title" class="feedback-title">この3行は役に立ちましたか？</p>
+          <p id="feedback-status" class="feedback-status" aria-live="polite"></p>
+        </div>
+        <div class="feedback-actions">
+          <button id="good-button" class="feedback-button" type="button" data-rating="good">良かった</button>
+          <button id="bad-button" class="feedback-button" type="button" data-rating="bad">悪かった</button>
+        </div>
+        <div id="bad-reasons" class="bad-reasons" hidden>
+          <p>理由（任意）</p>
+          <div class="reason-options">
+            <button type="button" data-reason="wrong">内容が違う</button>
+            <button type="button" data-reason="missing">大事な点が抜けた</button>
+            <button type="button" data-reason="unclear">分かりにくい</button>
+            <button type="button" data-reason="too_short">短くしすぎ</button>
+            <button type="button" data-reason="other">その他</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="error-section" class="error-card" aria-live="polite" hidden>
+      <h2>3行にできませんでした</h2>
+      <p id="error-detail">入力した文章は残っています。もう一度試してください。</p>
+      <button id="retry-button" class="secondary-button" type="button">もう一度試す</button>
+    </section>
+
+    <p class="disclaimer">これは要約です。内容の真偽を確認するものではありません。</p>
+  </main>
+  <script>window.THREELINES_CONFIG = { feedbackEndpoint: '' };</script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>究極の3行 品質確認セット</title>
+  <style>
+    body{margin:0;padding:24px;max-width:1100px;color:#222;background:#f7f5f1;font-family:system-ui,"Noto Sans JP",sans-serif}h1{font-size:1.7rem}.case{margin:20px 0;padding:18px;border:1px solid #ddd7cf;border-radius:14px;background:#fffefa}.case h2{font-size:1rem}.source{padding:12px;background:#f7f5f1;line-height:1.65;white-space:pre-wrap}.output{margin:12px 0;padding-left:1.5em;line-height:1.65}.meta{color:#716c65;font-size:.82rem}.decision{display:flex;gap:8px;align-items:center}.decision button{padding:7px 12px;border:1px solid #ddd7cf;border-radius:999px;background:#fff}.decision button.selected{border-color:#c85836;background:#f8e8e1}
+  </style>
+</head>
+<body>
+  <h1>究極の3行 — 20件レビュー</h1>
+  <p>各ケースの原文と deterministic fallback の標準出力を確認し、「使える / 使えない」を1つ選んでください。判定はこのブラウザのローカルにだけ保存します。</p>
+  <div id="cases">読み込み中…</div>
+  <script type="module">
+    import { summarizeExtractively } from '../../src/fallback.js';
+    const fixtures = await fetch('../fixtures/quality.json').then((response) => response.json());
+    const root = document.querySelector('#cases');
+    for (const fixture of fixtures) {
+      const result = summarizeExtractively(fixture.source, 'gist');
+      const article = document.createElement('article');
+      article.className = 'case';
+      article.innerHTML = `<h2>${fixture.id} / ${fixture.type}</h2><p class="source"></p><ol class="output"></ol><p class="meta">主要主張: ${fixture.major_claims.join(' / ')}<br>重要留保: ${fixture.important_qualifications.join(' / ')}</p><div class="decision" data-id="${fixture.id}"><span>判定:</span><button data-value="usable">使える</button><button data-value="not-usable">使えない</button></div>`;
+      article.querySelector('.source').textContent = fixture.source;
+      for (const item of result.items) { const li = document.createElement('li'); li.textContent = item; article.querySelector('.output').append(li); }
+      for (const button of article.querySelectorAll('.decision button')) button.addEventListener('click', () => { article.querySelectorAll('.decision button').forEach((candidate) => candidate.classList.remove('selected')); button.classList.add('selected'); localStorage.setItem(`3lines-review-${fixture.id}`, button.dataset.value); });
+      const saved = localStorage.getItem(`3lines-review-${fixture.id}`); if (saved) article.querySelector(`[data-value="${saved}"]`)?.classList.add('selected');
+      root.append(article);
+    }
+  </script>
+</body>
+</html>
