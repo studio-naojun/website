@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js?v=1.0.2';
+import { summarize } from './summarizer.js?v=1.0.3';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
@@ -63,7 +63,7 @@ function renderResult(result) {
   notesItems.replaceChildren();
   for (const note of result.notes) { const li = document.createElement('li'); li.textContent = note; notesItems.append(li); }
   notesSection.hidden = result.notes.length === 0;
-  resultMeta.textContent = `${result.engine === 'local-qwen' ? 'ブラウザ内モデル' : 'ローカル簡易モード'} / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
+  resultMeta.textContent = `${result.engine === 'local-qwen' ? 'ブラウザ内モデル' : '意味構造モード'} / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
   errorSection.hidden = true;
   state.result = result;

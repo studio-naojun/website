@@ -1,4 +1,5 @@
-import { structuralFallbackCandidates } from './structure.js';
+import { structuralFallbackCandidates } from './structure.js?v=1.0.3';
+import { buildMeaningfulFallback } from './meaning.js?v=1.0.3';
 
 function shorten(text, max = 100) {
   const value = String(text).replace(/\s+/g, ' ').trim();
@@ -9,13 +10,14 @@ function shorten(text, max = 100) {
 }
 
 export function summarizeStructurally(text, style = 'gist') {
-  const candidates = structuralFallbackCandidates(text, style);
+  const meaningful = buildMeaningfulFallback(text, style);
+  const candidates = meaningful || structuralFallbackCandidates(text, style);
   if (candidates.length !== 3) return null;
   return {
-    items: candidates.map((item) => shorten(item, 100)),
+    items: candidates.map((item) => shorten(item, 120)),
     notes: [],
     engine: 'extractive-fallback',
     modelId: null,
-    preparationState: 'structured-fallback',
+    preparationState: meaningful ? 'meaningful-fallback' : 'structured-fallback',
   };
 }
