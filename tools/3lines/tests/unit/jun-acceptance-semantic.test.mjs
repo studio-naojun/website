@@ -53,15 +53,16 @@ test('D3 pins Transformers.js WASM and Japanese 150M model assets', () => {
   assert.doesNotMatch(workerSource, /webgpu|WebGPU/u);
 });
 
-test('Stage A keeps the Jun article core meaning within 1500 chars', () => {
+test('Stage A keeps the Jun article core meaning within 1000 chars', () => {
   const digest = buildSlate(source, 'gist');
-  assert.equal(MODEL_INPUT_MAX_CHARS, 1500);
+  assert.equal(MODEL_INPUT_MAX_CHARS, 1000);
   assert.ok([...digest].length <= MODEL_INPUT_MAX_CHARS, [...digest].length);
-  assert.match(digest, /\[TITLE\]/u);
+  assert.match(digest, /^題名:/mu);
   assert.match(digest, /価値中立/u);
   assert.match(digest, /(?:用法|運用)/u);
   assert.match(digest, /(?:弁護士|紛争|裁判所|和解)/u);
-  assert.ok(digest.split('\n').length >= 7, digest);
+  assert.match(digest, /①②/u);
+  assert.ok(digest.split('\n').length >= 6, digest);
 });
 
 test('both Jun-observed unintelligible outputs remain rejected', () => {
@@ -85,7 +86,7 @@ test('bad model output is never surfaced as successful output', async () => {
       style: 'gist',
       localRunner: async (digest) => {
         calls += 1;
-        assert.ok([...digest].length <= 1500);
+        assert.ok([...digest].length <= 1000);
         return { raw: toRaw(latestObservedBadItems), modelId: MODEL_ID };
       },
     }),
