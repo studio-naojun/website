@@ -86,11 +86,29 @@ try {
   if (gist.length !== 3 || !/^全体[:：]/u.test(gist[0]) || !/^肝[:：]/u.test(gist[1]) || !/^結局[:：]/u.test(gist[2])) throw new Error(`Gist contract failed: ${JSON.stringify(gist)}`);
   if (!/AI法務支援サービス/u.test(gist[0]) || /AIに契約書を読ませていいのか問題/u.test(gist[0])) throw new Error(`Gist topic failed: ${gist[0]}`);
 
+  if (await page.locator('#notes-section').isHidden()) throw new Error('Material supplement was not shown for the legaltech fixture');
+  const notes = await page.locator('#notes-items > li').allTextContents();
+  if (notes.length < 1 || notes.length > 3) throw new Error(`Supplement count invalid: ${JSON.stringify(notes)}`);
+  if (notes.join('').length > 300) throw new Error(`Supplements are too long: ${JSON.stringify(notes)}`);
+
+  if (!(await page.locator('#detail-control').isVisible())) throw new Error('Detailed summary control is missing');
+  if (!(await page.locator('#detail-section').isHidden())) throw new Error('Detailed summary should be collapsed initially');
+  await page.locator('#detail-toggle').click();
+  if (!(await page.locator('#detail-section').isVisible())) throw new Error('Detailed summary did not expand');
+  if ((await page.locator('#detail-toggle').getAttribute('aria-expanded')) !== 'true') throw new Error('Detailed summary aria state is wrong');
+  const detail = (await page.locator('#detail-text').textContent())?.trim() || '';
+  if ([...detail].length < 180) throw new Error(`Detailed summary is too short: ${detail}`);
+  if (!/弁護士|AI|法律/u.test(detail)) throw new Error(`Detailed summary lost the article subject: ${detail}`);
+  if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Opening detailed summary lost source');
+
   const points = await switchStyle('論点3つ', 'points');
   if (!/^論点1[|｜]/u.test(points[0]) || !/弁護士法第?72条/u.test(points[0]) || !/紛争性のある法律案件/u.test(points[0])) throw new Error(`Points 1 failed: ${points[0]}`);
   if (!/^論点2[|｜]/u.test(points[1]) || !/提供側/u.test(points[1]) || !/使われ方/u.test(points[1])) throw new Error(`Points 2 failed: ${points[1]}`);
   if (!/^論点3[|｜]/u.test(points[2]) || !/どこまでAI/u.test(points[2]) || !/弁護士/u.test(points[2])) throw new Error(`Points 3 failed: ${points[2]}`);
   if (/セーフの分水嶺|設計がセーフでも「用法」でアウト/u.test(points.join(' '))) throw new Error(`Old points leaked: ${JSON.stringify(points)}`);
+  if (!(await page.locator('#detail-section').isVisible())) throw new Error('Detailed summary should stay open during style switching');
+  const detailAfterStyle = (await page.locator('#detail-text').textContent())?.trim() || '';
+  if (detailAfterStyle !== detail) throw new Error('Source-level detailed summary changed with 3-line style');
 
   const easy = await switchStyle('やさしく', 'easy');
   if (!/^何の話[?？]/u.test(easy[0]) || !/^大事なのは、/u.test(easy[1]) || !/^つまり、/u.test(easy[2])) throw new Error(`Easy contract failed: ${JSON.stringify(easy)}`);
@@ -107,6 +125,8 @@ try {
   if (JSON.stringify(repeated) !== JSON.stringify(gist)) throw new Error('Repeated gist is not deterministic');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switching lost source');
 
+  await page.locator('#detail-toggle').click();
+  if (!(await page.locator('#detail-section').isHidden())) throw new Error('Detailed summary did not collapse');
   await page.locator('#copy-button').click();
   await page.waitForFunction(() => document.querySelector('#copy-button')?.textContent.includes('コピーしました'));
   await page.locator('#good-button').click();
@@ -124,7 +144,9 @@ try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
   if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface is not 20 cases');
 
-  console.log('3lines v1.6 style/focus mobile smoke passed');
+  console.log('3lines v1.7 supplements/detail mobile smoke passed');
+  console.log(`notes=${JSON.stringify(notes)}`);
+  console.log(`detail=${JSON.stringify(detail)}`);
   console.log(`gist=${JSON.stringify(gist)}`);
   console.log(`points=${JSON.stringify(points)}`);
   console.log(`easy=${JSON.stringify(easy)}`);

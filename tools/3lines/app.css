@@ -64,9 +64,17 @@ h2 { margin: 4px 0 0; font-size: 1.4rem; letter-spacing: -.03em; }
 .result-section.is-updating .result-items { opacity: .5; }
 .result-items li { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; min-width: 0; padding: 14px; border-radius: 12px; background: var(--paper); line-height: 1.7; overflow-wrap: anywhere; }
 .result-items li::before { counter-increment: result; content: counter(result); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; color: #fff; background: var(--accent); font-size: .8rem; font-weight: 800; }
-.notes-section { margin-top: 20px; padding: 14px 16px; border-left: 3px solid var(--accent); background: #fff9f5; }
+.notes-section { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--accent); background: #fff9f5; }
 .notes-section h3 { margin: 0 0 8px; font-size: .92rem; }
 .notes-section ul { margin: 0; padding-left: 1.2em; color: var(--muted); font-size: .82rem; line-height: 1.65; }
+.detail-control { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 18px; padding: 14px 0 0; border-top: 1px solid var(--line); }
+.detail-control-title, .detail-control-note { margin: 0; }
+.detail-control-title { font-size: .88rem; font-weight: 800; }
+.detail-control-note { margin-top: 3px; color: var(--muted); font-size: .75rem; line-height: 1.5; }
+.detail-toggle { flex: 0 0 auto; }
+.detail-section { margin-top: 14px; padding: 16px; border-radius: 12px; background: var(--paper); }
+.detail-section h3 { margin: 0 0 10px; font-size: .95rem; }
+.detail-text { color: #4e4943; font-size: .88rem; line-height: 1.85; white-space: pre-line; overflow-wrap: anywhere; }
 .result-meta { margin: 14px 0 0; }
 .feedback-card { display: grid; gap: 12px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
 .feedback-title { margin: 0; font-size: .88rem; font-weight: 800; }
@@ -90,4 +98,5 @@ h2 { margin: 4px 0 0; font-size: 1.4rem; letter-spacing: -.03em; }
   .section-heading { align-items: flex-start; flex-direction: column; gap: 6px; }
   .result-heading { flex-direction: row; align-items: end; }
   .section-note { font-size: .72rem; }
+  .detail-control { align-items: flex-start; }
 }

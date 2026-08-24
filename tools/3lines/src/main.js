@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js?v=1.6.0';
+import { summarize } from './summarizer.js?v=1.7.0';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
@@ -14,6 +14,10 @@ const resultSection = document.querySelector('#result-section');
 const resultItems = document.querySelector('#result-items');
 const notesSection = document.querySelector('#notes-section');
 const notesItems = document.querySelector('#notes-items');
+const detailControl = document.querySelector('#detail-control');
+const detailToggle = document.querySelector('#detail-toggle');
+const detailSection = document.querySelector('#detail-section');
+const detailText = document.querySelector('#detail-text');
 const resultMeta = document.querySelector('#result-meta');
 const copyButton = document.querySelector('#copy-button');
 const errorSection = document.querySelector('#error-section');
@@ -23,7 +27,7 @@ const feedbackStatus = document.querySelector('#feedback-status');
 const badReasons = document.querySelector('#bad-reasons');
 const styles = [...document.querySelectorAll('.style-option')];
 const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
-const state = { style: 'gist', result: null, generationId: null, feedbackRating: null, running: false };
+const state = { style: 'gist', result: null, generationId: null, feedbackRating: null, running: false, detailOpen: false };
 
 function setStatus(label, detail, mode = 'ready') {
   statusLabel.textContent = label;
@@ -47,6 +51,7 @@ function setBusy(busy) {
   source.readOnly = busy;
   form.setAttribute('aria-busy', String(busy));
   for (const button of styles) button.disabled = busy;
+  detailToggle.disabled = busy;
 }
 
 function selectStyle(style) {
@@ -64,17 +69,29 @@ function focusResult() {
   requestAnimationFrame(() => resultSection.focus({ preventScroll: true }));
 }
 
-function renderResult(result, { focus = true } = {}) {
+function setDetailOpen(open) {
+  const available = Boolean(state.result?.detail?.trim());
+  state.detailOpen = available && Boolean(open);
+  detailSection.hidden = !state.detailOpen;
+  detailToggle.setAttribute('aria-expanded', String(state.detailOpen));
+  detailToggle.textContent = state.detailOpen ? '要約文を閉じる' : '要約文を見る';
+}
+
+function renderResult(result, { focus = true, preserveDetail = false } = {}) {
+  const keepDetailOpen = preserveDetail && state.detailOpen;
   resultItems.replaceChildren();
   for (const item of result.items) { const li = document.createElement('li'); li.textContent = item; resultItems.append(li); }
   notesItems.replaceChildren();
   for (const note of result.notes) { const li = document.createElement('li'); li.textContent = note; notesItems.append(li); }
   notesSection.hidden = result.notes.length === 0;
+  detailText.textContent = result.detail || '';
+  detailControl.hidden = !result.detail?.trim();
   resultMeta.textContent = `端末内要約 / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
   resultSection.classList.remove('is-updating');
   errorSection.hidden = true;
   state.result = result;
+  setDetailOpen(keepDetailOpen);
   state.generationId = makeEventId();
   state.feedbackRating = null;
   feedbackStatus.textContent = '';
@@ -94,6 +111,8 @@ function showError(error) {
   resultSection.classList.remove('is-updating');
   state.result = null;
   state.generationId = null;
+  state.detailOpen = false;
+  detailSection.hidden = true;
   if (error?.code === 'too-long') setInputError(message);
 }
 
@@ -122,8 +141,8 @@ async function runSummary({ preserveResult = false, focus = true } = {}) {
         setStatus(labels[mode] || '処理中', detail, 'busy');
       },
     });
-    renderResult(result, { focus });
-    setStatus('できました', '結果欄の「まとめ方」から、そのまま別の見方へ切り替えられます。');
+    renderResult(result, { focus, preserveDetail: preserveResult });
+    setStatus('できました', '3行の補足や「要約文を見る」から、必要な分だけ詳しく確認できます。');
   } catch (error) {
     if (error?.code === 'blank' || error?.code === 'too-long') setInputError(error.message);
     showError(error);
@@ -135,7 +154,8 @@ async function runSummary({ preserveResult = false, focus = true } = {}) {
 function resultText() {
   if (!state.result) return '';
   const lines = state.result.items.map((item, index) => `${index + 1}. ${item}`);
-  if (state.result.notes.length) lines.push('', '備考', ...state.result.notes.map((note) => `・${note}`));
+  if (state.result.notes.length) lines.push('', '補足', ...state.result.notes.map((note) => `・${note}`));
+  if (state.detailOpen && state.result.detail) lines.push('', '要約文', state.result.detail);
   return lines.join('\n');
 }
 
@@ -167,6 +187,7 @@ source.addEventListener('input', updateCount);
 form.addEventListener('submit', (event) => { event.preventDefault(); runSummary({ preserveResult: false, focus: true }); });
 retryButton.addEventListener('click', () => runSummary({ preserveResult: false, focus: true }));
 copyButton.addEventListener('click', copyResult);
+detailToggle.addEventListener('click', () => setDetailOpen(!state.detailOpen));
 document.querySelector('#good-button').addEventListener('click', () => sendRating('good'));
 document.querySelector('#bad-button').addEventListener('click', () => sendRating('bad'));
 document.querySelectorAll('[data-reason]').forEach((button) => button.addEventListener('click', () => sendBadReason(button.dataset.reason)));
