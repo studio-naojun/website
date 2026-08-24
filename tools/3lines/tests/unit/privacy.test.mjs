@@ -9,8 +9,10 @@ const source = (await Promise.all(files.filter((file) => file.endsWith('.js')).m
 test('normal generation has no metered generative AI endpoint', () => {
   assert.doesNotMatch(source, /api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis\.com|api\.cohere\.ai/iu);
   assert.match(source, /web-llm@0\.2\.82/);
-  assert.match(source, /8c14ce481d4c692769976ad52afea453a102df19/);
+  assert.match(source, /Qwen3-1\.7B-q4f16_1-MLC/);
+  assert.match(source, /80b3abc23aacab805bc16d33cf619fa7c0dcf720/);
   assert.match(source, /025bcaf3780fa8254f5e5efd3bfea0a5397248f4/);
+  assert.match(source, /Qwen3-1\.7B-q4f16_1-ctx4k_cs1k-webgpu\.wasm/);
 });
 
 test('feedback payload source has no raw text fields', async () => {

@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js?v=1.0.3';
+import { summarize } from './summarizer.js?v=1.1.0';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
@@ -63,7 +63,7 @@ function renderResult(result) {
   notesItems.replaceChildren();
   for (const note of result.notes) { const li = document.createElement('li'); li.textContent = note; notesItems.append(li); }
   notesSection.hidden = result.notes.length === 0;
-  resultMeta.textContent = `${result.engine === 'local-qwen' ? 'ブラウザ内モデル' : '意味構造モード'} / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
+  resultMeta.textContent = `ブラウザ内モデル / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
   errorSection.hidden = true;
   state.result = result;
@@ -76,10 +76,16 @@ function renderResult(result) {
 }
 
 function showError(error) {
-  const message = error?.code === 'too-long' ? error.message : '入力した文章は残っています。もう一度試してください。';
-  setStatus('再実行できます', message, 'error');
+  const knownMessage = error?.message && ['quality-unavailable', 'local-model-unavailable', 'local-model-timeout'].includes(error?.code)
+    ? error.message
+    : null;
+  const message = error?.code === 'too-long' ? error.message : knownMessage || '入力した文章は残っています。もう一度試してください。';
+  setStatus(error?.code === 'local-model-unavailable' ? 'この端末では利用できません' : '再実行できます', message, 'error');
   errorDetail.textContent = message;
   errorSection.hidden = false;
+  resultSection.hidden = true;
+  state.result = null;
+  state.generationId = null;
   if (error?.code === 'too-long') setInputError(message);
 }
 

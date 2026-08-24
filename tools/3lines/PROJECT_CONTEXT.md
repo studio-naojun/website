@@ -1,34 +1,34 @@
 # 究極の3行 — Project Context / Recovery State
 
-- Candidate ID: `ultimate-3lines-fpv-2026-08-24`
+- Candidate ID: `ultimate-3lines-fpv-2026-08-24-d2`
 - Product: `究極の3行`
 - Repository: `studio-naojun/website`
 - Product path: `tools/3lines/`
 - Public URL: `https://naojun.jp/tools/3lines/`
 - Accepted requirements: `tools/3lines/REQUIREMENTS_SPEC.md`
-- Settled design: `tools/3lines/METIS_HANDOFF.md`
-- Design revision: `METIS-3LINES-D1`
+- Current settled design: `tools/3lines/METIS_HANDOFF_D2.md`
+- Design revision: `METIS-3LINES-D2`
+- Previous design: `METIS-3LINES-D1` superseded for model/runtime success policy
 - Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**Third semantic acceptance correction merged. Candidate awaits Jun exact-fixture real-device recheck. NOT review-ready.**
+**D1 model/runtime limit confirmed by Jun real-device evidence. D2 implementation verified in GitHub CI; PR #35 is pending final inspection/merge. Candidate remains NOT review-ready.**
 
-The same Jun-provided legaltech article exposed two distinct semantic failures:
+Jun tested the same real legaltech article repeatedly on iPhone. D1/v1.0.3 still returned a source-faithful but legalistic/extractive three-line result that was not understandable to a reader who had not read the source. The latest failed result is permanently stored as a negative regression.
 
-1. Initial implementation selected three narrow late-section details instead of the document meaning.
-2. Correction 2 rejected those details but its deterministic fallback still returned three source excerpts whose relationship was not understandable without reading the original article.
+This satisfied the D1 design-return condition. No more article-specific heuristic corrections are permitted for this failure class.
 
-Both are REQ-003 / REQ-007 failures. No requirements change was requested.
+## D1 DELIVERY / FAILURE HISTORY
 
-## DELIVERY HISTORY
-
-- Initial live candidate: PR `#29`, merge `defad6de03637b396cdf53e87eb21587d2e07c00`
+- Initial candidate: PR `#29`, merge `defad6de03637b396cdf53e87eb21587d2e07c00`
 - Mobile/reuse correction: PR `#31`, merge `bbefb03605c047c88d52eb1794b010eccf4703df`
 - Structural semantic correction: PR `#32`, merge `d5071f07c48266f3a3800154284200fb42a59fe8`
-- Cache-bust follow-up: PR `#33`, merged head `5d0728e9538b979f5ff22da3013610987da49179`
-- Meaningful-summary correction: PR `#34`, merge `8383340c29bed7fdf8f9b9103aee0538eae2cf64`
-- Current app version: `1.0.3`
+- Cache-bust: PR `#33`, merged head `5d0728e9538b979f5ff22da3013610987da49179`
+- Final D1 meaningful-summary correction: PR `#34`, merge `8383340c29bed7fdf8f9b9103aee0538eae2cf64`
+- D1 public app version: `1.0.3`
+- D1 primary model: `Qwen3-0.6B-q4f16_1-MLC`
+- D1 acceptance result: **FAIL / architecture return**
 
 ## FIXED JUN ACCEPTANCE FIXTURE
 
@@ -37,109 +37,117 @@ Both are REQ-003 / REQ-007 failures. No requirements change was requested.
 - SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
 - Git blob SHA: `1e322e4437909c7900912b3d4c5cd696738d7129`
 
-The exact bad three-line result remains fixed in `tests/unit/jun-acceptance-semantic.test.mjs`.
+`tests/unit/jun-acceptance-semantic.test.mjs` retains both actual Jun-observed unintelligible outputs as negative regressions.
 
-## ROOT CAUSE AFTER SECOND JUN FAILURE
+## D2 SETTLED DESIGN
 
-Correction 2 still had three weaknesses:
+D2 preserves the accepted no-metered-external-AI requirement while changing the browser-local model capability and success policy.
 
-1. `semantic reject -> fallback` happened immediately, so a recoverable local-model draft was never repaired.
-2. The 4096-token Qwen3-0.6B path received up to 4,000 Japanese characters plus a long instruction prompt, leaving insufficient context margin for robust mobile generation.
-3. The fallback preserved provenance but did not perform enough semantic composition; it was still an extractive reading aid, not an understandable three-line explanation.
+1. Runtime remains exactly `@mlc-ai/web-llm 0.2.82`.
+2. Primary model becomes `Qwen3-1.7B-q4f16_1-MLC`.
+3. Model revision: `80b3abc23aacab805bc16d33cf619fa7c0dcf720`.
+4. Binary library revision: `025bcaf3780fa8254f5e5efd3bfea0a5397248f4`.
+5. WASM: `Qwen3-1.7B-q4f16_1-ctx4k_cs1k-webgpu.wasm`.
+6. Configured VRAM requirement: `2036.66 MB`; low-resource mode enabled; context 4096.
+7. First model preparation is disclosed as approximately **1 GB**.
+8. One persistent Worker/engine is retained and runs are serialized.
+9. Structured input slate is capped at **1,500 Unicode characters** to leave context margin.
+10. Prepared generation gets one 25-second budget; no repair generation is used in D2.
+11. `gist` must communicate topic/change, key boundary/meaning, and practical takeaway in independently understandable Japanese.
+12. D1 deterministic/structured fallback remains only as internal test utility; it is **not a user-visible successful normal summarization path**.
+13. WebGPU/model/timeout/quality failure returns a typed retryable/unsupported error while preserving input. It never masquerades as a valid three-line result.
+14. No remote/metered generative AI, API key, credential, backend inference, private LocalAI dependency, or paid fallback was added.
 
-Qwen3 was also running at temperature `0.05`, an unnecessarily rigid setting for a model family that expects non-zero sampling.
+## D2 IMPLEMENTATION
 
-## CORRECTION 3 — v1.0.3
+- Branch: `metis/3lines-d2-qwen17b`
+- PR: `#35`
+- App version: `1.1.0`
+- D2 design freeze: `METIS_HANDOFF_D2.md`
 
-1. Model input slate reduced from 4,000 to **1,800 characters**, preserving SUMMARY/CORE first.
-2. First local generation budget: **16 seconds** after preparation.
-3. If the first result is structurally valid but semantically rejected, the same prepared worker receives **one bounded repair generation** with the failed draft and rejection reason.
-4. Repair budget: **8 seconds**. Technical model failure does not trigger a reload/retry loop; it falls back immediately.
-5. Qwen3 sampling adjusted to temperature `0.35` for the first pass / `0.25` for repair, `top_p=0.8`.
-6. Prompt now requires the three roles to answer, for a reader who has not read the source:
-   - what this is about / what was shown;
-   - the main boundary or condition;
-   - what to do in practice.
-7. Added `src/meaning.js` for a meaning-preserving deterministic fallback.
-8. On headed long-form articles, fallback now composes:
-   - topic + primary core boundary;
-   - second core boundary with its material condition;
-   - explicit practical action from the article summary.
-9. Old structural/extractive fallback remains only when the meaningful composer cannot establish those roles.
-10. No package/model upgrade, remote AI, paid API, credential, raw-text transmission, or requirements change.
-11. v1.0.3 query-string cache bust applied to the public module chain.
+Key code changes:
 
-## EXPECTED FLOOR ON THE JUN FIXTURE
+- `src/local-worker.js`: Qwen3 1.7B pinned model/runtime, standalone-comprehension prompt, one generation.
+- `src/summarizer.js`: 1,500-char structured slate, 25s generation budget, standalone quality gate, typed errors, no successful fallback.
+- `src/main.js`: typed error display; stale previous result is hidden/cleared on failure while textarea remains.
+- `index.html`: ~1 GB first-load disclosure and v1.1.0 cache bust.
+- unit tests: D2 pins, latest Jun failures as negative regressions, good standalone result as positive reference, WebGPU/model/timeout failure behavior.
 
-Even if WebLLM cannot produce an accepted draft, fallback must no longer resemble the previous disconnected excerpts. The deterministic floor is expected to read as a connected explanation equivalent to:
+## ACTUAL VERIFICATION EVIDENCE
 
-1. `弁護士法72条の新ガイドラインでは、セーフの分水嶺は「価値中立性」...`
-2. `設計がセーフでも「用法」でアウトになる...`
-3. `実務では、紛争・裁判所提出書面・和解契約書に近づいたら弁護士へ`
+A temporary one-job GitHub-native workflow was used because the current Chat execution environment cannot clone the repository. The workflow was removed from the branch after evidence was captured and is not part of the product PR.
 
-The local model should ideally produce a still clearer abstractive result.
+Final verification run:
 
-## VERIFICATION EVIDENCE
+- Workflow run: `32689057873`
+- Job: `97319304908`
+- Node: `22.23.2`
+- `npm test`: **23/23 PASS**
+- `npm run quality`: **20/20 automated invariants PASS**
+- `node --check src/main.js`: PASS
+- `node --check src/summarizer.js`: PASS
+- `node --check src/local-worker.js`: PASS
 
-Actually executed in the available route:
+Important D2 regression evidence included in the passing 23 tests:
 
-- exact Jun fixture remains pinned in repo: PASS
-- exact detail-only output remains semantic-reject regression: PASS by test contract
-- meaningful fallback prototype using the article's real core/summary sections: PASS; three connected roles produced
-- `meaning.js` Node syntax check: PASS
-- PR #34 diff limited to `tools/3lines/`: PASS
-- PR #34 merge to main: PASS
-- main `index.html` references `src/main.js?v=1.0.3`: PASS
+- exact Jun fixture identity: PASS
+- WebLLM 0.2.82 / Qwen3 1.7B / revisions / WASM / VRAM pins: PASS
+- model slate <= 1,500 chars with major article structure retained: PASS
+- both actual Jun-observed unintelligible outputs rejected: PASS
+- standalone-comprehensible reference result accepted: PASS
+- bad local output never surfaces as fallback success: PASS
+- good local output succeeds in one generation: PASS
+- WebGPU absence is explicit unsupported behavior: PASS
+- local timeout is typed and never returns extractive success: PASS
+- no metered generative AI endpoint in normal source path: PASS
+- persistent worker reuse / request serialization regression: PASS
+- privacy feedback raw-text exclusion: PASS
 
-Repository tests now additionally assert:
+The initial D2 CI attempt failed only because three old D1 tests still expected the superseded fallback-success contract. Those tests were updated to D2 behavior; product implementation was not reverted. The final run then passed completely.
 
-- compact model slate <= 1,800 chars while retaining SUMMARY/CORE meaning;
-- bad first draft -> one repair -> good result;
-- two bad drafts -> bad result never surfaces -> meaningful fallback;
-- already-good document-level draft -> no unnecessary repair.
+## STILL UNVERIFIED
 
-Not independently executed in this Chat environment:
+Do not infer these as PASS:
 
-- complete repository `npm test` runner after correction 3;
-- Playwright smoke;
-- real Qwen/WebGPU inference on iPhone/Android;
-- Pages external HTTP/source-live provenance after merge (external fetch currently returns cache miss);
-- real-device 30-second performance;
-- 20-case human usability gate.
-
-Do not infer unverified items as PASS.
+- actual Qwen3-1.7B initialization on Jun's iPhone Safari;
+- actual first-load download/memory behavior on the target iPhone;
+- prepared inference <=30 seconds on the target iPhone;
+- second-run model reuse on the target iPhone;
+- style-change stability without reload/input loss on the target iPhone;
+- actual semantic usefulness of the 1.7B output on the fixed Jun fixture;
+- Android real-device behavior;
+- 20-case human usefulness acceptance;
+- Pages external HTTP/source-live provenance after D2 merge.
 
 ## REQUIREMENT STATUS
 
-- REQ-001〜002: retained PASS evidence.
-- REQ-003: corrected again; **Jun exact-fixture re-acceptance pending**.
-- REQ-004〜006: retained/corrected; style real-device recheck pending.
-- REQ-007: **UNVERIFIED**; the exact Jun fixture is now a hard semantic regression, human gate remains.
-- REQ-008: PASS; no API key / metered external generative AI.
-- REQ-009: UNVERIFIED on real device.
-- REQ-010: implementation evidence retained.
-- REQ-011: UNVERIFIED on real device; generation budgets are now 16s + conditional 8s after preparation.
-- REQ-012〜017: retained unless affected; privacy boundary unchanged.
-- REQ-018: UNVERIFIED / NOT review-ready.
+- REQ-001–006: implementation evidence retained; affected D2 behavior covered by unit checks where applicable.
+- REQ-007: **UNVERIFIED** — automated guards pass; Jun/human usefulness remains decisive.
+- REQ-008: PASS in source/test evidence — no API key / metered external generative AI / silent paid fallback.
+- REQ-009: **UNVERIFIED** on real target devices.
+- REQ-010: implementation regression evidence retained.
+- REQ-011: **UNVERIFIED** on real iPhone; prepared generation budget is 25 seconds.
+- REQ-012–017: retained unless affected; privacy boundary remains local-first.
+- REQ-018: **UNVERIFIED / NOT review-ready**.
 
-## DESIGN-RETURN RULE
+## NEXT ACCEPTANCE / HARD STOP RULE
 
-Correction 3 is the final bounded correction on the current `Qwen3-0.6B / WebLLM 0.2.82` architecture for this failure class.
+After D2 is merged and observable, Jun should use the **same fixed legaltech article** once on iPhone.
 
-If the same exact Jun fixture remains materially unintelligible on the corrected real-device candidate, do **not** add further article-specific heuristics. Treat that as actual evidence that the current model/runtime cannot satisfy useful semantic quality under the accepted constraints, and return internally to M.E.T.I.S. for a model/runtime design delta.
+Pass requires:
 
-A design delta must still preserve REQ-008: no user/operator API key, no normal metered external generative AI, no silent paid fallback.
+- the three lines alone let a reader explain what the article is about;
+- the key legal/product boundary is understandable rather than merely named;
+- the practical takeaway is clear;
+- prepared generation completes within the accepted performance target;
+- no page reload/input loss/memory failure.
+
+If Qwen3-1.7B cannot initialize reliably, materially exceeds the performance target, reloads the page, or still produces materially unintelligible output, **stop the browser-local patch loop**. Do not try more heuristics or silently add remote AI.
+
+That result is an accepted-requirement conflict for Jun: useful semantic quality + target-mobile stability + no normal metered external generative AI cannot all be met by this browser-local architecture as currently available.
 
 ## S.Y.B.I.L. STATUS
 
 `NOT ELIGIBLE`.
 
 Jun has not declared review-ready.
-
-## NEXT ACTION
-
-`v1.0.3 Pages candidate -> Jun exact same article recheck ->`
-
-- understandable = continue remaining quality/device acceptance;
-- still unintelligible = M.E.T.I.S. model/runtime design delta;
-- no further heuristic patch loop on this fixture.
