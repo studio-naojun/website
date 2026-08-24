@@ -18,12 +18,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Generate audited lockfile candidate
-        run: |
-          npm install --package-lock-only --ignore-scripts --no-audit
-          echo '--- LOCKFILE START ---'
-          cat package-lock.json
-          echo '--- LOCKFILE END ---'
       - run: npm ci --ignore-scripts
       - name: Unit tests
         run: npm test
