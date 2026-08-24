@@ -1,4 +1,5 @@
 import { normalizeForAnalysis, segmentSentences, tokenize } from './normalizer.js';
+import { tinySummarizerTfScores } from '../vendor/tiny-summarizer-tf.js';
 
 const CUES = ['要するに', 'つまり', '結論', 'したがって', 'このため', 'そのため', '一方', 'ただし', 'しかし', '重要なのは'];
 const QUALIFIERS = ['ただし', 'しかし', '一方', '場合', '限り', '可能性', 'とは限ら', '必ずしも', '原則', '条件', '〜なら', 'ならば'];
@@ -38,7 +39,7 @@ function clauseParts(text) {
     .filter((part) => [...part].length >= 4);
 }
 
-function scoreSentence(sentence, index, total, allTokens, style) {
+function scoreSentence(sentence, index, total, allTokens, style, tfScore = 0) {
   const text = sentence.text;
   const tokens = new Set(tokenize(text));
   const centrality = sharedRatio(ngrams(tokens), allTokens);
@@ -49,17 +50,26 @@ function scoreSentence(sentence, index, total, allTokens, style) {
   const positionScore = index === 0 ? 0.35 : index === total - 1 ? 0.65 : 0;
   const boilerplatePenalty = BOILERPLATE.some((cue) => text.includes(cue)) ? 1.3 : 0;
   const quotePenalty = /^>[ ]?/u.test(text) || (text.startsWith('「') && text.endsWith('」')) ? 0.25 : 0;
+  const tfImportance = Math.log1p(Math.max(0, tfScore)) * 0.45;
   let styleScore = 0;
   if (style === 'gist') styleScore = cueScore * 1.6 + positionScore;
   if (style === 'points') styleScore = centrality * 1.6 + positionScore;
   if (style === 'easy') styleScore = centrality * 1.2 + positionScore;
   if (style === 'faithful') styleScore = qualifierScore * 1.3 + negationScore * 0.9 + numberScore + positionScore;
-  return styleScore + centrality * 2 + qualifierScore * 0.7 + negationScore * 0.35 + numberScore - boilerplatePenalty - quotePenalty;
+  return styleScore + centrality * 2 + tfImportance + qualifierScore * 0.7 + negationScore * 0.35 + numberScore - boilerplatePenalty - quotePenalty;
 }
 
 function rankSentences(sentences, style, limit = sentences.length) {
-  const allTokens = new Set(sentences.flatMap((sentence) => [...ngrams(new Set(tokenize(sentence.text)))]));
-  const scored = sentences.map((sentence, index) => ({ sentence, index, score: scoreSentence(sentence, index, sentences.length, allTokens, style), tokens: new Set(tokenize(sentence.text)) }));
+  const tokenLists = sentences.map((sentence) => tokenize(sentence.text));
+  const tfScores = tinySummarizerTfScores(tokenLists);
+  const allTokens = new Set(tokenLists.flatMap((tokens) => [...ngrams(new Set(tokens))]));
+  const scored = sentences.map((sentence, index) => ({
+    sentence,
+    index,
+    score: scoreSentence(sentence, index, sentences.length, allTokens, style, tfScores[index]),
+    tokens: new Set(tokenLists[index]),
+    tfScore: tfScores[index],
+  }));
   const ranked = [];
   while (ranked.length < Math.min(limit, scored.length)) {
     const available = scored.filter((candidate) => !ranked.includes(candidate));

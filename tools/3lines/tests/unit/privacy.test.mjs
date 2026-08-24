@@ -6,13 +6,10 @@ const sourceRoot = new URL('../../src/', import.meta.url);
 const files = await readdir(sourceRoot);
 const source = (await Promise.all(files.filter((file) => file.endsWith('.js')).map((file) => readFile(new URL(file, sourceRoot), 'utf8')))).join('\n');
 
-test('normal generation has no metered generative AI endpoint', () => {
+test('normal summarization source has no external generative model/runtime route', () => {
   assert.doesNotMatch(source, /api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis\.com|api\.cohere\.ai/iu);
-  assert.match(source, /web-llm@0\.2\.82/);
-  assert.match(source, /Qwen3-1\.7B-q4f16_1-MLC/);
-  assert.match(source, /80b3abc23aacab805bc16d33cf619fa7c0dcf720/);
-  assert.match(source, /025bcaf3780fa8254f5e5efd3bfea0a5397248f4/);
-  assert.match(source, /Qwen3-1\.7B-q4f16_1-ctx4k_cs1k-webgpu\.wasm/);
+  assert.doesNotMatch(source, /web-llm|transformers|huggingface|navigator\.gpu|device:\s*['"](?:webgpu|wasm)['"]/iu);
+  assert.doesNotMatch(source, /new\s+Worker\s*\(/u);
 });
 
 test('feedback payload source has no raw text fields', async () => {
@@ -21,7 +18,12 @@ test('feedback payload source has no raw text fields', async () => {
   assert.match(feedback, /FEEDBACK_FIELDS/);
 });
 
-test('product files remain inside the declared scope', async () => {
+test('product package has no runtime dependencies', async () => {
+  const pkg = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'));
+  assert.deepEqual(pkg.dependencies || {}, {});
+});
+
+test('product files remain inside the declared scope', () => {
   const root = new URL('../../', import.meta.url);
   assert.equal(root.pathname.endsWith('/tools/3lines/'), true);
 });

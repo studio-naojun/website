@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
@@ -24,12 +24,26 @@ await new Promise((resolve) => server.listen(4173, '127.0.0.1', resolve));
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
 const requests = [];
+let navigations = 0;
 page.on('request', (request) => requests.push({ url: request.url(), body: request.postData() || '' }));
+page.on('framenavigated', (frame) => { if (frame === page.mainFrame()) navigations += 1; });
 page.on('pageerror', (error) => console.error(`PAGEERROR: ${error.message}`));
 page.on('console', (message) => { if (message.type() === 'error') console.error(`CONSOLE: ${message.text()}`); });
-await page.addInitScript(() => {
-  try { Object.defineProperty(navigator, 'gpu', { configurable: true, value: undefined }); } catch { /* unsupported property */ }
-});
+
+async function waitForCompletedResult(style) {
+  await page.waitForFunction((expectedStyle) => {
+    const form = document.querySelector('#summary-form');
+    const result = document.querySelector('#result-section');
+    const error = document.querySelector('#error-section');
+    const selected = document.querySelector(`[data-style="${expectedStyle}"]`);
+    const idle = form?.getAttribute('aria-busy') === 'false';
+    const styleReady = selected?.getAttribute('aria-checked') === 'true';
+    const resultReady = !result?.hidden && result?.querySelectorAll('#result-items > li').length === 3;
+    const errorReady = !error?.hidden;
+    return idle && styleReady && (resultReady || errorReady);
+  }, style);
+  if (!(await page.locator('#error-section').isHidden())) throw new Error(`Browser summarization failed: ${await page.locator('#error-detail').textContent()}`);
+}
 
 try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/', { waitUntil: 'domcontentloaded' });
@@ -37,29 +51,46 @@ try {
   if (!(await page.locator('#source-text').isVisible()) || !(await page.locator('#summarize-button').isVisible())) throw new Error('First viewport controls are not visible');
   const overflow = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
   if (overflow.scrollWidth > overflow.clientWidth + 1) throw new Error(`Horizontal overflow: ${JSON.stringify(overflow)}`);
+  if (!(await page.locator('#input-help').textContent())?.includes('追加モデルのダウンロードは不要')) throw new Error('Zero-model-download disclosure missing');
 
-  const canary = 'canary-3lines-local-only';
-  const longText = Array.from({ length: 300 }, (_, index) => `第${index + 1}段では、${canary}を含む文章の要点を確認する。条件がある場合は無理に断定しない。`).join('\n');
+  const longText = await readFile(join(repoRoot, 'tools/3lines/tests/fixtures/jun-legaltech-72-20260824.txt'), 'utf8');
+  const marker = 'AIに契約書を読ませていいのか問題';
+  if (!longText.includes(marker)) throw new Error('Jun smoke fixture marker missing');
+  if ([...longText].length > 20000) throw new Error('Jun smoke fixture exceeds input cap');
+
   await page.locator('#source-text').fill(longText);
   await page.locator('#summarize-button').click();
-  console.log('smoke: clicked');
   const earlyStatus = await page.locator('#status-label').textContent();
-  if (!/処理|準備|作成|できました/.test(earlyStatus || '')) throw new Error(`Processing state missing: ${earlyStatus}`);
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3);
+  if (!/処理|整理|できました/.test(earlyStatus || '')) throw new Error(`Processing state missing: ${earlyStatus}`);
+  await waitForCompletedResult('gist');
+
+  const firstItems = await page.locator('#result-items > li').allTextContents();
+  const firstJoined = firstItems.join(' ');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Input was not preserved');
-  if ((await page.locator('#result-items > li').count()) !== 3) throw new Error('Result is not exactly three items');
-  if ((await page.locator('#result-meta').textContent())?.includes('外部')) throw new Error('Unexpected external engine');
+  if (firstItems.length !== 3) throw new Error('Result is not exactly three items');
+  if (!/法務省/u.test(firstItems[0]) || !/弁護士法72条/u.test(firstItems[0])) throw new Error(`Topic line failed: ${firstItems[0]}`);
+  if (!/価値中立/u.test(firstItems[1]) || !/アウト/u.test(firstItems[1])) throw new Error(`Boundary line failed: ${firstItems[1]}`);
+  if (!/弁護士/u.test(firstItems[2]) || !/(?:紛争|裁判所|和解)/u.test(firstItems[2])) throw new Error(`Action line failed: ${firstItems[2]}`);
+  if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
   await page.getByRole('radio', { name: '論点3つ' }).click();
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 && document.querySelector('#source-text').value.length > 0);
+  await waitForCompletedResult('points');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
+  if (navigations !== 1) throw new Error(`Unexpected page reload during style switch: ${navigations}`);
+
+  await page.getByRole('radio', { name: '要するに' }).click();
+  await waitForCompletedResult('gist');
+  const repeatedItems = await page.locator('#result-items > li').allTextContents();
+  if (JSON.stringify(firstItems) !== JSON.stringify(repeatedItems)) throw new Error(`Repeated gist result was not deterministic: first=${JSON.stringify(firstItems)} repeated=${JSON.stringify(repeatedItems)}`);
+  if (navigations !== 1) throw new Error(`Unexpected page reload during repeated run: ${navigations}`);
+
   await page.locator('#copy-button').click();
   await page.waitForFunction(() => document.querySelector('#copy-button').textContent.includes('コピーしました'));
   await page.locator('#good-button').click();
   await page.waitForFunction(() => document.querySelector('#feedback-status').textContent.includes('受け付け'));
 
   await page.getByRole('radio', { name: 'やさしく' }).click();
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3);
+  await waitForCompletedResult('easy');
   await page.locator('#bad-button').click();
   if (await page.locator('#bad-reasons').isHidden()) throw new Error('Bad reasons did not appear');
   await page.locator('[data-reason="missing"]').click();
@@ -72,50 +103,16 @@ try {
   if (!(await page.locator('#input-error').textContent())?.includes('20,000')) throw new Error('Over-limit message missing');
   if ((await page.locator('#source-text').inputValue()) !== tooLong) throw new Error('Over-limit input was lost');
 
-  const leaked = requests.find(({ url, body }) => url.includes(canary) || body.includes(canary));
+  const leaked = requests.find(({ url, body }) => url.includes(marker) || body.includes(marker));
   if (leaked) throw new Error(`Raw input leaked into request: ${JSON.stringify(leaked)}`);
-  if (requests.some(({ url }) => /openai|anthropic|gemini|generativelanguage|cohere/iu.test(url))) throw new Error('External generative endpoint was called');
+  const external = requests.filter(({ url }) => !url.startsWith('http://127.0.0.1:4173/'));
+  if (external.length) throw new Error(`Unexpected external requests during summarization: ${JSON.stringify(external)}`);
 
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
   if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
 
-  const modelPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  let navigations = 0;
-  modelPage.on('framenavigated', (frame) => { if (frame === modelPage.mainFrame()) navigations += 1; });
-  await modelPage.addInitScript(() => {
-    window.__fakeWorkerCreates = 0;
-    window.__fakeWorkerTerminates = 0;
-    Object.defineProperty(navigator, 'gpu', { configurable: true, value: { requestAdapter: async () => ({}) } });
-    class FakeWorker {
-      constructor() { this.listeners = { message: [], error: [] }; window.__fakeWorkerCreates += 1; }
-      addEventListener(type, handler) { this.listeners[type].push(handler); }
-      emit(type, event) { for (const handler of this.listeners[type]) handler(event); }
-      postMessage(message) {
-        setTimeout(() => this.emit('message', { data: { type: 'preparing', requestId: message.requestId, warm: window.__fakeWorkerCreates === 1 } }), 5);
-        setTimeout(() => this.emit('message', { data: { type: 'ready', requestId: message.requestId } }), 15);
-        setTimeout(() => this.emit('message', { data: { type: 'result', requestId: message.requestId, modelId: 'fake-model', raw: '1. 第一の要点です。\n2. 第二の要点です。\n3. 第三の要点です。' } }), 80);
-      }
-      terminate() { window.__fakeWorkerTerminates += 1; }
-    }
-    Object.defineProperty(window, 'Worker', { configurable: true, value: FakeWorker });
-  });
-  await modelPage.goto('http://127.0.0.1:4173/tools/3lines/', { waitUntil: 'domcontentloaded' });
-  const modelSource = '第一の要点です。第二の要点です。第三の要点です。';
-  await modelPage.locator('#source-text').fill(modelSource);
-  await modelPage.locator('#summarize-button').click();
-  await modelPage.waitForFunction(() => document.querySelector('.style-option')?.disabled === true);
-  await modelPage.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 && document.querySelector('.style-option')?.disabled === false);
-  await modelPage.getByRole('radio', { name: 'やさしく' }).click();
-  await modelPage.waitForFunction(() => document.querySelector('.style-option')?.disabled === true);
-  await modelPage.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 && document.querySelector('.style-option')?.disabled === false);
-  if ((await modelPage.locator('#source-text').inputValue()) !== modelSource) throw new Error('Mock model style rerun lost input');
-  const lifecycle = await modelPage.evaluate(() => ({ creates: window.__fakeWorkerCreates, terminates: window.__fakeWorkerTerminates }));
-  if (lifecycle.creates !== 1) throw new Error(`Expected one persistent worker, got ${JSON.stringify(lifecycle)}`);
-  if (lifecycle.terminates !== 0) throw new Error(`Worker terminated during successful rerun: ${JSON.stringify(lifecycle)}`);
-  if (navigations !== 1) throw new Error(`Unexpected page reload during style rerun: ${navigations} navigations`);
-  await modelPage.close();
-
-  console.log('3lines mobile fallback + mocked model lifecycle smoke passed');
+  console.log('3lines deterministic Jun-fixture mobile smoke passed');
+  console.log(firstJoined);
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
