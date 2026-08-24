@@ -167,6 +167,8 @@ Before merge/public acceptance:
 8. JS syntax checks for final shipped modules.
 9. Actual target-device Jun acceptance remains required before review-ready.
 
+Final executable-code verification is green on workflow run `32693440234`, job `97331120439`, candidate code head `6b18dc70006cefd7e4f3972d8fb9c02cf358f1f3`.
+
 ## DELIVERY / ROLLBACK
 
 Safe/reversible branch -> PR -> merge -> Pages is allowed without an additional Jun checkpoint after verification. No persistent-data migration exists.
@@ -189,4 +191,4 @@ Return to M.E.T.I.S./requirements decision rather than another arbitrary technol
 
 ## CURRENT STATUS
 
-`DESIGN FROZEN / FINAL VERIFICATION IN PROGRESS / NOT REVIEW-READY`
+`INTERNALLY VERIFIED / READY FOR MERGE / NOT REVIEW-READY`
