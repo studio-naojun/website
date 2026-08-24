@@ -85,7 +85,7 @@ test('Node without Worker is explicit unsupported behavior only when real worker
 test('injected WASM output can succeed without browser GPU APIs', async () => {
   const source = '新制度は手続きを簡単にする。ただし費用が増える可能性がある。利用前に条件を確認する必要がある。';
   const raw = [
-    '1. 新制度は、利用者の手続きを簡単にするための仕組みだ。',
+    '1. 新制度は、利用者の手続きを簡単にする仕組みとして導入された。',
     '2. ただし、導入によって費用が増える可能性がある。',
     '3. 利用する前に、自分に当てはまる条件を確認する必要がある。',
   ].join('\n');
