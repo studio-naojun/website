@@ -40,7 +40,7 @@ function validateStandaloneComprehension(items, text, style) {
   if (style !== 'gist' && style !== 'easy') return { ok: true };
 
   const firstSentence = String(items[0]).split(/[。！？!?]/u)[0] || '';
-  const topicPredicate = /明確|具体化|示|整理|公表|発表|決め|変わ|判明|分か|説明|解説|主張|報告|提案|定め|明らか|更新|発見|導入|認め|禁止|可能|求め|示した|なった|した|する/u;
+  const topicPredicate = /明確|具体化|示|整理|公表|発表|決め|変わ|判明|分か|説明|解説|主張|報告|提案|定め|明らか|更新|発見|導入|認め|禁止|可能|求め/u;
   if (!topicPredicate.test(firstSentence)) return { ok: false, reason: 'missing-topic-statement' };
 
   const copiedLines = items.filter((item) => containsLongSourceRun(item, text, 36)).length;
