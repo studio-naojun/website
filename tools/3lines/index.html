@@ -28,7 +28,7 @@
       <textarea id="source-text" name="source" rows="11"
         placeholder="Xなどからコピーした文章をここに貼り付けてください。"
         aria-describedby="input-help input-error"></textarea>
-      <p id="input-help" class="field-help">10,000文字以上の長文にも対応。入力した文章はこのブラウザ内で処理します。対応端末では初回のみ約1GBのモデルを準備し、ページを開いている間は再利用します。</p>
+      <p id="input-help" class="field-help">10,000文字以上の長文にも対応。入力した文章はこのブラウザ内で処理します。初回のみ約160MBの日本語要約モデルを準備し、ページを開いている間は再利用します。</p>
       <p id="input-error" class="error-message" role="alert" hidden></p>
       <button id="summarize-button" class="primary-button" type="submit">3行！</button>
     </form>
@@ -102,6 +102,6 @@
     <p class="disclaimer">これは要約です。内容の真偽を確認するものではありません。</p>
   </main>
   <script>window.THREELINES_CONFIG = { feedbackEndpoint: '' };</script>
-  <script type="module" src="src/main.js?v=1.1.0"></script>
+  <script type="module" src="src/main.js?v=1.2.0"></script>
 </body>
 </html>
