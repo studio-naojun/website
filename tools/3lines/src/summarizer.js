@@ -1,9 +1,9 @@
 import { validateInput } from './normalizer.js';
 import { validateSummary } from './validator.js';
-import { validateStructuredCoverage } from './structure.js?v=1.3.0';
-import { composeThreeLines } from './composer.js?v=1.3.0';
+import { validateStructuredCoverage } from './structure.js?v=1.3.1';
+import { composeThreeLines } from './composer.js?v=1.3.1';
 
-export const APP_VERSION = '1.3.0';
+export const APP_VERSION = '1.3.1';
 export const MODEL_ID = 'none';
 
 function typedError(code, message, cause) {
@@ -43,4 +43,4 @@ export async function summarize({ text, style = 'gist', onStatus = () => {} }) {
   };
 }
 
-export { composeThreeLines } from './composer.js?v=1.3.0';
+export { composeThreeLines } from './composer.js?v=1.3.1';
