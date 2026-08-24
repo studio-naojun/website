@@ -1,8 +1,8 @@
 import { summarizeExtractively } from './fallback.js';
 import { validateInput } from './normalizer.js';
 import { parseModelOutput, validateSummary } from './validator.js';
-import { buildStructuredSlate, validateStructuredCoverage } from './structure.js';
-import { summarizeStructurally } from './structured-fallback.js';
+import { buildStructuredSlate, validateStructuredCoverage } from './structure.js?v=1.0.2';
+import { summarizeStructurally } from './structured-fallback.js?v=1.0.2';
 
 export const MODEL_ID = 'Qwen3-0.6B-q4f16_1-MLC';
 export const LOCAL_GENERATION_BUDGET_MS = 25000;
@@ -25,7 +25,7 @@ function fallbackResult(text, style, started, preparationState) {
 
 function defaultWorkerFactory() {
   if (typeof Worker === 'undefined') throw new Error('Worker is not supported.');
-  return new Worker(new URL('./local-worker.js', import.meta.url), { type: 'module' });
+  return new Worker(new URL('./local-worker.js?v=1.0.2', import.meta.url), { type: 'module' });
 }
 
 export class LocalWorkerClient {
