@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js?v=1.5.0';
+import { summarize } from './summarizer.js?v=1.6.0';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
@@ -22,6 +22,7 @@ const retryButton = document.querySelector('#retry-button');
 const feedbackStatus = document.querySelector('#feedback-status');
 const badReasons = document.querySelector('#bad-reasons');
 const styles = [...document.querySelectorAll('.style-option')];
+const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 const state = { style: 'gist', result: null, generationId: null, feedbackRating: null, running: false };
 
 function setStatus(label, detail, mode = 'ready') {
@@ -57,7 +58,13 @@ function selectStyle(style) {
   }
 }
 
-function renderResult(result) {
+function focusResult() {
+  if (resultSection.hidden) return;
+  resultSection.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  requestAnimationFrame(() => resultSection.focus({ preventScroll: true }));
+}
+
+function renderResult(result, { focus = true } = {}) {
   resultItems.replaceChildren();
   for (const item of result.items) { const li = document.createElement('li'); li.textContent = item; resultItems.append(li); }
   notesItems.replaceChildren();
@@ -65,6 +72,7 @@ function renderResult(result) {
   notesSection.hidden = result.notes.length === 0;
   resultMeta.textContent = `端末内要約 / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
+  resultSection.classList.remove('is-updating');
   errorSection.hidden = true;
   state.result = result;
   state.generationId = makeEventId();
@@ -73,6 +81,7 @@ function renderResult(result) {
   badReasons.hidden = true;
   document.querySelectorAll('.feedback-button').forEach((button) => button.classList.remove('is-selected'));
   document.querySelectorAll('[data-reason]').forEach((button) => button.classList.remove('is-selected'));
+  if (focus) focusResult();
 }
 
 function showError(error) {
@@ -82,19 +91,26 @@ function showError(error) {
   errorDetail.textContent = message;
   errorSection.hidden = false;
   resultSection.hidden = true;
+  resultSection.classList.remove('is-updating');
   state.result = null;
   state.generationId = null;
   if (error?.code === 'too-long') setInputError(message);
 }
 
-async function runSummary() {
+async function runSummary({ preserveResult = false, focus = true } = {}) {
   if (state.running) return;
   const requestedStyle = state.style;
   const requestedText = source.value;
+  const keepVisible = preserveResult && Boolean(state.result) && !resultSection.hidden;
   setBusy(true);
   setInputError('');
   errorSection.hidden = true;
-  resultSection.hidden = true;
+  if (keepVisible) {
+    resultSection.classList.add('is-updating');
+    resultMeta.textContent = 'まとめ方を切り替えています…';
+  } else {
+    resultSection.hidden = true;
+  }
   setStatus('処理を開始しました', '入力を確認しています…', 'busy');
   await new Promise((resolve) => requestAnimationFrame(resolve));
   try {
@@ -106,8 +122,8 @@ async function runSummary() {
         setStatus(labels[mode] || '処理中', detail, 'busy');
       },
     });
-    renderResult(result);
-    setStatus('できました', '入力した文章は外部AIへ送らず、このページ内だけで整理しました。別のまとめ方も選べます。');
+    renderResult(result, { focus });
+    setStatus('できました', '結果欄の「まとめ方」から、そのまま別の見方へ切り替えられます。');
   } catch (error) {
     if (error?.code === 'blank' || error?.code === 'too-long') setInputError(error.message);
     showError(error);
@@ -148,8 +164,8 @@ async function sendBadReason(reason) {
 }
 
 source.addEventListener('input', updateCount);
-form.addEventListener('submit', (event) => { event.preventDefault(); runSummary(); });
-retryButton.addEventListener('click', runSummary);
+form.addEventListener('submit', (event) => { event.preventDefault(); runSummary({ preserveResult: false, focus: true }); });
+retryButton.addEventListener('click', () => runSummary({ preserveResult: false, focus: true }));
 copyButton.addEventListener('click', copyResult);
 document.querySelector('#good-button').addEventListener('click', () => sendRating('good'));
 document.querySelector('#bad-button').addEventListener('click', () => sendRating('bad'));
@@ -157,8 +173,8 @@ document.querySelectorAll('[data-reason]').forEach((button) => button.addEventLi
 styles.forEach((button) => button.addEventListener('click', () => {
   if (state.running) return;
   const nextStyle = button.dataset.style;
-  if (nextStyle === state.style && state.result) return;
+  if (nextStyle === state.style && state.result) { focusResult(); return; }
   selectStyle(nextStyle);
-  if (source.value.trim() && state.result) runSummary();
+  if (source.value.trim() && state.result) runSummary({ preserveResult: true, focus: true });
 }));
 updateCount();
