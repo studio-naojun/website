@@ -138,11 +138,15 @@ function findEasyBoundaryLine(sections) {
 
   const concept = quotedConcept(primary.essence);
   const definition = negativeDesignDefinition(primary.body);
-  let first = definition
-    ? `${definition}なら${/セーフ/u.test(primary.essence) ? '原則セーフ側' : '判断しやすい'}`
-    : concept
-      ? `「${concept}」が判断のポイント`
-      : explainPrimaryBoundary(primary);
+  const simpleDefinition = definition
+    .replace(/に利用させることを目指さない設計$/u, '向けに作らないこと');
+  let first = concept && simpleDefinition
+    ? `「${concept}」＝${simpleDefinition}`
+    : simpleDefinition
+      ? `${simpleDefinition}が判断のポイント`
+      : concept
+        ? `「${concept}」が判断のポイント`
+        : explainPrimaryBoundary(primary);
 
   let second = caveat ? explainCaveat(caveat) : '';
   second = second
