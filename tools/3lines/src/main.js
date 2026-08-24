@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js';
+import { summarize } from './summarizer.js?v=1.0.2';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
