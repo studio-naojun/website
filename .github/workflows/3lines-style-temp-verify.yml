@@ -1,0 +1,36 @@
+name: 3lines-style-temp-verify
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/3lines/**'
+      - '.github/workflows/3lines-style-temp-verify.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/3lines
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - name: Unit tests
+        run: npm test
+      - name: Quality invariants
+        run: npm run quality
+      - name: JavaScript syntax
+        run: |
+          node --check src/composer.js
+          node --check src/main.js
+          node --check src/summarizer.js
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Mobile smoke
+        run: npm run smoke
