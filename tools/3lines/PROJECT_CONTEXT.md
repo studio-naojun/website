@@ -7,168 +7,183 @@
 - Public URL: `https://naojun.jp/tools/3lines/`
 - Accepted requirements: `tools/3lines/REQUIREMENTS_SPEC.md`
 - Base architecture: `tools/3lines/METIS_HANDOFF_D3.md`
-- Design revision: `METIS-3LINES-D3` + v1.4 semantic-output design delta
-- App version: `1.4.0`
-- D3 implementation PR: `#36` — merged as `2b06cc15a803278cb6985bf007d9d835f87becac`
-- Distinct-style correction PR: `#38` — merged as `100cc656367d612d9778b9fa73ceb38edc2a2d76`
-- Semantic-ladder correction PR: `#40` — merged as `75964c7bc9b330d3e4b4df19ba16e74ece6935f7`
+- Design revision: `METIS-3LINES-D3 + v1.5 body-grounded semantic-output delta`
+- App version: `1.5.0`
+- v1.5 implementation PR: `#42`
+- v1.5 merge commit: `777eb94230129a9f0d51599540efe57bfa445341`
 - Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**v1.4.0 semantic-ladder candidate is merged to `main`. AWAITING JUN TARGET-iPHONE SEMANTIC ACCEPTANCE. NOT review-ready.**
+**v1.5.0 body-grounded semantic candidate is merged to `main`. Main provenance is confirmed. AWAITING JUN TARGET-iPHONE SEMANTIC ACCEPTANCE. NOT review-ready.**
 
-The D3 architecture remains model-free plain browser JavaScript. The new change is not another model/runtime experiment; it changes the product's three-line meaning contract so a person who has not read the source can understand what the post is about, what its core point is, and what it ultimately wants to say.
+The D3 runtime architecture remains model-free, zero-download plain browser JavaScript. No API key, hosted generative endpoint, metered AI route, WebGPU, WebLLM, Transformers.js, or ONNX runtime was introduced.
 
-External Pages propagation has not been independently verified from the ChatGPT execution environment. Main source/provenance is confirmed; do not infer live HTTP propagation until observed.
+Main is confirmed as `1.5.0`, `MODEL_ID = 'none'`, and `index.html` loads `src/main.js?v=1.5.0`.
 
-## JUN ACCEPTANCE HISTORY
+External Pages HTTP propagation is not independently confirmed from the ChatGPT execution environment. Do not infer live-site propagation solely from main source state.
 
-### D3 execution compatibility — confirmed on Jun's iPhone
+## LATEST JUN SEMANTIC ACCEPTANCE FEEDBACK
 
-Jun successfully executed the model-free D3 route on the target iPhone. This removed the D2 `このブラウザでは使えません` failure mechanism for the tested iPhone route.
+Jun evaluated v1.4 on the target iPhone and identified three material semantic defects:
 
-### v1.3.1 style differentiation — implementation fixed, semantic acceptance failed
+1. The headline phrase `AIに契約書を読ませていいのか問題` was only an attention-grabbing entry point, not the real subject of the post. The real subject is the boundary between AI legal-support services and work restricted by Attorney Act article 72.
+2. Technical terms such as `事件性` and `価値中立性` were surfaced without enough explanation. A source-unread reader cannot understand the summary unless the term is defined in-place.
+3. The bottom line reused source shorthand such as `グレー` and `セーフ7類型`. Those labels are meaningless to someone who has not read the source. The three lines must stand alone.
 
-Jun confirmed that `要するに / 論点3つ / やさしく / 忠実に` felt different after PR #38, but then identified the more important defect:
+Jun's acceptance principle is now explicit:
 
-- even after reading the three lines, it was not obvious what the original post was fundamentally about;
-- the three lines could be individually plausible yet still fail to produce `なるほど` understanding;
-- style differentiation was therefore not sufficient product quality.
+- line 1 must reliably summarize **what the text is actually about**, even if slightly longer;
+- line 2 must capture the **real point / hinge / writer intent** and explain necessary jargon;
+- line 3 must cleanly answer **what the text ultimately wants to say**, without unexplained source-only shorthand.
 
-Jun's intended three-line structure was clarified as:
+Classification: **M.E.T.I.S. semantic-output design delta inside accepted REQ-003/004/005/007.** No requirements baseline, cost/privacy boundary, or D3 runtime architecture change.
 
-1. **確実な要約** — slightly longer is acceptable if necessary meaning is retained;
-2. **ポイント / 肝 / 趣旨** — capture what the writer is really saying and why the post exists;
-3. **結局何が言いたいのか** — restate 1+2 cleanly as the ultimate message.
+## v1.5 BODY-GROUNDED SEMANTIC CONTRACT
 
-Classification: **M.E.T.I.S. design delta inside accepted REQ-003 / REQ-004 / REQ-005.** No requirements baseline, API-cost constraint, privacy boundary, or D3 architecture change.
+### 1. Body meaning outranks marketing headline
 
-## v1.4.0 SEMANTIC CONTRACT
+For structured posts, the composer first looks for body evidence such as:
 
-For every structured non-`points` summary, the three outputs are now a semantic ladder rather than three independent extracts:
+- official document/guideline/report title in the introduction;
+- relationship frames such as `XとYの関係について`;
+- body sections explaining the legal/technical premise;
+- recurring core sections and the source's own final summary/action section.
 
-1. `全体` — self-contained overview of what the text is about and what it covers.
-2. `肝` / `大事` — central thesis, hinge, boundary, or writer's key claim.
-3. `結局` / `つまり` / `結論` — what the text ultimately wants the reader to understand or do, based on 1+2.
+A marketing headline is a fallback, not an authority for the real subject.
 
-Style behavior:
+### 2. Jargon must be explained in-place
 
-- `要するに / gist`: `全体 -> 肝 -> 結局` with concise explanatory wording.
-- `論点3つ / points`: exception; returns the actual three core points, independently.
-- `やさしく / easy`: same semantic ladder, with simpler terminology and reader-facing wording.
-- `忠実に / faithful`: same semantic ladder, preserving source terminology/qualifications more closely.
+A technical term may appear only when the same line provides enough meaning for a source-unread reader. For the fixed fixture, the source itself explains `事件性` as the dispute-related legal-case side; the composer therefore renders it as `紛争性のある法律案件` before relying on the term.
 
-The output contract is tested directly, not inferred from generic three-item shape.
+### 3. Bottom line must expand shorthand
 
-## FIXED JUN LEGALTECH ACCEPTANCE FIXTURE
+Source-only labels such as `セーフ7類型` are not sufficient in a standalone summary. The bottom line prefers concrete source-derived examples and actions, such as:
+
+- research;
+- document creation/review;
+- internal training;
+- meeting support;
+- escalation to a lawyer for manifested disputes, court submissions, and settlement agreements.
+
+### 4. Meaning completeness outranks forced brevity
+
+The accepted requirement's 120-character limit is a target, not an absolute cap. v1.5 allows up to **140 characters per semantic unit** so essential meaning is not removed merely to hit a shorter number.
+
+## FIXED JUN ACCEPTANCE FIXTURE
 
 - file: `tests/fixtures/jun-legaltech-72-20260824.txt`
 - SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
 - original UTF-8 size: 14,506 bytes
 
-### v1.4.0 `要するに`
+### v1.5 `要するに`
 
-1. `全体:「AIに契約書を読ませていいのか問題」について、法務省の弁護士法72条の新ガイドラインが示した線引きと、実務でどう使うかまで整理した文章。`
-2. `肝:「価値中立性」=「事件性」のある案件向けに作らないことが基準。「入力したのは利用者だから提供者は無関係」は通らず、実際の用法でもアウトになり得る。`
-3. `結局:この文章が言いたいのは、「グレーだから全面禁止」にせず、セーフ7類型に沿って使える業務を社内規程に明文化し、紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ、ということ。`
+1. `全体:法務省が、AI法務支援サービスが弁護士法第72条に触れずにどこまで法務業務を扱えるか、その線引きを整理した内容。`
+2. `肝:弁護士法72条で問題になる「事件性」とは、紛争性のある法律案件のこと。AI法務支援サービスはそこに使わせる前提で作らないことが基準で、利用者任せでは逃れられず、実際の使われ方も見られる。`
+3. `結局:AI法務支援サービスを全面禁止する必要はない。リサーチ、書面の作成・審査、社内研修、会議支援など使える業務は社内でルールを決めて活用し、紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら弁護士へ切り替える、という話。`
 
-### v1.4.0 `論点3つ`
+This output is generated from generalized body/document/premise/action rules. It is not stored as a fixture-specific three-line answer blob.
+
+### `論点3つ`
 
 1. `「入力したのは利用者だから提供者は無関係」は通らない。`
 2. `セーフの分水嶺は「価値中立性」。`
 3. `設計がセーフでも「用法」でアウトになる。`
 
-### v1.4.0 `やさしく`
+`論点3つ` intentionally preserves source-native point labels; it is the exception to the standalone semantic ladder contract.
 
-1. `全体:AIに契約書を読ませていいのかはどこまでよいのかを、法務省の弁護士法72条の新ガイドラインに沿って、使ってよい範囲と注意点まで整理した文章。`
-2. `大事:「価値中立性」=紛争案件向けに作らないことが基準。ユーザーが入力しただけでも提供者は無関係とは言えず、実際の使われ方まで見られる。`
-3. `つまり:「グレーだから全面禁止」ではなく、セーフ7類型に沿って使える範囲を決め、紛争が顕在化した案件・裁判所に出す書面・和解の契約書に近づいたら手を止めて弁護士へ。`
+### `やさしく`
 
-### v1.4.0 `忠実に`
+1. `全体:法務省が、AIを使う法務支援サービスをどこまで使えるのか、弁護士法第72条に触れない範囲と注意点を整理した内容。`
+2. `大事:弁護士法72条で弁護士以外が扱えないのは、紛争性のある法律案件。AIを使う法務支援サービスはそこに使う前提で作らず、実際の使われ方でも紛争対応へ踏み込まないことが大事。`
+3. `つまり:AIを使う法務支援サービスを全部禁止する必要はない。リサーチ、書面の作成・審査、社内研修、会議支援などは社内で使い方を決めて活用し、紛争が顕在化した案件・裁判所に出す書面・和解の契約書に近づいたら弁護士へ切り替える。`
 
-1. `全体:法務省の弁護士法72条の新ガイドラインをもとに、「AIに契約書を読ませていいのか問題」を実務の判断に使える形で整理した文章。`
-2. `肝:基準は「価値中立的なサービス提供」。利用者側の行為も含めて、提供者の行為であると評価され得る。設計がセーフでも「用法」でアウトになり得る。`
-3. `結論:「グレーだから全面禁止」をやめて、セーフ7類型に沿って使える業務を社内規程に明文化し、紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ。`
+### `忠実に`
 
-These are generated by generalized title/section/summary rules; they are not a hard-coded fixed answer blob.
+1. `全体:法務省が公表した「ビジネス分野におけるAI等法務業務支援サービス提供と弁護士法第72条の関係について」をもとに、AI法務支援サービスが弁護士法第72条に照らしてどこまで法務業務を扱えるかを整理した文章。`
+2. `肝:弁護士法72条のキモは「事件性」、つまり紛争性のある法律案件。基準は「価値中立的なサービス提供」で、設計だけでなく提供後の用法・運用実態も見られる。`
+3. `結論:「グレーだから全面禁止」をやめ、リサーチ、書面の作成・審査、社内研修、会議支援など使える業務を社内規程に明文化し、紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら弁護士へ切り替える。`
 
-## FINAL v1.4.0 VERIFICATION
+`忠実に` may preserve source terminology/phrasing when the source itself supplies it; `要するに` and `やさしく` must not depend on unexplained source shorthand.
 
-Temporary GitHub-native CI was used for executable evidence and then removed before merge.
+## FINAL v1.5 VERIFICATION
+
+Temporary GitHub-native CI was used only for executable evidence and then removed before merge.
 
 Final green run:
 
-- workflow run: `32700893525`
-- job: `97351979584`
-- verified branch head before workflow removal: `3790117b0888bb40837149c2015828390ec8cc6d`
-- PR merge-test checkout recorded in logs: `b5fe7a1b734b07a7e9264414e31bc75cd2f6a13e`
-- semantic-ladder probe: **PASS** for all four styles through summary + structure validators
-- unit: **23/23 PASS**
+- workflow run: `32702715875`
+- job: `97357375860`
+- verified executable branch head: `0bcc508e1e13bc5bbc05d326f8995c23420a7668`
+- semantic body-grounded probe: **PASS** for all four styles
+- unit: **24/24 PASS**
 - 20-case automated format/invention invariants: **20/20 PASS**
-- automated major-claim proxy: **17/20**
+- automated major-claim lexical proxy: **17/20**
 - JavaScript syntax: **PASS**
 - `npm audit --audit-level=high`: **PASS / 0 vulnerabilities**
-- Chromium install: PASS
-- 390x844 browser smoke with exact Jun fixture: **PASS**
+- Chromium 390x844 browser smoke with exact Jun fixture: **PASS**
 
 The browser smoke verified:
 
-- gist line 1 is a self-contained overview;
-- gist line 2 contains the central thesis / boundary;
-- gist line 3 expresses the writer's bottom line;
-- `論点3つ` returns the actual three numbered core points rather than a preface plus two points;
-- easy and faithful preserve the ladder while changing wording;
-- all four styles are materially distinct;
+- the marketing headline is not used as the gist overview;
+- the real body-grounded subject includes AI legal-support services, article 72, and legal-work boundary;
+- `事件性` is explained as dispute-related legal cases before use;
+- gist/easy bottom lines contain concrete examples and no `セーフ7類型` / unexplained `グレー` shorthand;
+- all four styles remain materially distinct;
 - style switching does not reload the page or lose source input;
-- repeat gist is deterministic;
+- repeated gist is deterministic;
 - copy / Good / Bad / bad-reason flows remain functional;
-- >20,000-character error preserves input;
-- fixture text is not sent in network request URL/body;
+- >20,000-character input error preserves input;
+- raw fixture text is absent from external request URLs/bodies;
 - no external model/runtime request occurs during summarization.
 
-The 17/20 major-claim metric is an automated proxy only. It does **not** satisfy the human REQ-007 usefulness threshold by itself.
+The 17/20 major-claim metric is an automated proxy only. It does **not** satisfy human REQ-007 usefulness by itself.
 
-After the green run, only the temporary workflow was removed. Final PR #40 diff was 8 files, all under `tools/3lines/`, then squash-merged as `75964c7bc9b330d3e4b4df19ba16e74ece6935f7`.
+Post-green branch change only removed the temporary workflow. Final PR #42 diff contained 10 files, all under `tools/3lines/`, and was squash-merged as `777eb94230129a9f0d51599540efe57bfa445341`.
 
-## D3 ARCHITECTURE — UNCHANGED
+## ARCHITECTURE / COST / PRIVACY
 
-- additional model download: **0 MB**
-- no WebGPU / WebLLM / Transformers.js / ONNX model runtime
-- no hosted inference / remote generative endpoint
-- no API key / credential / paid fallback
-- no model Worker lifecycle or warm-state dependency
-- source-derived sentence/section ranking with deterministic semantic composition
-- `hitoshin/tiny_summarizer` TF attribution/license remains in `THIRD_PARTY_NOTICES.md`
+Unchanged final D3 architecture:
+
+- additional model download: **0 MB**;
+- no WebGPU / WebLLM / Transformers.js / ONNX runtime;
+- no hosted inference / external generative endpoint;
+- no API key / credential / paid fallback;
+- source text remains local during normal summarization;
+- TinySummarizer-derived TF attribution remains in `THIRD_PARTY_NOTICES.md`.
 
 ## DESIGN RETURN HISTORY
 
-- D1 / Qwen3-0.6B: closed for semantic-quality failure on fixed Jun fixture.
-- D2 / Qwen3-1.7B: closed after Jun iPhone Safari/Brave local-model-unavailable result; ~1 GB first-load also unsuitable.
-- D3 probe `llm-jp-3-150m-instruct3`: rejected for hallucinated law names/articles.
-- D3 probe FLAN-T5-small: rejected for malformed/non-semantic output.
-- D3 model-free deterministic architecture: retained.
-- v1.3.1: style routes differentiated, but Jun semantic acceptance still failed.
-- v1.4.0: output meaning contract changed to semantic ladder.
+- D1 / Qwen3-0.6B: semantic-quality failure.
+- D2 / Qwen3-1.7B: target iPhone browser compatibility failure and ~1 GB first-load rejection.
+- D3 llm-jp 150M probe: hallucination failure.
+- D3 FLAN-T5-small probe: malformed/non-semantic output.
+- D3 model-free deterministic route: retained.
+- v1.3.1: style differentiation fixed; semantic usefulness still insufficient.
+- v1.4.0: semantic ladder introduced; Jun found headline/jargon/shorthand still prevented standalone understanding.
+- v1.5.0: body-grounded subject reconstruction + jargon explanation + shorthand expansion.
 
 ## REQUIREMENT STATUS
 
-- REQ-001–006: implementation/CI evidence PASS; v1.4 meaning contract now aligns more directly with the intended `長文を貼る -> 3行！ -> 分かる` experience.
-- REQ-007: automated factual/format evidence PASS; **human 20-case usefulness remains UNVERIFIED**, and v1.4 exact-fixture usefulness awaits Jun acceptance.
-- REQ-008: PASS in source/test evidence — no external generative API key, metered generative route, or hidden paid fallback.
-- REQ-009: D3 executes on Jun's tested iPhone; Android Chrome / broader device matrix remains open.
+- REQ-001–006: implementation/CI evidence PASS.
+- REQ-007: fixed-fixture automated evidence PASS; **Jun v1.5 exact-fixture semantic acceptance pending** and human 20-case usefulness remains UNVERIFIED.
+- REQ-008: PASS — no API key, metered external generative AI, or hidden paid fallback.
+- REQ-009: D3 route already executes on Jun's tested iPhone; Android Chrome / broader device matrix remains open.
 - REQ-010: implementation/browser-smoke evidence PASS.
-- REQ-011: no model preparation; target-device broader performance evidence remains open.
-- REQ-012–017: retained; privacy/no-raw-text external model route checks PASS.
+- REQ-011: no model preparation; broader target-device performance evidence remains open.
+- REQ-012–017: retained; privacy/no-raw-text external model-route checks PASS.
 - REQ-018: **UNVERIFIED / NOT review-ready**.
 
 ## NEXT ACTION
 
 1. Jun reloads `https://naojun.jp/tools/3lines/` and runs the same legaltech post once on the target iPhone.
-2. The acceptance question is no longer merely whether styles differ. Judge whether the three `要するに` lines alone produce: **what this post is about -> what the key point is -> what it ultimately wants to say**.
-3. If that still fails, classify the actual output and continue M.E.T.I.S. design refinement; do not invoke S.Y.B.I.L.
-4. Later close remaining Android/desktop evidence and human 20-case usefulness >=16/20.
-5. Only after Jun declares the candidate review-ready: S.Y.B.I.L. one-shot detailed review.
+2. Acceptance question: can someone who has **not read the source** understand all three of these from the three lines alone?
+   - what the post is actually about;
+   - what the real hinge/point is;
+   - what it ultimately wants the reader to understand/do.
+3. If still materially unclear, continue M.E.T.I.S. semantic refinement; do not invoke S.Y.B.I.L.
+4. Later close Android/desktop evidence and human 20-case usefulness >=16/20.
+5. Only after Jun declares review-ready: S.Y.B.I.L. one-shot detailed review.
 
 ## S.Y.B.I.L. STATUS
 
