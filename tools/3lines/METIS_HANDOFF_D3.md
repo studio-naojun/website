@@ -1,4 +1,4 @@
-# METIS_HANDOFF_D3 — 究極の3行 / WASM Hierarchical Summarization
+# METIS_HANDOFF_D3 — 究極の3行 / Japanese Hierarchical WASM Summarization
 
 - Design revision: `METIS-3LINES-D3`
 - Date: 2026-08-24
@@ -11,173 +11,189 @@
 
 ## OBJECTIVE
 
-Deliver the accepted `長文を貼る → 3行！ → 分かる` experience on ordinary iOS Safari, iOS Brave, Android Chrome, and desktop without a user/operator API key or normal metered generative-AI API.
+Deliver `長文を貼る → 3行！ → 分かる` on ordinary iOS Safari / iOS Brave / Android Chrome / desktop with no user/operator generative-AI API key and no normal metered generative-AI API.
 
-D3 must remove WebGPU as a prerequisite and must reduce first-load model transfer from the D2 ~1 GB class to roughly 300 MB class while improving semantic quality through hierarchical summarization.
+D3 removes WebGPU as a prerequisite, reduces first-use transfer from D2's ~1 GB class to roughly 170 MB class, and changes from one-shot long-document generation to a two-stage Japanese summarization pipeline.
 
 ## ACTUAL EVIDENCE THAT CLOSES D2
 
-Jun tested the merged D2/v1.1.0 candidate on the target iPhone.
-
-Observed:
+Jun tested merged D2/v1.1.0 on the target iPhone.
 
 - Safari: `このブラウザでは使えません` / local model unavailable.
-- Brave on the same iPhone: same unsupported result.
-- Jun also judged ~1 GB first-load model download unacceptable for a normal public web tool.
+- Brave: same unsupported result.
+- ~1 GB first-model download was also judged unsuitable for the intended simple public tool.
 
-This is material evidence that D2 fails REQ-009 on the actual target device before semantic quality can even be evaluated.
+This is material REQ-009 evidence. D2 is closed as `ARCHITECTURE FAIL` before semantic-quality acceptance.
 
-D2 is therefore closed as `ARCHITECTURE FAIL`. Do not debug Safari WebGPU flags, require browser settings, or substitute another WebGPU-only runtime.
+Do not ask Jun to enable browser flags, retry browser settings, or substitute another WebGPU-only runtime.
 
 ## REQUIREMENTS PRESERVED
 
-D3 does not change accepted requirements.
+No accepted requirement changes.
 
-Especially preserved:
+Especially:
 
 - REQ-003: exactly three semantic units.
-- REQ-004/005: useful gist plus four styles.
+- REQ-004/005: useful default gist plus four styles.
 - REQ-007: semantic usefulness / no major fabrication.
-- REQ-008: no user/operator generative-AI API key, no normal unbounded metered external generative AI, no silent paid fallback.
-- REQ-009: ordinary iOS Safari and Android Chrome must work.
-- REQ-011: after preparation, normal 3,000-char input must complete within 30 seconds on the accepted baseline smartphone.
-- privacy: raw input remains local to the browser during summarization.
+- REQ-008: no user/operator API key, no normal unbounded metered external generative AI, no silent paid fallback.
+- REQ-009: ordinary iOS Safari and Android Chrome work.
+- REQ-011: after preparation, normal 3,000-char source completes within 30 seconds on accepted baseline smartphone.
+- Raw source remains browser-local during summarization.
 
-## NON-REQUIREMENTS / EXPLICITLY REJECTED ROUTES
+## REJECTED ROUTES
 
-- No WebGPU prerequisite.
-- No user instruction to enable Safari experimental/feature flags.
-- No 1 GB-class browser model.
-- No wllama v3 dependency for D3: its current memory64 direction conflicts with Safari compatibility; a custom Safari build would create avoidable runtime maintenance risk.
-- No Chrome built-in Prompt API as the primary route because iOS/Android coverage is insufficient.
-- No remote paid inference or hidden server fallback.
-- No further article-specific heuristic patching of D1/D2.
-- No second large embedding model in the normal route; the download budget is reserved for the final small generator.
+- WebGPU as a prerequisite.
+- Safari experimental flags or browser setup instructions.
+- 1 GB-class browser model.
+- Chrome built-in Prompt API as primary route; mobile coverage is insufficient.
+- `wllama` v3 as primary route because current memory64/Safari compatibility creates avoidable risk.
+- `celsowm/lfm-wasm` code vendoring: useful reference/proof that pure WASM generation is possible, but no explicit engine-source reuse license was found in the repository at design review, so its code must not be copied into the product without a valid license.
+- `LiquidAI/LFM2.5-350M-ONNX` as CPU/WASM primary: its own browser documentation currently requires WebGPU for inference; do not assume ONNX format means its graph is WASM-compatible.
+- Generic Japanese BART base models as final summarizer unless actually fine-tuned for the task.
+- `tsmatz/mt5_summarize_japanese` as primary: it is fine-tuned on Japanese XL-Sum news and explicitly warns that conversations/business/academic/other corpora were not seen during training; product input is broader.
+- Remote paid inference / hidden server fallback.
+- More D1/D2 article-specific heuristics.
 
 ## SETTLED DESIGN
 
-### 1. Uniform runtime: ONNX Runtime Web / WebAssembly CPU
+### 1. Runtime — Transformers.js + ONNX Runtime Web, explicit WASM CPU
 
-Use `@huggingface/transformers` with an exact pinned release. D3 implementation candidate should start from `4.2.0` unless repository/runtime verification identifies a blocking regression before implementation freeze.
+Use an exact pinned Transformers.js release and ONNX Runtime Web WASM execution.
 
-Execution provider is explicitly browser CPU/WASM. Do not use `device: webgpu` and do not use `auto` if that could select WebGPU.
+Normal route must explicitly select CPU/WASM and must not gate on `navigator.gpu`.
 
-Configuration intent:
+Requirements:
 
-- `device: 'wasm'` (or the exact Transformers.js API equivalent verified by implementation)
-- `dtype: 'q4'`
-- WebAssembly SIMD where the runtime provides it
-- single-thread operation must work; SharedArrayBuffer / COOP / COEP / cross-origin isolation is NOT a requirement
-- model inference runs in a Worker so UI remains responsive
+- execution provider: WASM CPU only for the release path
+- worker execution so UI remains responsive
+- single-thread path must work; SharedArrayBuffer / COOP / COEP / cross-origin isolation is not required
+- WASM SIMD may be used when browser supports it
+- no `auto` selection that silently chooses WebGPU
+- exact package versions and runtime assets pinned before merge
 
-Reason: ONNX Runtime Web documents WebAssembly CPU support across Safari iOS, Chrome/Edge iOS, Android Chrome and desktop, while its own compatibility table does not claim Safari WebGPU support.
+ONNX Runtime Web's compatibility matrix lists WebAssembly CPU support for Safari iOS, Chrome/Edge iOS, Android Chrome and desktop. Actual target-device verification remains mandatory.
 
-### 2. Stage A — lightweight Japanese extractive compression
+### 2. Stage A — tiny deterministic Japanese source compression
 
-Before loading/running the generator, compress the long source locally with a deterministic, tiny JavaScript stage.
+Before model generation, reduce the source locally using a tiny JavaScript summarization stage.
 
-Use the public OSS ideas/implementation lineage from:
+Public OSS lineage to adapt with attribution/license compliance:
 
 - `hitoshin/tiny_summarizer` — Apache-2.0
 - TinySegmenter — permissive MIT/BSD lineage
 
-Do not blindly copy legacy code. Vendor/adapt the minimal algorithm needed under `tools/3lines/vendor/` or a clearly attributed local module with required license/NOTICE.
+Combine:
 
-Stage A inputs:
-
-- up to the accepted 20,000-character source
-- existing document structure parser (headings, summary sections, conditions, conclusion cues)
-- Japanese tokenization from TinySegmenter-compatible logic
 - TinySummarizer-style term-frequency / important-sentence scoring
+- TinySegmenter-compatible Japanese tokenization
+- existing document structure parser / heading cues
+- conclusion / condition / negation / numeral / named-entity / practical-action cues
+- diversity/MMR-style selection
 
-Stage A output is NOT the user result. It is a structured digest for Stage B.
+Stage A receives up to accepted 20,000 chars and produces an internal digest only.
 
-Target digest:
+Digest contract:
 
-- 8–12 source-derived sentences / fragments
-- normally 800–1,200 Japanese characters, hard cap 1,500 characters
-- preserve original document order in the final digest
-- include broad topic/title if available
-- include at least two distinct major sections for headed documents
-- preserve material conditions, negation, numerals, named entities, and practical conclusion when present
+- 8–12 source-derived sentences/fragments
+- normally 800–1,200 Japanese chars
+- hard cap 1,500 chars
+- final digest ordered by original source order
+- broad topic/title when available
+- for structured long-form documents, at least two distinct major sections where available
+- preserve material conditions, negation, numerals, names, and practical conclusion
 - penalize repeated examples, quotations, promotional boilerplate, source lists and tangential details
-- use diversity selection so one subsection cannot occupy the whole digest
 
-The existing D1/D2 structural parser may remain as one signal, but the final selection must combine structural cues with the OSS summarizer signal; neither alone is authoritative.
+Stage A output is never presented as the final three lines.
 
-### 3. Stage B — small Japanese-capable instruction generator
+### 3. Stage B — Japanese-native 150M instruction model
 
-Primary D3 generator candidate:
+Primary model:
 
-- model family: `LFM2.5-350M`
-- browser artifact: `LiquidAI/LFM2.5-350M-ONNX`
-- quantization: Q4
-- current published Q4 external-data artifact is about 294 MB
-- model supports Japanese as one of its documented languages and is instruction-tuned
-- execute via Transformers.js / ONNX Runtime Web WASM CPU
+- upstream: `llm-jp/llm-jp-3-150m-instruct3`
+- developer: LLM-jp / National Institute of Informatics
+- model license: Apache-2.0
+- languages: Japanese / English
+- architecture: LlamaForCausalLM, 150M, 12 layers, hidden 512, context 4096
+- browser export: `onnx-community/llm-jp-3-150m-instruct3-ONNX`
+- current export revision at design review: `762812c8ba117b760d31d537b0bbeb2f3b2b01ee`
+- tokenizer.json: about 6.41 MB
 
-Pin exact model revision and file hashes in code/tests before merge. At design time the known Q4 data artifact SHA-256 is `71ec6ad38a4c463dcb3dba671d06a1d9861be3a23e51290d818b95c0b7d2a5db`.
+CPU/WASM release precision:
 
-License: LFM Open License v1.0. Commercial use is permitted without model-license fee while the relevant legal entity remains below the published USD 10M annual-revenue threshold; preserve the license/attribution and record this dependency in NOTICE. If future product ownership/revenue changes make this threshold material, return to M.E.T.I.S./Jun before release under changed conditions.
+- start with the exported INT8/quantized WASM-friendly artifact (~153 MB class)
+- do not use WebGPU-specific precision
+- `q4f16` (~159 MB) may be used only if actual CPU/WASM compatibility + quality + memory evidence is better; this is a bounded precision choice inside the same model/runtime, not permission to switch architecture
+- exact chosen file, revision and SHA-256 must be pinned before merge
 
-### 4. Download / storage budget
+Why this model:
 
-D3 normal first-use transfer target:
+- one-half to one-quarter of the previous candidate transfer class
+- Japanese-native training and Japanese instruction tuning
+- Apache-2.0 rather than a bespoke commercial threshold
+- ordinary Llama architecture with an existing Transformers.js ONNX export
 
-- generator weights: ~294 MB
-- tokenizer/config/runtime overhead: keep total normal model/runtime transfer ideally <= 330 MB
-- hard design return threshold: >350 MB normal first-use transfer unless M.E.T.I.S. explicitly revises the design
+Important quality caveat:
 
-Show the download amount before download begins. Do not say only “AIを準備中”.
+LLM-jp's own published benchmark shows the 150M model is weak at general summarization. Therefore D3 must not be delivered to Jun merely because it runs. It must first pass the fixed Jun fixture and the product quality set internally. Stage A is specifically intended to make Stage B's task narrow: rewrite a compact, already-selected digest into three independently understandable semantic units.
 
-The model should be browser-cached when the platform permits it. Cache persistence must not be assumed forever; re-download after browser eviction is acceptable but must be observable.
+### 4. Transfer budget
 
-### 5. Generation contract
+Target normal first-use transfer:
 
-Stage B receives only Stage A digest, not the entire original long text.
+- model weights: ~153–159 MB depending on proven WASM precision
+- tokenizer: ~6.4 MB
+- runtime/config/code: keep small enough that normal first-use total is ideally <=180 MB
+- hard design return threshold: **>200 MB normal first-use transfer** unless M.E.T.I.S. revises the design from evidence
 
-Prompt role for default `gist`:
+UI must show expected download before download begins and live progress during download.
 
-1. `何についての文章で、結局何が示された／主張されたのか`
-2. `理解を左右する最重要の条件・分水嶺・留保は何か`
-3. `読者が結局どう理解・行動すればよいか`
+Browser cache reuse is desirable but permanent persistence is not assumed.
+
+### 5. Stage B generation contract
+
+Stage B receives Stage A digest, not the complete raw long document.
+
+Default `gist` roles:
+
+1. what the document is about and what it ultimately says / establishes
+2. the most important condition, boundary, exception or qualification
+3. the practical consequence / how the reader should understand or act
 
 Rules:
 
-- standalone Japanese understandable without reading the original
-- synthesize; do not simply copy three long source sentences
-- no external knowledge
-- no invented names/numbers/URLs
-- exactly three items, normally <=120 chars each
-- optional notes remain only for material exception/ambiguity
+- standalone natural Japanese understandable without source
+- synthesize; do not merely copy three long source sentences
+- no outside knowledge
+- no invented names, numbers, URLs, handles
+- exactly 3 items, normally <=120 chars each
+- notes only when omitting a material exception would mislead
 
-Use the model family’s low-temperature deterministic recommendation as the starting point; do not add multi-pass self-reflection by default because CPU budget is limited.
+The four accepted styles remain. Prompt differences must be small and task-bounded.
 
-### 6. Validation / failure policy
+### 6. Validation / failure
 
-Continue the D2 policy that a bad result is NOT shown as successful output.
+A bad result is never shown as successful output.
 
 Validate:
 
-- exactly three nonempty distinct items
+- exactly 3 nonempty distinct items
 - no introduced exact URL/handle/numeral absent from source
-- broad source-topic coverage
-- no two-line-or-more verbatim long-copy pattern
-- for `gist/easy`, line 1 must express a complete proposition about the topic, not merely name a term
-- source conditions/negation may not be reversed
+- broad topic/major-section coverage
+- no two-or-more long verbatim-copy lines
+- `gist/easy` line 1 is a complete proposition, not term/name only
+- conditions/negation are not reversed
 
-If validation fails, one bounded regeneration is allowed only if the prepared WASM model remains loaded and the combined prepared-generation budget still has plausible room under REQ-011. Otherwise return `quality-unavailable` and preserve input.
+One bounded regeneration is allowed only if the prepared model remains resident and the total prepared-generation path still has plausible room under REQ-011. Otherwise `quality-unavailable`; input preserved.
 
-Do not fall back to D1/D2 extractive three-line output as a successful result.
+No D1/D2 extractive three-line fallback as a successful result.
 
-### 7. UI state
-
-User-visible stages:
+### 7. UI states
 
 1. 入力確認
-2. 重要部分を整理中（Stage A）
-3. 初回のみ約300MBの要約モデルを準備中（if needed, with progress)
-4. 3行に整理中（Stage B）
+2. 重要部分を整理中
+3. 初回のみ約170MBの要約モデルを準備中 (if uncached; progress visible)
+4. 3行に整理中
 5. result or explicit retryable error
 
 No browser-specific setup instructions in normal UI.
@@ -186,126 +202,134 @@ No browser-specific setup instructions in normal UI.
 
 No new backend data contract.
 
-Raw text remains in browser memory/local runtime and is not sent to Naojun.jp, Hugging Face inference, Liquid AI, or any generative endpoint. Network requests during generation are limited to static application/runtime/model asset retrieval plus the already-settled anonymous feedback endpoint if/when configured.
+Raw source stays in browser. Network requests during generation are limited to static app/runtime/model asset downloads plus the already-settled anonymous metadata-only feedback endpoint if configured.
 
-Model hosting download requests must contain no user text in URL/query/header/body generated by this product.
+No source text/generated summary in model-download URLs, query strings, headers or request bodies.
 
-Feedback schema remains the existing allowlisted metadata-only contract.
+## OWNERSHIP / LOOP ENTRY
 
-## OWNERSHIP
+M.E.T.I.S. owns D3 architecture, model/runtime baseline, verification and return conditions.
 
-M.E.T.I.S. owns this architecture and return conditions.
+Luna implements D3.
 
-Luna implements exactly this D3 candidate.
+Sol inspects actual diff/tests/network/runtime/device evidence against D3. Sol may direct bounded correction but may not replace WASM hierarchy with WebGPU/server AI/another architecture without M.E.T.I.S. return evidence.
 
-Sol verifies actual diff, runtime configuration, download behavior, tests, privacy/network evidence and candidate behavior against D3. Sol may direct bounded implementation correction but may not replace the WASM hierarchical architecture with WebGPU/server AI or another model architecture without M.E.T.I.S. return evidence.
-
-After Luna begins, Luna -> Sol -> Luna -> Sol are internal Loop transitions. Jun is not a routine Persona relay.
+Routine bootstrap: Jun -> Luna once. After Luna starts, Luna -> Sol -> Luna -> Sol are internal transitions. Jun is not a routine Persona relay.
 
 ## CONSTRAINTS
 
-- Product scope stays `tools/3lines/`.
-- Static GitHub Pages remains the delivery surface.
-- No new API key/credential.
-- No paid service.
-- No DNS/domain change.
-- No raw-text analytics/logging/feedback.
-- Do not require cross-origin isolation or custom response headers not controllable by current Pages deployment.
-- Dependency/model licenses and attribution must be recorded.
+- scope: `tools/3lines/`
+- static GitHub Pages remains delivery surface
+- no new API key/credential
+- no paid service
+- no DNS/domain change
+- no raw-text analytics/logging/feedback
+- no cross-origin-isolation requirement
+- licenses/NOTICE/attribution recorded
 
 ## VERIFICATION
 
-### A. Static/unit
+### A. Stage A / unit
 
-- exact model/runtime/version/hash pins
-- Stage A deterministic on fixed fixtures
-- Stage A digest <=1,500 chars and cross-section diversity
-- Jun legaltech fixture digest includes the core topic, value-neutrality/event-nature boundary, usage/operation risk, and practical lawyer-escalation takeaway where present in source
-- D2 bad outputs remain negative regressions
-- output format/literal/privacy validators
-- no external generative endpoint
-- no WebGPU dependency or capability gate in normal route
+- deterministic fixtures
+- digest <=1,500 chars
+- cross-section diversity
+- fixed Jun legaltech digest retains:
+  - Article 72 / legal-AI topic
+  - value-neutrality / incident-nature boundary
+  - actual use/operation can still cross the boundary
+  - dispute/court/settlement-like lawyer-escalation takeaway when present
+- D1/D2 bad outputs stay negative regressions
 
-### B. Browser/network
+### B. Model viability — must happen before Jun sees candidate
 
-- Safari/iOS path never checks WebGPU as a requirement
-- only static assets/model files plus feedback endpoint leave browser
-- no source text in requests
-- UI stays responsive during Stage A/B
-- stale successful result hidden on failure
-- textarea/input preserved
+Using the exact pinned browser model/runtime:
 
-### C. Performance / transfer
+- model loads with explicit WASM route without WebGPU
+- exact Jun Stage-A digest -> generated result passes validators and is materially understandable
+- 20-case automated quality set does not regress core factual invariants
+- if 150M cannot produce acceptable fixed-fixture output internally, stop before public deployment/Jun retest and return M.E.T.I.S.; do not use Jun as the model benchmark harness
 
-Measure separately:
+### C. Browser/network
 
-- first-use transferred bytes
+- no WebGPU capability gate
+- source text never leaves browser
+- UI responsive in Stage A/B
+- input preserved on error
+- stale previous result hidden on error
+
+### D. Transfer/performance
+
+Measure:
+
+- first-use bytes
 - Stage A latency
 - model preparation latency
-- prepared Stage B generation latency
-- second-run reuse latency
+- prepared Stage B latency
+- second-run reuse
+- renderer/tab memory where observable
 
-Required candidate targets:
+Targets:
 
-- normal first-use model/runtime transfer <=350 MB hard return threshold
-- after model prepared, 3,000-char source -> final result <=30 s on accepted baseline smartphone
-- no page reload, tab crash or memory kill
+- first-use <=180 MB target, >200 MB hard return
+- prepared 3,000-char source -> final result <=30 s on accepted baseline smartphone
+- no reload/tab crash/memory kill
 
-### D. Quality
+### E. Real device matrix before review-ready
 
-Use existing 20-case set plus the exact Jun legaltech fixture.
-
-Automated checks are necessary but not sufficient. Human usefulness target remains REQ-007.
-
-For the exact Jun fixture, the three lines alone must let a reader explain:
-
-- the article is about the new interpretation/guideline boundary around legal-AI use under Attorney Act Article 72;
-- neutral design is relevant but actual use/operation can still cross the line;
-- practical escalation toward a lawyer is appropriate as the matter becomes dispute/court/settlement-like.
-
-This is an acceptance meaning target, not literal required wording.
-
-### E. Device matrix before review-ready
-
-- actual iOS Safari
-- actual iOS Brave if available in the target environment
-- actual Android Chrome
+- iOS Safari
+- iOS Brave where available
+- Android Chrome
 - desktop Chrome or Safari
 
-Do not infer compatibility from CI.
+Do not infer mobile support from CI.
+
+### F. Human quality
+
+Existing 20-case set + fixed Jun legaltech fixture.
+
+REQ-007 remains authoritative.
+
+For Jun fixture, the three lines alone must convey, without requiring the original:
+
+- this is about the boundary for legal-AI services/use under Attorney Act Article 72 guidance
+- neutral design can be safer, but actual dispute-oriented use/operation can still become problematic
+- as work becomes dispute/court-filing/settlement-like, route to a lawyer
+
+This is a meaning target, not required wording.
 
 ## DELIVERY / ROLLBACK
 
-Safe/reversible branch -> PR -> merge -> GitHub Pages candidate is allowed without a Jun checkpoint.
+Safe/reversible implementation -> internal verification -> PR/merge/Pages is allowed without a routine Jun checkpoint.
 
-Do not expose D3 as accepted/completed until actual device evidence exists.
+Jun should not be asked to test D3 until model viability and non-mobile verification are coherent.
 
-Rollback is a code-only/static-site rollback; no user data migration is involved.
+Rollback is static code only; no user-data migration.
 
 ## RETURN CONDITIONS
 
-Return to M.E.T.I.S. with actual evidence, without more heuristic patching, if any of the following occurs:
+Return with evidence instead of continuing arbitrary local-model swapping if:
 
-1. Safari/Brave cannot initialize the explicit WASM/CPU path.
-2. normal first-use transfer exceeds 350 MB materially.
-3. prepared generation exceeds 30 s consistently on baseline smartphone.
-4. browser reload/memory kill occurs under normal input.
-5. the exact Jun fixture remains materially unintelligible despite successful Stage A/B execution.
-6. the 20-case human usefulness threshold cannot be met.
-7. required ONNX ops do not execute on Safari WASM without introducing a browser-specific native/GPU route.
-8. fulfilling quality requires remote/metered AI, a credential, or a material requirements change.
+1. explicit WASM CPU route cannot initialize in ordinary iOS Safari/Brave.
+2. model precision actually required for quality pushes first-use transfer >200 MB materially.
+3. prepared generation consistently exceeds 30 s.
+4. normal use causes reload/memory kill.
+5. 150M fails the fixed Jun fixture internally after Stage-A pipeline is correct.
+6. actual device fixture remains materially unintelligible after successful execution.
+7. 20-case human usefulness cannot meet REQ-007.
+8. required WASM ops are unavailable without WebGPU/native route.
+9. solving quality requires remote/metered AI, credential, or requirements change.
 
-If D3 returns for these reasons, classify it as a requirement/architecture conflict rather than beginning D4 with another arbitrary local model.
+If this happens, classify it as accepted-requirement/architecture conflict, not an invitation to start D4 model roulette.
 
-## EXTERNAL EVIDENCE USED FOR D3 DESIGN
+## EXTERNAL EVIDENCE USED
 
-- ONNX Runtime Web compatibility: WebAssembly CPU is supported on Safari iOS, Chrome/Edge iOS, Android Chrome and desktop; Safari WebGPU is not claimed in its compatibility table.
-- Transformers.js runs browser models on CPU via WASM by default and supports quantized execution.
-- `hitoshin/tiny_summarizer` is a client-side Japanese summarizer and is Apache-2.0 licensed.
-- TinySegmenter provides compact Japanese tokenization under permissive licensing.
-- LFM2.5-350M is a 350M instruction-tuned model with documented Japanese support and on-device orientation.
-- published ONNX Q4 artifact is ~294 MB.
-- LFM Open License v1.0 permits commercial use below the published USD 10M annual-revenue threshold with attribution/license obligations.
+- ONNX Runtime Web compatibility: WASM CPU supported on Safari iOS / Chrome iOS / Android Chrome / desktop; Safari WebGPU is not the route.
+- Transformers.js supports browser ONNX execution and summarization/text generation.
+- TinySummarizer is fully client-side Japanese summarization and Apache-2.0.
+- LLM-jp-3-150m-instruct3 is Japanese/English, 150M, Apache-2.0, instruction-tuned by LLM-jp/NII.
+- Existing ONNX community export provides Transformers.js model artifacts: INT8/quantized ~153 MB, q4f16 ~159 MB, tokenizer ~6.41 MB.
+- LLM-jp's own benchmark indicates 150M general summarization quality is weak; therefore internal fixed-fixture quality verification is a hard pre-Jun gate.
 
 ## CURRENT STATUS
 
