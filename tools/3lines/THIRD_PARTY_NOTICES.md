@@ -1,30 +1,14 @@
 # Third-party notices — 究極の3行
 
-This product uses or is informed by the following open-source works.
-
-## LLM-jp-3-150m-instruct3
-
-- Upstream: `llm-jp/llm-jp-3-150m-instruct3`
-- Browser export: `onnx-community/llm-jp-3-150m-instruct3-ONNX`
-- Developer: LLM-jp / National Institute of Informatics
-- License: Apache License 2.0
-- Product use: browser-local Japanese text generation through the pinned ONNX export.
-
-The product does not send user text to a hosted inference provider. Network use is limited to downloading static model/runtime assets.
-
-## Transformers.js
-
-- Upstream: `huggingface/transformers.js`
-- Release pinned by the product: `@huggingface/transformers@4.2.0`
-- License: Apache License 2.0
-- Product use: browser-side ONNX Runtime Web / WebAssembly inference.
-
 ## TinySummarizer
 
 - Upstream: `hitoshin/tiny_summarizer`
+- Upstream source reference: `TinySummarizer.js` blob `7fa35b2d51c6e8afb99a040319e05c426812811f`
 - License: Apache License 2.0
-- Product use: Stage A sentence-selection design is informed by TinySummarizer's client-side Japanese term-frequency / important-sentence scoring approach.
+- Product use: the local module `vendor/tiny-summarizer-tf.js` adapts TinySummarizer's term-frequency sentence-scoring idea.
 
-The D3 implementation is adapted for this product and combines term-frequency scoring with the product's own heading/structure, condition/negation/action cues, and diversity selection. The original TinySummarizer source is not shipped verbatim.
+The product combines that term-frequency signal with its own sentence centrality, document-heading/structure signals, condition/negation cues, and diversity selection. The final three-line semantic composer is product-specific code.
+
+No third-party generative model or hosted inference runtime is part of the normal summarization route.
 
 Apache License 2.0 text: https://www.apache.org/licenses/LICENSE-2.0
