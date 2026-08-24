@@ -30,6 +30,21 @@ page.on('framenavigated', (frame) => { if (frame === page.mainFrame()) navigatio
 page.on('pageerror', (error) => console.error(`PAGEERROR: ${error.message}`));
 page.on('console', (message) => { if (message.type() === 'error') console.error(`CONSOLE: ${message.text()}`); });
 
+async function waitForCompletedResult(style) {
+  await page.waitForFunction((expectedStyle) => {
+    const form = document.querySelector('#summary-form');
+    const result = document.querySelector('#result-section');
+    const error = document.querySelector('#error-section');
+    const selected = document.querySelector(`[data-style="${expectedStyle}"]`);
+    const idle = form?.getAttribute('aria-busy') === 'false';
+    const styleReady = selected?.getAttribute('aria-checked') === 'true';
+    const resultReady = !result?.hidden && result?.querySelectorAll('#result-items > li').length === 3;
+    const errorReady = !error?.hidden;
+    return idle && styleReady && (resultReady || errorReady);
+  }, style);
+  if (!(await page.locator('#error-section').isHidden())) throw new Error(`Browser summarization failed: ${await page.locator('#error-detail').textContent()}`);
+}
+
 try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/', { waitUntil: 'domcontentloaded' });
   console.log('smoke: loaded');
@@ -47,8 +62,7 @@ try {
   await page.locator('#summarize-button').click();
   const earlyStatus = await page.locator('#status-label').textContent();
   if (!/処理|整理|できました/.test(earlyStatus || '')) throw new Error(`Processing state missing: ${earlyStatus}`);
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 || !document.querySelector('#error-section')?.hidden);
-  if (!(await page.locator('#error-section').isHidden())) throw new Error(`Jun fixture failed in browser: ${await page.locator('#error-detail').textContent()}`);
+  await waitForCompletedResult('gist');
 
   const firstItems = await page.locator('#result-items > li').allTextContents();
   const firstJoined = firstItems.join(' ');
@@ -60,14 +74,14 @@ try {
   if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
   await page.getByRole('radio', { name: '論点3つ' }).click();
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 && document.querySelector('#source-text').value.length > 0);
+  await waitForCompletedResult('points');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Style switch lost input');
   if (navigations !== 1) throw new Error(`Unexpected page reload during style switch: ${navigations}`);
 
   await page.getByRole('radio', { name: '要するに' }).click();
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3);
+  await waitForCompletedResult('gist');
   const repeatedItems = await page.locator('#result-items > li').allTextContents();
-  if (JSON.stringify(firstItems) !== JSON.stringify(repeatedItems)) throw new Error('Repeated gist result was not deterministic');
+  if (JSON.stringify(firstItems) !== JSON.stringify(repeatedItems)) throw new Error(`Repeated gist result was not deterministic: first=${JSON.stringify(firstItems)} repeated=${JSON.stringify(repeatedItems)}`);
   if (navigations !== 1) throw new Error(`Unexpected page reload during repeated run: ${navigations}`);
 
   await page.locator('#copy-button').click();
@@ -76,7 +90,7 @@ try {
   await page.waitForFunction(() => document.querySelector('#feedback-status').textContent.includes('受け付け'));
 
   await page.getByRole('radio', { name: 'やさしく' }).click();
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3);
+  await waitForCompletedResult('easy');
   await page.locator('#bad-button').click();
   if (await page.locator('#bad-reasons').isHidden()) throw new Error('Bad reasons did not appear');
   await page.locator('[data-reason="missing"]').click();
