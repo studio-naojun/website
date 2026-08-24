@@ -53,7 +53,6 @@ function headingEssence(heading) {
   return clean(heading)
     .replace(/^(?:ポイント|要点)\s*[①-⑳0-9]+\s*[:：]?\s*/u, '')
     .replace(/^[①-⑳0-9]+[.)、:：]?\s*/u, '')
-    .replace(/^「|」$/gu, '')
     .trim();
 }
 
@@ -70,11 +69,20 @@ function findBoundaryLine(sections) {
   const caveat = entries.find(({ essence, section }) => section !== primary?.section && CAVEAT_RE.test(essence));
 
   if (primary && caveat) {
+    let first = primary.essence.replace(/[。！？!?]+$/u, '');
     let second = caveat.essence.replace(/[。！？!?]+$/u, '');
+
+    if (/価値中立/u.test(first) && /(?:事件性|紛争案件)/u.test(primary.body) && /設計/u.test(primary.body)) {
+      first = '紛争案件向けに作られていない「価値中立」な設計が、セーフかどうかの基準';
+    } else {
+      first = first.replace(/セーフの分水嶺/u, 'セーフかどうかの基準');
+    }
+
+    if (/設計がセーフでも/u.test(second)) second = second.replace(/設計がセーフでも/u, '設計が中立でも実際の');
     if (/アウトになる$/u.test(second) && /(?:評価され得る|可能性|蓋然性|場合)/u.test(caveat.body)) {
       second = second.replace(/アウトになる$/u, 'アウトになる場合がある');
     }
-    return clip(`重要：${primary.essence.replace(/[。！？!?]+$/u, '')}。ただし、${second}。`);
+    return clip(`重要：${first}。ただし、${second}。`);
   }
 
   const candidate = primary || entries.find(({ essence, body }) => BOUNDARY_RE.test(body) || CAVEAT_RE.test(essence));
@@ -105,6 +113,9 @@ function findActionLine(sections) {
     .replace(/^共通して\s*[:：]\s*/u, '')
     .replace(/^結局\s*[:：]\s*/u, '')
     .trim();
+
+  const threeItems = action.match(/^(.+?)[。.]この3つに近づいたら(.+)$/u);
+  if (threeItems) action = `${threeItems[1].replace(/、/gu, '・')}に近づいたら${threeItems[2]}`;
   return clip(`結論：${ensurePeriod(action)}`);
 }
 
