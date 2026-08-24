@@ -47,8 +47,17 @@ async function waitForCompletedResult(style) {
 
 async function assertResultFocused(label) {
   await page.waitForFunction(() => document.activeElement?.id === 'result-section');
-  const top = await page.locator('#result-section').evaluate((element) => element.getBoundingClientRect().top);
-  if (top < -2 || top > 80) throw new Error(`${label}: result section was not scrolled into focus, top=${top}`);
+  try {
+    await page.waitForFunction(() => {
+      const element = document.querySelector('#result-section');
+      if (!element) return false;
+      const top = element.getBoundingClientRect().top;
+      return top >= -2 && top <= 80;
+    }, null, { timeout: 3000 });
+  } catch {
+    const top = await page.locator('#result-section').evaluate((element) => element.getBoundingClientRect().top);
+    throw new Error(`${label}: result section was not scrolled into focus, top=${top}`);
+  }
 }
 
 async function styleItems(label, style) {
