@@ -9,7 +9,7 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: tools/3lines
@@ -25,9 +25,16 @@ jobs:
         run: npm run quality
       - name: JavaScript syntax
         run: |
-          node --check src/stage-a.js
           node --check src/composer.js
+          node --check src/fallback.js
           node --check src/main.js
           node --check src/summarizer.js
+          node --check vendor/tiny-summarizer-tf.js
       - name: Deterministic composer semantic probe
         run: node tests/composer-probe.mjs
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+      - name: Install Chromium for one mobile smoke
+        run: npx playwright install --with-deps chromium
+      - name: Mobile smoke
+        run: npm run smoke
