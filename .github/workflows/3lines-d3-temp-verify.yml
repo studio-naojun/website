@@ -29,7 +29,7 @@ jobs:
           node --check src/main.js
           node --check src/summarizer.js
           node --check src/local-worker.js
-      - name: Real D3 model probe
+      - name: FLAN-T5-small fixed-fixture probe
         run: |
           npm install --no-save --ignore-scripts @huggingface/transformers@4.2.0
-          node tests/d3-model-probe.mjs
+          node tests/flan-t5-probe.mjs
