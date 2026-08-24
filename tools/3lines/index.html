@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="長い日本語文章を、3つの意味単位にまとめるブラウザ内要約ツール。">
   <title>究極の3行 | Studio NaoJun</title>
-  <link rel="stylesheet" href="app.css?v=1.6.0">
+  <link rel="stylesheet" href="app.css?v=1.7.0">
 </head>
 <body>
   <main class="app-shell">
@@ -61,10 +61,24 @@
       </div>
 
       <ol id="result-items" class="result-items"></ol>
+
       <section id="notes-section" class="notes-section" aria-labelledby="notes-title" hidden>
-        <h3 id="notes-title">備考</h3>
+        <h3 id="notes-title">補足</h3>
         <ul id="notes-items"></ul>
       </section>
+
+      <div id="detail-control" class="detail-control" hidden>
+        <div>
+          <p class="detail-control-title">もう少し細かく見る</p>
+          <p class="detail-control-note">3行より詳しい本文要約を表示します。</p>
+        </div>
+        <button id="detail-toggle" class="secondary-button detail-toggle" type="button" aria-expanded="false" aria-controls="detail-section">要約文を見る</button>
+      </div>
+      <section id="detail-section" class="detail-section" aria-labelledby="detail-title" hidden>
+        <h3 id="detail-title">要約文</h3>
+        <div id="detail-text" class="detail-text"></div>
+      </section>
+
       <p id="result-meta" class="result-meta"></p>
       <div class="feedback-card" aria-labelledby="feedback-title">
         <div>
@@ -97,6 +111,6 @@
     <p class="disclaimer">これは要約です。内容の真偽を確認するものではありません。</p>
   </main>
   <script>window.THREELINES_CONFIG = { feedbackEndpoint: '' };</script>
-  <script type="module" src="src/main.js?v=1.6.0"></script>
+  <script type="module" src="src/main.js?v=1.7.0"></script>
 </body>
 </html>
