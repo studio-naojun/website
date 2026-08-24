@@ -1,6 +1,6 @@
 {
   "name": "naojun-3lines",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "type": "module",
   "description": "究極の3行 — browser-local Japanese semantic summarizer",
