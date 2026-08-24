@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { buildStructuredSlate, validateStructuredCoverage } from '../../src/structure.js';
+import { validateStructuredCoverage } from '../../src/structure.js';
 import { summarizeStructurally } from '../../src/structured-fallback.js';
-import { summarize } from '../../src/summarizer.js';
+import { buildSlate, MODEL_INPUT_MAX_CHARS, summarize } from '../../src/summarizer.js';
 
 const source = await readFile(new URL('../fixtures/jun-legaltech-72-20260824.txt', import.meta.url), 'utf8');
 
@@ -20,6 +20,8 @@ const goodItems = [
   '企業はセーフ7類型を活用しつつガバナンスを整え、紛争案件や裁判提出書面・和解契約書に近づいたら弁護士へつなぐ。',
 ];
 
+const toRaw = (items) => items.map((item, index) => `${index + 1}. ${item}`).join('\n');
+
 test('Jun legaltech acceptance fixture identity and long-form structure are fixed', () => {
   assert.ok([...source].length > 5000);
   assert.equal(createHash('sha256').update(source).digest('hex'), '6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0');
@@ -27,18 +29,14 @@ test('Jun legaltech acceptance fixture identity and long-form structure are fixe
   assert.match(source, /まとめ：明日から何をするか/u);
 });
 
-test('structured slate preserves document-level summary and core boundaries', () => {
-  const slate = buildStructuredSlate(source, 'gist', 4000);
-  assert.ok([...slate].length <= 4000);
+test('model slate is compact enough for the 4k-token browser model while preserving core meaning', () => {
+  const slate = buildSlate(source, 'gist');
+  assert.ok([...slate].length <= MODEL_INPUT_MAX_CHARS);
   assert.match(slate, /\[SUMMARY\]/u);
   assert.match(slate, /\[CORE\]/u);
   assert.match(slate, /価値中立/u);
   assert.match(slate, /設計がセーフでも「用法」でアウト/u);
-  assert.match(slate, /利用者側の行為も含めて、提供者の行為/u);
-  assert.match(slate, /提供する側なら/u);
-  assert.match(slate, /導入する側なら/u);
   assert.match(slate, /手を止めて弁護士へ/u);
-  assert.ok(slate.indexOf('[SUMMARY]') < slate.indexOf('見送られた論点'));
 });
 
 test('the exact Jun-observed detail-only output is semantically rejected', () => {
@@ -47,31 +45,66 @@ test('the exact Jun-observed detail-only output is semantically rejected', () =>
   assert.equal(coverage.reason, 'detail-only');
 });
 
-test('structured fallback returns core principle, usage boundary, and practical action', () => {
+test('meaningful fallback explains topic, boundary, and practical action instead of three excerpts', () => {
   const result = summarizeStructurally(source, 'gist');
   assert.ok(result);
   assert.equal(result.items.length, 3);
+  assert.match(result.items[0], /弁護士法72条の新ガイドライン/u);
   assert.match(result.items[0], /価値中立/u);
-  assert.match(result.items[1], /運用の実態/u);
+  assert.match(result.items[0], /事件性/u);
+  assert.match(result.items[1], /用法/u);
+  assert.match(result.items[1], /法律事務/u);
+  assert.match(result.items[2], /^実務では/u);
   assert.match(result.items[2], /弁護士へ/u);
   assert.doesNotMatch(result.items.join('\n'), /原文に含まれる主張/u);
 });
 
-test('summarize never surfaces the Jun-observed detail-only model output', async () => {
+test('bad first draft gets one semantic repair and surfaces the repaired document-level summary', async () => {
   const originalNavigator = globalThis.navigator;
   Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { gpu: { requestAdapter: async () => ({}) } } });
+  let calls = 0;
   try {
     const result = await summarize({
       text: source,
       style: 'gist',
-      localRunner: async () => ({
-        raw: observedBadItems.map((item, index) => `${index + 1}. ${item}`).join('\n'),
-        modelId: 'test-model',
-      }),
+      localRunner: async (_text, _style, _status, options = {}) => {
+        calls += 1;
+        if (calls === 1) {
+          assert.equal(options.repairFrom, undefined);
+          return { raw: toRaw(observedBadItems), modelId: 'test-model' };
+        }
+        assert.match(options.repairFrom, /利用者のリテラシー/u);
+        assert.match(options.repairReason, /semantic:detail-only/u);
+        return { raw: toRaw(goodItems), modelId: 'test-model' };
+      },
     });
+    assert.equal(calls, 2);
+    assert.equal(result.engine, 'local-qwen');
+    assert.deepEqual(result.items, goodItems);
+    assert.equal(result.preparationState, 'ready-repaired');
+  } finally {
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: originalNavigator });
+  }
+});
+
+test('two bad model drafts never surface and fall back to a meaningful three-line explanation', async () => {
+  const originalNavigator = globalThis.navigator;
+  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { gpu: { requestAdapter: async () => ({}) } } });
+  let calls = 0;
+  try {
+    const result = await summarize({
+      text: source,
+      style: 'gist',
+      localRunner: async () => {
+        calls += 1;
+        return { raw: toRaw(observedBadItems), modelId: 'test-model' };
+      },
+    });
+    assert.equal(calls, 2);
     assert.equal(result.engine, 'extractive-fallback');
+    assert.match(result.items[0], /弁護士法72条の新ガイドライン/u);
     assert.match(result.items[0], /価値中立/u);
-    assert.match(result.items[1], /運用の実態/u);
+    assert.match(result.items[1], /用法/u);
     assert.match(result.items[2], /弁護士へ/u);
     assert.doesNotMatch(result.items.join('\n'), /出力制限.*推奨事項/u);
   } finally {
@@ -79,18 +112,20 @@ test('summarize never surfaces the Jun-observed detail-only model output', async
   }
 });
 
-test('document-level three-line model output passes semantic coverage', async () => {
+test('document-level three-line model output passes semantic coverage without repair', async () => {
   const originalNavigator = globalThis.navigator;
   Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { gpu: { requestAdapter: async () => ({}) } } });
+  let calls = 0;
   try {
     const result = await summarize({
       text: source,
       style: 'gist',
-      localRunner: async () => ({
-        raw: goodItems.map((item, index) => `${index + 1}. ${item}`).join('\n'),
-        modelId: 'test-model',
-      }),
+      localRunner: async () => {
+        calls += 1;
+        return { raw: toRaw(goodItems), modelId: 'test-model' };
+      },
     });
+    assert.equal(calls, 1);
     assert.equal(result.engine, 'local-qwen');
     assert.deepEqual(result.items, goodItems);
   } finally {
