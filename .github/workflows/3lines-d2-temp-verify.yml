@@ -2,6 +2,11 @@ name: 3lines-d2-temp-verify
 on:
   push:
     branches: [metis/3lines-d2-qwen17b]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/3lines/**'
+      - '.github/workflows/3lines-d2-temp-verify.yml'
   workflow_dispatch:
 
 jobs:
