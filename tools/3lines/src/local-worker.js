@@ -55,8 +55,8 @@ async function handleSummarize(data) {
         { role: 'system', content: 'あなたは日本語の3行要約器です。抜粋ではなく、文書全体の意味を3つの短い役割に再構成します。3行だけで初見の人にも意味が通るように書きます。指定形式だけを返します。' },
         { role: 'user', content: promptFor(style, slate, repairFrom, repairReason) },
       ],
-      temperature: repairFrom ? 0.02 : 0.05,
-      top_p: 0.7,
+      temperature: repairFrom ? 0.25 : 0.35,
+      top_p: 0.8,
       max_tokens: 180,
     });
     const content = response?.choices?.[0]?.message?.content || '';
