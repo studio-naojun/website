@@ -15,7 +15,7 @@
 
 ## CURRENT STAGE
 
-**D3 final zero-download deterministic candidate is internally verified. PR #36 is ready for final diff inspection / merge. NOT review-ready.**
+**D3 final zero-download deterministic candidate is internally verified. Final executable-code CI is green and the temporary workflow has been removed. PR #36 is ready to merge. NOT review-ready.**
 
 D3 no longer contains a browser generative model. The normal summarization route is plain browser JavaScript and sends no source text to an external AI service.
 
@@ -75,7 +75,7 @@ Third-party attribution is in `THIRD_PARTY_NOTICES.md`.
 2. key boundary / condition;
 3. practical takeaway.
 
-It is deterministic and source-bounded. It does not use external knowledge.
+It is deterministic and source-bounded. It does not use external knowledge. The final generalized rule set does not contain a fixture-specific legaltech answer string.
 
 ## FIXED JUN ACCEPTANCE FIXTURE
 
@@ -83,23 +83,24 @@ It is deterministic and source-bounded. It does not use external knowledge.
 - SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
 - original size: 14,506 UTF-8 bytes
 
-Current internally verified `要するに` output:
+Current internally verified `要するに` output from the generalized composer:
 
 1. `法務省が「AIに契約書を読ませていいのか問題」の線引きを、弁護士法72条の新ガイドラインで示した。`
-2. `重要:紛争案件向けに作られていない「価値中立」な設計が、セーフかどうかの基準。ただし、設計が中立でも実際の「用法」でアウトになる場合がある。`
+2. `重要:「価値中立性」=「事件性」のある案件に利用させることを目指さない設計。ただし、設計がセーフでも「用法」でアウトになる場合がある。`
 3. `結論:紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ。`
 
-This is not hard-coded as the fixture's final answer. It is produced from the source title/headings/summary structure by the general composer rules. Tests prevent regression to the two earlier detail-only/unintelligible output classes.
+This is not hard-coded as the fixture's final answer. It is produced from the source title/headings/body/summary structure by general composer rules. Tests prevent regression to the two earlier detail-only/unintelligible output classes.
 
 ## ACTUAL FINAL VERIFICATION EVIDENCE
 
 Temporary GitHub-native one-job CI was used only for evidence and then removed from the branch.
 
-Final green run:
+Final green executable-code run:
 
-- workflow run: `32693089754`
-- job: `97330154110`
-- checkout included final candidate head `45211a335c7e0de3e40b86919ea452902190b5c7`
+- workflow run: `32693440234`
+- job: `97331120439`
+- verified candidate code head: `6b18dc70006cefd7e4f3972d8fb9c02cf358f1f3`
+- PR merge-test checkout: `b45d90036823cb13357c699e4bbbf901274c511e`
 - `npm ci --ignore-scripts`: PASS
 - unit: **21/21 PASS**
 - final composer 20-case automated format/invention invariants: **20/20 PASS**
@@ -127,6 +128,8 @@ The browser smoke verified:
 - 20-case human-review surface exists.
 
 The 17/20 major-claim metric is an automated proxy only. It does NOT satisfy the REQ-007 human usefulness gate by itself.
+
+Post-green branch commits only removed the temporary workflow and updated recovery/design documentation; executable product code was not changed after the green run.
 
 ## REMAINING UNVERIFIED / HUMAN EVIDENCE
 
@@ -157,15 +160,15 @@ Because D3 has no browser model/runtime, the previous WebGPU/1GB failure mechani
 
 PR #36 is safe/reversible static-site code. No credential, paid service, DNS change, persistent-data migration, destructive action, or public irreversible side effect is introduced beyond normal static-site deployment.
 
-After final diff inspection, merge to main / Pages candidate may proceed without another Jun checkpoint.
+Merge to main / Pages candidate may proceed without another Jun checkpoint.
 
 Rollback is static code rollback only.
 
 ## NEXT ACTION
 
-1. final diff inspection;
-2. merge PR #36;
-3. confirm main provenance / v1.3.0 zero-download files;
+1. merge PR #36;
+2. confirm main provenance / v1.3.0 zero-download files;
+3. confirm Pages deployment/HTTP if observable;
 4. let Jun test the same fixed legaltech article once on iPhone;
 5. classify actual feedback;
 6. only after Jun says review-ready: S.Y.B.I.L. one-shot detailed review.
