@@ -19,27 +19,38 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
   assert.match(source, /まとめ：明日から何をするか/u);
 });
 
-test('D3 final route is model-free and download-free', () => {
-  assert.equal(APP_VERSION, '1.3.1');
+test('D3 semantic-ladder route is model-free and download-free', () => {
+  assert.equal(APP_VERSION, '1.4.0');
   assert.equal(MODEL_ID, 'none');
 });
 
-test('Jun fixture produces a standalone topic / explained boundary / action gist', () => {
+test('gist is a semantic ladder: complete overview -> core thesis -> bottom line', () => {
   const result = composeThreeLines(source, 'gist');
   assert.equal(result.items.length, 3);
   assert.ok(result.items.every((item) => [...item].length <= 120));
 
   const joined = result.items.join(' ');
+  assert.match(result.items[0], /^全体[:：]/u);
+  assert.match(result.items[0], /AIに契約書/u);
   assert.match(result.items[0], /法務省/u);
   assert.match(result.items[0], /弁護士法72条/u);
   assert.match(result.items[0], /線引/u);
+  assert.match(result.items[0], /実務/u);
+
+  assert.match(result.items[1], /^肝[:：]/u);
   assert.match(result.items[1], /価値中立/u);
   assert.match(result.items[1], /事件性/u);
-  assert.match(result.items[1], /目指さない設計/u);
+  assert.match(result.items[1], /提供者/u);
   assert.match(result.items[1], /用法/u);
   assert.match(result.items[1], /アウト/u);
-  assert.match(result.items[2], /(?:紛争|裁判所)/u);
+
+  assert.match(result.items[2], /^結局[:：]/u);
+  assert.match(result.items[2], /言いたい/u);
+  assert.match(result.items[2], /全面禁止/u);
+  assert.match(result.items[2], /セーフ7類型/u);
+  assert.match(result.items[2], /社内規程/u);
   assert.match(result.items[2], /弁護士/u);
+
   for (const phrase of priorBadPhrases) assert.doesNotMatch(joined, new RegExp(phrase, 'u'));
 });
 
@@ -59,24 +70,39 @@ test('all four styles return exactly three bounded semantic units without re-pas
   }
 });
 
-test('structured styles are materially distinct, not three labels over the same result', async () => {
+test('points mode is three real core points, not preface plus two points', async () => {
+  const items = (await summarize({ text: source, style: 'points' })).items;
+  assert.equal(items.length, 3);
+  assert.match(items[0], /入力したのは利用者.*提供者は無関係/u);
+  assert.match(items[1], /価値中立/u);
+  assert.match(items[2], /用法.*アウト/u);
+  assert.doesNotMatch(items.join(' '), /^前提/u);
+});
+
+test('non-points styles share the semantic ladder but materially change wording', async () => {
   const results = {};
-  for (const style of ['gist', 'points', 'easy', 'faithful']) {
+  for (const style of ['gist', 'easy', 'faithful']) {
     results[style] = (await summarize({ text: source, style })).items;
   }
 
   const signatures = Object.values(results).map((items) => JSON.stringify(items));
-  assert.equal(new Set(signatures).size, 4);
-  assert.notDeepEqual(results.gist, results.easy);
-  assert.notDeepEqual(results.gist, results.faithful);
-  assert.notDeepEqual(results.easy, results.faithful);
+  assert.equal(new Set(signatures).size, 3);
 
-  assert.match(results.easy[0], /どこまでならよいか/u);
-  assert.match(results.easy[1], /かんたんに/u);
+  for (const style of ['gist', 'easy', 'faithful']) {
+    assert.match(results[style][0], /^全体[:：]/u, style);
+    assert.ok(/^(?:肝|大事)[:：]/u.test(results[style][1]), style);
+    assert.ok(/^(?:結局|つまり|結論)[:：]/u.test(results[style][2]), style);
+  }
+
+  assert.match(results.easy[0], /どこまでよいのか/u);
+  assert.match(results.easy[1], /紛争案件/u);
   assert.match(results.easy[1], /使われ方/u);
-  assert.match(results.easy[2], /使う側/u);
+  assert.match(results.easy[2], /全面禁止/u);
 
   const faithful = results.faithful.join(' ');
-  assert.match(faithful, /(?:価値中立|事件性|用法|提供者|利用者)/u);
-  assert.doesNotMatch(faithful, /かんたんに：|使う側：/u);
+  assert.match(faithful, /価値中立的なサービス提供/u);
+  assert.match(faithful, /提供者の行為.*評価され得る/u);
+  assert.match(faithful, /用法/u);
+  assert.match(faithful, /全面禁止/u);
+  assert.doesNotMatch(faithful, /紛争案件向けに作らないこと/u);
 });
