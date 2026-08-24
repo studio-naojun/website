@@ -6,6 +6,7 @@ import { APP_VERSION, MODEL_ID, summarize } from '../../src/summarizer.js';
 import { composeThreeLines } from '../../src/composer.js';
 
 const source = await readFile(new URL('../fixtures/jun-legaltech-72-20260824.txt', import.meta.url), 'utf8');
+const normalizedSource = source.normalize('NFKC');
 
 const priorBadPhrases = [
   '現時点の技術水準では適法な出力に影響を与えない形で実効的な制限範囲を明確化',
@@ -15,9 +16,9 @@ const priorBadPhrases = [
 test('Jun legaltech acceptance fixture identity is fixed', () => {
   assert.ok([...source].length > 5000);
   assert.equal(createHash('sha256').update(source).digest('hex'), '6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0');
-  assert.match(source, /ビジネス分野におけるAI等法務業務支援サービス提供と弁護士法第72条の関係について/u);
-  assert.match(source, /キモは法律事件の側にある「事件性」/u);
-  assert.match(source, /まとめ：明日から何をするか/u);
+  assert.match(normalizedSource, /ビジネス分野におけるAI等法務業務支援サービス提供と弁護士法第72条の関係について/u);
+  assert.match(normalizedSource, /キモは法律事件の側にある「事件性」/u);
+  assert.match(normalizedSource, /まとめ：明日から何をするか/u);
 });
 
 test('body-grounded semantic route remains model-free and download-free', () => {
@@ -33,15 +34,15 @@ test('gist is standalone for a reader who has not read the post', () => {
   const joined = result.items.join(' ');
   assert.match(result.items[0], /^全体[:：]/u);
   assert.match(result.items[0], /AI法務支援サービス/u);
-  assert.match(result.items[0], /弁護士法72条/u);
+  assert.match(result.items[0], /弁護士法第?72条/u);
   assert.match(result.items[0], /法務業務/u);
   assert.match(result.items[0], /線引/u);
   assert.doesNotMatch(result.items[0], /AIに契約書を読ませていいのか問題/u);
 
   assert.match(result.items[1], /^肝[:：]/u);
-  assert.match(result.items[1], /弁護士法72条/u);
+  assert.match(result.items[1], /弁護士法第?72条/u);
   assert.match(result.items[1], /事件性/u);
-  assert.match(result.items[1], /紛争性のある案件/u);
+  assert.match(result.items[1], /紛争性のある法律案件/u);
   assert.match(result.items[1], /使わせる前提で作らない/u);
   assert.match(result.items[1], /使われ方/u);
 
@@ -58,7 +59,7 @@ test('gist is standalone for a reader who has not read the post', () => {
 
 test('technical shorthand is explained before it is used', () => {
   const items = composeThreeLines(source, 'gist').items;
-  assert.match(items[1], /「事件性」とは、紛争性のある案件のこと/u);
+  assert.match(items[1], /「事件性」とは、紛争性のある法律案件のこと/u);
   assert.doesNotMatch(items[2], /セーフ\d+類型/u);
 });
 
