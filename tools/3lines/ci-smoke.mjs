@@ -78,7 +78,44 @@ try {
 
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
   if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
-  console.log('3lines mobile fallback smoke passed');
+
+  const modelPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  let navigations = 0;
+  modelPage.on('framenavigated', (frame) => { if (frame === modelPage.mainFrame()) navigations += 1; });
+  await modelPage.addInitScript(() => {
+    window.__fakeWorkerCreates = 0;
+    window.__fakeWorkerTerminates = 0;
+    Object.defineProperty(navigator, 'gpu', { configurable: true, value: { requestAdapter: async () => ({}) } });
+    class FakeWorker {
+      constructor() { this.listeners = { message: [], error: [] }; window.__fakeWorkerCreates += 1; }
+      addEventListener(type, handler) { this.listeners[type].push(handler); }
+      emit(type, event) { for (const handler of this.listeners[type]) handler(event); }
+      postMessage(message) {
+        setTimeout(() => this.emit('message', { data: { type: 'preparing', requestId: message.requestId, warm: window.__fakeWorkerCreates === 1 } }), 5);
+        setTimeout(() => this.emit('message', { data: { type: 'ready', requestId: message.requestId } }), 15);
+        setTimeout(() => this.emit('message', { data: { type: 'result', requestId: message.requestId, modelId: 'fake-model', raw: '1. 第一の要点です。\n2. 第二の要点です。\n3. 第三の要点です。' } }), 80);
+      }
+      terminate() { window.__fakeWorkerTerminates += 1; }
+    }
+    Object.defineProperty(window, 'Worker', { configurable: true, value: FakeWorker });
+  });
+  await modelPage.goto('http://127.0.0.1:4173/tools/3lines/', { waitUntil: 'domcontentloaded' });
+  const modelSource = '第一の要点です。第二の要点です。第三の要点です。';
+  await modelPage.locator('#source-text').fill(modelSource);
+  await modelPage.locator('#summarize-button').click();
+  await modelPage.waitForFunction(() => document.querySelector('.style-option')?.disabled === true);
+  await modelPage.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 && document.querySelector('.style-option')?.disabled === false);
+  await modelPage.getByRole('radio', { name: 'やさしく' }).click();
+  await modelPage.waitForFunction(() => document.querySelector('.style-option')?.disabled === true);
+  await modelPage.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 && document.querySelector('.style-option')?.disabled === false);
+  if ((await modelPage.locator('#source-text').inputValue()) !== modelSource) throw new Error('Mock model style rerun lost input');
+  const lifecycle = await modelPage.evaluate(() => ({ creates: window.__fakeWorkerCreates, terminates: window.__fakeWorkerTerminates }));
+  if (lifecycle.creates !== 1) throw new Error(`Expected one persistent worker, got ${JSON.stringify(lifecycle)}`);
+  if (lifecycle.terminates !== 0) throw new Error(`Worker terminated during successful rerun: ${JSON.stringify(lifecycle)}`);
+  if (navigations !== 1) throw new Error(`Unexpected page reload during style rerun: ${navigations} navigations`);
+  await modelPage.close();
+
+  console.log('3lines mobile fallback + mocked model lifecycle smoke passed');
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
