@@ -8,154 +8,170 @@
 - Accepted requirements: `tools/3lines/REQUIREMENTS_SPEC.md`
 - Current settled design: `tools/3lines/METIS_HANDOFF_D3.md`
 - Design revision: `METIS-3LINES-D3`
-- Previous designs: D1 / D2 superseded for runtime/model architecture
+- App version: `1.3.0`
+- PR: `#36`
+- Branch: `metis/3lines-d3-wasm-hierarchical`
 - Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**D2 closed by Jun real-device evidence. D3 design frozen. Implementation not yet verified. NOT review-ready.**
+**D3 final zero-download deterministic candidate is internally verified. PR #36 is ready for final diff inspection / merge. NOT review-ready.**
 
-## D1 RESULT
+D3 no longer contains a browser generative model. The normal summarization route is plain browser JavaScript and sends no source text to an external AI service.
 
-D1 used WebLLM 0.2.82 + Qwen3-0.6B with bounded semantic corrections.
+Jun has not yet evaluated this D3 candidate on the target iPhone, so REQ-007 human usefulness, REQ-009 real-device compatibility, and REQ-018 completion remain open.
 
-Jun's exact legaltech fixture remained source-faithful but not understandable as a standalone three-line explanation. D1 closed by its design-return rule. No further article-specific D1 heuristics.
+## DESIGN RETURN HISTORY
 
-## D2 RESULT
+### D1 — closed
 
-D2 used WebLLM 0.2.82 + Qwen3-1.7B and removed misleading fallback. PR #35 merged to main.
+- WebLLM 0.2.82 + Qwen3-0.6B.
+- Jun's fixed legaltech article repeatedly produced source-faithful but standalone-unintelligible output.
+- Multiple bounded corrections did not satisfy `長文を貼る → 3行！ → 分かる`.
+- Result: `ARCHITECTURE FAIL` for semantic quality.
 
-Repository verification before merge:
+### D2 — closed
 
-- `npm test`: 23/23 PASS
-- `npm run quality`: 20/20 automated invariants PASS
-- JS syntax PASS
-- no metered external generative endpoint PASS
+- Qwen3-1.7B / WebLLM 0.2.82, ~1 GB first-load class.
+- Jun actual iPhone Safari: `このブラウザでは使えません` / local model unavailable.
+- Jun actual iPhone Brave: same.
+- ~1 GB first-load was also unsuitable for the intended simple public tool.
+- Result: `ARCHITECTURE FAIL` / REQ-009 failure before semantic acceptance.
 
-Actual target-device evidence after merge:
+### D3 model probes — rejected internally before Jun delivery
 
-- iPhone Safari: `このブラウザでは使えません` / local model unavailable.
-- iPhone Brave: same.
-- ~1 GB first-use model transfer unsuitable for the intended simple public tool.
+1. `llm-jp-3-150m-instruct3` ONNX q8 (~153 MB class): real CPU generation completed, but on the fixed Jun fixture it hallucinated nonexistent law names/articles even after the digest was reduced below 1,000 chars. Rejected for REQ-007.
+2. FLAN-T5-small ONNX (~95 MB quantized class): real fixed-fixture probe returned malformed/non-semantic output. Rejected for REQ-007.
 
-This is material REQ-009 evidence. D2 is `ARCHITECTURE FAIL` before semantic-quality acceptance.
+The arbitrary small-model swap loop ended here. Neither rejected model is shipped.
 
-Do not ask Jun to enable browser flags or test another WebGPU-only runtime.
+## FINAL D3 ARCHITECTURE
 
-## D3 SETTLED DESIGN
+### Normal route
 
-D3 removes WebGPU from the required path and uses two local stages.
+- additional model download: **0 MB**
+- no WebGPU / WebLLM / Transformers.js / ONNX model runtime
+- no hosted inference / remote generative endpoint
+- no API key / credential / paid fallback
+- no model Worker lifecycle or warm-state dependency
 
-### Stage A — public OSS Japanese compression
+### Source ranking
 
-Adapt with license/attribution:
+Unstructured text uses source-derived sentence ranking combining:
 
-- `hitoshin/tiny_summarizer` — Apache-2.0
-- TinySegmenter lineage — permissive
+- Japanese token / sentence analysis;
+- lexical/character centrality;
+- conclusion / condition / negation / number / position cues;
+- diversity/MMR;
+- a shipped term-frequency ranking signal adapted from `hitoshin/tiny_summarizer` (Apache-2.0), implemented in `vendor/tiny-summarizer-tf.js`.
 
-Combine term-frequency important-sentence scoring with the existing structure parser and diversity/condition/conclusion cues.
+Third-party attribution is in `THIRD_PARTY_NOTICES.md`.
 
-Input up to 20,000 chars -> internal digest:
+### Structured semantic composer
 
-- 8–12 diverse source-derived sentences/fragments
-- normally 800–1,200 chars
-- hard cap 1,500 chars
-- original order
-- broad topic + distinct major sections + material condition/negation/names/numbers/practical conclusion where present
+`src/composer.js` maps structured long-form text into three reader-facing roles:
 
-Stage A is not user-visible output.
+1. topic / what was shown;
+2. key boundary / condition;
+3. practical takeaway.
 
-### Stage B — Japanese-native 150M instruction generator
+It is deterministic and source-bounded. It does not use external knowledge.
 
-Primary:
+## FIXED JUN ACCEPTANCE FIXTURE
 
-- upstream `llm-jp/llm-jp-3-150m-instruct3`
-- LLM-jp / National Institute of Informatics
-- Apache-2.0
-- Japanese/English
-- 150M / LlamaForCausalLM / context 4096
-- browser export `onnx-community/llm-jp-3-150m-instruct3-ONNX`
-- design-review export revision `762812c8ba117b760d31d537b0bbeb2f3b2b01ee`
-- tokenizer ~6.41 MB
-- CPU/WASM release precision starts with INT8/quantized artifact ~153 MB class
-- q4f16 ~159 MB only if actual CPU/WASM evidence is better
+- file: `tests/fixtures/jun-legaltech-72-20260824.txt`
+- SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
+- original size: 14,506 UTF-8 bytes
 
-The full release route must explicitly use ONNX Runtime Web WASM CPU, not WebGPU and not automatic GPU selection.
+Current internally verified `要するに` output:
 
-### Transfer constraint
+1. `法務省が「AIに契約書を読ませていいのか問題」の線引きを、弁護士法72条の新ガイドラインで示した。`
+2. `重要:紛争案件向けに作られていない「価値中立」な設計が、セーフかどうかの基準。ただし、設計が中立でも実際の「用法」でアウトになる場合がある。`
+3. `結論:紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ。`
 
-- target first-use total: <=180 MB
-- hard return threshold: >200 MB
-- show expected download before start and progress while downloading
-- cache reuse where browser permits; do not assume permanent cache
+This is not hard-coded as the fixture's final answer. It is produced from the source title/headings/summary structure by the general composer rules. Tests prevent regression to the two earlier detail-only/unintelligible output classes.
 
-### Quality caution
+## ACTUAL FINAL VERIFICATION EVIDENCE
 
-LLM-jp's own published evaluation shows 150M is weak at general summarization. Therefore runtime success alone is insufficient.
+Temporary GitHub-native one-job CI was used only for evidence and then removed from the branch.
 
-The reason to test it is narrow specialization of the pipeline: Stage A has already selected and ordered the important source material; Stage B only has to convert a compact Japanese digest into three standalone semantic units.
+Final green run:
 
-**Jun is not the model benchmark harness.** Before another public/Jun test, internal verification must prove the fixed legaltech fixture is materially understandable with the exact browser model and runtime.
+- workflow run: `32693089754`
+- job: `97330154110`
+- checkout included final candidate head `45211a335c7e0de3e40b86919ea452902190b5c7`
+- `npm ci --ignore-scripts`: PASS
+- unit: **21/21 PASS**
+- final composer 20-case automated format/invention invariants: **20/20 PASS**
+- automated major-claim lexical proxy: **17/20 PASS** against >=16 support threshold
+- fixed Jun semantic composer probe: PASS
+- JavaScript syntax: PASS
+- `npm audit --audit-level=high`: PASS / 0 vulnerabilities
+- Playwright Chromium install: PASS
+- 390x844 mobile smoke with the exact Jun fixture: **PASS**
 
-## ALTERNATIVES REVIEWED / REJECTED FOR PRIMARY
+The browser smoke verified:
 
-- `LiquidAI/LFM2.5-350M-ONNX`: published browser instructions require WebGPU; not safe to assume WASM compatibility.
-- `celsowm/lfm-wasm`: proves pure-WASM LFM generation is plausible and model package is ~272 MB, but no explicit engine-source reuse license was found; do not copy/vendor its code without valid permission.
-- Gemma 3 270M ONNX: ~273 MB q4f16 and CPU/WASM viability evidence exists, but larger than the Japanese 150M option; retain only as research comparison if D3 returns.
-- Japanese BART base: not itself summarization-fine-tuned.
-- Japanese mT5 summarization model found: trained specifically on XL-Sum news and warns that other document types were not seen; product input is broader.
+- initial controls visible / no horizontal overflow;
+- zero-model-download disclosure;
+- exact Jun fixture -> exactly 3 items;
+- line 1 topic semantics / line 2 boundary semantics / line 3 lawyer-escalation semantics;
+- source input preserved;
+- `論点3つ` switch and return to `要するに` without page reload;
+- repeated gist determinism;
+- copy flow;
+- Good / Bad / bad-reason UI;
+- >20,000-char input error with input preservation;
+- raw fixture marker absent from network request URLs/bodies;
+- no external model/runtime requests during summarization;
+- 20-case human-review surface exists.
 
-## D3 SUCCESS POLICY
+The 17/20 major-claim metric is an automated proxy only. It does NOT satisfy the REQ-007 human usefulness gate by itself.
 
-- exactly 3 standalone understandable semantic units
-- no successful extractive fallback
-- no external knowledge / invented exact names, numbers, URLs, handles
-- bad model output -> `quality-unavailable`, input preserved
-- no remote paid/API-key fallback
+## REMAINING UNVERIFIED / HUMAN EVIDENCE
 
-## D3 VERIFICATION BEFORE JUN
+Do not infer these as PASS:
 
-Internal evidence must cover:
+- actual D3 execution on Jun's iPhone Safari;
+- actual D3 execution on Jun's iPhone Brave;
+- Android Chrome actual-device execution;
+- desktop Safari actual-device execution;
+- 20-case human usefulness >=16/20;
+- feedback persistence endpoint if still not configured;
+- current external Pages HTTP/source-live provenance after PR #36 merge.
 
-- Stage A deterministic digest cap/diversity
-- fixed legaltech digest preserves topic, key legal boundary, use/operation risk, lawyer-escalation takeaway
-- exact ONNX model/runtime/revision/hash pins
-- explicit WASM route with no WebGPU capability gate
-- fixed Jun digest -> standalone understandable three lines
-- existing 20-case factual invariants
-- no raw source in network requests
-- first-use transfer <=180 MB target / >200 MB return
-- browser smoke where executable
+Because D3 has no browser model/runtime, the previous WebGPU/1GB failure mechanism has been removed, but target-device verification is still required.
 
-Only after this coherent evidence is obtained should a Jun-facing candidate be delivered.
+## REQUIREMENT STATUS
 
-## REAL DEVICE ACCEPTANCE BEFORE REVIEW-READY
+- REQ-001–006: implementation/CI evidence PASS; real-device acceptance still applies where relevant.
+- REQ-007: automated factual/format evidence PASS; **human usefulness UNVERIFIED**.
+- REQ-008: PASS in source/test evidence — no API key, metered external generative AI, or hidden paid fallback.
+- REQ-009: **UNVERIFIED for D3 actual target devices**; D2 failure no longer applies to the final architecture but does not itself prove D3 compatibility.
+- REQ-010: implementation + browser-smoke evidence PASS.
+- REQ-011: Chromium execution is effectively immediate/no model prep; accepted smartphone actual-device evidence still open.
+- REQ-012–017: retained; privacy/no-raw-text network smoke PASS for normal summarization route.
+- REQ-018: **UNVERIFIED / NOT review-ready**.
 
-- iOS Safari
-- iOS Brave where available
-- Android Chrome
-- desktop Chrome/Safari
-- prepared 3,000-char result <=30 s
-- no reload/memory kill
-- fixed legaltech fixture understandable standalone
+## DELIVERY / ROLLBACK
 
-## HARD RETURN CONDITIONS
+PR #36 is safe/reversible static-site code. No credential, paid service, DNS change, persistent-data migration, destructive action, or public irreversible side effect is introduced beyond normal static-site deployment.
 
-Return to M.E.T.I.S. instead of arbitrary model swapping if:
+After final diff inspection, merge to main / Pages candidate may proceed without another Jun checkpoint.
 
-1. explicit WASM CPU route cannot run in ordinary iOS Safari/Brave.
-2. quality requires first-use transfer materially >200 MB.
-3. prepared generation consistently >30 s.
-4. normal use causes reload/memory kill.
-5. 150M fails the fixed legaltech fixture internally after Stage A is correct.
-6. actual-device output remains materially unintelligible despite successful execution.
-7. REQ-007 human usefulness cannot be met.
-8. quality requires remote/metered AI, credential, or material requirements change.
+Rollback is static code rollback only.
 
-If returned, classify as accepted-requirement/architecture conflict, not D4 model roulette.
+## NEXT ACTION
+
+1. final diff inspection;
+2. merge PR #36;
+3. confirm main provenance / v1.3.0 zero-download files;
+4. let Jun test the same fixed legaltech article once on iPhone;
+5. classify actual feedback;
+6. only after Jun says review-ready: S.Y.B.I.L. one-shot detailed review.
+
+Do not restart browser-model experimentation unless M.E.T.I.S. reopens the architecture from new evidence.
 
 ## S.Y.B.I.L. STATUS
 
 `NOT ELIGIBLE`.
-
-Jun has not declared review-ready.
