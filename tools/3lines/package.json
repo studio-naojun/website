@@ -10,6 +10,6 @@
     "smoke": "node ci-smoke.mjs"
   },
   "devDependencies": {
-    "playwright": "1.55.0"
+    "playwright": "1.62.1"
   }
 }
