@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
@@ -38,17 +38,25 @@ try {
   if (overflow.scrollWidth > overflow.clientWidth + 1) throw new Error(`Horizontal overflow: ${JSON.stringify(overflow)}`);
   if (!(await page.locator('#input-help').textContent())?.includes('追加モデルのダウンロードは不要')) throw new Error('Zero-model-download disclosure missing');
 
-  const marker = 'local-three-lines-marker';
-  const longText = Array.from({ length: 160 }, (_, index) => `第${index + 1}段では、${marker}を含む文章の要点を確認する。条件がある場合は無理に断定しない。`).join('\n');
-  if ([...longText].length > 20000) throw new Error('Smoke fixture accidentally exceeds input cap');
+  const longText = await readFile(join(repoRoot, 'tools/3lines/tests/fixtures/jun-legaltech-72-20260824.txt'), 'utf8');
+  const marker = 'AIに契約書を読ませていいのか問題';
+  if (!longText.includes(marker)) throw new Error('Jun smoke fixture marker missing');
+  if ([...longText].length > 20000) throw new Error('Jun smoke fixture exceeds input cap');
+
   await page.locator('#source-text').fill(longText);
   await page.locator('#summarize-button').click();
   const earlyStatus = await page.locator('#status-label').textContent();
   if (!/処理|整理|できました/.test(earlyStatus || '')) throw new Error(`Processing state missing: ${earlyStatus}`);
-  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3);
+  await page.waitForFunction(() => document.querySelectorAll('#result-items > li').length === 3 || !document.querySelector('#error-section')?.hidden);
+  if (!(await page.locator('#error-section').isHidden())) throw new Error(`Jun fixture failed in browser: ${await page.locator('#error-detail').textContent()}`);
+
   const firstItems = await page.locator('#result-items > li').allTextContents();
+  const firstJoined = firstItems.join(' ');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Input was not preserved');
   if (firstItems.length !== 3) throw new Error('Result is not exactly three items');
+  if (!/法務省/u.test(firstItems[0]) || !/弁護士法72条/u.test(firstItems[0])) throw new Error(`Topic line failed: ${firstItems[0]}`);
+  if (!/価値中立/u.test(firstItems[1]) || !/アウト/u.test(firstItems[1])) throw new Error(`Boundary line failed: ${firstItems[1]}`);
+  if (!/弁護士/u.test(firstItems[2]) || !/(?:紛争|裁判所|和解)/u.test(firstItems[2])) throw new Error(`Action line failed: ${firstItems[2]}`);
   if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
   await page.getByRole('radio', { name: '論点3つ' }).click();
@@ -89,7 +97,8 @@ try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
   if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
 
-  console.log('3lines deterministic mobile smoke passed');
+  console.log('3lines deterministic Jun-fixture mobile smoke passed');
+  console.log(firstJoined);
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
