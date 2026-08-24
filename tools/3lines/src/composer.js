@@ -2,9 +2,9 @@ import { summarizeExtractively } from './fallback.js';
 import { parseSections } from './structure.js';
 
 const SUMMARY_RE = /(?:まとめ|要点|結論|明日から|何をするか)/u;
-const BOUNDARY_RE = /(?:分水嶺|基準|原則|価値中立|セーフ|条件)/u;
-const CAVEAT_RE = /(?:用法|運用|アウト|例外|ただし|でも|一方)/u;
-const ACTION_RE = /(?:共通して|結局|必要|べき|確認|相談|弁護士|停止|手を止め|対応|整える|明文化)/u;
+const BOUNDARY_RE = /(?:分水嶺|基準|原則|セーフ|条件|境界|線引き)/u;
+const CAVEAT_RE = /(?:用法|運用|アウト|例外|ただし|でも|一方|逆に)/u;
+const ACTION_RE = /(?:共通して|結局|必要|べき|確認|相談|停止|手を止め|対応|整える|明文化)/u;
 
 function clean(value) {
   return String(value || '').normalize('NFKC').replace(/[ \t\u3000]+/gu, ' ').trim();
@@ -60,33 +60,51 @@ function bodySignals(section) {
   return clean((section?.body || []).join(' '));
 }
 
+function quotedConcept(value) {
+  return clean(value).match(/「([^」]{2,40})」/u)?.[1] || '';
+}
+
+function negativeDesignDefinition(body) {
+  const value = clean(body);
+  const match = value.match(/(?:そもそも)?(.{2,64}?)に利用させることを目指して設計されたサービスでない場合/u);
+  if (!match) return '';
+  const target = clean(match[1]).replace(/^そもそも/u, '');
+  return target ? `${target}に利用させることを目指さない設計` : '';
+}
+
+function explainPrimaryBoundary(entry) {
+  let essence = entry.essence.replace(/[。！？!?]+$/u, '');
+  const concept = quotedConcept(essence);
+  const definition = negativeDesignDefinition(entry.body);
+  if (concept && definition) return `「${concept}」＝${definition}`;
+  essence = essence
+    .replace(/セーフの分水嶺/u, 'セーフかどうかの基準')
+    .replace(/分水嶺/u, '判断の境界');
+  return essence;
+}
+
+function explainCaveat(entry) {
+  let essence = entry.essence.replace(/[。！？!?]+$/u, '');
+  if (/アウトになる$/u.test(essence) && /(?:評価され得る|可能性|蓋然性|場合)/u.test(entry.body)) {
+    essence = essence.replace(/アウトになる$/u, 'アウトになる場合がある');
+  }
+  return essence;
+}
+
 function findBoundaryLine(sections) {
   const entries = sections
     .filter((section) => section.heading && section.heading !== '本文')
     .map((section) => ({ section, essence: headingEssence(section.heading), body: bodySignals(section) }));
 
-  const primary = entries.find(({ essence }) => BOUNDARY_RE.test(essence));
+  const primary = entries.find(({ essence }) => BOUNDARY_RE.test(essence) || /「[^」]+」/u.test(essence));
   const caveat = entries.find(({ essence, section }) => section !== primary?.section && CAVEAT_RE.test(essence));
 
   if (primary && caveat) {
-    let first = primary.essence.replace(/[。！？!?]+$/u, '');
-    let second = caveat.essence.replace(/[。！？!?]+$/u, '');
-
-    if (/価値中立/u.test(first) && /(?:事件性|紛争案件)/u.test(primary.body) && /設計/u.test(primary.body)) {
-      first = '紛争案件向けに作られていない「価値中立」な設計が、セーフかどうかの基準';
-    } else {
-      first = first.replace(/セーフの分水嶺/u, 'セーフかどうかの基準');
-    }
-
-    if (/設計がセーフでも/u.test(second)) second = second.replace(/設計がセーフでも/u, '設計が中立でも実際の');
-    if (/アウトになる$/u.test(second) && /(?:評価され得る|可能性|蓋然性|場合)/u.test(caveat.body)) {
-      second = second.replace(/アウトになる$/u, 'アウトになる場合がある');
-    }
-    return clip(`重要：${first}。ただし、${second}。`);
+    return clip(`重要：${explainPrimaryBoundary(primary)}。ただし、${explainCaveat(caveat)}。`);
   }
 
   const candidate = primary || entries.find(({ essence, body }) => BOUNDARY_RE.test(body) || CAVEAT_RE.test(essence));
-  return candidate ? clip(`重要：${ensurePeriod(candidate.essence)}`) : '';
+  return candidate ? clip(`重要：${ensurePeriod(explainPrimaryBoundary(candidate))}`) : '';
 }
 
 function summarySections(sections) {
@@ -105,7 +123,6 @@ function findActionLine(sections) {
   }
 
   let action = lines.find((line) => /^共通して\s*[:：]/u.test(line) && ACTION_RE.test(line));
-  if (!action) action = lines.find((line) => /(?:弁護士|手を止め|相談)/u.test(line));
   if (!action) action = lines.find((line) => ACTION_RE.test(line));
   if (!action) return '';
 
