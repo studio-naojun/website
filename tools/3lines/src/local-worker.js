@@ -30,12 +30,12 @@ async function loadEngine() {
 
 function promptFor(style, slate) {
   const styleText = {
-    gist: '結論・中心主張を最優先し、枝葉を落とす',
-    points: '重複しない主な論点を3つ選ぶ',
-    easy: '意味と条件を変えず、平易な言葉に言い換える',
-    faithful: '条件・否定・留保・書き手の立場を特に落とさない',
-  }[style] || '結論・中心主張を最優先する';
-  return `次の原文由来の候補だけを使い、${styleText}要約を作ってください。外部知識や事実確認は禁止です。候補番号は出力しません。同じ内容を言い換えて3回繰り返さず、別々の重要点を1つずつ選びます。思考過程は出力せず、次の形式を厳守してください。\n1. 1つ目\n2. 2つ目\n3. 3つ目\n備考: 重要な条件・例外がある時だけ1行。なければ備考行は省略。\n各項目は1文、100文字以内。\n\n候補:\n${slate}`;
+    gist: '記事全体の意味を3段で圧縮する。1行目=全体の結論・何が示されたか、2行目=最大の分水嶺・条件・理由、3行目=実務上の意味・次に取る行動',
+    points: '記事全体から重複しない主要論点を3つ。別々のCOREまたはSUMMARYを優先する',
+    easy: '記事全体の意味を、1行目=結論、2行目=大事な条件、3行目=実務上の意味、の順でやさしい言葉にする',
+    faithful: '記事全体の結論・分水嶺・実務上の意味を3行にし、条件・否定・留保・書き手の立場を落とさない',
+  }[style] || '記事全体の結論・条件・実務上の意味を3行にする';
+  return `次の資料は、原文を文書構造ごとに圧縮したものです。ラベルの優先度は SUMMARY と CORE が最上位、PRACTICAL は補助、CONTEXT は背景です。\n${styleText}。\n\n絶対条件:\n- 3行とも記事全体を説明するための別々の役割を持たせる。\n- 同じ詳細節や同じ箇条書きから3本選ばない。\n- 「推奨項目の5番」「見送られた出力制限」など枝葉だけで3行を埋めない。\n- SUMMARY/COREにある中心論点を最低2行に使う。\n- 備考は本論の代わりに使わない。重要な例外が1つある時だけ。\n- 外部知識・事実確認・原文にない数字や固有名詞は禁止。\n- 候補ラベルや候補番号は出力しない。\n- 各項目は1文、100文字以内。\n\n出力形式だけを返す:\n1. ...\n2. ...\n3. ...\n備考: ...（必要な時だけ）\n\n資料:\n${slate}`;
 }
 
 async function handleSummarize(data) {
@@ -46,12 +46,12 @@ async function handleSummarize(data) {
     post('ready', { requestId, modelId: MODEL_ID, warm: true });
     const response = await engine.chat.completions.create({
       messages: [
-        { role: 'system', content: 'あなたは日本語の3行要約器です。原文候補だけを根拠に、短く、重複せず、条件や否定を壊さず、指定形式だけを返します。' },
+        { role: 'system', content: 'あなたは日本語の3行要約器です。文書全体の中心を優先し、細部の抜粋3本ではなく、結論・分水嶺・実務上の意味を短く統合します。指定形式だけを返します。' },
         { role: 'user', content: promptFor(style, slate) },
       ],
-      temperature: 0.1,
-      top_p: 0.8,
-      max_tokens: 240,
+      temperature: 0.05,
+      top_p: 0.7,
+      max_tokens: 220,
     });
     const content = response?.choices?.[0]?.message?.content || '';
     post('result', { requestId, raw: content, modelId: MODEL_ID });

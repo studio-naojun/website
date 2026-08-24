@@ -1,11 +1,13 @@
-import { buildRankedSlate, summarizeExtractively } from './fallback.js';
+import { summarizeExtractively } from './fallback.js';
 import { validateInput } from './normalizer.js';
 import { parseModelOutput, validateSummary } from './validator.js';
+import { buildStructuredSlate, validateStructuredCoverage } from './structure.js';
+import { summarizeStructurally } from './structured-fallback.js';
 
 export const MODEL_ID = 'Qwen3-0.6B-q4f16_1-MLC';
 export const LOCAL_GENERATION_BUDGET_MS = 25000;
 export const MODEL_PREPARATION_BUDGET_MS = 120000;
-export const APP_VERSION = '1.0.1';
+export const APP_VERSION = '1.0.2';
 
 function canUseWebGPU() { return typeof navigator !== 'undefined' && 'gpu' in navigator; }
 
@@ -14,11 +16,11 @@ async function hasWebGPUAdapter() {
   try { return Boolean(await navigator.gpu.requestAdapter()); } catch { return false; }
 }
 
-function buildSlate(text, style) { return buildRankedSlate(text, style, 4000); }
+function buildSlate(text, style) { return buildStructuredSlate(text, style, 4000); }
 
 function fallbackResult(text, style, started, preparationState) {
-  const result = summarizeExtractively(text, style);
-  return { ...result, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState };
+  const result = summarizeStructurally(text, style) || summarizeExtractively(text, style);
+  return { ...result, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState: result.preparationState || preparationState };
 }
 
 function defaultWorkerFactory() {
@@ -147,9 +149,11 @@ export async function summarize({ text, style = 'gist', onStatus = () => {}, loc
     const parsed = parseModelOutput(modelOutput.raw);
     const valid = validateSummary(parsed, text);
     if (!valid.ok) throw new Error(`Local output rejected: ${valid.reason}`);
+    const coverage = validateStructuredCoverage(valid, text, style);
+    if (!coverage.ok) throw new Error(`Local output rejected: semantic-${coverage.reason}`);
     return { items: valid.items, notes: valid.notes, engine: 'local-qwen', modelId: modelOutput.modelId, elapsedMs: Math.max(0, Math.round(performance.now() - started)), preparationState: 'ready' };
   } catch (error) {
-    onStatus('summarizing', 'ローカルモデルを使えないため、簡易モードに切り替えています…');
+    onStatus('summarizing', '要点の偏りを検出したため、構造化簡易モードに切り替えています…');
     return fallbackResult(text, style, started, `fallback:${error.message}`);
   }
 }
