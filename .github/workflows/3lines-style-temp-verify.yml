@@ -19,6 +19,19 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts
+      - name: Style probe
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+          import { composeThreeLines } from './src/composer.js';
+          import { validateStructuredCoverage } from './src/structure.js';
+          const source = await readFile('./tests/fixtures/jun-legaltech-72-20260824.txt', 'utf8');
+          for (const style of ['gist', 'points', 'easy', 'faithful']) {
+            const output = composeThreeLines(source, style);
+            console.log(style, JSON.stringify(output.items));
+            console.log(style, JSON.stringify(validateStructuredCoverage(output, source, style)));
+          }
+          NODE
       - name: Unit tests
         run: npm test
       - name: Quality invariants
