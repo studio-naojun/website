@@ -6,126 +6,169 @@
 - Product path: `tools/3lines/`
 - Public URL: `https://naojun.jp/tools/3lines/`
 - Accepted requirements: `tools/3lines/REQUIREMENTS_SPEC.md`
-- Current settled design: `tools/3lines/METIS_HANDOFF_D3.md`
-- Design revision: `METIS-3LINES-D3`
-- App version: `1.3.1`
+- Base architecture: `tools/3lines/METIS_HANDOFF_D3.md`
+- Design revision: `METIS-3LINES-D3` + v1.4 semantic-output design delta
+- App version: `1.4.0`
 - D3 implementation PR: `#36` — merged as `2b06cc15a803278cb6985bf007d9d835f87becac`
 - Distinct-style correction PR: `#38` — merged as `100cc656367d612d9778b9fa73ceb38edc2a2d76`
+- Semantic-ladder correction PR: `#40` — merged as `75964c7bc9b330d3e4b4df19ba16e74ece6935f7`
 - Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**D3 zero-download candidate is merged and Jun has confirmed the plain-JavaScript route works on the target iPhone. v1.3.1 fixes the observed duplicate-style bug. AWAITING JUN STYLE RECHECK. NOT review-ready.**
+**v1.4.0 semantic-ladder candidate is merged to `main`. AWAITING JUN TARGET-iPHONE SEMANTIC ACCEPTANCE. NOT review-ready.**
 
-Normal summarization remains plain browser JavaScript. It sends no source text to an external AI service and requires no browser model download.
+The D3 architecture remains model-free plain browser JavaScript. The new change is not another model/runtime experiment; it changes the product's three-line meaning contract so a person who has not read the source can understand what the post is about, what its core point is, and what it ultimately wants to say.
 
-## ACTUAL JUN ACCEPTANCE EVIDENCE
+External Pages propagation has not been independently verified from the ChatGPT execution environment. Main source/provenance is confirmed; do not infer live HTTP propagation until observed.
 
-### D3 initial target-device check
+## JUN ACCEPTANCE HISTORY
 
-Jun opened the D3 candidate on iPhone and successfully generated the fixed legaltech fixture. This closes the prior D2 failure mechanism (`このブラウザでは使えません`) for the tested iPhone route.
+### D3 execution compatibility — confirmed on Jun's iPhone
 
-Accepted observed `要するに` result:
+Jun successfully executed the model-free D3 route on the target iPhone. This removed the D2 `このブラウザでは使えません` failure mechanism for the tested iPhone route.
 
-1. `法務省が「AIに契約書を読ませていいのか問題」の線引きを、弁護士法72条の新ガイドラインで示した。`
-2. `重要:「価値中立性」=「事件性」のある案件に利用させることを目指さない設計。ただし、設計がセーフでも「用法」でアウトになる場合がある。`
-3. `結論:紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ。`
+### v1.3.1 style differentiation — implementation fixed, semantic acceptance failed
 
-### Style bug reported by Jun
+Jun confirmed that `要するに / 論点3つ / やさしく / 忠実に` felt different after PR #38, but then identified the more important defect:
 
-Jun then found that `論点3つ` changed, but `要するに / やさしく / 忠実に` returned the same content.
+- even after reading the three lines, it was not obvious what the original post was fundamentally about;
+- the three lines could be individually plausible yet still fail to produce `なるほど` understanding;
+- style differentiation was therefore not sufficient product quality.
 
-Root cause was confirmed in `src/composer.js`: structured output special-cased only `points`; `gist`, `easy`, and `faithful` shared the same `topic / boundary / action` route.
+Jun's intended three-line structure was clarified as:
 
-Classification: **bounded D3 implementation correction**. No requirements or architecture delta.
+1. **確実な要約** — slightly longer is acceptable if necessary meaning is retained;
+2. **ポイント / 肝 / 趣旨** — capture what the writer is really saying and why the post exists;
+3. **結局何が言いたいのか** — restate 1+2 cleanly as the ultimate message.
 
-## v1.3.1 STYLE CONTRACT
+Classification: **M.E.T.I.S. design delta inside accepted REQ-003 / REQ-004 / REQ-005.** No requirements baseline, API-cost constraint, privacy boundary, or D3 architecture change.
 
-The four styles now use materially different routes:
+## v1.4.0 SEMANTIC CONTRACT
 
-- `要するに / gist`: what the text is about / most important boundary / practical conclusion.
-- `論点3つ / points`: three major headings or points.
-- `やさしく / easy`: reader-friendly topic wording / simplified explanation while retaining the central concept / user-side practical action.
-- `忠実に / faithful`: source-derived structural candidates with minimal rewriting, preserving original qualifications and wording.
+For every structured non-`points` summary, the three outputs are now a semantic ladder rather than three independent extracts:
 
-Fixed Jun-fixture verified outputs are intentionally distinct. Current examples:
+1. `全体` — self-contained overview of what the text is about and what it covers.
+2. `肝` / `大事` — central thesis, hinge, boundary, or writer's key claim.
+3. `結局` / `つまり` / `結論` — what the text ultimately wants the reader to understand or do, based on 1+2.
 
-### 要するに
-1. `法務省が「AIに契約書を読ませていいのか問題」の線引きを、弁護士法72条の新ガイドラインで示した。`
-2. `重要:「価値中立性」=「事件性」のある案件に利用させることを目指さない設計。ただし、設計がセーフでも「用法」でアウトになる場合がある。`
-3. `結論:紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ。`
+Style behavior:
 
-### 論点3つ
-1. `前提:弁護士法72条は何を禁止しているのか。`
-2. `「入力したのは利用者だから提供者は無関係」は通らない。`
-3. `セーフの分水嶺は「価値中立性」。`
+- `要するに / gist`: `全体 -> 肝 -> 結局` with concise explanatory wording.
+- `論点3つ / points`: exception; returns the actual three core points, independently.
+- `やさしく / easy`: same semantic ladder, with simpler terminology and reader-facing wording.
+- `忠実に / faithful`: same semantic ladder, preserving source terminology/qualifications more closely.
 
-### やさしく
-1. `法務省が、AIに契約書を読ませていいのかについて「どこまでならよいか」を弁護士法72条の新ガイドラインで示した。`
-2. `かんたんに:「価値中立性」=「事件性」のある案件向けに作らないこと。でも、作り方に問題がなくても実際の使われ方でアウトになる場合がある。`
-3. `使う側:セーフ7類型に沿って使える業務を社内規程に明文化する。リサーチ、書面の作成・審査、社内研修、会議支援あたりは堂々と設計に組み込める。`
+The output contract is tested directly, not inferred from generic three-item shape.
 
-### 忠実に
-1. `ガイドラインが置いた基準が「価値中立的なサービス提供」という考え方です。`
-2. `「作りは中立です」では終わらない。運用の実態まで見られるということです。`
-3. `共通して:紛争が顕在化した案件、裁判所への提出書面、和解契約書。この3つに近づいたら手を止めて弁護士へ。`
+## FIXED JUN LEGALTECH ACCEPTANCE FIXTURE
 
-## FINAL v1.3.1 VERIFICATION
+- file: `tests/fixtures/jun-legaltech-72-20260824.txt`
+- SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
+- original UTF-8 size: 14,506 bytes
 
-Executable-code verification:
+### v1.4.0 `要するに`
 
-- workflow run: `32699256159`
-- job: `97347291770`
-- verified code head before temporary-workflow deletion: `4487e78fd2cceacbb54463cd692c178cda6fc665`
-- unit: **22/22 PASS**
+1. `全体:「AIに契約書を読ませていいのか問題」について、法務省の弁護士法72条の新ガイドラインが示した線引きと、実務でどう使うかまで整理した文章。`
+2. `肝:「価値中立性」=「事件性」のある案件向けに作らないことが基準。「入力したのは利用者だから提供者は無関係」は通らず、実際の用法でもアウトになり得る。`
+3. `結局:この文章が言いたいのは、「グレーだから全面禁止」にせず、セーフ7類型に沿って使える業務を社内規程に明文化し、紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ、ということ。`
+
+### v1.4.0 `論点3つ`
+
+1. `「入力したのは利用者だから提供者は無関係」は通らない。`
+2. `セーフの分水嶺は「価値中立性」。`
+3. `設計がセーフでも「用法」でアウトになる。`
+
+### v1.4.0 `やさしく`
+
+1. `全体:AIに契約書を読ませていいのかはどこまでよいのかを、法務省の弁護士法72条の新ガイドラインに沿って、使ってよい範囲と注意点まで整理した文章。`
+2. `大事:「価値中立性」=紛争案件向けに作らないことが基準。ユーザーが入力しただけでも提供者は無関係とは言えず、実際の使われ方まで見られる。`
+3. `つまり:「グレーだから全面禁止」ではなく、セーフ7類型に沿って使える範囲を決め、紛争が顕在化した案件・裁判所に出す書面・和解の契約書に近づいたら手を止めて弁護士へ。`
+
+### v1.4.0 `忠実に`
+
+1. `全体:法務省の弁護士法72条の新ガイドラインをもとに、「AIに契約書を読ませていいのか問題」を実務の判断に使える形で整理した文章。`
+2. `肝:基準は「価値中立的なサービス提供」。利用者側の行為も含めて、提供者の行為であると評価され得る。設計がセーフでも「用法」でアウトになり得る。`
+3. `結論:「グレーだから全面禁止」をやめて、セーフ7類型に沿って使える業務を社内規程に明文化し、紛争が顕在化した案件・裁判所への提出書面・和解契約書に近づいたら手を止めて弁護士へ。`
+
+These are generated by generalized title/section/summary rules; they are not a hard-coded fixed answer blob.
+
+## FINAL v1.4.0 VERIFICATION
+
+Temporary GitHub-native CI was used for executable evidence and then removed before merge.
+
+Final green run:
+
+- workflow run: `32700893525`
+- job: `97351979584`
+- verified branch head before workflow removal: `3790117b0888bb40837149c2015828390ec8cc6d`
+- PR merge-test checkout recorded in logs: `b5fe7a1b734b07a7e9264414e31bc75cd2f6a13e`
+- semantic-ladder probe: **PASS** for all four styles through summary + structure validators
+- unit: **23/23 PASS**
 - 20-case automated format/invention invariants: **20/20 PASS**
-- automated major-claim proxy: **17/20** (supporting evidence only; not human REQ-007 acceptance)
-- four-style probe: **PASS**, all four actual outputs distinct and structurally accepted
-- JavaScript syntax: PASS
-- `npm audit --audit-level=high`: PASS / 0 vulnerabilities
-- 390x844 browser smoke: **PASS**
-- smoke switched `gist -> points -> easy -> faithful -> gist`, rejected duplicate outputs, and verified no reload or input loss
-- privacy/no-external-model-runtime checks retained
+- automated major-claim proxy: **17/20**
+- JavaScript syntax: **PASS**
+- `npm audit --audit-level=high`: **PASS / 0 vulnerabilities**
+- Chromium install: PASS
+- 390x844 browser smoke with exact Jun fixture: **PASS**
 
-The temporary CI workflow was deleted after the green executable-code run. Final PR #38 diff contained only `tools/3lines/` files.
+The browser smoke verified:
 
-## D3 ARCHITECTURE
+- gist line 1 is a self-contained overview;
+- gist line 2 contains the central thesis / boundary;
+- gist line 3 expresses the writer's bottom line;
+- `論点3つ` returns the actual three numbered core points rather than a preface plus two points;
+- easy and faithful preserve the ladder while changing wording;
+- all four styles are materially distinct;
+- style switching does not reload the page or lose source input;
+- repeat gist is deterministic;
+- copy / Good / Bad / bad-reason flows remain functional;
+- >20,000-character error preserves input;
+- fixture text is not sent in network request URL/body;
+- no external model/runtime request occurs during summarization.
+
+The 17/20 major-claim metric is an automated proxy only. It does **not** satisfy the human REQ-007 usefulness threshold by itself.
+
+After the green run, only the temporary workflow was removed. Final PR #40 diff was 8 files, all under `tools/3lines/`, then squash-merged as `75964c7bc9b330d3e4b4df19ba16e74ece6935f7`.
+
+## D3 ARCHITECTURE — UNCHANGED
 
 - additional model download: **0 MB**
 - no WebGPU / WebLLM / Transformers.js / ONNX model runtime
 - no hosted inference / remote generative endpoint
 - no API key / credential / paid fallback
 - no model Worker lifecycle or warm-state dependency
-- source-derived ranking combines Japanese sentence/token analysis, centrality, condition/negation/position cues, MMR diversity, and a TinySummarizer-derived term-frequency signal
-- `hitoshin/tiny_summarizer` attribution/license is recorded in `THIRD_PARTY_NOTICES.md`
-- final three-line semantic composer is Studio NaoJun product-specific code
+- source-derived sentence/section ranking with deterministic semantic composition
+- `hitoshin/tiny_summarizer` TF attribution/license remains in `THIRD_PARTY_NOTICES.md`
 
 ## DESIGN RETURN HISTORY
 
-- D1 / Qwen3-0.6B: closed for semantic-quality failure on the fixed Jun fixture.
-- D2 / Qwen3-1.7B: closed after Jun's iPhone Safari/Brave reported local model unavailable; ~1 GB first-load also unsuitable.
+- D1 / Qwen3-0.6B: closed for semantic-quality failure on fixed Jun fixture.
+- D2 / Qwen3-1.7B: closed after Jun iPhone Safari/Brave local-model-unavailable result; ~1 GB first-load also unsuitable.
 - D3 probe `llm-jp-3-150m-instruct3`: rejected for hallucinated law names/articles.
 - D3 probe FLAN-T5-small: rejected for malformed/non-semantic output.
-- Final D3: model-free deterministic semantic summarizer.
+- D3 model-free deterministic architecture: retained.
+- v1.3.1: style routes differentiated, but Jun semantic acceptance still failed.
+- v1.4.0: output meaning contract changed to semantic ladder.
 
 ## REQUIREMENT STATUS
 
-- REQ-001–006: implementation/CI evidence PASS; current style correction merged.
-- REQ-007: fixed-fixture usefulness improved and automated evidence PASS; full human 20-case usefulness still UNVERIFIED.
-- REQ-008: PASS — no API key, metered external generative AI, or hidden paid fallback.
-- REQ-009: tested iPhone D3 route executes successfully; Android Chrome and broader device matrix remain unverified.
-- REQ-010: implementation + browser-smoke evidence PASS.
-- REQ-011: no model preparation; tested iPhone route is operational, broader performance evidence remains open.
-- REQ-012–017: retained; privacy/no-raw-text external model route PASS in source/smoke evidence.
+- REQ-001–006: implementation/CI evidence PASS; v1.4 meaning contract now aligns more directly with the intended `長文を貼る -> 3行！ -> 分かる` experience.
+- REQ-007: automated factual/format evidence PASS; **human 20-case usefulness remains UNVERIFIED**, and v1.4 exact-fixture usefulness awaits Jun acceptance.
+- REQ-008: PASS in source/test evidence — no external generative API key, metered generative route, or hidden paid fallback.
+- REQ-009: D3 executes on Jun's tested iPhone; Android Chrome / broader device matrix remains open.
+- REQ-010: implementation/browser-smoke evidence PASS.
+- REQ-011: no model preparation; target-device broader performance evidence remains open.
+- REQ-012–017: retained; privacy/no-raw-text external model route checks PASS.
 - REQ-018: **UNVERIFIED / NOT review-ready**.
 
 ## NEXT ACTION
 
-1. Jun rechecks the already-working iPhone candidate and switches `要するに / 論点3つ / やさしく / 忠実に` on the same legaltech article.
-2. Confirm the four results are materially different and useful; no need to repeat model/download compatibility tests.
-3. Classify any new feedback as bounded implementation correction vs design delta.
-4. Later close remaining Android/desktop and 20-case human usefulness evidence.
-5. Only after Jun declares `review-ready`: S.Y.B.I.L. one-shot detailed review.
+1. Jun reloads `https://naojun.jp/tools/3lines/` and runs the same legaltech post once on the target iPhone.
+2. The acceptance question is no longer merely whether styles differ. Judge whether the three `要するに` lines alone produce: **what this post is about -> what the key point is -> what it ultimately wants to say**.
+3. If that still fails, classify the actual output and continue M.E.T.I.S. design refinement; do not invoke S.Y.B.I.L.
+4. Later close remaining Android/desktop evidence and human 20-case usefulness >=16/20.
+5. Only after Jun declares the candidate review-ready: S.Y.B.I.L. one-shot detailed review.
 
 ## S.Y.B.I.L. STATUS
 
