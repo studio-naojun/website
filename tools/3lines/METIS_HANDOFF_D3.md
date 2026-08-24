@@ -171,7 +171,9 @@ Final executable-code verification is green on workflow run `32693440234`, job `
 
 ## DELIVERY / ROLLBACK
 
-Safe/reversible branch -> PR -> merge -> Pages is allowed without an additional Jun checkpoint after verification. No persistent-data migration exists.
+PR #36 was squash-merged to `main` as `2b06cc15a803278cb6985bf007d9d835f87becac`.
+
+No persistent-data migration exists. Main provenance for v1.3.0 / `MODEL_ID = 'none'` is confirmed. External Pages HTTP could not be independently fetched from the current ChatGPT runtime because of DNS/cache limitations, so actual public-device access remains part of the Jun checkpoint.
 
 Rollback is static code rollback only.
 
@@ -191,4 +193,4 @@ Return to M.E.T.I.S./requirements decision rather than another arbitrary technol
 
 ## CURRENT STATUS
 
-`INTERNALLY VERIFIED / READY FOR MERGE / NOT REVIEW-READY`
+`MERGED TO MAIN / AWAITING JUN TARGET-DEVICE EVALUATION / NOT REVIEW-READY`

@@ -9,15 +9,17 @@
 - Current settled design: `tools/3lines/METIS_HANDOFF_D3.md`
 - Design revision: `METIS-3LINES-D3`
 - App version: `1.3.0`
-- PR: `#36`
-- Branch: `metis/3lines-d3-wasm-hierarchical`
+- Implementation PR: `#36` — merged
+- Merge commit: `2b06cc15a803278cb6985bf007d9d835f87becac`
 - Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**D3 final zero-download deterministic candidate is internally verified. Final executable-code CI is green and the temporary workflow has been removed. PR #36 is ready to merge. NOT review-ready.**
+**D3 final zero-download deterministic candidate is merged to `main` and main provenance is confirmed. AWAITING JUN TARGET-DEVICE EVALUATION. NOT review-ready.**
 
 D3 no longer contains a browser generative model. The normal summarization route is plain browser JavaScript and sends no source text to an external AI service.
+
+Main after merge is confirmed as app version `1.3.0` with `MODEL_ID = 'none'` and no runtime package dependency. External `https://naojun.jp/tools/3lines/` HTTP fetch could not be independently reconfirmed from the ChatGPT execution environment because its web cache/DNS route could not resolve the site; do not treat Pages live provenance as independently verified yet.
 
 Jun has not yet evaluated this D3 candidate on the target iPhone, so REQ-007 human usefulness, REQ-009 real-device compatibility, and REQ-018 completion remain open.
 
@@ -129,7 +131,7 @@ The browser smoke verified:
 
 The 17/20 major-claim metric is an automated proxy only. It does NOT satisfy the REQ-007 human usefulness gate by itself.
 
-Post-green branch commits only removed the temporary workflow and updated recovery/design documentation; executable product code was not changed after the green run.
+Post-green implementation-branch commits only removed the temporary workflow and updated recovery/design documentation; executable product code was not changed after the green run. PR #36 was then squash-merged as `2b06cc15a803278cb6985bf007d9d835f87becac`.
 
 ## REMAINING UNVERIFIED / HUMAN EVIDENCE
 
@@ -158,20 +160,19 @@ Because D3 has no browser model/runtime, the previous WebGPU/1GB failure mechani
 
 ## DELIVERY / ROLLBACK
 
-PR #36 is safe/reversible static-site code. No credential, paid service, DNS change, persistent-data migration, destructive action, or public irreversible side effect is introduced beyond normal static-site deployment.
+PR #36 is merged to `main` as `2b06cc15a803278cb6985bf007d9d835f87becac`.
 
-Merge to main / Pages candidate may proceed without another Jun checkpoint.
+No credential, paid service, DNS change, persistent-data migration, destructive action, or public irreversible side effect was introduced beyond normal static-site deployment.
 
 Rollback is static code rollback only.
 
 ## NEXT ACTION
 
-1. merge PR #36;
-2. confirm main provenance / v1.3.0 zero-download files;
-3. confirm Pages deployment/HTTP if observable;
-4. let Jun test the same fixed legaltech article once on iPhone;
-5. classify actual feedback;
-6. only after Jun says review-ready: S.Y.B.I.L. one-shot detailed review.
+1. Jun opens `https://naojun.jp/tools/3lines/` on iPhone Safari and tests the same legaltech article once;
+2. record actual output / speed / usability;
+3. classify any feedback as bounded correction vs design delta;
+4. later obtain Android Chrome / desktop Safari evidence and the human 20-case usefulness result;
+5. only after Jun says review-ready: S.Y.B.I.L. one-shot detailed review.
 
 Do not restart browser-model experimentation unless M.E.T.I.S. reopens the architecture from new evidence.
 
