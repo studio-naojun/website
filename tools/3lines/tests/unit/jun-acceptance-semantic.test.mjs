@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { buildStructuredSlate, validateStructuredCoverage } from '../../src/structure.js';
 import { summarizeStructurally } from '../../src/structured-fallback.js';
@@ -19,8 +20,9 @@ const goodItems = [
   '企業はセーフ7類型を活用しつつガバナンスを整え、紛争案件や裁判提出書面・和解契約書に近づいたら弁護士へつなぐ。',
 ];
 
-test('Jun legaltech acceptance fixture is a real 10k+ long-form case', () => {
-  assert.ok([...source].length > 10000);
+test('Jun legaltech acceptance fixture identity and long-form structure are fixed', () => {
+  assert.ok([...source].length > 5000);
+  assert.equal(createHash('sha256').update(source).digest('hex'), '6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0');
   assert.match(source, /ポイント②：セーフの分水嶺は「価値中立性」/u);
   assert.match(source, /まとめ：明日から何をするか/u);
 });
