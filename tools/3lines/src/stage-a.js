@@ -18,12 +18,16 @@ const CUE_RE = /(?:要するに|つまり|結論|重要|ポイント|基準|条�
 const NEGATION_RE = /(?:ない|ず|禁止|困難|不可|例外|ただし|一方|逆に)/u;
 const ACTION_RE = /(?:するべき|すべき|必要|確認|整える|明文化|相談|停止|避け|導入|利用|対応|つなぐ|手を止め)/u;
 
-function normalize(value) {
-  return String(value || '').normalize('NFKC').replace(/[ \t\u3000]+/gu, ' ').trim();
+function cleanDisplay(value) {
+  return String(value || '').replace(/[ \t\u3000]+/gu, ' ').trim();
+}
+
+function normalizeMatch(value) {
+  return cleanDisplay(value).normalize('NFKC');
 }
 
 function clip(value, max = 220) {
-  const chars = [...normalize(value)];
+  const chars = [...cleanDisplay(value)];
   if (chars.length <= max) return chars.join('');
   return `${chars.slice(0, max - 1).join('')}…`;
 }
@@ -31,14 +35,14 @@ function clip(value, max = 220) {
 function sentenceParts(lines) {
   const parts = [];
   for (const rawLine of lines || []) {
-    const line = normalize(rawLine);
+    const line = cleanDisplay(rawLine);
     if (!line) continue;
     if (/^(?:[・●▪︎▶︎]|[①-⑳]|\d+[.)]|→|《)/u.test(line) || !/[。！？!?]/u.test(line)) {
       parts.push(line);
       continue;
     }
     for (const match of line.match(/[^。！？!?]+[。！？!?]?/gu) || []) {
-      const value = normalize(match);
+      const value = cleanDisplay(match);
       if (value) parts.push(value);
     }
   }
@@ -46,14 +50,14 @@ function sentenceParts(lines) {
 }
 
 export function tokenizeJapanese(text) {
-  const source = normalize(text).toLocaleLowerCase('ja-JP');
+  const source = normalizeMatch(text).toLocaleLowerCase('ja-JP');
   if (!source) return [];
 
   if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
     const segmenter = new Intl.Segmenter('ja', { granularity: 'word' });
     const tokens = [];
     for (const segment of segmenter.segment(source)) {
-      const token = normalize(segment.segment);
+      const token = normalizeMatch(segment.segment);
       if (!segment.isWordLike || !token || STOP_WORDS.has(token)) continue;
       if (!/[\p{Letter}\p{Number}]/u.test(token)) continue;
       tokens.push(token);
@@ -66,7 +70,7 @@ export function tokenizeJapanese(text) {
 }
 
 function categoryForHeading(heading) {
-  const value = normalize(heading);
+  const value = normalizeMatch(heading);
   if (SUMMARY_HEADING_RE.test(value)) return 'summary';
   if (CORE_HEADING_RE.test(value)) return 'core';
   if (PRACTICAL_HEADING_RE.test(value)) return 'practical';
@@ -74,7 +78,7 @@ function categoryForHeading(heading) {
 }
 
 function headingWeight(heading, category, style) {
-  const value = normalize(heading);
+  const value = normalizeMatch(heading);
   let score = category === 'summary' ? 10 : category === 'core' ? 8 : category === 'practical' ? 5 : 1;
   if (style === 'points' && category === 'core') score += 3;
   if ((style === 'gist' || style === 'easy') && category === 'summary') score += 3;
@@ -85,7 +89,7 @@ function headingWeight(heading, category, style) {
 }
 
 function cueWeight(sentence) {
-  const value = normalize(sentence);
+  const value = normalizeMatch(sentence);
   let score = 0;
   if (CUE_RE.test(value)) score += 2.5;
   if (NEGATION_RE.test(value)) score += 1.5;
@@ -125,7 +129,7 @@ function makeCandidates(text, style) {
         sentence,
         tokens,
         tokenSet: new Set(tokens),
-        heading: normalize(section.heading || '本文'),
+        heading: cleanDisplay(section.heading || '本文'),
         category,
         sectionIndex,
         sentenceIndex,
@@ -146,7 +150,7 @@ function makeCandidates(text, style) {
       + (candidate.sentenceIndex === 0 ? 0.8 : 0);
   }
 
-  return { title: normalize(parsed.title), candidates: raw };
+  return { title: cleanDisplay(parsed.title), candidates: raw };
 }
 
 function distinctBySection(candidates, category, limit) {
