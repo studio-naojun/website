@@ -1,4 +1,4 @@
-import { summarize } from './summarizer.js?v=1.1.0';
+import { summarize } from './summarizer.js?v=1.2.0';
 import { submitFeedback, makeEventId } from './feedback.js';
 import { MAX_INPUT_CHARS } from './normalizer.js';
 
@@ -63,7 +63,7 @@ function renderResult(result) {
   notesItems.replaceChildren();
   for (const note of result.notes) { const li = document.createElement('li'); li.textContent = note; notesItems.append(li); }
   notesSection.hidden = result.notes.length === 0;
-  resultMeta.textContent = `ブラウザ内モデル / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
+  resultMeta.textContent = `端末内WASM要約 / ${result.elapsedMs.toLocaleString('ja-JP')}ms`;
   resultSection.hidden = false;
   errorSection.hidden = true;
   state.result = result;
@@ -80,7 +80,8 @@ function showError(error) {
     ? error.message
     : null;
   const message = error?.code === 'too-long' ? error.message : knownMessage || '入力した文章は残っています。もう一度試してください。';
-  setStatus(error?.code === 'local-model-unavailable' ? 'この端末では利用できません' : '再実行できます', message, 'error');
+  const label = error?.code === 'local-model-unavailable' ? '要約モデルを起動できませんでした' : '再実行できます';
+  setStatus(label, message, 'error');
   errorDetail.textContent = message;
   errorSection.hidden = false;
   resultSection.hidden = true;
@@ -96,6 +97,7 @@ async function runSummary() {
   setBusy(true);
   setInputError('');
   errorSection.hidden = true;
+  resultSection.hidden = true;
   setStatus('処理を開始しました', '入力を確認しています…', 'busy');
   await new Promise((resolve) => requestAnimationFrame(resolve));
   try {
@@ -103,7 +105,12 @@ async function runSummary() {
       text: requestedText,
       style: requestedStyle,
       onStatus: (mode, detail) => {
-        const labels = { validating: '入力を確認しています', 'preparing-model': '初回準備中', summarizing: '3行を作成中' };
+        const labels = {
+          validating: '入力を確認しています',
+          extracting: '重要部分を整理中',
+          'preparing-model': '初回準備中',
+          summarizing: '3行に整理中',
+        };
         setStatus(labels[mode] || '処理中', detail, 'busy');
       },
     });
