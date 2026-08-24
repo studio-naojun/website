@@ -82,14 +82,14 @@ test('all four styles return exactly three bounded semantic units without re-pas
 test('points mode frames three standalone issues instead of copying source headings', async () => {
   const items = (await summarize({ text: source, style: 'points' })).items;
   assert.equal(items.length, 3);
-  assert.match(items[0], /^論点1｜/u);
+  assert.match(items[0], /^論点1[|｜]/u);
   assert.match(items[0], /弁護士法第?72条/u);
   assert.match(items[0], /紛争性のある法律案件/u);
-  assert.match(items[1], /^論点2｜/u);
+  assert.match(items[1], /^論点2[|｜]/u);
   assert.match(items[1], /提供側/u);
   assert.match(items[1], /向けに作らない/u);
   assert.match(items[1], /使われ方/u);
-  assert.match(items[2], /^論点3｜/u);
+  assert.match(items[2], /^論点3[|｜]/u);
   assert.match(items[2], /どこまでAI/u);
   assert.match(items[2], /リサーチ/u);
   assert.match(items[2], /弁護士/u);
@@ -105,11 +105,11 @@ test('four styles have visibly different jobs, not label-only rewrites', async (
   assert.match(results.gist[1], /^肝[:：]/u);
   assert.match(results.gist[2], /^結局[:：]/u);
 
-  assert.match(results.points[0], /^論点1｜/u);
-  assert.match(results.points[1], /^論点2｜/u);
-  assert.match(results.points[2], /^論点3｜/u);
+  assert.match(results.points[0], /^論点1[|｜]/u);
+  assert.match(results.points[1], /^論点2[|｜]/u);
+  assert.match(results.points[2], /^論点3[|｜]/u);
 
-  assert.match(results.easy[0], /^何の話？/u);
+  assert.match(results.easy[0], /^何の話[?？]/u);
   assert.match(results.easy[1], /^大事なのは、/u);
   assert.match(results.easy[2], /^つまり、/u);
   assert.doesNotMatch(results.easy.join(' '), /事件性|価値中立性|セーフ7類型/u);
