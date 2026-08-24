@@ -28,30 +28,36 @@ async function loadEngine() {
   return enginePromise;
 }
 
-function promptFor(style, slate) {
-  const styleText = {
-    gist: '記事全体の意味を3段で圧縮する。1行目=全体の結論・何が示されたか、2行目=最大の分水嶺・条件・理由、3行目=実務上の意味・次に取る行動',
-    points: '記事全体から重複しない主要論点を3つ。別々のCOREまたはSUMMARYを優先する',
-    easy: '記事全体の意味を、1行目=結論、2行目=大事な条件、3行目=実務上の意味、の順でやさしい言葉にする',
-    faithful: '記事全体の結論・分水嶺・実務上の意味を3行にし、条件・否定・留保・書き手の立場を落とさない',
-  }[style] || '記事全体の結論・条件・実務上の意味を3行にする';
-  return `次の資料は、原文を文書構造ごとに圧縮したものです。ラベルの優先度は SUMMARY と CORE が最上位、PRACTICAL は補助、CONTEXT は背景です。\n${styleText}。\n\n絶対条件:\n- 3行とも記事全体を説明するための別々の役割を持たせる。\n- 同じ詳細節や同じ箇条書きから3本選ばない。\n- 「推奨項目の5番」「見送られた出力制限」など枝葉だけで3行を埋めない。\n- SUMMARY/COREにある中心論点を最低2行に使う。\n- 備考は本論の代わりに使わない。重要な例外が1つある時だけ。\n- 外部知識・事実確認・原文にない数字や固有名詞は禁止。\n- 候補ラベルや候補番号は出力しない。\n- 各項目は1文、100文字以内。\n\n出力形式だけを返す:\n1. ...\n2. ...\n3. ...\n備考: ...（必要な時だけ）\n\n資料:\n${slate}`;
+function baseInstruction(style) {
+  return {
+    gist: '1行目=何の話で何が示されたか。2行目=最大の分水嶺・条件。3行目=結局どうすべきか。',
+    points: '記事全体から重複しない主要論点を3つ。別々のCOREまたはSUMMARYを優先する。',
+    easy: '1行目=何の話か。2行目=大事な条件。3行目=結局どうすればよいか。専門用語は原文の意味を壊さない範囲で言い換える。',
+    faithful: '1行目=中心結論。2行目=条件・否定・留保。3行目=実務上の意味。原文の立場を変えない。',
+  }[style] || '記事全体の結論・条件・実務上の意味を3行にする。';
+}
+
+function promptFor(style, slate, repairFrom = '', repairReason = '') {
+  const repairBlock = repairFrom
+    ? `\n前回案は「${repairReason || '全体の意味を説明できていない'}」ため不合格でした。前回案の語順や選んだ細部に引きずられず、資料から作り直してください。\n前回案:\n${repairFrom}\n`
+    : '';
+  return `次の資料は原文を文書構造ごとに圧縮したものです。SUMMARYとCOREが本論、PRACTICALは実務、CONTEXTは背景です。\n${baseInstruction(style)}\n${repairBlock}\n絶対条件:\n- 3行だけ読んだ人が「何の話か・何が重要か・結局どうするか」を理解できるようにする。\n- 原文の文を3本抜き出すだけにしない。必要なら短く統合して言い換える。\n- 同じ節や同じ箇条書きの細部だけで3行を埋めない。\n- SUMMARY/COREの中心論点を最低2行に使う。\n- 外部知識・事実確認・原文にない数字や固有名詞は禁止。\n- 1行100文字以内。備考は本論の代わりに使わない。\n\n出力形式だけを返す:\n1. ...\n2. ...\n3. ...\n備考: ...（重要な例外が1つある時だけ）\n\n資料:\n${slate}`;
 }
 
 async function handleSummarize(data) {
-  const { requestId, style, slate } = data;
+  const { requestId, style, slate, repairFrom = '', repairReason = '' } = data;
   try {
-    post('preparing', { requestId, modelId: MODEL_ID, warm: engineReady || Boolean(enginePromise) });
+    post('preparing', { requestId, modelId: MODEL_ID, warm: engineReady || Boolean(enginePromise), repair: Boolean(repairFrom) });
     const engine = await loadEngine();
-    post('ready', { requestId, modelId: MODEL_ID, warm: true });
+    post('ready', { requestId, modelId: MODEL_ID, warm: true, repair: Boolean(repairFrom) });
     const response = await engine.chat.completions.create({
       messages: [
-        { role: 'system', content: 'あなたは日本語の3行要約器です。文書全体の中心を優先し、細部の抜粋3本ではなく、結論・分水嶺・実務上の意味を短く統合します。指定形式だけを返します。' },
-        { role: 'user', content: promptFor(style, slate) },
+        { role: 'system', content: 'あなたは日本語の3行要約器です。抜粋ではなく、文書全体の意味を3つの短い役割に再構成します。3行だけで初見の人にも意味が通るように書きます。指定形式だけを返します。' },
+        { role: 'user', content: promptFor(style, slate, repairFrom, repairReason) },
       ],
-      temperature: 0.05,
+      temperature: repairFrom ? 0.02 : 0.05,
       top_p: 0.7,
-      max_tokens: 220,
+      max_tokens: 180,
     });
     const content = response?.choices?.[0]?.message?.content || '';
     post('result', { requestId, raw: content, modelId: MODEL_ID });
