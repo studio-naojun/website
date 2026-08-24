@@ -7,6 +7,7 @@ const MAX_NOTES = 3;
 const MAX_NOTES_TOTAL = 300;
 const MIN_NOTE_LENGTH = 25;
 const MAX_NOTE_LENGTH = 100;
+const MIN_NOTE_SCORE = 0.75;
 const MAX_DETAIL_LENGTH = 900;
 const DETAIL_SENTENCES = 7;
 
@@ -79,6 +80,7 @@ function deriveNotes(text, items) {
   const notes = [];
   let total = 0;
   for (const candidate of candidates) {
+    if (candidate.score < MIN_NOTE_SCORE) continue;
     const note = candidate.text;
     if (!note || notes.includes(note)) continue;
     if (notes.some((existing) => tokenOverlap(existing, note) >= 0.75)) continue;
