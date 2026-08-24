@@ -20,7 +20,7 @@ test('Jun legaltech acceptance fixture identity is fixed', () => {
 });
 
 test('D3 final route is model-free and download-free', () => {
-  assert.equal(APP_VERSION, '1.3.0');
+  assert.equal(APP_VERSION, '1.3.1');
   assert.equal(MODEL_ID, 'none');
 });
 
