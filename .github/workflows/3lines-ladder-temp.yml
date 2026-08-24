@@ -1,0 +1,39 @@
+name: 3lines-ladder-temp
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/3lines/**'
+      - '.github/workflows/3lines-ladder-temp.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/3lines
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Semantic ladder probe
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+          import { composeThreeLines } from './src/composer.js';
+          import { validateSummary } from './src/validator.js';
+          import { validateStructuredCoverage } from './src/structure.js';
+          const source = await readFile('./tests/fixtures/jun-legaltech-72-20260824.txt', 'utf8');
+          for (const style of ['gist','points','easy','faithful']) {
+            const output = composeThreeLines(source, style);
+            console.log(style, JSON.stringify(output.items));
+            console.log('summary', JSON.stringify(validateSummary(output, source)));
+            console.log('coverage', JSON.stringify(validateStructuredCoverage(output, source, style)));
+          }
+          NODE
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run quality
+      - run: npm audit --audit-level=high
