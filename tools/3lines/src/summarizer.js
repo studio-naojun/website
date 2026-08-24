@@ -24,7 +24,13 @@ export async function summarize({ text, style = 'gist', onStatus = () => {} }) {
   onStatus('extracting', '文章全体から重要な意味を整理しています…');
 
   const composed = composeThreeLines(text, style);
-  const support = buildSupportLayer(text, composed.items || []);
+  const styleItems = (targetStyle) => targetStyle === style ? composed.items : composeThreeLines(text, targetStyle).items;
+  const semanticBundle = {
+    gist: styleItems('gist'),
+    points: styleItems('points'),
+    faithful: styleItems('faithful'),
+  };
+  const support = buildSupportLayer(text, composed.items || [], semanticBundle);
   const candidate = {
     ...composed,
     notes: Array.isArray(composed.notes) && composed.notes.length ? composed.notes : support.notes,
