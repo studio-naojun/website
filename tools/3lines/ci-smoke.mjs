@@ -39,7 +39,8 @@ try {
   if (!(await page.locator('#input-help').textContent())?.includes('追加モデルのダウンロードは不要')) throw new Error('Zero-model-download disclosure missing');
 
   const marker = 'local-three-lines-marker';
-  const longText = Array.from({ length: 300 }, (_, index) => `第${index + 1}段では、${marker}を含む文章の要点を確認する。条件がある場合は無理に断定しない。`).join('\n');
+  const longText = Array.from({ length: 160 }, (_, index) => `第${index + 1}段では、${marker}を含む文章の要点を確認する。条件がある場合は無理に断定しない。`).join('\n');
+  if ([...longText].length > 20000) throw new Error('Smoke fixture accidentally exceeds input cap');
   await page.locator('#source-text').fill(longText);
   await page.locator('#summarize-button').click();
   const earlyStatus = await page.locator('#status-label').textContent();
