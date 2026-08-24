@@ -1,0 +1,27 @@
+name: 3lines-d2-temp-verify
+on:
+  push:
+    branches: [metis/3lines-d2-qwen17b]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: tools/3lines
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit tests
+        run: npm test
+      - name: Quality invariants
+        run: npm run quality
+      - name: JavaScript syntax
+        run: |
+          node --check src/main.js
+          node --check src/summarizer.js
+          node --check src/local-worker.js
