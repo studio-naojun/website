@@ -2,119 +2,120 @@
 
 - Candidate ID: `ultimate-3lines-fpv-2026-08-24`
 - Product: `究極の3行`
-- Internal alias: `3行湯婆婆` (not public branding)
 - Repository: `studio-naojun/website`
 - Product path: `tools/3lines/`
 - Public URL: `https://naojun.jp/tools/3lines/`
 - Accepted requirements: `tools/3lines/REQUIREMENTS_SPEC.md`
 - Settled design: `tools/3lines/METIS_HANDOFF.md`
 - Design revision: `METIS-3LINES-D1`
-- Acceptance-correction contract: `tools/3lines/JUN_ACCEPTANCE_FEEDBACK_2026-08-24.md`
-- Persona Loop Source of Truth: `ffz2bpjyj4/persona-loop-control-plane` registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
+- Persona Loop Source of Truth: registry v16 / baseline v2.2 / M.E.T.I.S. v3.2
 
 ## CURRENT STAGE
 
-**Jun acceptance finding correction implemented and merged; corrected candidate awaits real-device re-acceptance. Candidate is still NOT review-ready.**
+**Second acceptance correction merged; candidate awaits Jun real-device semantic re-acceptance. NOT review-ready.**
 
-Initial delivered candidate merge `defad6de03637b396cdf53e87eb21587d2e07c00` was rejected during Jun iPhone acceptance for semantic-quality, repeated-run stall, and style-triggered page reload/content loss.
+Initial candidate merge `defad6de03637b396cdf53e87eb21587d2e07c00` failed Jun iPhone acceptance for repeated-run stall, style-triggered page reload/content loss, and poor semantic summary quality.
 
-The findings were classified as bounded implementation correction under existing `METIS-3LINES-D1`; no requirements or material architecture delta was opened.
+Correction 1:
+- PR `#31`
+- merge `bbefb03605c047c88d52eb1794b010eccf4703df`
+- persistent WebLLM worker/engine reuse
+- serialized runs
+- source-derived fallback
+- ranked compression
+- initial ~350 MB preparation disclosure
 
-Correction implementation:
+Jun then supplied a real long-form Japanese X-style article and the actual three-line output. The output satisfied the exactly-three shape but selected three late-section details instead of the document-level meaning. This was classified as a real REQ-003 / REQ-007 semantic acceptance failure, not a requirements change.
 
-- branch: `fix/3lines-mobile-reuse-quality`
-- correction PR: `#31`
-- correction head: `82d5bd8822ea8a51bfec0adfb4b8470f5c84a69b`
-- correction merge: `bbefb03605c047c88d52eb1794b010eccf4703df`
+Correction 2:
+- PR `#32`
+- head `a6fb7105660a7354513c13b9cf0423efc742214d`
+- merge `d5071f07c48266f3a3800154284200fb42a59fe8`
+- app version `1.0.2`
 
-## CORRECTION IMPLEMENTED
+## SEMANTIC ROOT CAUSE
 
-1. One persistent WebLLM Worker/engine is reused per page session instead of rebuilding it on every successful summary/style rerun.
-2. Summary/style executions are serialized; UI prevents overlapping model generations.
-3. Input is kept in place while processing, and style reruns do not intentionally navigate/reload.
-4. Local-model input now uses the settled ranked deterministic compression slate instead of first/last truncation.
-5. Fallback no longer fabricates generic `原文に含まれる主張はN点目です。` filler; derived units remain source-derived.
-6. Regression coverage was added for repeated runs, Worker reuse, serialization, ranked-slate retention, and fallback provenance.
-7. The UI discloses that compatible devices may prepare roughly 350 MB of browser-local model assets on first use and reuse them while the page remains open.
-8. No external/metered generative AI, API key, account, billing, X integration, or fact-check path was added.
+The previous preprocessor globally ranked sentences as one bag. It discarded author-level section hierarchy before the 0.6B model saw the input. Detailed late sections with numbers, negation, and qualifiers could therefore outrank explicit `ポイント` and `まとめ` sections.
 
-## VERIFICATION AFTER CORRECTION
+The previous automated quality evidence also over-weighted shape/provenance invariants; it did not reject a three-line result that was semantically detail-only.
 
-Actually executed in the available Chat/GitHub correction route:
+## CORRECTION 2 IMPLEMENTED
 
-- unit tests: **14/14 PASS**
-- 20-case automated quality invariant: **20/20 PASS**
-- changed JavaScript / smoke source syntax: **PASS**
-- GitHub diff inspection: correction scope limited to `tools/3lines/`
-- PR merge: **PASS**
+1. Preserve heading/newline structure before normalized matching.
+2. Parse headed long-form documents into semantic sections.
+3. Build local-model input as `SUMMARY / CORE / PRACTICAL / CONTEXT`, with SUMMARY and CORE highest priority.
+4. For `要するに`, give the three lines distinct roles: overall conclusion / primary boundary-condition / practical meaning-action.
+5. Explicitly prohibit filling all three lines from one detailed section.
+6. Post-validate model output against document sections; reject weak, single-section, or detail-only output.
+7. On semantic rejection, use structure-aware deterministic fallback instead of surfacing the bad model result.
+8. Preserve old fallback for unstructured/short inputs when structured fallback cannot produce three units.
+9. No model/package upgrade, remote AI, paid API, credential, or external text transmission was added.
 
-Not independently executed in the current route:
+## FIXED JUN ACCEPTANCE FIXTURE
 
-- Playwright smoke actual run (Playwright unavailable in this execution environment)
-- real WebLLM/WebGPU inference on iOS/Android
-- actual iPhone repeated-use memory behavior
-- actual 30-second post-preparation performance
-- human 20-case usability judgment
+- `tests/fixtures/jun-legaltech-72-20260824.txt`
+- UTF-8 size: 14,506 bytes
+- SHA-256: `6268b1b6e2224f024896b315c080c04a36289e796725215944391e1e945f71b0`
+- Git blob SHA: `1e322e4437909c7900912b3d4c5cd696738d7129`
 
-The previous fallback-only smoke must not be treated as evidence for real WebGPU lifecycle behavior. The new smoke source includes a mocked WebGPU/Worker lifecycle path, but actual execution remains unverified here.
+`tests/unit/jun-acceptance-semantic.test.mjs` fixes both the source and the exact Jun-observed bad three-line result as regression evidence.
+
+## VERIFICATION EVIDENCE
+
+Actually executed in the available correction route:
+
+- exact fixture identity: PASS
+- structured slate <= 4,000 chars with SUMMARY/CORE preserved: PASS
+- Jun-observed bad result: rejected as semantic `detail-only`: PASS
+- document-level reference result: accepted: PASS
+- same bad model output passed through `summarize()`: not surfaced; structure-aware fallback returned instead: PASS
+- structure-aware fallback contains the article core around `価値中立`, `運用の実態`, and escalation to `弁護士へ`: PASS
+- reconstructed existing core regressions: 11/11 PASS
+- persistent worker reuse / request serialization regression: PASS
+- PR diff inspection: only `tools/3lines/`, six files: PASS
+- merge to main: PASS
+
+Not independently executed in this Chat environment:
+
+- complete repository `npm test` runner after correction 2 (container cannot resolve GitHub to clone the branch)
+- Playwright actual smoke
+- real WebLLM/Qwen inference on iPhone/Android
+- Pages HTTP/source-live provenance after merge `d5071f07...` (external fetch currently returns cache miss)
+- actual-device 30-second performance
+- human 20-case usability acceptance
+
+Do not infer those unverified items as PASS.
 
 ## REQUIREMENT STATUS
 
-- REQ-001〜002: PASS evidence retained; correction does not change input contract.
-- REQ-003: implementation corrected; **real/human quality re-acceptance pending**.
-- REQ-004〜006: implementation corrected/retained; style real-device recheck pending.
-- REQ-007: **UNVERIFIED** — automated 20/20 PASS, human usability not accepted yet.
-- REQ-008: PASS — no API key / paid generative AI path.
-- REQ-009: **UNVERIFIED after correction** — prior iPhone failure fixed in code but not yet rechecked on device.
-- REQ-010: implementation PASS; real repeated-use behavior pending.
-- REQ-011: **UNVERIFIED after correction** — generation timeout/fallback exists, real-device performance pending.
-- REQ-012〜015: PASS evidence retained; affected privacy path unchanged.
-- REQ-016: implementation corrected; **real style/input-preservation recheck pending**.
-- REQ-017: PASS.
-- REQ-018: **UNVERIFIED / not review-ready**.
+- REQ-001〜002: retained PASS evidence.
+- REQ-003: semantic implementation corrected; Jun re-acceptance pending.
+- REQ-004〜006: retained/corrected; real style recheck pending.
+- REQ-007: UNVERIFIED; Jun fixture regression now exists, full human usability gate remains.
+- REQ-008: PASS; no API key / metered external generative AI.
+- REQ-009: UNVERIFIED after correction; real iPhone recheck required.
+- REQ-010: implementation evidence retained.
+- REQ-011: UNVERIFIED on real device.
+- REQ-012〜017: retained unless affected; privacy boundary unchanged.
+- REQ-018: UNVERIFIED / NOT review-ready.
 
-## JUN ACCEPTANCE RECHECK
+## NEXT JUN RECHECK
 
-The next legitimate Jun interaction is evaluation of the corrected live candidate, not development scheduling or Persona relay.
+Use the exact same article that exposed the semantic failure. High-signal acceptance is:
 
-High-signal recheck sequence:
+1. Reload the public candidate after Pages has updated.
+2. Paste the same article and run `要するに`.
+3. The three lines must describe the article as a whole; three narrow late-section details are a FAIL.
+4. Run again on the same page and switch `やさしく` / `忠実に`; no reload, input loss, or indefinite busy state.
 
-1. Open/reload `https://naojun.jp/tools/3lines/`.
-2. Paste one real long source and run `要するに`.
-3. Run a second summary without reloading the page.
-4. Switch to `やさしく` and then another style.
-5. Observe whether the page reloads, input disappears, processing stalls, or output still fails to function as a useful three-line summary.
-
-If these defects persist despite the correction, route the evidence internally to M.E.T.I.S. for model/architecture design-delta review. Do not silently introduce paid/remote AI.
-
-## AUTHORITY / OPEN GAP
-
-No new requirements, credential, paid service, DNS, destructive action, or material security boundary is currently requested.
-
-If evidence shows that the current browser-local Qwen3-0.6B path still cannot satisfy useful semantic quality + stable mobile behavior under the no-metered-AI requirement, that becomes a material design-return condition for M.E.T.I.S.
+If the corrected browser-local Qwen path still fails useful semantic quality or mobile stability, return internally to M.E.T.I.S. for model/architecture design-delta review. Do not silently switch to paid/remote AI.
 
 ## S.Y.B.I.L. STATUS
 
 `NOT ELIGIBLE`.
 
-Do not invoke S.Y.B.I.L. until Jun has evaluated the corrected observable candidate and declared it review-ready.
+Jun has not declared review-ready.
 
 ## NEXT ACTION
 
-`corrected Pages candidate -> Jun real-device recheck -> feedback classification`
-
-- pass -> complete remaining human quality/device acceptance, then review-ready decision
-- bounded defect -> internal Sol/Luna correction
-- model/architecture limitation -> M.E.T.I.S. design delta
-- requirements delta -> A.R.C.H.E.
-- material risk/cost/credential/irreversible decision -> Jun
-
-## LAST MATERIAL HANDOFF / FEEDBACK STATE
-
-- Jun accepted requirements baseline: yes.
-- M.E.T.I.S. design freeze: `METIS-3LINES-D1`.
-- Initial delivered candidate: merge `defad6de03637b396cdf53e87eb21587d2e07c00`.
-- Jun initial acceptance result: correction required / not review-ready.
-- Correction PR: `#31`.
-- Corrected implementation merge: `bbefb03605c047c88d52eb1794b010eccf4703df`.
-- Current Jun action: corrected live candidate recheck only.
+`merged correction 2 -> Pages propagation -> Jun exact-fixture recheck -> feedback classification`
