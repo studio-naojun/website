@@ -65,7 +65,7 @@ test('structured document composes topic, boundary, and action', () => {
   assert.equal(result.items.length, 3);
   assert.match(result.items[0], /法務省/u);
   assert.match(result.items[1], /価値中立/u);
-  assert.match(result.items[1], /アウト/u);
+  assert.match(result.items[1], /(?:問題になり得る|アウト)/u);
   assert.match(result.items[2], /弁護士/u);
 });
 
@@ -83,7 +83,7 @@ test('four styles work from the same source without model state', async () => {
   for (const style of ['gist', 'points', 'easy', 'faithful']) {
     const result = await summarize({ text: source, style });
     assert.equal(result.items.length, 3, style);
-    assert.ok(result.items.every((item) => [...item].length <= 120), style);
+    assert.ok(result.items.every((item) => [...item].length <= 140), style);
   }
 });
 

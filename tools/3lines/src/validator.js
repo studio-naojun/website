@@ -1,6 +1,6 @@
 import { extractLiterals, normalizedSource } from './normalizer.js';
 
-export const MAX_ITEM_LENGTH = 120;
+export const MAX_ITEM_LENGTH = 140;
 export const MAX_NOTES = 3;
 export const MAX_NOTES_LENGTH = 300;
 

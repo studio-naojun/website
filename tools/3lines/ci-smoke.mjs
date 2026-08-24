@@ -74,15 +74,17 @@ try {
   const firstJoined = firstItems.join(' ');
   if ((await page.locator('#source-text').inputValue()) !== longText) throw new Error('Input was not preserved');
   if (firstItems.length !== 3) throw new Error('Result is not exactly three items');
-  if (!/^全体[:：]/u.test(firstItems[0]) || !/法務省/u.test(firstItems[0]) || !/弁護士法72条/u.test(firstItems[0]) || !/実務/u.test(firstItems[0])) {
-    throw new Error(`Overview line failed: ${firstItems[0]}`);
+  if (!/^全体[:：]/u.test(firstItems[0]) || !/法務省/u.test(firstItems[0]) || !/AI法務支援サービス/u.test(firstItems[0]) || !/弁護士法第?72条/u.test(firstItems[0]) || !/法務業務/u.test(firstItems[0])) {
+    throw new Error(`Body-grounded overview failed: ${firstItems[0]}`);
   }
-  if (!/^肝[:：]/u.test(firstItems[1]) || !/価値中立/u.test(firstItems[1]) || !/提供者/u.test(firstItems[1]) || !/用法/u.test(firstItems[1])) {
-    throw new Error(`Core-thesis line failed: ${firstItems[1]}`);
+  if (/AIに契約書を読ませていいのか問題/u.test(firstItems[0])) throw new Error(`Marketing headline leaked into overview: ${firstItems[0]}`);
+  if (!/^肝[:：]/u.test(firstItems[1]) || !/事件性/u.test(firstItems[1]) || !/紛争性のある法律案件/u.test(firstItems[1]) || !/使われ方/u.test(firstItems[1])) {
+    throw new Error(`Explained core-thesis line failed: ${firstItems[1]}`);
   }
-  if (!/^結局[:：]/u.test(firstItems[2]) || !/言いたい/u.test(firstItems[2]) || !/全面禁止/u.test(firstItems[2]) || !/弁護士/u.test(firstItems[2])) {
-    throw new Error(`Bottom-line failed: ${firstItems[2]}`);
+  if (!/^結局[:：]/u.test(firstItems[2]) || !/リサーチ/u.test(firstItems[2]) || !/書面/u.test(firstItems[2]) || !/紛争/u.test(firstItems[2]) || !/弁護士/u.test(firstItems[2])) {
+    throw new Error(`Standalone bottom-line failed: ${firstItems[2]}`);
   }
+  if (/セーフ7類型|グレー/u.test(firstItems[2])) throw new Error(`Unexplained shorthand leaked into bottom line: ${firstItems[2]}`);
   if (!(await page.locator('#result-meta').textContent())?.includes('端末内要約')) throw new Error('Local deterministic engine label missing');
 
   const pointItems = await styleItems('論点3つ', 'points');
@@ -92,18 +94,16 @@ try {
   }
 
   const easyItems = await styleItems('やさしく', 'easy');
-  if (!/^全体[:：]/u.test(easyItems[0]) || !/どこまでよいのか/u.test(easyItems[0])) throw new Error(`easy overview failed: ${easyItems[0]}`);
-  if (!/^大事[:：]/u.test(easyItems[1]) || !/紛争案件/u.test(easyItems[1]) || !/使われ方/u.test(easyItems[1])) throw new Error(`easy core failed: ${easyItems[1]}`);
-  if (!/^つまり[:：]/u.test(easyItems[2]) || !/全面禁止/u.test(easyItems[2]) || !/弁護士/u.test(easyItems[2])) throw new Error(`easy bottom line failed: ${easyItems[2]}`);
+  if (!/^全体[:：]/u.test(easyItems[0]) || !/AIを使う法務支援サービス/u.test(easyItems[0]) || !/触れない範囲/u.test(easyItems[0])) throw new Error(`easy overview failed: ${easyItems[0]}`);
+  if (!/^大事[:：]/u.test(easyItems[1]) || !/紛争性のある法律案件/u.test(easyItems[1]) || !/使われ方/u.test(easyItems[1])) throw new Error(`easy core failed: ${easyItems[1]}`);
+  if (!/^つまり[:：]/u.test(easyItems[2]) || !/リサーチ/u.test(easyItems[2]) || !/弁護士/u.test(easyItems[2])) throw new Error(`easy bottom line failed: ${easyItems[2]}`);
+  if (/セーフ7類型/u.test(easyItems[2])) throw new Error(`easy bottom line leaked shorthand: ${easyItems[2]}`);
 
   const faithfulItems = await styleItems('忠実に', 'faithful');
-  if (!/^全体[:：]/u.test(faithfulItems[0])) throw new Error(`faithful overview failed: ${faithfulItems[0]}`);
-  if (!/^肝[:：]/u.test(faithfulItems[1]) || !/価値中立的なサービス提供/u.test(faithfulItems[1]) || !/提供者の行為/u.test(faithfulItems[1]) || !/用法/u.test(faithfulItems[1])) {
-    throw new Error(`faithful core failed: ${faithfulItems[1]}`);
-  }
-  if (!/^結論[:：]/u.test(faithfulItems[2]) || !/全面禁止/u.test(faithfulItems[2]) || !/弁護士/u.test(faithfulItems[2])) {
-    throw new Error(`faithful bottom line failed: ${faithfulItems[2]}`);
-  }
+  if (!/^全体[:：]/u.test(faithfulItems[0]) || !/ビジネス分野におけるAI等法務業務支援サービス提供/u.test(faithfulItems[0])) throw new Error(`faithful overview failed: ${faithfulItems[0]}`);
+  if (!/^肝[:：]/u.test(faithfulItems[1]) || !/事件性/u.test(faithfulItems[1]) || !/用法・運用実態/u.test(faithfulItems[1])) throw new Error(`faithful core failed: ${faithfulItems[1]}`);
+  if (!/^結論[:：]/u.test(faithfulItems[2]) || !/リサーチ/u.test(faithfulItems[2]) || !/弁護士/u.test(faithfulItems[2])) throw new Error(`faithful bottom line failed: ${faithfulItems[2]}`);
+  if (/セーフ7類型/u.test(faithfulItems[2])) throw new Error(`faithful bottom line leaked shorthand: ${faithfulItems[2]}`);
 
   const signatures = [firstItems, pointItems, easyItems, faithfulItems].map((items) => JSON.stringify(items));
   if (new Set(signatures).size !== 4) throw new Error(`Styles were not materially distinct: ${JSON.stringify(signatures)}`);
@@ -142,7 +142,7 @@ try {
   await page.goto('http://127.0.0.1:4173/tools/3lines/tests/quality/review.html', { waitUntil: 'networkidle' });
   if (await page.locator('.case').count() !== 20) throw new Error('Quality review surface does not contain 20 cases');
 
-  console.log('3lines semantic-ladder Jun-fixture mobile smoke passed');
+  console.log('3lines body-grounded Jun-fixture mobile smoke passed');
   console.log(firstJoined);
   console.log(`points=${JSON.stringify(pointItems)}`);
   console.log(`easy=${JSON.stringify(easyItems)}`);
