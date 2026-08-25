@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-15T07:04:00+09:00",
+  "updated_at": "2026-08-25T18:50:00+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-08-17",
+      "type": "weekly",
+      "published_at": "2026-08-25",
+      "title": "8月中旬は「発表の谷」――正式要項公開期を前に",
+      "summary": "対象期間内に大きな制度変更が確認されなかった低ニュース密度週を、正式募集要項公開期へのwatchとともに整理する。",
+      "path": "weekly/2026-08-17/",
+      "source_cycle": "admissions-weekly-2026-08-17"
+    },
     {
       "id": "special-r4-2009-2026",
       "type": "special",
