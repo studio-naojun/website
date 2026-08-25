@@ -1,0 +1,33 @@
+name: Contact Form Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'contact/**'
+      - 'privacy/**'
+      - 'assets/js/contact.js'
+      - '.github/workflows/contact-smoke.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'contact/**'
+      - 'privacy/**'
+      - 'assets/js/contact.js'
+      - '.github/workflows/contact-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate contact form security invariants
+        run: node contact/smoke.mjs
