@@ -26,7 +26,7 @@ if (!failed) {
   if (!contact.includes('name="_honey"')) fail('contact form must keep the honeypot field');
   if (!contact.includes('type="email"')) fail('contact form must validate reply email addresses');
   if (!contact.includes('maxlength="5000"')) fail('contact message must keep a length limit');
-  if (!contact.includes('../privacy/')) fail('contact form must link to the privacy notice');
+  if (!contact.includes('href="../privacy/" target="_blank" rel="noopener noreferrer"')) fail('contact privacy link must open safely in a new tab');
   if (contact.includes('type="file"')) fail('contact form must not accept file uploads');
   if (/@naojun\.jp/i.test(contact) || /@naojun\.jp/i.test(script)) fail('NaoJun recipient address must not be exposed as plaintext');
   if (!script.includes('https://formsubmit.co/')) fail('contact submission handler must target FormSubmit');
