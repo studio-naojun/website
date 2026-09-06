@@ -1,11 +1,75 @@
 {
   "schema_version": 1,
-  "as_of": null,
-  "updated_note": "最初の月次Research Artifact公開後に更新します。",
+  "as_of": "2026-09-06",
+  "updated_note": "2026年9月6日の月次Research Artifactに基づく6〜18か月の投資地図。",
+  "source_cycle": "investment-monthly-2026-09-06",
   "regime": {
-    "name": "データ準備中",
-    "confidence": null
+    "name": "高名目成長・高実質金利型のソフトランディング",
+    "confidence": "中"
   },
-  "scenarios": [],
-  "forecasts": []
+  "scenarios": [
+    {
+      "id": "soft-landing-high-nominal-growth",
+      "label": "ソフトランディング / 高名目成長",
+      "probability": 35
+    },
+    {
+      "id": "reacceleration-inflation",
+      "label": "景気再加速・インフレ再燃",
+      "probability": 30
+    },
+    {
+      "id": "stagflation",
+      "label": "スタグフレーション",
+      "probability": 20
+    },
+    {
+      "id": "recession",
+      "label": "景気後退",
+      "probability": 10
+    },
+    {
+      "id": "nonlinear-policy-geopolitics",
+      "label": "政策・地政学ショック",
+      "probability": 5
+    }
+  ],
+  "forecasts": [
+    {
+      "id": "sp500",
+      "label": "S&P 500 年末",
+      "value": "8,000",
+      "range": "7,000–8,500"
+    },
+    {
+      "id": "us10y",
+      "label": "米10年国債 年末",
+      "value": "4.65%",
+      "range": "4.25–5.20%"
+    },
+    {
+      "id": "fed-funds",
+      "label": "Fed funds 年末",
+      "value": "3.75–4.00%",
+      "range": "3.50–4.25%"
+    },
+    {
+      "id": "usd-jpy",
+      "label": "USD/JPY 年末",
+      "value": "155円",
+      "range": "148–163円"
+    },
+    {
+      "id": "cpi",
+      "label": "米CPI 12月前年比",
+      "value": "+3.6%",
+      "range": "2.9–4.6%"
+    },
+    {
+      "id": "core-pce",
+      "label": "Core PCE 12月前年比",
+      "value": "+3.0%",
+      "range": "2.5–3.6%"
+    }
+  ]
 }
