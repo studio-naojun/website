@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-29T10:00:00+09:00",
+  "updated_at": "2026-09-06T10:00:00+09:00",
   "entries": [
+    {
+      "id": "monthly-2026-09",
+      "type": "monthly",
+      "published_at": "2026-09-06",
+      "title": "成長は続くが、上昇余地は「倍率」より「利益」に依存する",
+      "summary": "景気後退を回避する一方、インフレ・高い実質金利・国債供給が評価倍率を制約する局面を整理。S&P 500、米10年金利、USD/JPYなどの2026年末予想と反証条件を更新する。",
+      "path": "monthly/2026-09/",
+      "source_cycle": "investment-monthly-2026-09-06"
+    },
     {
       "id": "weekly-2026-08-29",
       "type": "weekly",
