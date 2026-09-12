@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-06T10:00:00+09:00",
+  "updated_at": "2026-09-12T10:00:00+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-09-12",
+      "type": "weekly",
+      "published_at": "2026-09-12",
+      "title": "原油100ドル、米2年4.6%。再インフレと再引き締めが主役になった",
+      "summary": "原油100ドル、PPI・CPI上振れ、米短期金利急上昇、ECB利上げが重なった週を整理。信用ストレスはなお限定的で、FOMCとBOJを次の分岐点として検証する。",
+      "path": "weekly/2026-09-12/",
+      "source_cycle": "investment-weekly-2026-09-12"
+    },
     {
       "id": "monthly-2026-09",
       "type": "monthly",
