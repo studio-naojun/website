@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-19T10:00:00+09:00",
+  "entries": [
+    {
+      "id": "weekly-2026-09-19",
+      "type": "weekly",
+      "published_at": "2026-09-19",
+      "title": "Fedと日銀が利上げ、それでも景気と信用は崩れない。高金利下の選別相場",
+      "summary": "Fedと日銀が同じ週に利上げした一方、米消費と信用市場はなお崩れていない。米2年4.76%、10年5.01%、ドル円157円台、原油100ドル台の下で、金利感応度による選別相場を整理する。",
+      "path": "weekly/2026-09-19/",
+      "source_cycle": "investment-weekly-2026-09-19"
+    },
+    {
+      "id": "weekly-2026-09-12",
+      "type": "weekly",
+      "published_at": "2026-09-12",
+      "title": "原油100ドル、米2年4.6%。再インフレと再引き締めが主役になった",
+      "summary": "原油100ドル、PPI・CPI上振れ、米短期金利急上昇、ECB利上げが重なった週を整理。信用ストレスはなお限定的で、FOMCとBOJを次の分岐点として検証する。",
+      "path": "weekly/2026-09-12/",
+      "source_cycle": "investment-weekly-2026-09-12"
+    },
+    {
+      "id": "monthly-2026-09",
+      "type": "monthly",
+      "published_at": "2026-09-06",
+      "title": "成長は続くが、上昇余地は「倍率」より「利益」に依存する",
+      "summary": "景気後退を回避する一方、インフレ・高い実質金利・国債供給が評価倍率を制約する局面を整理。S&P 500、米10年金利、USD/JPYなどの2026年末予想と反証条件を更新する。",
+      "path": "monthly/2026-09/",
+      "source_cycle": "investment-monthly-2026-09-06"
+    },
+    {
+      "id": "weekly-2026-08-29",
+      "type": "weekly",
+      "published_at": "2026-08-29",
+      "title": "短期金利は再上昇、AI決算が株を支える。次は雇用統計",
+      "summary": "Fedのインフレ警戒で米短期金利が再上昇する一方、NVIDIA・Salesforceの強いAI決算と信用スプレッド縮小が株式を支えた。次の分岐点となる雇用統計までの市場構造を整理する。",
+      "path": "weekly/2026-08-29/",
+      "source_cycle": "investment-weekly-2026-08-29"
+    },
+    {
+      "id": "weekly-2026-08-22",
+      "type": "weekly",
+      "published_at": "2026-08-22",
+      "title": "金利と原油が同時上昇。株式は調整、景気後退はまだ主役ではない",
+      "summary": "米金利と原油が同時に上昇し主要株価指数が下落した一方、製造業・雇用は底堅い。ソフトランディングを中心に、再加速・スタグフレーションの分岐条件を整理する。",
+      "path": "weekly/2026-08-22/",
+      "source_cycle": "investment-weekly-2026-08-22"
+    },
+    {
+      "id": "weekly-2026-08-15",
+      "type": "weekly",
+      "published_at": "2026-08-15",
+      "title": "インフレは鈍化、消費は減速。それでも長期金利は上がった",
+      "summary": "7月CPI・PPIの鈍化と小売売上高の減速を確認する一方、長期金利と原油は上昇。ソフトランディングを中心に、景気後退・スタグフレーションの分岐条件を整理する。",
+      "path": "weekly/2026-08-15/",
+      "source_cycle": "investment-weekly-2026-08-15"
+    },
+    {
+      "id": "weekly-2026-08-09",
+      "type": "weekly",
+      "published_at": "2026-08-09",
+      "title": "弱い雇用、低下する金利、次の分岐点はCPI",
+      "summary": "7月米雇用統計の急減速を、JOLTS・SLOOS・生産性・市場価格・主要決算とあわせて検証。景気後退をまだ確認しない一方、次の焦点がCPIへ移った市場を整理する。",
+      "path": "weekly/2026-08-09/",
+      "source_cycle": "investment-weekly-2026-08-09"
+    }
+  ]
+}

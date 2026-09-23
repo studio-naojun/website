@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title>Studio NaoJun updates</title>
+  <id>https://naojun.jp/feed.xml</id>
+  <link rel="self" href="https://naojun.jp/feed.xml"/>
+  <link rel="alternate" href="https://naojun.jp/"/>
+  <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
+  <updated>2026-09-19T10:00:00+09:00</updated>
+  <entry>
+    <title>Fedと日銀が利上げ、それでも景気と信用は崩れない。高金利下の選別相場</title>
+    <id>https://naojun.jp/investment/weekly/2026-09-19/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-09-19/"/>
+    <updated>2026-09-19T00:00:00+09:00</updated>
+    <published>2026-09-19T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>Fedと日銀が同じ週に利上げした一方、米消費と信用市場はなお崩れていない。米2年4.76%、10年5.01%、ドル円157円台、原油100ドル台の下で、金利感応度による選別相場を整理する。</summary>
+  </entry>
+  <entry>
+    <title>募集枠は人気ではない――2027私立中、埼玉は75人減・千葉は外部募集20人増</title>
+    <id>https://naojun.jp/admissions/weekly/2026-09-14/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-09-14/"/>
+    <updated>2026-09-14T00:00:00+09:00</updated>
+    <published>2026-09-14T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>埼玉・千葉が2027年度私立中募集人員を正式公表。募集枠を需要や人気と混同せず、開智・明大明治の正式要項、帝京八王子の審議予定、R4データの限界を整理する。</summary>
+  </entry>
+  <entry>
+    <title>原油100ドル、米2年4.6%。再インフレと再引き締めが主役になった</title>
+    <id>https://naojun.jp/investment/weekly/2026-09-12/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-09-12/"/>
+    <updated>2026-09-12T00:00:00+09:00</updated>
+    <published>2026-09-12T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>原油100ドル、PPI・CPI上振れ、米短期金利急上昇、ECB利上げが重なった週を整理。信用ストレスはなお限定的で、FOMCとBOJを次の分岐点として検証する。</summary>
+  </entry>
+  <entry>
+    <title>9月の募集要項は「公開」より差分を見る――開智横浜国際の初年度設計と慶應中等部のWeb手続化</title>
+    <id>https://naojun.jp/admissions/weekly/2026-09-07/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-09-07/"/>
+    <updated>2026-09-07T00:00:00+09:00</updated>
+    <published>2026-09-07T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>2027年度要項の公開ラッシュを、単なる年次更新と実質変更に分けて読む。開智横浜国際の系列校同時判定、慶應中等部のWeb手続化、学習指導要領素案と市場データの限界を整理する。</summary>
+  </entry>
+  <entry>
+    <title>成長は続くが、上昇余地は「倍率」より「利益」に依存する</title>
+    <id>https://naojun.jp/investment/monthly/2026-09/</id>
+    <link href="https://naojun.jp/investment/monthly/2026-09/"/>
+    <updated>2026-09-06T00:00:00+09:00</updated>
+    <published>2026-09-06T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>景気後退を回避する一方、インフレ・高い実質金利・国債供給が評価倍率を制約する局面を整理。S&amp;P 500、米10年金利、USD/JPYなどの2026年末予想と反証条件を更新する。</summary>
+  </entry>
+  <entry>
+    <title>大学名より、授業に何が入るか――大妻中野×東京電機大の連携と、東京私立中助成の申請開始</title>
+    <id>https://naojun.jp/admissions/weekly/2026-08-31/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-08-31/"/>
+    <updated>2026-08-31T00:00:00+09:00</updated>
+    <published>2026-08-31T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>大妻中野と東京電機大学の中高大連携を、推薦ルートではなく授業・探究への教育資源投入として読む。東京都私立中授業料助成は9月1日の申請開始と条件確定を整理する。</summary>
+  </entry>
+  <entry>
+    <title>短期金利は再上昇、AI決算が株を支える。次は雇用統計</title>
+    <id>https://naojun.jp/investment/weekly/2026-08-29/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-08-29/"/>
+    <updated>2026-08-29T00:00:00+09:00</updated>
+    <published>2026-08-29T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>Fedのインフレ警戒で米短期金利が再上昇する一方、NVIDIA・Salesforceの強いAI決算と信用スプレッド縮小が株式を支えた。次の分岐点となる雇用統計までの市場構造を整理する。</summary>
+  </entry>
+  <entry>
+    <title>千葉県立中2027、正式要項公開――報告書から「出欠・特別活動・行動」の3項目を削除</title>
+    <id>https://naojun.jp/admissions/weekly/2026-08-24/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-08-24/"/>
+    <updated>2026-08-24T00:00:00+09:00</updated>
+    <published>2026-08-24T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>千葉県立千葉中・東葛飾中の2027年度正式要項を確認。報告書3項目削除と自己申告書の変更を、既出方針と今週の新規性を分けて整理する。</summary>
+  </entry>
+  <entry>
+    <title>金利と原油が同時上昇。株式は調整、景気後退はまだ主役ではない</title>
+    <id>https://naojun.jp/investment/weekly/2026-08-22/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-08-22/"/>
+    <updated>2026-08-22T00:00:00+09:00</updated>
+    <published>2026-08-22T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>米金利と原油が同時に上昇し主要株価指数が下落した一方、製造業・雇用は底堅い。ソフトランディングを中心に、再加速・スタグフレーションの分岐条件を整理する。</summary>
+  </entry>
+  <entry>
+    <title>8月中旬は「発表の谷」――正式要項公開期を前に</title>
+    <id>https://naojun.jp/admissions/weekly/2026-08-17/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-08-17/"/>
+    <updated>2026-08-17T00:00:00+09:00</updated>
+    <published>2026-08-17T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>対象期間内に大きな制度変更が確認されなかった低ニュース密度週を、正式募集要項公開期へのwatchとともに整理する。</summary>
+  </entry>
+  <entry>
+    <title>インフレは鈍化、消費は減速。それでも長期金利は上がった</title>
+    <id>https://naojun.jp/investment/weekly/2026-08-15/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-08-15/"/>
+    <updated>2026-08-15T00:00:00+09:00</updated>
+    <published>2026-08-15T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>7月CPI・PPIの鈍化と小売売上高の減速を確認する一方、長期金利と原油は上昇。ソフトランディングを中心に、景気後退・スタグフレーションの分岐条件を整理する。</summary>
+  </entry>
+  <entry>
+    <title>2009–2026 中学受験18年史 — 結果R4で読む、学校勢力図と「入試ポートフォリオ」の変化</title>
+    <id>https://naojun.jp/admissions/special/r4-2009-2026/</id>
+    <link href="https://naojun.jp/admissions/special/r4-2009-2026/"/>
+    <updated>2026-08-15T00:00:00+09:00</updated>
+    <published>2026-08-15T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>結果R4の18年推移から、入試枠の増加と学校内の「入試ポートフォリオ」化、共学・別学の構造変化を読む。</summary>
+  </entry>
+  <entry>
+    <title>弱い雇用、低下する金利、次の分岐点はCPI</title>
+    <id>https://naojun.jp/investment/weekly/2026-08-09/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-08-09/"/>
+    <updated>2026-08-09T00:00:00+09:00</updated>
+    <published>2026-08-09T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>7月米雇用統計の急減速を、JOLTS・SLOOS・生産性・市場価格・主要決算とあわせて検証。景気後退をまだ確認しない一方、次の焦点がCPIへ移った市場を整理する。</summary>
+  </entry>
+</feed>

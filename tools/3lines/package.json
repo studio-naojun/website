@@ -1,0 +1,15 @@
+{
+  "name": "naojun-3lines",
+  "version": "1.7.0",
+  "private": true,
+  "type": "module",
+  "description": "究極の3行 — browser-local Japanese semantic summarizer",
+  "scripts": {
+    "test": "node --test tests/unit/*.test.mjs",
+    "quality": "node tests/quality/quality-check.mjs",
+    "smoke": "node ci-smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

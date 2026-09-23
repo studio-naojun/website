@@ -1,0 +1,37 @@
+name: NaoJun Discovery Pulse
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 0 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.html'
+      - 'admissions/feed.json'
+      - 'investment/feed.json'
+      - 'sitemap.xml'
+      - 'feed.xml'
+      - 'robots.txt'
+      - 'scripts/**'
+      - '.github/workflows/discovery-pulse.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pulse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify discovery assets
+        run: python scripts/build_discovery.py --check
+      - name: Notify IndexNow and WebSub
+        run: python scripts/notify_discovery.py
