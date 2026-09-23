@@ -2,6 +2,12 @@ name: NaoJun Discovery Pulse
 
 on:
   workflow_dispatch:
+    inputs:
+      publish_latest_bluesky:
+        description: 'Post the latest Admissions and Investment entries to Bluesky'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '15 0 * * *'
   push:
@@ -35,3 +41,15 @@ jobs:
         run: python scripts/build_discovery.py --check
       - name: Notify IndexNow and WebSub
         run: python scripts/notify_discovery.py
+      - name: Publish new entries to Bluesky
+        if: github.event_name == 'push'
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: python scripts/bluesky_publish.py --before "${{ github.event.before }}"
+      - name: Publish latest entries to Bluesky
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_latest_bluesky
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: python scripts/bluesky_publish.py --latest
