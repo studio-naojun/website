@@ -27,14 +27,14 @@ def request_json(url: str, payload: dict[str, object], token: str | None = None)
         return json.loads(response.read().decode("utf-8"))
 
 
-def load_feed(path: str, ref: str | None = None) -> list[dict[str, str]]:
+def load_feed(path: str, ref: str | None = None) -> list[dict[str, str]] | None:
     if ref:
         try:
             raw = subprocess.check_output(
                 ["git", "show", f"{ref}:{path}"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL
             )
         except subprocess.CalledProcessError:
-            return []
+            return None
         payload = json.loads(raw)
     else:
         payload = json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -42,8 +42,11 @@ def load_feed(path: str, ref: str | None = None) -> list[dict[str, str]]:
 
 
 def new_entries(path: str, before: str) -> list[dict[str, str]]:
-    current = load_feed(path)
+    current = load_feed(path) or []
     previous = load_feed(path, before) if before and set(before) != {"0"} else []
+    if previous is None:
+        print(f"Previous feed unavailable at {before}; skipping Bluesky publish for {path}.")
+        return []
     old_ids = {str(entry.get("id", "")) for entry in previous}
     return [entry for entry in current if str(entry.get("id", "")) not in old_ids]
 
@@ -136,7 +139,7 @@ def main() -> int:
     for section in ("admissions", "investment"):
         feed_path = f"{section}/feed.json"
         if args.latest:
-            entries = load_feed(feed_path)[:1]
+            entries = (load_feed(feed_path) or [])[:1]
         else:
             entries = new_entries(feed_path, args.before)
         pending.extend((section, entry) for entry in reversed(entries))
