@@ -74,14 +74,44 @@ def create_session(handle: str, password: str) -> tuple[str, str]:
     return str(response["accessJwt"]), str(response["did"])
 
 
-def create_post(access_jwt: str, did: str, text: str) -> dict[str, object]:
+def post_record(section: str, entry: dict[str, str]) -> dict[str, object]:
     from datetime import datetime, timezone
+
+    text = post_text(section, entry)
+    url = article_url(section, entry)
+    title = str(entry.get("title", "")).strip()
+    summary = str(entry.get("summary", "")).strip()
+    char_start = text.rfind(url)
+    if char_start < 0:
+        raise ValueError("article URL is missing from Bluesky post text")
+    byte_start = len(text[:char_start].encode("utf-8"))
+    byte_end = byte_start + len(url.encode("utf-8"))
 
     record = {
         "$type": "app.bsky.feed.post",
         "text": text,
+        "langs": ["ja"],
+        "facets": [
+            {
+                "index": {"byteStart": byte_start, "byteEnd": byte_end},
+                "features": [{"$type": "app.bsky.richtext.facet#link", "uri": url}],
+            }
+        ],
+        "embed": {
+            "$type": "app.bsky.embed.external",
+            "external": {
+                "uri": url,
+                "title": title,
+                "description": summary[:300],
+            },
+        },
         "createdAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
+    return record
+
+
+def create_post(access_jwt: str, did: str, section: str, entry: dict[str, str]) -> dict[str, object]:
+    record = post_record(section, entry)
     return request_json(
         f"{PDS}/xrpc/com.atproto.repo.createRecord",
         {"repo": did, "collection": "app.bsky.feed.post", "record": record},
@@ -117,13 +147,13 @@ def main() -> int:
 
     if args.dry_run:
         for section, entry in pending:
-            print(json.dumps({"section": section, "text": post_text(section, entry)}, ensure_ascii=False))
+            print(json.dumps({"section": section, "record": post_record(section, entry)}, ensure_ascii=False))
         return 0
 
     access_jwt, did = create_session(handle, password)
     results = []
     for section, entry in pending:
-        result = create_post(access_jwt, did, post_text(section, entry))
+        result = create_post(access_jwt, did, section, entry)
         results.append({"section": section, "id": entry.get("id"), "uri": result.get("uri")})
     print(json.dumps(results, ensure_ascii=False))
     return 0
