@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -33,6 +34,15 @@ def post_form(url: str, payload: dict[str, str]) -> int:
         return int(response.status)
 
 
+def safe_call(name: str, fn) -> dict[str, object]:
+    try:
+        return {"ok": True, "status": int(fn())}
+    except urllib.error.HTTPError as exc:
+        return {"ok": False, "status": int(exc.code), "error": f"HTTP {exc.code}"}
+    except Exception as exc:
+        return {"ok": False, "status": None, "error": f"{type(exc).__name__}: {exc}"}
+
+
 def sitemap_urls() -> list[str]:
     root = ET.fromstring((ROOT / "sitemap.xml").read_text(encoding="utf-8"))
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -42,20 +52,26 @@ def sitemap_urls() -> list[str]:
 def main() -> int:
     urls = sitemap_urls()
     urls.extend([f"{SITE_URL}/feed.xml", f"{SITE_URL}/sitemap.xml"])
-    indexnow_status = post_json(
-        "https://api.indexnow.org/indexnow",
-        {
-            "host": "naojun.jp",
-            "key": INDEXNOW_KEY,
-            "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
-            "urlList": urls,
-        },
+    indexnow = safe_call(
+        "indexnow",
+        lambda: post_json(
+            "https://api.indexnow.org/indexnow",
+            {
+                "host": "naojun.jp",
+                "key": INDEXNOW_KEY,
+                "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
+                "urlList": urls,
+            },
+        ),
     )
-    websub_status = post_form(
-        "https://pubsubhubbub.appspot.com/",
-        {"hub.mode": "publish", "hub.url": f"{SITE_URL}/feed.xml"},
+    websub = safe_call(
+        "websub",
+        lambda: post_form(
+            "https://pubsubhubbub.appspot.com/",
+            {"hub.mode": "publish", "hub.url": f"{SITE_URL}/feed.xml"},
+        ),
     )
-    print(json.dumps({"indexnow": indexnow_status, "websub": websub_status, "urls": len(urls)}))
+    print(json.dumps({"indexnow": indexnow, "websub": websub, "urls": len(urls)}))
     return 0
 
 
