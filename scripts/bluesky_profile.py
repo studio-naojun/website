@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -48,8 +49,16 @@ def main() -> int:
     params = urllib.parse.urlencode(
         {"repo": did, "collection": "app.bsky.actor.profile", "rkey": "self"}
     )
-    current = get_json(f"{PDS}/xrpc/com.atproto.repo.getRecord?{params}", token)
-    record = dict(current.get("value") or {})
+    try:
+        current = get_json(f"{PDS}/xrpc/com.atproto.repo.getRecord?{params}", token)
+        record = dict(current.get("value") or {})
+    except urllib.error.HTTPError as exc:
+        if exc.code != 400:
+            raise
+        payload = json.loads(exc.read().decode("utf-8"))
+        if payload.get("error") != "RecordNotFound":
+            raise
+        record = {}
     record["$type"] = "app.bsky.actor.profile"
     record["displayName"] = DISPLAY_NAME
     record["description"] = DESCRIPTION
