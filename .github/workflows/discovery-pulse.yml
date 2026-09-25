@@ -8,6 +8,11 @@ on:
         required: false
         default: false
         type: boolean
+      update_bluesky_profile:
+        description: 'Refresh the Studio NaoJun Bluesky profile text'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '15 0 * * *'
   push:
@@ -55,3 +60,9 @@ jobs:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
         run: python scripts/bluesky_publish.py --latest
+      - name: Update Bluesky profile
+        if: github.event_name == 'workflow_dispatch' && inputs.update_bluesky_profile
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: python scripts/bluesky_profile.py
