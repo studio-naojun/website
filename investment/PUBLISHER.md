@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This directory is the public presentation layer for the investment research/editorial pipeline maintained in `ffz2bpjyj4-bot/kanade-report-library`.
+This directory is the public presentation layer for the investment research/editorial pipeline maintained in `ffz2bpjyj4/kanade-report-library`.
 
 The public site is deliberately static. There is no CMS runtime, plugin dependency, or database requirement for publication.
 
@@ -27,6 +27,17 @@ kanade-report-library
 No per-article Jun pre-approval is required while the source cycle records `publication_policy: auto-after-checks`. Jun owns this standing policy and may change it explicitly at any time.
 
 A merge to `main` is the public release operation. The adapter may merge its own publication PR only when the standing publication authority is valid and all required checks have succeeded.
+
+## Repository identity resilience
+
+The publisher must resolve current GitHub repository metadata before every release transaction. Repository migrations or recreation can change repository IDs, permissions, PR history, workflows, and safety context even when the repository name remains the same.
+
+- Canonical source repository: `ffz2bpjyj4/kanade-report-library`.
+- Target repository: resolve current metadata for `studio-naojun/website` and confirm write permission before creating or reusing a publication branch.
+- When the target repository ID differs from the identity seen by a prior successful release, re-read this contract, current feeds/state, discovery build contract, and current workflows before mutation.
+- An existing publication branch from an interrupted run may be reused only after comparison with `main` confirms that its diff is empty or matches the same source-cycle provenance.
+- A transient connector/write failure or repository-identity change is recoverable. Leave the cycle `authorized` or `pr-open` and allow the recovery watcher / next run to continue after fresh validation.
+- Do not disable the scheduled publisher because of one failed publication transaction. Disabling recurring publication requires explicit Jun instruction or intentional workflow retirement.
 
 ## Source authority
 
