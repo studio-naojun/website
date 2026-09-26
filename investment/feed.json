@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-26T10:59:00+09:00",
+  "updated_at": "2026-09-26T14:38:50+09:00",
   "entries": [
     {
       "id": "weekly-2026-09-26",
@@ -37,6 +37,15 @@
       "summary": "景気後退を回避する一方、インフレ・高い実質金利・国債供給が評価倍率を制約する局面を整理。S&P 500、米10年金利、USD/JPYなどの2026年末予想と反証条件を更新する。",
       "path": "monthly/2026-09/",
       "source_cycle": "investment-monthly-2026-09-06"
+    },
+    {
+      "id": "weekly-2026-09-05",
+      "type": "weekly",
+      "published_at": "2026-09-05",
+      "title": "強い雇用と原油急騰でインフレ警戒再燃、円はBOJ利上げ観測で上昇",
+      "summary": "強い米雇用とISMの価格圧力、WTIの急騰でインフレ再加速リスクが再浮上。一方、信用市場は安定し、円はBOJ追加利上げ観測で上昇した。9月PPI・CPI・FOMC前の市場構造を整理する。",
+      "path": "weekly/2026-09-05/",
+      "source_cycle": "investment-weekly-2026-09-05"
     },
     {
       "id": "weekly-2026-08-29",
