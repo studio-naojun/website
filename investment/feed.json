@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-19T10:00:00+09:00",
+  "updated_at": "2026-09-26T10:59:00+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-09-26",
+      "type": "weekly",
+      "published_at": "2026-09-26",
+      "title": "景気が強すぎて金利は上がる。それでもNasdaqは上がった",
+      "summary": "米Flash Composite PMI 58.4、米10年5.18%、ドル高が進む一方、Nasdaqは週間+2.1%。強い需要が高金利を長引かせる局面と、PCE・雇用統計への分岐を整理する。",
+      "path": "weekly/2026-09-26/",
+      "source_cycle": "investment-weekly-2026-09-26"
+    },
     {
       "id": "weekly-2026-09-19",
       "type": "weekly",
