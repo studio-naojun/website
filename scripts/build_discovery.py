@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://naojun.jp"
-INDEXNOW_KEY = "6d6cf95c8e504bc9a92b2b73283c9d65"
+INDEXNOW_KEY = "a9c83d5f77e64b1f8d2e4906cb71a354"
 MARKER_START = "<!-- naojun-discovery:start -->"
 MARKER_END = "<!-- naojun-discovery:end -->"
 EXCLUDED_PARTS = {
@@ -230,7 +230,7 @@ def desired_files() -> dict[Path, str]:
         "Allow: /\n\n"
         f"Sitemap: {SITE_URL}/sitemap.xml\n"
     )
-    outputs[ROOT / f"{INDEXNOW_KEY}.txt"] = INDEXNOW_KEY + "\n"
+    outputs[ROOT / f"{INDEXNOW_KEY}.txt"] = INDEXNOW_KEY
     return outputs
 
 
