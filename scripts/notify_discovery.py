@@ -72,6 +72,8 @@ def main() -> int:
         ),
     )
     print(json.dumps({"indexnow": indexnow, "websub": websub, "urls": len(urls)}))
+    if not indexnow["ok"] or not websub["ok"]:
+        return 1
     return 0
 
 
