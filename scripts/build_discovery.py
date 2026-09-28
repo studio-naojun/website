@@ -13,6 +13,7 @@ SITE_URL = "https://naojun.jp"
 INDEXNOW_KEY = "a9c83d5f77e64b1f8d2e4906cb71a354"
 MARKER_START = "<!-- naojun-discovery:start -->"
 MARKER_END = "<!-- naojun-discovery:end -->"
+MANUAL_MARKER = '<meta name="naojun-discovery" content="manual">'
 EXCLUDED_PARTS = {
     ".git",
     ".github",
@@ -139,6 +140,17 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
 
 
 def with_discovery_metadata(source: str, url: str, article: dict[str, str] | None) -> str:
+    if MANUAL_MARKER in source:
+        if MARKER_START in source and MARKER_END in source:
+            source = re.sub(
+                r"\s*" + re.escape(MARKER_START) + r".*?" + re.escape(MARKER_END),
+                "",
+                source,
+                count=1,
+                flags=re.DOTALL,
+            )
+        return source
+
     title = extract(r"<title>(.*?)</title>", source) or "Studio NaoJun"
     description = extract(
         r'<meta\s+name=["\']description["\'][^>]+content=["\']([^"\']*)["\']',
