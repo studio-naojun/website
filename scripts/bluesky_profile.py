@@ -25,7 +25,8 @@ def post_json(url: str, payload: dict[str, object], token: str | None = None) ->
         method="POST",
     )
     with urllib.request.urlopen(req, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
+        body = response.read().decode("utf-8")
+        return json.loads(body) if body else {}
 
 
 def get_json(url: str, token: str) -> dict[str, object]:

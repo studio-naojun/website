@@ -43,6 +43,25 @@ def safe_call(name: str, fn) -> dict[str, object]:
         return {"ok": False, "status": None, "error": f"{type(exc).__name__}: {exc}"}
 
 
+def submit_indexnow(payload: dict[str, object]) -> dict[str, object]:
+    attempts: list[dict[str, object]] = []
+    for endpoint in (
+        "https://api.indexnow.org/indexnow",
+        "https://yandex.com/indexnow",
+    ):
+        result = safe_call("indexnow", lambda endpoint=endpoint: post_json(endpoint, payload))
+        attempts.append({"endpoint": endpoint, **result})
+        if result["ok"] and int(result["status"]) in (200, 202):
+            return {"ok": True, "status": result["status"], "endpoint": endpoint, "attempts": attempts}
+    last = attempts[-1]
+    return {
+        "ok": False,
+        "status": last.get("status"),
+        "error": last.get("error", "all IndexNow endpoints failed"),
+        "attempts": attempts,
+    }
+
+
 def sitemap_urls() -> list[str]:
     root = ET.fromstring((ROOT / "sitemap.xml").read_text(encoding="utf-8"))
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -52,17 +71,13 @@ def sitemap_urls() -> list[str]:
 def main() -> int:
     urls = sitemap_urls()
     urls.extend([f"{SITE_URL}/feed.xml", f"{SITE_URL}/sitemap.xml"])
-    indexnow = safe_call(
-        "indexnow",
-        lambda: post_json(
-            "https://api.indexnow.org/indexnow",
-            {
-                "host": "naojun.jp",
-                "key": INDEXNOW_KEY,
-                "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
-                "urlList": urls,
-            },
-        ),
+    indexnow = submit_indexnow(
+        {
+            "host": "naojun.jp",
+            "key": INDEXNOW_KEY,
+            "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
+            "urlList": urls,
+        }
     )
     websub = safe_call(
         "websub",
