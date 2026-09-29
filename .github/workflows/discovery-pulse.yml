@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      refresh_bluesky_handle:
+        description: 'Re-validate the naojun.jp Bluesky handle'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '15 0 * * *'
   push:
@@ -77,3 +82,9 @@ jobs:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
         run: python scripts/bluesky_profile.py
+      - name: Refresh Bluesky handle
+        if: github.event_name == 'workflow_dispatch' && inputs.refresh_bluesky_handle
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: python scripts/bluesky_profile.py --refresh-handle

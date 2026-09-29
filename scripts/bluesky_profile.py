@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import os
+import argparse
 import urllib.error
 import urllib.parse
 import urllib.request
 
 
 PDS = "https://bsky.social"
+PUBLIC_HANDLE = "naojun.jp"
 DISPLAY_NAME = "Studio NaoJun"
 DESCRIPTION = "中学受験レポート / Investment Observatory / 制作物の更新通知。\nhttps://naojun.jp/"
 
@@ -37,6 +39,10 @@ def get_json(url: str, token: str) -> dict[str, object]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--refresh-handle", action="store_true")
+    args = parser.parse_args()
+
     handle = os.environ["BSKY_HANDLE"].strip()
     password = os.environ["BSKY_APP_PASSWORD"].strip()
     session = post_json(
@@ -45,6 +51,13 @@ def main() -> int:
     )
     token = str(session["accessJwt"])
     did = str(session["did"])
+
+    if args.refresh_handle:
+        post_json(
+            f"{PDS}/xrpc/com.atproto.identity.updateHandle",
+            {"handle": PUBLIC_HANDLE},
+            token,
+        )
 
     params = urllib.parse.urlencode(
         {"repo": did, "collection": "app.bsky.actor.profile", "rkey": "self"}
@@ -73,7 +86,12 @@ def main() -> int:
         },
         token,
     )
-    print(json.dumps({"handle": handle, "uri": result.get("uri")}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {"handle": PUBLIC_HANDLE if args.refresh_handle else handle, "uri": result.get("uri")},
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 
