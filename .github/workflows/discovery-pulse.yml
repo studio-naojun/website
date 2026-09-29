@@ -83,7 +83,7 @@ jobs:
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
         run: python scripts/bluesky_profile.py
       - name: Refresh Bluesky handle
-        if: github.event_name == 'workflow_dispatch' && inputs.refresh_bluesky_handle
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.refresh_bluesky_handle
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
