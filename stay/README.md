@@ -1,6 +1,6 @@
 # NaoJun Stay Atlas v1
 
-家族旅行向けホテル情報を、地図・検索・フィルタ・比較で閲覧できるStudio NaoJunのデータ作品です。
+家族旅行向けホテル情報を、地図・検索・フィルタ・比較で閲覧できるNAOJUN STUDIOSのデータ作品です。
 
 Public:
 

@@ -97,13 +97,13 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
             "description": article["summary"] or description,
             "datePublished": article["published_at"],
             "mainEntityOfPage": url,
-            "publisher": {"@type": "Organization", "name": "Studio NaoJun", "url": SITE_URL + "/"},
+            "publisher": {"@type": "Organization", "name": "NAOJUN STUDIOS", "url": SITE_URL + "/"},
         }
     elif url == SITE_URL + "/":
         structured = {
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "Studio NaoJun",
+            "name": "NAOJUN STUDIOS",
             "url": SITE_URL + "/",
             "inLanguage": "ja",
         }
@@ -114,7 +114,7 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
             "name": title,
             "description": description,
             "url": url,
-            "isPartOf": {"@type": "WebSite", "name": "Studio NaoJun", "url": SITE_URL + "/"},
+            "isPartOf": {"@type": "WebSite", "name": "NAOJUN STUDIOS", "url": SITE_URL + "/"},
             "inLanguage": "ja",
         }
 
@@ -126,9 +126,9 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
         [
             MARKER_START,
             f'  <link rel="canonical" href="{esc_url}">',
-            '  <link rel="alternate" type="application/atom+xml" title="Studio NaoJun updates" href="https://naojun.jp/feed.xml">',
+            '  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">',
             f'  <meta property="og:type" content="{page_type}">',
-            '  <meta property="og:site_name" content="Studio NaoJun">',
+            '  <meta property="og:site_name" content="NAOJUN STUDIOS">',
             f'  <meta property="og:title" content="{esc_title}">',
             f'  <meta property="og:description" content="{esc_description}">',
             f'  <meta property="og:url" content="{esc_url}">',
@@ -151,7 +151,7 @@ def with_discovery_metadata(source: str, url: str, article: dict[str, str] | Non
             )
         return source
 
-    title = extract(r"<title>(.*?)</title>", source) or "Studio NaoJun"
+    title = extract(r"<title>(.*?)</title>", source) or "NAOJUN STUDIOS"
     description = extract(
         r'<meta\s+name=["\']description["\'][^>]+content=["\']([^"\']*)["\']',
         source,
@@ -195,7 +195,7 @@ def build_feed(entries: list[dict[str, str]], updated_at: str) -> str:
     rows = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">',
-        "  <title>Studio NaoJun updates</title>",
+        "  <title>NAOJUN STUDIOS updates</title>",
         f"  <id>{SITE_URL}/feed.xml</id>",
         f'  <link rel="self" href="{SITE_URL}/feed.xml"/>',
         f'  <link rel="alternate" href="{SITE_URL}/"/>',

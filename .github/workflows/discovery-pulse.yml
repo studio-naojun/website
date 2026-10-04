@@ -9,7 +9,7 @@ on:
         default: false
         type: boolean
       update_bluesky_profile:
-        description: 'Refresh the Studio NaoJun Bluesky profile text'
+        description: 'Refresh the NAOJUN STUDIOS Bluesky profile text'
         required: false
         default: false
         type: boolean

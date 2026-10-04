@@ -1,4 +1,4 @@
-# Studio NaoJun website
+# NAOJUN STUDIOS website
 
 GitHub Pages向けの静的サイトです。
 

@@ -104,7 +104,7 @@ def sync_page(root,path,source):
         spotlight=next(w for w in items if w['id']==config['spotlight_id'])
         source=re.sub(r'(<div class="hero-strip"><div><strong>).*?(</strong>)',lambda m:m[1]+html.escape(spotlight['title'])+m[2],source,count=1)
         source=re.sub(r'(<div class="hero-strip">.*?<span class="mono">).*?(</span><a href=")[^"]+("[^>]*>)',lambda m:m[1]+html.escape(spotlight['status'])+m[2]+html.escape(spotlight['href'],quote=True)+m[3],source,count=1,flags=re.S)
-        channel=f'<section class="studio-channel container" aria-labelledby="channel-title"><div><span class="section-index">FILM / YOUTUBE</span><h2 id="channel-title">映像でも、NaoJunを。</h2></div><a class="arrow-link" href="{html.escape(youtube,quote=True)}" target="_blank" rel="noopener noreferrer">YouTubeチャンネルへ<span class="arrow" aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a></section>'
+        channel=f'<section class="studio-channel container" aria-labelledby="channel-title"><div><span class="section-index">FILM / YOUTUBE</span><h2 id="channel-title">映像でも、NAOJUN STUDIOSを。</h2></div><a class="arrow-link" href="{html.escape(youtube,quote=True)}" target="_blank" rel="noopener noreferrer">YouTubeチャンネルへ<span class="arrow" aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a></section>'
         if 'studio:channel:start' in source:source=replace_block(source,'channel',channel)
         else:source=source.replace('<section class="journal-section"',f'<!-- studio:channel:start -->\n{channel}\n<!-- studio:channel:end -->\n<section class="journal-section"',1)
     if rel=='works/index.html':
