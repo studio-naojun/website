@@ -65,7 +65,7 @@ copyright、About本文など、訪問者に見えるスタジオ名はこの表
 
 - ヘッダーはWorks / Journal / About / Contact / Store。並びをページごとに変えない。
 - フッターはWorks / About / Contact / Privacy / YouTube / RSS。YouTubeの正は
-  `content/site.json` のチャンネルID。推測したハンドル・別アカウントへ差し替えない。
+  `content/site.json` の公式URL。現在の公式ハンドルは `@naojunjp`。推測した別アカウントへ差し替えない。
 - 外部アカウントの表示名は可能な範囲で `NAOJUN STUDIOS` に揃える。URLやhandleは変更成功を
   確認してからサイト側を切り替え、先に既存の有効URLを壊さない。STORESの購入URLは特に
   商品購入導線なので、ストア側変更前にサイトだけを新URLへ推測変更しない。
