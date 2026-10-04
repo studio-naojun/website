@@ -1,5 +1,15 @@
 # Admissions Static Publisher Contract
 
+## Shared site design contract
+
+Before generating a page, read `../AGENTS.md` and `../docs/SITE-GUIDE.md`.
+Use the current `_templates/report-template.html`; preserve its shared studio shell.
+After creating/updating article HTML and feeds, run `python scripts/sync_studio.py`
+from the repository root, then `python scripts/build_discovery.py`. Commit generated
+files together. `python scripts/sync_studio.py --check` and the `Studio Design Contract`
+CI must pass alongside existing editorial/discovery checks. This does not change
+the publication authority or source requirements below.
+
 ## Purpose
 
 This directory publishes K.A.N.A.D.E. middle-school admissions reports from the private source repository `ffz2bpjyj4-bot/kanade-report-library`.

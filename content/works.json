@@ -1,0 +1,90 @@
+[
+  {
+    "id": "koechara",
+    "title": "Koechara",
+    "href": "/koechara/",
+    "category": "companion",
+    "label": "DESKTOP COMPANION",
+    "status": "Windows / 販売中",
+    "summary": "PCの中に、ひとりいる。声と姿を持つ3Dキャラクターと過ごす、静かなデスクトップ。",
+    "cover": "_partials/covers/koechara.html",
+    "featured": true
+  },
+  {
+    "id": "ametsuta",
+    "title": "アメツタ",
+    "href": "/works/ametsuta/",
+    "category": "game",
+    "label": "BROWSER GAME",
+    "status": "無料 / ブラウザ",
+    "summary": "雨を招き、ツタを育てる。ひと触れで天気を操る、小さな登攀ゲーム。",
+    "cover": "_partials/covers/ametsuta.html",
+    "featured": true
+  },
+  {
+    "id": "3lines",
+    "title": "究極の3行",
+    "href": "/tools/3lines/",
+    "category": "tool",
+    "label": "READING TOOL",
+    "status": "無料 / ブラウザ",
+    "summary": "長い文章を、3つの要点へ。読み解く時間を、考える時間に変える。",
+    "cover": "_partials/covers/3lines.html",
+    "featured": false
+  },
+  {
+    "id": "investment",
+    "title": "Investment Observatory",
+    "href": "/investment/",
+    "category": "research",
+    "label": "K.A.N.A.D.E. / INVESTMENT",
+    "status": "Weekly + Monthly",
+    "summary": "市場を観測し、前提を記し、見方を更新する。継続的な投資リサーチ。",
+    "cover": "_partials/covers/investment.html",
+    "featured": false
+  },
+  {
+    "id": "admissions",
+    "title": "中学受験レポート",
+    "href": "/admissions/",
+    "category": "research",
+    "label": "K.A.N.A.D.E. / EDUCATION",
+    "status": "Weekly + Special",
+    "summary": "学校の発表、その先へ。入試と教育の変化を一次資料から読み解く。",
+    "cover": "_partials/covers/admissions.html",
+    "featured": false
+  },
+  {
+    "id": "planner",
+    "title": "Admissions Planner",
+    "href": "https://tokyo-school-discovery-demo.studio-naoju-2747.chatgpt.site/",
+    "category": "tool",
+    "label": "SCHOOL DISCOVERY",
+    "status": "学校検索 / 外部サイト",
+    "summary": "偏差値・受験日・通学時間から、家庭に合う受験候補校を探す。",
+    "cover": "_partials/covers/planner.html",
+    "featured": false
+  },
+  {
+    "id": "jan",
+    "title": "商品横断検索",
+    "href": "/tools/jan/",
+    "category": "tool",
+    "label": "SHOPPING TOOL",
+    "status": "無料 / バーコード対応",
+    "summary": "商品名、型番、JANコード。いくつものお店を、ひとつの検索語で。",
+    "cover": "_partials/covers/jan.html",
+    "featured": false
+  },
+  {
+    "id": "stay",
+    "title": "NaoJun Stay Atlas",
+    "href": "/stay/",
+    "category": "tool",
+    "label": "TRAVEL DATABASE",
+    "status": "Preview",
+    "summary": "子どもと泊まるホテルを、地図とデータから探す。家族旅行のためのアトラス。",
+    "cover": "_partials/covers/stay.html",
+    "featured": false
+  }
+]
