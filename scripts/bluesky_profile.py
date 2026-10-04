@@ -11,7 +11,7 @@ import urllib.request
 PDS = "https://bsky.social"
 PUBLIC_HANDLE = "naojun.jp"
 DISPLAY_NAME = "NAOJUN STUDIOS"
-DESCRIPTION = "中学受験レポート / Investment Observatory / 制作物の更新通知。\nhttps://naojun.jp/"
+DESCRIPTION = "NAOJUN STUDIOS｜Koechara / Webツール / 中学受験レポート / 市場分析。新作と更新を公開しています。\nhttps://naojun.jp/"
 
 
 def post_json(url: str, payload: dict[str, object], token: str | None = None) -> dict[str, object]:

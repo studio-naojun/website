@@ -11,6 +11,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PDS = "https://bsky.social"
+TAGS = {
+    "admissions": ["中学受験", "学校選び"],
+    "investment": ["投資", "米国株"],
+}
 
 
 def request_json(url: str, payload: dict[str, object], token: str | None = None) -> dict[str, object]:
@@ -61,12 +65,15 @@ def post_text(section: str, entry: dict[str, str]) -> str:
     summary = str(entry.get("summary", "")).strip()
     url = article_url(section, entry)
     prefix = "中学受験レポート" if section == "admissions" else "Investment Observatory"
-    text = f"{prefix}を更新しました。\n\n{title}\n\n{summary}\n\n{url}"
+    tag_line = " ".join(f"#{tag}" for tag in TAGS[section])
+    suffix = f"\n\n{tag_line}\n\n{url}"
+    text = f"{prefix}を更新しました。\n\n{title}\n\n{summary}{suffix}"
     if len(text) <= 300:
         return text
-    room = max(0, 300 - len(f"{prefix}を更新しました。\n\n{title}\n\n\n\n{url}") - 1)
+    fixed = f"{prefix}を更新しました。\n\n{title}\n\n{suffix}"
+    room = max(0, 300 - len(fixed) - 1)
     short = summary[:room].rstrip() + ("…" if room and len(summary) > room else "")
-    return f"{prefix}を更新しました。\n\n{title}\n\n{short}\n\n{url}"
+    return f"{prefix}を更新しました。\n\n{title}\n\n{short}{suffix}"
 
 
 def create_session(handle: str, password: str) -> tuple[str, str]:
@@ -90,16 +97,31 @@ def post_record(section: str, entry: dict[str, str]) -> dict[str, object]:
     byte_start = len(text[:char_start].encode("utf-8"))
     byte_end = byte_start + len(url.encode("utf-8"))
 
+    facets = [
+        {
+            "index": {"byteStart": byte_start, "byteEnd": byte_end},
+            "features": [{"$type": "app.bsky.richtext.facet#link", "uri": url}],
+        }
+    ]
+    for tag in TAGS[section]:
+        token = f"#{tag}"
+        char_start = text.find(token)
+        if char_start < 0:
+            continue
+        tag_byte_start = len(text[:char_start].encode("utf-8"))
+        tag_byte_end = tag_byte_start + len(token.encode("utf-8"))
+        facets.append(
+            {
+                "index": {"byteStart": tag_byte_start, "byteEnd": tag_byte_end},
+                "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": tag}],
+            }
+        )
+
     record = {
         "$type": "app.bsky.feed.post",
         "text": text,
         "langs": ["ja"],
-        "facets": [
-            {
-                "index": {"byteStart": byte_start, "byteEnd": byte_end},
-                "features": [{"$type": "app.bsky.richtext.facet#link", "uri": url}],
-            }
-        ],
+        "facets": facets,
         "embed": {
             "$type": "app.bsky.embed.external",
             "external": {
