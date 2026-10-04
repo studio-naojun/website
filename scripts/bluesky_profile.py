@@ -10,7 +10,7 @@ import urllib.request
 
 PDS = "https://bsky.social"
 PUBLIC_HANDLE = "naojun.jp"
-DISPLAY_NAME = "Studio NaoJun"
+DISPLAY_NAME = "NAOJUN STUDIOS"
 DESCRIPTION = "中学受験レポート / Investment Observatory / 制作物の更新通知。\nhttps://naojun.jp/"
 
 

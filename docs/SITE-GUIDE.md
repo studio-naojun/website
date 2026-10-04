@@ -1,9 +1,15 @@
-# NaoJun サイト設計・ページ作成規約
+# NAOJUN STUDIOS サイト設計・ページ作成規約
 
 Version 1.0 / 2026-10-04。今後の追加・改修では、最初にこの文書を読む。
 実装上の正は共通CSS・テンプレート・台帳。変更時は文書も同じPRで更新する。
 
 ## 1. 共通テーマと語り口
+
+正式なマスターブランド名は **NAOJUN STUDIOS**。サイトのロゴ、title、OGP、構造化データ、
+copyright、About本文など、訪問者に見えるスタジオ名はこの表記へ統一する。
+`naojun.jp` はブランド名変更後も正規ドメインとして維持する。作品固有名として既に定着している
+`NaoJun Investment Observatory` と `NaoJun Stay Atlas`、内部のスクリプト名・User-Agentなどは
+マスターブランド表記とは別物なので、名称変更の必要がない限り維持する。
 
 **日々に、小さな発明を。 / Small studio. Useful creations.**
 
@@ -60,6 +66,9 @@ Version 1.0 / 2026-10-04。今後の追加・改修では、最初にこの文�
 - ヘッダーはWorks / Journal / About / Contact / Store。並びをページごとに変えない。
 - フッターはWorks / About / Contact / Privacy / YouTube / RSS。YouTubeの正は
   `content/site.json` のチャンネルID。推測したハンドル・別アカウントへ差し替えない。
+- 外部アカウントの表示名は可能な範囲で `NAOJUN STUDIOS` に揃える。URLやhandleは変更成功を
+  確認してからサイト側を切り替え、先に既存の有効URLを壊さない。STORESの購入URLは特に
+  商品購入導線なので、ストア側変更前にサイトだけを新URLへ推測変更しない。
 - 新しいタブで開くリンクには、その旨を支援技術へ伝え、`rel="noopener noreferrer"` を付ける。
 - 作品・記事への内部リンクはルート相対の正規URLを使う。既存URLは移動しない。
 - 各ページに1つのh1、本文スキップ、main、共通ナビを置く。記事には分野一覧へのパンくずを置く。
