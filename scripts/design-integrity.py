@@ -1,9 +1,11 @@
 """Static integrity checks for the redesigned public entry points."""
 from html.parser import HTMLParser
+import re
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
+from sync_studio import pages
 ROOT=Path(__file__).resolve().parents[1]
-PAGES=['index.html','works/index.html','about/index.html','contact/index.html','contact/thanks/index.html','privacy/index.html','kanade/index.html','koechara/index.html','investment/index.html','admissions/index.html','tools/jan/index.html','works/ametsuta/index.html']
+PAGES=[p.relative_to(ROOT).as_posix() for p in pages(ROOT) if '_templates' not in p.parts]
 class Page(HTMLParser):
     def __init__(self,text):
         super().__init__();self.refs=[];self.ids=[];self.h1=0;self.images=[];self.feed(text)
@@ -16,7 +18,8 @@ class Page(HTMLParser):
             if key in a:self.refs.append((tag,a[key]))
 errors=[];links=0
 for rel in PAGES:
-    path=ROOT/rel;p=Page(path.read_text(encoding='utf-8'))
+    path=ROOT/rel;source=path.read_text(encoding='utf-8');p=Page(source)
+    if re.search(r'\{\{[A-Z][A-Z0-9_]*\}\}',source):errors.append(f'{rel}: unfilled template placeholder')
     if p.h1!=1:errors.append(f'{rel}: expected one h1, got {p.h1}')
     if len(p.ids)!=len(set(p.ids)):errors.append(f'{rel}: duplicate ids')
     for im in p.images:

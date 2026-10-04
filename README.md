@@ -2,12 +2,22 @@
 
 GitHub Pages向けの静的サイトです。
 
+## 更新前に読む
+
+- [サイト設計・ページ作成規約](docs/SITE-GUIDE.md): テーマ、ページの役割、配色・文字、作品・記事の追加手順。
+- [作業指示](AGENTS.md): 更新エージェントが従う入口。
+- `content/works.json`: 作品台帳。トップ選抜・Worksのカード、件数、カテゴリを共通生成。
+- `content/site.json` / `_partials/`: 公式YouTubeと共通UI。
+
+編集後は `python scripts/sync_studio.py` → `python scripts/build_discovery.py`。
+PRでは `Studio Design Contract` が反映漏れを検査します。
+
 ## 構成
 
 - `/` トップ
 - `/about/` Studio紹介
 - `/works/` 作品一覧
-- `/works/sample-product/` 作品詳細テンプレート
+- `works/_templates/project-template.html` 作品詳細テンプレート（新規作成はこちら）
 - `/investment/` NaoJun Investment Observatory（AI-native static publishing）
 - `/contact/` 問い合わせ
 

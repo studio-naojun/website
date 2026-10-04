@@ -9,6 +9,8 @@ const http = require('node:http');
 const https = require('node:https');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..');
+const works = JSON.parse(fs.readFileSync(path.join(root,'content/works.json'),'utf8'));
+const site = JSON.parse(fs.readFileSync(path.join(root,'content/site.json'),'utf8'));
 const output = process.env.DESIGN_ARTIFACTS;
 const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml', '.webp':'image/webp', '.png':'image/png' };
 const tls = process.env.DESIGN_TLS_CERT && process.env.DESIGN_TLS_KEY;
@@ -37,7 +39,8 @@ const server = tls ? https.createServer({cert:fs.readFileSync(process.env.DESIGN
   try {
     await page.goto(base,{waitUntil:'networkidle'});
     if(output){fs.mkdirSync(output,{recursive:true});await page.screenshot({path:path.join(output,'home-desktop.png'),fullPage:true});await page.screenshot({path:path.join(output,'home-hero.png')});}
-    assert.equal(await page.locator('main a[href="koechara/"]').count() > 0, true, 'Koechara remains reachable from home');
+    assert.equal(await page.locator('main a[href$="koechara/"]').count() > 0, true, 'Koechara remains reachable from home');
+    assert.equal(await page.locator('main a').filter({hasText:'YouTubeチャンネルへ'}).getAttribute('href'),site.youtube_url,'Home exposes the verified official channel');
     assert.equal(await page.locator('#thread-canvas').getAttribute('data-motion'), 'paused', 'Reduced motion starts with a still frame');
     assert.equal(await page.locator('.hero-art > img').evaluate(el=>getComputedStyle(el).visibility),'hidden','Canvas enhancement hides its static fallback instead of double rendering');
     await page.emulateMedia({reducedMotion:'no-preference'});
@@ -72,18 +75,19 @@ const server = tls ? https.createServer({cert:fs.readFileSync(process.env.DESIGN
     assert.equal(await page.getByRole('button',{name:'メニューを開く',exact:true}).evaluate(el=>el===document.activeElement),true,'Escape returns focus');
     await page.goto(base+'/works/',{waitUntil:'networkidle'});
     await page.getByRole('button',{name:'ツール',exact:true}).click();
-    assert.equal(await page.locator('[data-work]:visible').count(),4,'Tool filter shows the four published tools');
+    assert.equal(await page.locator('[data-work]:visible').count(),works.filter(w=>w.category==='tool').length,'Tool filter shows all registered tools');
     assert.equal(await page.locator('[data-work][data-category="companion"]').isVisible(),false,'Filter hides other categories');
     await page.getByRole('button',{name:'すべて',exact:true}).click();
-    assert.equal(await page.locator('[data-work]:visible').count(),8,'All eight works are restored');
+    assert.equal(await page.locator('[data-work]:visible').count(),works.length,'All registered works are restored');
     console.log('PASS mobile disclosure, Escape/focus, catalogue filtering, preserved product route');
-    const routes = ['','works/','about/','contact/','koechara/','investment/','admissions/','tools/jan/'];
+    const routes = ['','works/','about/','contact/','koechara/','investment/','admissions/','tools/jan/','investment/weekly/2026-10-03/','investment/monthly/2026-09/','admissions/weekly/2026-09-14/','admissions/special/r4-2009-2026/'];
     const failures = [];
     for(const width of [360,390,768,1440]){
       await page.setViewportSize({width,height:width<600?844:1000});
       for(const route of routes){
         await page.goto(base+'/'+route,{waitUntil:'networkidle'});
         assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(244, 243, 236)','Studio stylesheet loaded for '+route);
+        assert.equal(await page.locator('.footer-links a').filter({hasText:'YouTube'}).getAttribute('href'),site.youtube_url,'Every shared footer exposes the same channel');
         const overflow = await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
         if(overflow){
           const layout=await page.evaluate(()=>({innerWidth,scrollWidth:document.documentElement.scrollWidth,outside:[...document.querySelectorAll('main *')].map(el=>({tag:el.tagName,cls:el.className,rect:el.getBoundingClientRect().toJSON()})).filter(x=>x.rect.right>innerWidth+1).slice(0,8)}));
@@ -91,7 +95,9 @@ const server = tls ? https.createServer({cert:fs.readFileSync(process.env.DESIGN
         }
         const clipped = await page.locator('.rain-type').evaluateAll(els=>els.map(el=>{const a=el.getBoundingClientRect(),b=el.parentElement.getBoundingClientRect();return a.top<b.top-1||a.bottom>b.bottom+1;}).some(Boolean));
         if(clipped)failures.push(route+' game title clipped at '+width);
-        if(output && [390,1440].includes(width) && ['','works/','about/','koechara/','investment/','admissions/'].includes(route))
+        if(output && [390,1440].includes(width) && route==='investment/weekly/2026-10-03/')
+          await page.screenshot({path:path.join(output,'article-head-'+width+'.png')});
+        if(output && [390,1440].includes(width) && ['','works/','about/','koechara/','investment/','admissions/','investment/weekly/2026-10-03/','admissions/special/r4-2009-2026/'].includes(route))
           await page.screenshot({path:path.join(output,(route.replaceAll('/','')||'home')+'-'+width+'.png'),fullPage:true});
         if(process.env.AXE_MODULE && width===390){
           await page.addScriptTag({url:base+'/__design-audit/axe.js'});
@@ -102,11 +108,11 @@ const server = tls ? https.createServer({cert:fs.readFileSync(process.env.DESIGN
     }
     const nojs = await browser.newPage({javaScriptEnabled:false,viewport:{width:390,height:844},ignoreHTTPSErrors:!!tls});
     await nojs.goto(base+'/works/');
-    assert.equal(await nojs.locator('[data-work]:visible').count(),8,'No-JS catalogue stays fully available');
+    assert.equal(await nojs.locator('[data-work]:visible').count(),works.length,'No-JS catalogue stays fully available');
     assert.equal(await nojs.locator('#studio-nav').isVisible(),true,'No-JS navigation stays available');
     await nojs.close();
     assert.deepEqual(errors,[],'No client JavaScript errors');
     assert.deepEqual(failures,[],'Responsive and accessibility checks: '+JSON.stringify(failures));
-    console.log('PASS 32 responsive route/width checks, no-JS access, zero JS errors'+(process.env.AXE_MODULE?', eight WCAG audits':''));
+    console.log('PASS '+routes.length*4+' responsive route/width checks, no-JS access, zero JS/resource errors'+(process.env.AXE_MODULE?', '+routes.length+' WCAG audits':''));
   } finally { await browser.close(); await new Promise(resolve=>server.close(resolve)); }
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});
