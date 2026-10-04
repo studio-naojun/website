@@ -81,9 +81,10 @@
   function renderFeed(feed) {
     const root = byId('article-list');
     if (!root) return;
+    if (!feed || !Array.isArray(feed.entries)) return;
     root.replaceChildren();
 
-    const entries = Array.isArray(feed?.entries) ? feed.entries : [];
+    const entries = feed.entries;
     if (!entries.length) {
       const empty = document.createElement('div');
       empty.className = 'empty-state';

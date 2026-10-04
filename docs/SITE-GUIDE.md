@@ -72,6 +72,12 @@ copyright、About本文など、訪問者に見えるスタジオ名はこの表
 - 公式ストアURLの正は `content/site.json` の `store_url`。現在は
   `https://naojun-studios.stores.jp/`。ヘッダーではNAOJUNのブランドマークを使い、
   決済基盤のSTORESより `NAOJUN STUDIOS STORE` を主語にする。
+- 中学受験・投資の一覧ページは、JavaScriptだけに記事リンクを持たせない。`build_discovery.py`
+  で最新feedを静的HTMLにも展開し、クローラとJavaScript無効環境から各記事へ辿れる状態を保つ。
+- 検索向けのtitle/descriptionはブランド名だけで終わらせず、ページが答える具体的な検索意図を
+  含める。サイト全体を更新した日は `content/site.json` の `updated_at` も更新し、sitemapの
+  `lastmod` に反映する。記事ページの `lastmod` は各記事の公開日を正とする。
+- Organization構造化データの `sameAs` は、公式YouTube、Bluesky、STORESのみを正として扱う。
 - 新しいタブで開くリンクには、その旨を支援技術へ伝え、`rel="noopener noreferrer"` を付ける。
 - 作品・記事への内部リンクはルート相対の正規URLを使う。既存URLは移動しない。
 - 各ページに1つのh1、本文スキップ、main、共通ナビを置く。記事には分野一覧へのパンくずを置く。

@@ -11,6 +11,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://naojun.jp"
 INDEXNOW_KEY = "a9c83d5f77e64b1f8d2e4906cb71a354"
+SAME_AS = [
+    "https://www.youtube.com/@naojunjp",
+    "https://bsky.app/profile/naojun.jp",
+    "https://naojun-studios.stores.jp/",
+]
 MARKER_START = "<!-- naojun-discovery:start -->"
 MARKER_END = "<!-- naojun-discovery:end -->"
 MANUAL_MARKER = '<meta name="naojun-discovery" content="manual">'
@@ -89,6 +94,13 @@ def iter_index_pages() -> list[Path]:
 def discovery_block(url: str, title: str, description: str, article: dict[str, str] | None) -> str:
     page_type = "article" if article else "website"
     structured: dict[str, object]
+    organization = {
+        "@type": "Organization",
+        "@id": f"{SITE_URL}/#organization",
+        "name": "NAOJUN STUDIOS",
+        "url": SITE_URL + "/",
+        "sameAs": SAME_AS,
+    }
     if article:
         structured = {
             "@context": "https://schema.org",
@@ -97,15 +109,22 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
             "description": article["summary"] or description,
             "datePublished": article["published_at"],
             "mainEntityOfPage": url,
-            "publisher": {"@type": "Organization", "name": "NAOJUN STUDIOS", "url": SITE_URL + "/"},
+            "publisher": organization,
         }
     elif url == SITE_URL + "/":
         structured = {
             "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "NAOJUN STUDIOS",
-            "url": SITE_URL + "/",
-            "inLanguage": "ja",
+            "@graph": [
+                organization,
+                {
+                    "@type": "WebSite",
+                    "@id": f"{SITE_URL}/#website",
+                    "name": "NAOJUN STUDIOS",
+                    "url": SITE_URL + "/",
+                    "publisher": {"@id": f"{SITE_URL}/#organization"},
+                    "inLanguage": "ja",
+                },
+            ],
         }
     else:
         structured = {
@@ -115,6 +134,7 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
             "description": description,
             "url": url,
             "isPartOf": {"@type": "WebSite", "name": "NAOJUN STUDIOS", "url": SITE_URL + "/"},
+            "publisher": organization,
             "inLanguage": "ja",
         }
 
@@ -174,7 +194,7 @@ def with_discovery_metadata(source: str, url: str, article: dict[str, str] | Non
     return source
 
 
-def build_sitemap(pages: list[tuple[str, dict[str, str] | None]]) -> str:
+def build_sitemap(pages: list[tuple[str, dict[str, str] | None]], site_updated_at: str) -> str:
     rows = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -182,11 +202,49 @@ def build_sitemap(pages: list[tuple[str, dict[str, str] | None]]) -> str:
     for url, article in pages:
         rows.append("  <url>")
         rows.append(f"    <loc>{html.escape(url)}</loc>")
-        if article and article.get("published_at"):
-            rows.append(f"    <lastmod>{html.escape(article['published_at'])}</lastmod>")
+        lastmod = article.get("published_at", "") if article else site_updated_at
+        if lastmod:
+            rows.append(f"    <lastmod>{html.escape(lastmod)}</lastmod>")
         rows.append("  </url>")
     rows.append("</urlset>")
     return "\n".join(rows) + "\n"
+
+
+def render_section_links(section: str, entries: list[dict[str, str]]) -> str:
+    items = [item for item in entries if item["section"] == section]
+    if section == "investment":
+        return "\n".join(
+            f'<a class="article-entry" href="{html.escape(item["url"].removeprefix(SITE_URL + "/investment/"), quote=True)}">'
+            f'<div class="article-kicker">{html.escape(item["type"].upper())} · {html.escape(item["published_at"])}</div>'
+            f'<div><div class="article-title">{html.escape(item["title"])}</div><p class="article-summary">{html.escape(item["summary"])}</p></div>'
+            '<div class="article-arrow" aria-hidden="true">→</div></a>'
+            for item in items
+        )
+    if section == "admissions":
+        return "\n".join(
+            '<article class="admissions-report-card">'
+            f'<div class="report-meta">{"SPECIAL" if item["type"] == "special" else "WEEKLY"} / {html.escape(item["published_at"])}</div>'
+            f'<div><h3>{html.escape(item["title"])}</h3><p>{html.escape(item["summary"])}</p></div>'
+            f'<a class="report-link" href="{html.escape(item["url"].removeprefix(SITE_URL + "/admissions/"), quote=True)}">読む</a>'
+            '</article>'
+            for item in items
+        )
+    raise ValueError(f"Unsupported section: {section}")
+
+
+def with_static_section_links(source: str, section: str, entries: list[dict[str, str]]) -> str:
+    if section == "investment":
+        pattern = r'(<div id="article-list" class="article-list">).*?(</div>\s*</div>\s*</section>)'
+    elif section == "admissions":
+        pattern = r'(<div id="admissions-report-list" class="admissions-report-list">).*?(</div>\s*</div>\s*</section>)'
+    else:
+        raise ValueError(f"Unsupported section: {section}")
+    rendered = render_section_links(section, entries)
+    replacement = lambda match: match.group(1) + "\n" + rendered + "\n        " + match.group(2)
+    source, count = re.subn(pattern, replacement, source, count=1, flags=re.DOTALL)
+    if count != 1:
+        raise ValueError(f"Could not render static {section} article links")
+    return source
 
 
 def build_feed(entries: list[dict[str, str]], updated_at: str) -> str:
@@ -224,6 +282,8 @@ def build_feed(entries: list[dict[str, str]], updated_at: str) -> str:
 
 def desired_files() -> dict[Path, str]:
     article_by_url, entries, updated_at = load_article_entries()
+    site_config = json.loads((ROOT / "content" / "site.json").read_text(encoding="utf-8"))
+    site_updated_at = str(site_config.get("updated_at", ""))
     outputs: dict[Path, str] = {}
     sitemap_pages: list[tuple[str, dict[str, str] | None]] = []
 
@@ -231,11 +291,16 @@ def desired_files() -> dict[Path, str]:
         url = page_url(page)
         article = article_by_url.get(url)
         source = page.read_text(encoding="utf-8")
-        outputs[page] = with_discovery_metadata(source, url, article)
+        rendered = with_discovery_metadata(source, url, article)
+        if url == SITE_URL + "/investment/":
+            rendered = with_static_section_links(rendered, "investment", entries)
+        elif url == SITE_URL + "/admissions/":
+            rendered = with_static_section_links(rendered, "admissions", entries)
+        outputs[page] = rendered
         sitemap_pages.append((url, article))
 
     sitemap_pages.sort(key=lambda row: row[0])
-    outputs[ROOT / "sitemap.xml"] = build_sitemap(sitemap_pages)
+    outputs[ROOT / "sitemap.xml"] = build_sitemap(sitemap_pages, site_updated_at)
     outputs[ROOT / "feed.xml"] = build_feed(entries, updated_at)
     outputs[ROOT / "robots.txt"] = (
         "User-agent: *\n"
