@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-03T10:14:00+09:00</updated>
+  <updated>2026-10-04T20:05:00+09:00</updated>
   <entry>
     <title>雇用は冷えた。それでも長期金利は上がった――焦点は「再加速」から「粘着インフレ」へ</title>
     <id>https://naojun.jp/investment/weekly/2026-10-03/</id>
@@ -16,6 +16,15 @@
     <summary>雇用+2.9万人・賃金3.0%へ鈍化する一方、コアPCE3.0%、ISM Prices77.9、米10年5.28%。追加利上げを急がない理由と、粘着インフレ・長期金利リスクを整理する。</summary>
   </entry>
   <entry>
+    <title>募集停止の発表と制度化は別――帝京八王子中120→0、共立女子×東京電機大の連携</title>
+    <id>https://naojun.jp/admissions/weekly/2026-09-28/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-09-28/"/>
+    <updated>2026-09-28T00:00:00+09:00</updated>
+    <published>2026-09-28T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>帝京八王子中の収容定員120→0を募集停止方針の行政上の正式化として整理。共立女子×東京電機大の協定は既存推薦枠と分け、授業・探究への関与を読む。</summary>
+  </entry>
+  <entry>
     <title>景気が強すぎて金利は上がる。それでもNasdaqは上がった</title>
     <id>https://naojun.jp/investment/weekly/2026-09-26/</id>
     <link href="https://naojun.jp/investment/weekly/2026-09-26/"/>
@@ -23,6 +32,15 @@
     <published>2026-09-26T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>米Flash Composite PMI 58.4、米10年5.18%、ドル高が進む一方、Nasdaqは週間+2.1%。強い需要が高金利を長引かせる局面と、PCE・雇用統計への分岐を整理する。</summary>
+  </entry>
+  <entry>
+    <title>募集70人は「人気低下」ではない――伊奈学園の定員変更とTGUISS出願Web化</title>
+    <id>https://naojun.jp/admissions/weekly/2026-09-21/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-09-21/"/>
+    <updated>2026-09-21T00:00:00+09:00</updated>
+    <published>2026-09-21T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>伊奈学園中の募集70人を需要低下と混同せず、制度上の定員変更として整理。TGUISSのPlusSeed導入も選抜内容ではなく受験実務のデジタル化として読む。</summary>
   </entry>
   <entry>
     <title>Fedと日銀が利上げ、それでも景気と信用は崩れない。高金利下の選別相場</title>
