@@ -35,8 +35,10 @@ class StudioContractTest(unittest.TestCase):
         self.assertEqual(re.sub(r'<table\b[^>]*>','<table>',body),re.sub(r'<table\b[^>]*>','<table>',result_body))
         self.assertTrue(all('tabindex="0"' in tag for tag in re.findall(r'<table\b[^>]*>',result_body)))
         self.assertIn('studio-article',result)
-        youtube_url=json.loads((ROOT/'content/site.json').read_text(encoding='utf-8'))['youtube_url']
+        site_config=json.loads((ROOT/'content/site.json').read_text(encoding='utf-8'))
+        youtube_url=site_config['youtube_url']
         self.assertIn(youtube_url,result)
+        self.assertIn(site_config['store_url'],result)
         self.assertEqual(result,self.module.sync_page(ROOT,path,result))
 
     def test_duplicate_id_and_unsafe_url_are_rejected(self):

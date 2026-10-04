@@ -69,6 +69,9 @@ copyright、About本文など、訪問者に見えるスタジオ名はこの表
 - 外部アカウントの表示名は可能な範囲で `NAOJUN STUDIOS` に揃える。URLやhandleは変更成功を
   確認してからサイト側を切り替え、先に既存の有効URLを壊さない。STORESの購入URLは特に
   商品購入導線なので、ストア側変更前にサイトだけを新URLへ推測変更しない。
+- 公式ストアURLの正は `content/site.json` の `store_url`。現在は
+  `https://naojun-studios.stores.jp/`。ヘッダーではNAOJUNのブランドマークを使い、
+  決済基盤のSTORESより `NAOJUN STUDIOS STORE` を主語にする。
 - 新しいタブで開くリンクには、その旨を支援技術へ伝え、`rel="noopener noreferrer"` を付ける。
 - 作品・記事への内部リンクはルート相対の正規URLを使う。既存URLは移動しない。
 - 各ページに1つのh1、本文スキップ、main、共通ナビを置く。記事には分野一覧へのパンくずを置く。

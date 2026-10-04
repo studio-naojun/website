@@ -20,7 +20,8 @@
 .studio-site .nav a{position:relative;min-height:44px;display:inline-flex;align-items:center}
 .studio-site .nav a:not(.nav-store)::after{content:"";height:2px;background:var(--ink);position:absolute;bottom:7px;left:0;right:0;transform:scaleX(0);transform-origin:left;transition:transform .2s}
 .studio-site .nav a:hover::after,.studio-site .nav a[aria-current=page]::after{transform:scaleX(1)}
-.studio-site .nav-store{padding:0 17px;border:1px solid var(--ink);border-radius:0;gap:20px}
+.studio-site .nav-store{padding:0 15px;border:1px solid var(--ink);border-radius:0;gap:9px;letter-spacing:.08em}
+.nav-store-mark{width:15px;height:16px;display:block;flex:none}
 .menu-toggle{display:none}
 .mono,.section-index,.project-meta,.art-caption,.work-index{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:11px;line-height:1.5;letter-spacing:.07em}
 .studio-hero{position:relative;padding:54px 0 0;overflow:hidden}
