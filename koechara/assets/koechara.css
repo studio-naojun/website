@@ -607,6 +607,37 @@ body {
   box-shadow: 0 24px 60px rgba(47, 93, 80, .08);
 }
 
+.kc-store-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+  color: var(--kc-ink);
+}
+
+.kc-store-mark {
+  width: 25px;
+  height: 27px;
+  flex: none;
+}
+
+.kc-store-lockup > span {
+  display: grid;
+  gap: 4px;
+  line-height: 1;
+}
+
+.kc-store-lockup strong {
+  font-size: 13px;
+  letter-spacing: .04em;
+}
+
+.kc-store-lockup small {
+  color: var(--kc-soft-ink);
+  font: 9px/1.2 "SFMono-Regular", Consolas, monospace;
+  letter-spacing: .12em;
+}
+
 .kc-price-badge {
   display: inline-flex;
   padding: 7px 11px;

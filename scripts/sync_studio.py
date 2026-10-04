@@ -55,8 +55,11 @@ def sync_page(root,path,source):
     article=bool(re.search(r'<article class="(?:investment|admissions)-article"',source))
     config=json.loads((root/'content/site.json').read_text(encoding='utf-8'))
     youtube=config['youtube_url']
+    store=config['store_url']
     if urlsplit(youtube).hostname!='www.youtube.com' or urlsplit(youtube).scheme!='https':raise ValueError('Official YouTube URL must use https://www.youtube.com/')
-    header=(root/'_partials/header.html').read_text(encoding='utf-8').strip()
+    store_parts=urlsplit(store)
+    if store_parts.scheme!='https' or store_parts.hostname!='naojun-studios.stores.jp':raise ValueError('Official store URL must use https://naojun-studios.stores.jp/')
+    header=(root/'_partials/header.html').read_text(encoding='utf-8').strip().replace('{{STORE_URL}}',html.escape(store,quote=True))
     current={'works/index.html':'/works/','about/index.html':'/about/','contact/index.html':'/contact/'}.get(rel)
     if current:header=header.replace(f'href="{current}"',f'href="{current}" aria-current="page"')
     footer=(root/'_partials/footer.html').read_text(encoding='utf-8').strip().replace('{{YOUTUBE_URL}}',html.escape(youtube,quote=True))
