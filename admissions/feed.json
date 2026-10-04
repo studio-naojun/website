@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-14T09:02:30+09:00",
+  "updated_at": "2026-10-04T20:05:00+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-09-28",
+      "type": "weekly",
+      "published_at": "2026-09-28",
+      "title": "募集停止の発表と制度化は別――帝京八王子中120→0、共立女子×東京電機大の連携",
+      "summary": "帝京八王子中の収容定員120→0を募集停止方針の行政上の正式化として整理。共立女子×東京電機大の協定は既存推薦枠と分け、授業・探究への関与を読む。",
+      "path": "weekly/2026-09-28/",
+      "source_cycle": "admissions-weekly-2026-09-28"
+    },
+    {
+      "id": "weekly-2026-09-21",
+      "type": "weekly",
+      "published_at": "2026-09-21",
+      "title": "募集70人は「人気低下」ではない――伊奈学園の定員変更とTGUISS出願Web化",
+      "summary": "伊奈学園中の募集70人を需要低下と混同せず、制度上の定員変更として整理。TGUISSのPlusSeed導入も選抜内容ではなく受験実務のデジタル化として読む。",
+      "path": "weekly/2026-09-21/",
+      "source_cycle": "admissions-weekly-2026-09-21"
+    },
     {
       "id": "weekly-2026-09-14",
       "type": "weekly",
