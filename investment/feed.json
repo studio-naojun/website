@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-03T10:14:00+09:00",
+  "updated_at": "2026-10-17T10:23:43+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-10-17",
+      "type": "weekly",
+      "published_at": "2026-10-17",
+      "title": "インフレ再加速とAI株調整の同時進行――株安でも長期金利は低下した",
+      "summary": "9月CPI前年比3.7%、PPI前月比1.3%のインフレ再加速に対し、Nasdaqは週間約4.5%下落、米10年金利は5.24%から5.09%へ低下。AI実需と投資採算、金融市場への波及を分けて検証する。",
+      "path": "weekly/2026-10-17/",
+      "source_cycle": "investment-weekly-2026-10-17"
+    },
     {
       "id": "weekly-2026-10-03",
       "type": "weekly",
