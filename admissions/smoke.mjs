@@ -41,6 +41,9 @@ if (feed) {
     if (!['weekly', 'special'].includes(entry.type)) fail(`unsupported report type: ${entry.type}`);
     if (ids.has(entry.id)) fail(`duplicate feed id: ${entry.id}`);
     ids.add(entry.id);
+    if (/\?{4,}/.test(entry.title) || /\?{4,}/.test(entry.summary)) {
+      fail(`possible replacement-character corruption in feed metadata: ${entry.id}`);
+    }
 
     if (entry.path.startsWith('/') || entry.path.includes('..')) fail(`unsafe feed path: ${entry.path}`);
 
@@ -53,6 +56,10 @@ if (feed) {
     const html = fs.readFileSync(reportPath, 'utf8');
     if (!html.includes('<title>')) fail(`report missing title element: ${entry.id}`);
     if (!html.includes('中学受験')) fail(`report missing admissions identity: ${entry.id}`);
+    if (/\?{4,}/.test(html.match(/<meta property="og:title"[^>]*>/)?.[0] ?? '') ||
+        /\?{4,}/.test(html.match(/<meta property="og:description"[^>]*>/)?.[0] ?? '')) {
+      fail(`possible replacement-character corruption in article social metadata: ${entry.id}`);
+    }
 
     if (html.includes('ffz2bpjyj4-bot/kanade-report-library')) {
       fail(`private source repository exposed in public report: ${entry.id}`);
