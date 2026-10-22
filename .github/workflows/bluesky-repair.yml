@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       fix_posts:
-        description: "Repair the two verified 2026-10-18 corrupt posts in-place"
+        description: "Update exact two old source records (PDS maintenance)"
         type: boolean
         default: false
       set_avatar:
         description: "Set the official NAOJUN logo avatar if currently missing"
+        type: boolean
+        default: false
+      replace_public_posts:
+        description: "Publicly repost 2 corrected articles, then remove old mojibake posts"
         type: boolean
         default: false
 
@@ -21,7 +25,7 @@ concurrency:
 
 jobs:
   repair:
-    if: inputs.fix_posts || inputs.set_avatar
+    if: inputs.fix_posts || inputs.set_avatar || inputs.replace_public_posts
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -32,6 +36,7 @@ jobs:
       - name: Verify source and target image without credentials
         run: python scripts/bluesky_repair.py --dry-run
       - name: Bounded Bluesky account repair
+        if: inputs.fix_posts || inputs.set_avatar
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
@@ -42,3 +47,9 @@ jobs:
           if [ "$FIX_POSTS" = "true" ]; then args+=(--fix-posts); fi
           if [ "$SET_AVATAR" = "true" ]; then args+=(--set-avatar); fi
           python scripts/bluesky_repair.py "${args[@]}"
+      - name: Verified public replacement of two corrupt posts
+        if: inputs.replace_public_posts
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: python scripts/bluesky_public_replace.py
