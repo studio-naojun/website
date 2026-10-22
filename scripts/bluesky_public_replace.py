@@ -39,11 +39,27 @@ def public_post(uri: str) -> dict | None:
 
 
 def repo_posts() -> list[dict]:
-    args = urllib.parse.urlencode({"repo": DID, "collection": POST_COLLECTION, "limit": 100})
-    data = json_get(f"{original.PDS}/xrpc/com.atproto.repo.listRecords?{args}")
-    if data.get("cursor"):
-        raise RuntimeError("Unexpected record pagination; refuse ambiguous scan")
-    return data["records"]
+    # ATProto may return a cursor even when the first page is the last page.
+    # Follow it safely rather than interpreting cursor presence as overflow.
+    result = []
+    cursor = None
+    seen = set()
+    for _ in range(10):
+        query = {"repo": DID, "collection": POST_COLLECTION, "limit": 100}
+        if cursor:
+            query["cursor"] = cursor
+        args = urllib.parse.urlencode(query)
+        data = json_get(f"{original.PDS}/xrpc/com.atproto.repo.listRecords?{args}")
+        page = data.get("records", [])
+        result.extend(page)
+        next_cursor = data.get("cursor")
+        if not page or not next_cursor:
+            return result
+        if next_cursor in seen:
+            raise RuntimeError("Repeated post-record cursor; refuse ambiguous scan")
+        seen.add(next_cursor)
+        cursor = next_cursor
+    raise RuntimeError("Post-record listing exceeded bounded pagination")
 
 
 def replacement_record(entry: dict) -> dict:
