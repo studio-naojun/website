@@ -35,7 +35,8 @@ def load_feed(path: str, ref: str | None = None) -> list[dict[str, str]] | None:
     if ref:
         try:
             raw = subprocess.check_output(
-                ["git", "show", f"{ref}:{path}"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL
+                ["git", "show", f"{ref}:{path}"], cwd=ROOT, text=True, encoding="utf-8",
+                errors="strict", stderr=subprocess.DEVNULL
             )
         except subprocess.CalledProcessError:
             return None
@@ -63,6 +64,7 @@ def article_url(section: str, entry: dict[str, str]) -> str:
 def post_text(section: str, entry: dict[str, str]) -> str:
     title = str(entry.get("title", "")).strip()
     summary = str(entry.get("summary", "")).strip()
+    validate_post_source(title, summary)
     url = article_url(section, entry)
     prefix = "中学受験レポート" if section == "admissions" else "Investment Observatory"
     tag_line = " ".join(f"#{tag}" for tag in TAGS[section])
@@ -74,6 +76,13 @@ def post_text(section: str, entry: dict[str, str]) -> str:
     room = max(0, 300 - len(fixed) - 1)
     short = summary[:room].rstrip() + ("…" if room and len(summary) > room else "")
     return f"{prefix}を更新しました。\n\n{title}\n\n{short}{suffix}"
+
+
+def validate_post_source(title: str, summary: str) -> None:
+    """Fail closed: do not announce feed entries corrupted before publication."""
+    for value in (title, summary):
+        if not value or "????" in value or "\ufffd" in value:
+            raise ValueError("Bluesky source text missing or contains mojibake")
 
 
 def create_session(handle: str, password: str) -> tuple[str, str]:
