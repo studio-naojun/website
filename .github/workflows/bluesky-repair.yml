@@ -1,0 +1,44 @@
+name: NAOJUN Bluesky One-Time Repair
+
+on:
+  workflow_dispatch:
+    inputs:
+      fix_posts:
+        description: "Repair the two verified 2026-10-18 corrupt posts in-place"
+        type: boolean
+        default: false
+      set_avatar:
+        description: "Set the official NAOJUN logo avatar if currently missing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: naojun-bluesky-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: inputs.fix_posts || inputs.set_avatar
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify source and target image without credentials
+        run: python scripts/bluesky_repair.py --dry-run
+      - name: Bounded Bluesky account repair
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          FIX_POSTS: ${{ inputs.fix_posts }}
+          SET_AVATAR: ${{ inputs.set_avatar }}
+        run: |
+          args=()
+          if [ "$FIX_POSTS" = "true" ]; then args+=(--fix-posts); fi
+          if [ "$SET_AVATAR" = "true" ]; then args+=(--set-avatar); fi
+          python scripts/bluesky_repair.py "${args[@]}"
