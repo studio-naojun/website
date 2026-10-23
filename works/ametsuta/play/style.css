@@ -1,0 +1,30 @@
+﻿:root{font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;color:#F0F3E7;background:#102F36;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;overscroll-behavior:none;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+main{position:relative;margin:auto;width:min(100vw,500px);height:100dvh;overflow:hidden;background:#102F36;isolation:isolate}
+main::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(180deg,#D6B08A12 0%,transparent 24%,transparent 72%,#071C2024 100%);mix-blend-mode:screen}
+canvas{width:100%;height:100%;display:block;touch-action:none;outline:none}
+header{position:absolute;z-index:2;top:max(18px,calc(env(safe-area-inset-top,0px) + 8px));left:max(22px,calc(env(safe-area-inset-left,0px) + 8px));right:max(22px,calc(env(safe-area-inset-right,0px) + 8px));display:flex;justify-content:space-between;pointer-events:none;letter-spacing:.16em;font-size:12px;text-shadow:0 1px 10px #071A1F7A}
+header>span{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:15px;letter-spacing:.12em}
+header>span small{font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif}
+header div{text-align:right;letter-spacing:0;font-size:11px;font-variant-numeric:tabular-nums}
+strong{font-size:31px;font-weight:540;line-height:1.05;letter-spacing:-.025em}
+small{display:block;font-size:9px;letter-spacing:.16em;color:#B7C8BF;margin-top:6px}
+#pb{font-size:10px;letter-spacing:.04em}
+#pb.pb-emphasis{color:#E0F4E8}
+#gameover{position:absolute;z-index:3;left:50%;top:57%;width:min(72%,270px);transform:translate(-50%,-50%);padding:16px 6px 14px;text-align:center;pointer-events:none;text-shadow:0 2px 16px #06181FB8}
+#gameover::before,#gameover::after{content:"";display:block;width:56px;height:1px;margin:0 auto;background:#DCE9D657}
+#gameover::before{margin-bottom:14px}
+#gameover::after{margin-top:14px}
+#gameover small{margin:0 0 8px;color:#C8D8D0;font-size:9px;font-weight:650;letter-spacing:.28em}
+#gameover strong{display:block;font-size:50px;font-weight:520;line-height:.96;letter-spacing:-.045em;color:#F5F1DF;font-variant-numeric:tabular-nums}
+#gameover span{display:block;margin-top:10px;color:#C8D8D0;font-size:10px;font-weight:560;letter-spacing:.12em}
+#gameover #record-status.new-record{color:#A5E7CE;letter-spacing:.16em}
+#gameover #record-gap{margin-top:5px;color:#93ABA3;font-size:9px;letter-spacing:.1em}
+#gameover em{display:block;margin-top:17px;color:#9FB6AE;font-size:9px;font-style:normal;font-weight:560;letter-spacing:.18em}
+footer{position:absolute;z-index:2;bottom:max(18px,calc(env(safe-area-inset-bottom,0px) + 8px));left:max(22px,calc(env(safe-area-inset-left,0px) + 8px));right:max(22px,calc(env(safe-area-inset-right,0px) + 8px));font-size:11px;line-height:1.75;color:#C9D6CF;pointer-events:none;text-shadow:0 1px 10px #071A1F85}
+footer p{margin:4px 0}
+#save{position:absolute;z-index:2;top:max(82px,calc(env(safe-area-inset-top,0px) + 72px));left:max(22px,calc(env(safe-area-inset-left,0px) + 8px));right:max(22px,calc(env(safe-area-inset-right,0px) + 8px));font-size:11px;pointer-events:none;color:#B7C8BF}
+/* Preserve the original measurable box and accessible copy when visually suppressed. */
+.visually-hidden{clip-path:inset(50%);overflow:hidden}
+@media(max-height:650px){strong{font-size:26px}footer{font-size:10px}}
