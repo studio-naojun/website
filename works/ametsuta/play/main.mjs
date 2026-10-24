@@ -1,4 +1,5 @@
-import {Game, clamp, CONTACT_MS, PLATFORM_WIDTH_SCALE} from './core.mjs';
+import {Game, clamp, CONTACT_MS, PLATFORM_WIDTH_SCALE} from './core.mjs?v=20261024-resultcopy-r3';
+import {createWorld, resizeWorld, drawWorld} from './world.mjs?v=20261024-resultcopy-r3';
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -7,6 +8,8 @@ const saveEl = document.querySelector('#save');
 const gameoverEl = document.querySelector('#gameover'), gameoverCauseEl = document.querySelector('#gameover-cause');
 const runResultEl = document.querySelector('#run-result'), recordStatusEl = document.querySelector('#record-status');
 const recordGapEl = document.querySelector('#record-gap');
+const endingTitleEl = document.querySelector('#ending-title'), endingCopyEl = document.querySelector('#ending-copy');
+const retryButton = document.querySelector('#retry-button');
 const params = new URLSearchParams(location.search);
 const seed = Number(params.get('seed') ?? crypto.getRandomValues(new Uint32Array(1))[0]) >>> 0;
 let pb = 0;
@@ -20,7 +23,7 @@ let lastFrame = performance.now(), stalls = [], lastSaved = pb;
 const hint = document.querySelector('footer'), brand = document.querySelector('header > span');
 const hud = document.querySelector('header'), reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const visual = {
-  run: game.runIndex, phase: game.phase, hintDismissed: false, pbAt: null, dewAt: null,
+  run: game.runIndex, phase: game.phase, hintDismissed: false, pbAt: null, dewAt: null, bestAt: null,
   runPbStart: game.pb
 };
 const ambientVisual = {rainLull: 0, gust: 0, bird: 0, light: 0};
@@ -30,18 +33,52 @@ const contact = {
   fromX: 0, fromY: 0, leafX: 0, leafY: 0, width: 0, r: 0, quality: 'normal', edgeRatio: 0
 };
 const support = {x: game.pivot.x, y: game.pivot.y, width: game.width};
+// Renderer-only history of this run: the vines already grown and leaves left behind.
+const trail = {vines: [], leaves: []}, pastView = {};
 const active = {}, following = {}, settled = {}, supportView = {}, tip = {x: 0, y: 0};
 const layout = {hint: {}, brand: {}, hud: {}};
 const audio = {
   ctx: null, master: null, sfx: null, music: null, noise: null, supported: true, unlocked: false,
   lastCue: null, cueCount: 0, missRelease: null, musicTimer: null, musicStep: 0,
   growOsc: null, growGain: null, growNoise: null, growNoiseGain: null, growFilter: null,
-  growPitchHz: 88, growFilterHz: 480
+  growPitchHz: 88, growFilterHz: 480, rainGain: null, windGain: null, windFilter: null, birdOn: false
 };
 const GROW_AUDIO_WORLD_REF = 80;
-let mist, afterglow, lowMist, vignette, rainbreak;
+const RESULT_REVEAL_MS = 900;
+let vignette;
+const world = createWorld();
 const sx = x => w / 2 + x * scale;
 const sy = y => h * .64 - (y - game.camera) * scale;
+function endingFor(meters) {
+  if (meters < 5) return {
+    title: '雨は、まだ降っている。',
+    copy: '巫女は谷へ落ち、そのまま戻らなかった。里の者は夜まで山を探した。'
+  };
+  if (meters < 15) return {
+    title: '赤い布だけが見つかった。',
+    copy: '翌朝、谷の木の枝に引っかかっていた。巫女の行方は、とうとうわからなかった。'
+  };
+  if (meters < 30) return {
+    title: 'その夜、雨が少し弱まった。',
+    copy: 'ほんのひととき、雲が切れた。巫女のおかげだと言う者もいた。'
+  };
+  if (meters < 50) return {
+    title: '東の空が、晴れた。',
+    copy: '巫女が帰らぬまま、幾日も続いた長雨はその朝にやんだ。'
+  };
+  if (meters < 75) return {
+    title: '長い雨の季節が、終わった。',
+    copy: '山で巫女を見た者はいない。ただ、雲の切れ間に赤い布を見たという話が残った。'
+  };
+  if (meters < 100) return {
+    title: '巫女は、天女になったという。',
+    copy: '里ではいつからか、そう語られている。雨上がりの祭りでは、今もその名を呼ぶ。'
+  };
+  return {
+    title: 'どんな雨も、必ず上がるようになった。',
+    copy: '巫女が帰ってきたという話はない。今でも雨上がりの空に、ときおり赤い布が見えるという。'
+  };
+}
 function measureBox(el, out, origin) {
   const r = el.getBoundingClientRect();
   Object.assign(out, {x: r.left - origin.left, y: r.top - origin.top, w: r.width, h: r.height});
@@ -54,19 +91,9 @@ function resize() {
   if (canvas.width !== bw) canvas.width = bw;
   if (canvas.height !== bh) canvas.height = bh;
   scale = Math.max(.1, Math.min(w / 120, (h - 190) / 155));
-  mist = ctx.createRadialGradient(w * .72, h * .26, 0, w * .72, h * .26, w * .8);
-  mist.addColorStop(0, '#CFE2D724'); mist.addColorStop(.42, '#8FB9AD0E'); mist.addColorStop(1, '#B7D0C300');
-  afterglow = ctx.createRadialGradient(w * .62, h * .06, 0, w * .62, h * .06, Math.max(w, h) * .72);
-  afterglow.addColorStop(0, '#E6B48D1C'); afterglow.addColorStop(.3, '#C9957710'); afterglow.addColorStop(1, '#C9957700');
-  lowMist = ctx.createRadialGradient(w * .15, h * .72, 0, w * .15, h * .72, Math.max(w, h) * .56);
-  lowMist.addColorStop(0, '#A9CEC515'); lowMist.addColorStop(.5, '#7AA79F09'); lowMist.addColorStop(1, '#7AA79F00');
+  resizeWorld(world, w, h);
   vignette = ctx.createRadialGradient(w * .5, h * .48, Math.min(w, h) * .18, w * .5, h * .48, Math.max(w, h) * .72);
   vignette.addColorStop(.42, '#081F2400'); vignette.addColorStop(1, '#081F2433');
-  rainbreak = ctx.createRadialGradient(w * .78, h * .15, 0, w * .78, h * .15, Math.max(110, w * .42));
-  rainbreak.addColorStop(0, '#FFF0D28A');
-  rainbreak.addColorStop(.12, '#EEC99B54');
-  rainbreak.addColorStop(.38, '#D9AA7B24');
-  rainbreak.addColorStop(1, '#D9AA7B00');
   // Hidden text keeps its layout box; no layout reads in the animation loop.
   measureBox(hint, layout.hint, rect); measureBox(brand, layout.brand, rect); measureBox(hud, layout.hud, rect);
 }
@@ -120,6 +147,14 @@ function leaf(l, alpha, dent, delta, age, hasNext, miss) {
   const A = Math.abs(delta) < 1e-9 ? 0 : Math.min(1.25, .16 * l.half, .35 * Math.abs(delta) * scale);
   const flex = A * E, depth = Math.max(0, l.depth - dent + Math.sign(delta) * flex);
   const narrow = delta < 0 ? 1 - Math.min(.06, flex / Math.max(l.half, 1)) : 1;
+  // A curled petiole sits wholly below the catch rim.
+  ctx.save();
+  const stemX = l.x + .38 * l.half * narrow, stemY = l.y + depth - .5;
+  ctx.globalAlpha = alpha * .9; ctx.strokeStyle = '#2A5443'; ctx.lineWidth = 1.3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(stemX, stemY);
+  ctx.bezierCurveTo(stemX + 2, stemY + 5, stemX + 7, stemY + 6, stemX + 7.5, stemY + 10);
+  ctx.quadraticCurveTo(stemX + 7.6, stemY + 13, stemX + 5, stemY + 12.4); ctx.stroke();
+  ctx.restore();
   ctx.save(); ctx.globalAlpha = alpha; outline(l, depth, narrow);
   const leafGrad = ctx.createLinearGradient(l.x, l.y, l.x, l.y + depth);
   leafGrad.addColorStop(0, '#6FAE78');
@@ -142,6 +177,19 @@ function leaf(l, alpha, dent, delta, age, hasNext, miss) {
   }
   ctx.fillStyle = '#9CC69A'; ctx.globalAlpha = alpha * (.4 + (delta > 0 ? .12 * E : 0));
   ctx.beginPath(); ctx.ellipse(l.x - .24 * l.half, l.y + .29 * depth, .39 * l.half, .12 * depth, -.08, 0, Math.PI * 2); ctx.fill();
+  // Midrib toward the stem, a cool wet underside edge, and two static rain beads.
+  ctx.strokeStyle = '#1D4537'; ctx.globalAlpha = alpha * .4; ctx.lineWidth = .8;
+  ctx.beginPath(); ctx.moveTo(l.x - .86 * l.half, l.y + .14 * depth);
+  ctx.quadraticCurveTo(l.x - .1 * l.half, l.y + .5 * depth, l.x + .38 * l.half * narrow, l.y + depth); ctx.stroke();
+  ctx.strokeStyle = '#A8D8CF'; ctx.globalAlpha = alpha * .3; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(l.x - .62 * l.half * narrow, l.y + .72 * depth);
+  ctx.quadraticCurveTo(l.x - .1 * l.half, l.y + 1.02 * depth, l.x + .3 * l.half * narrow, l.y + .96 * depth); ctx.stroke();
+  const bead = Math.abs(Math.sin(l.x * 12.9898)) * .5;
+  ctx.fillStyle = '#E4F6EE';
+  for (const [bx, by, br] of [[.18 + bead * .5, .5, 1.05], [-.5 + bead * .4, .62, .8]]) {
+    ctx.globalAlpha = alpha * .5;
+    ctx.beginPath(); ctx.arc(l.x + bx * l.half, l.y + by * depth, br, 0, Math.PI * 2); ctx.fill();
+  }
   ctx.restore(); rim(l, alpha);
 }
 function droplet(l, alpha = 1, squash = 1) {
@@ -244,6 +292,7 @@ function activateAudio() {
   audio.unlocked = true;
   startMusic();
   setupGrowSound();
+  setupAmbience();
 }
 function musicTone(freq, duration, gain, offset = 0, type = 'sine') {
   if (!audio.ctx || !audio.music || audio.ctx.state !== 'running') return;
@@ -286,6 +335,35 @@ function setupGrowSound() {
   noise.connect(filter); filter.connect(ng); ng.connect(audio.sfx);
   osc.start(); noise.start();
   Object.assign(audio, {growOsc: osc, growGain: gain, growNoise: noise, growNoiseGain: ng, growFilter: filter});
+}
+function setupAmbience() {
+  if (!audio.ctx || !audio.sfx || audio.rainGain) return;
+  // Two filtered noise beds follow the scenery only: rain below, wind above.
+  const make = (type, freq, q) => {
+    const src = audio.ctx.createBufferSource(), filter = audio.ctx.createBiquadFilter(), gain = audio.ctx.createGain();
+    src.buffer = audio.noise; src.loop = true; src.playbackRate.value = .5 + Math.random() * .1;
+    filter.type = type; filter.frequency.value = freq; filter.Q.value = q; gain.gain.value = .0001;
+    src.connect(filter); filter.connect(gain); gain.connect(audio.master); src.start();
+    return {filter, gain};
+  };
+  const rain = make('bandpass', 2600, .45), wind = make('lowpass', 380, .7);
+  Object.assign(audio, {rainGain: rain.gain, windGain: wind.gain, windFilter: wind.filter});
+}
+function updateAmbience(scene) {
+  if (!audio.ctx || audio.ctx.state !== 'running' || !audio.rainGain) return;
+  const t = audio.ctx.currentTime, open = 1 - scene.forest;
+  audio.rainGain.gain.setTargetAtTime(.0001 + .00875 * scene.rain * (1 - .7 * scene.rainLull), t, .5);
+  audio.windGain.gain.setTargetAtTime(.0001 + .05 + .2 * open + .14 * scene.gust, t, .4);
+  audio.windFilter.frequency.setTargetAtTime(300 + 260 * open + 240 * scene.gust, t, .5);
+  if (scene.bird > .06 && !audio.birdOn) {
+    audio.birdOn = true;
+    for (let i = 0; i < 3; i++) birdCall(.35 + i * (.22 + Math.random() * .2));
+  } else if (scene.bird < .02) audio.birdOn = false;
+}
+function birdCall(offset) {
+  const f = 2300 + Math.random() * 900;
+  tone(f, f * 1.35, .07, .012, 'sine', offset);
+  tone(f * 1.2, f * .9, .09, .009, 'sine', offset + .08);
 }
 function updateGrowSound() {
   if (!audio.ctx || audio.ctx.state !== 'running' || !audio.growGain) return;
@@ -338,6 +416,8 @@ function cue(kind) {
     tone(740, 1040, .16, .085, 'sine');
     tone(1110, 1450, .2, .055, 'sine', .045);
     tone(1660, 1810, .12, .025, 'sine', .09);
+  } else if (kind === 'best') {
+    for (const [i, f] of [587.33, 739.99, 880, 1174.66].entries()) tone(f, f * 1.01, .5, .04 - i * .006, 'sine', .07 + i * .075);
   } else if (kind === 'miss') {
     tone(145, 78, .18, .06, 'triangle'); air(.09, .02, 450);
   }
@@ -463,165 +543,68 @@ function landingAccent(l, age, quality, side = 0) {
   }
   ctx.restore();
 }
-function edgeLeaf(x, y, rx, ry, angle, alpha, flip = 1) {
-  ctx.save();
-  ctx.translate(x, y); ctx.rotate(angle); ctx.scale(flip, 1); ctx.globalAlpha = alpha;
-  const g = ctx.createLinearGradient(-rx, -ry, rx, ry);
-  g.addColorStop(0, '#173C3A'); g.addColorStop(.55, '#0E2D31'); g.addColorStop(1, '#081E24');
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.moveTo(-rx, 0);
-  ctx.bezierCurveTo(-rx * .38, -ry, rx * .48, -ry * .72, rx, 0);
-  ctx.bezierCurveTo(rx * .42, ry * .92, -rx * .38, ry * .78, -rx, 0);
-  ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = 'rgba(145,188,160,.26)'; ctx.lineWidth = .8;
-  ctx.beginPath(); ctx.moveTo(-rx * .72, 0); ctx.lineTo(rx * .78, 0); ctx.stroke();
-  ctx.restore();
-}
-function ambientHash(n) {
-  let x = (n ^ game.seed) >>> 0;
-  x = Math.imul(x ^ (x >>> 16), 0x45D9F3B);
-  x = Math.imul(x ^ (x >>> 16), 0x45D9F3B);
-  return ((x ^ (x >>> 16)) >>> 0) / 4294967296;
-}
-function ambientEvent(at, channel, slotMs, durationMin, durationSpan) {
-  const slot = Math.floor(at / slotMs);
-  let best = {strength: 0, progress: 0, slot: -1};
-  for (let s = slot - 1; s <= slot; s++) {
-    if (s < 0) continue;
-    const base = s * slotMs;
-    const h1 = ambientHash((channel + 1) * 0x9E3779B9 ^ s);
-    const h2 = ambientHash((channel + 7) * 0x85EBCA6B ^ s);
-    const start = base + slotMs * (.08 + .58 * h1);
-    const duration = durationMin + durationSpan * h2;
-    const u = (at - start) / duration;
-    if (u > 0 && u < 1) {
-      const strength = Math.sin(Math.PI * u) ** 2;
-      if (strength > best.strength) best = {strength, progress: u, slot: s};
+function drawTrail() {
+  ctx.save(); ctx.lineCap = 'round';
+  for (const p of trail.leaves) {
+    const fade = 1 - smooth((game.pivot.y - p.y) / 420), y = sy(p.y);
+    if (fade <= 0 || y > h + 40) continue;
+    project(pastView, p, p.width);
+    ctx.globalAlpha = .3 * fade; ctx.fillStyle = '#21463C';
+    outline(pastView, pastView.depth * .8); ctx.fill();
+  }
+  for (const v of trail.vines) {
+    const fade = 1 - smooth((game.pivot.y - v.fromY) / 480);
+    const px = sx(v.fromX), py = sy(v.fromY), tx = sx(v.x), ty = sy(v.y);
+    if (fade <= 0 || Math.min(py, ty) > h + 20) continue;
+    ctx.globalAlpha = .4 * fade; ctx.strokeStyle = '#2E5A44'; ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tx, ty); ctx.stroke();
+    const dx = tx - px, dy = ty - py, len = Math.hypot(dx, dy) || 1, nx = -dy / len, ny = dx / len;
+    ctx.fillStyle = '#4C7F5C';
+    for (const [f, side] of [[.34, 1], [.68, -1]]) {
+      ctx.beginPath();
+      ctx.ellipse(px + dx * f + nx * side * 2.6, py + dy * f + ny * side * 2.6, 2.6, 1.15, Math.atan2(dy, dx) + side * .6, 0, Math.PI * 2);
+      ctx.fill();
     }
   }
-  return best;
+  ctx.restore();
 }
-function drawBirdPass(at, event) {
-  if (event.strength <= .001) return;
-  const {strength, progress, slot} = event;
-  const dir = ambientHash(0x51ED270B ^ slot) < .5 ? 1 : -1;
-  const startX = dir > 0 ? -30 : w + 30;
-  const x = startX + dir * (w + 60) * progress;
-  const y = h * (.16 + .09 * ambientHash(0xA24BAED5 ^ slot));
+const fract = x => x - Math.floor(x);
+function landingSplash(age, quality, index) {
+  if (reduced.matches || age < 0 || age >= 340) return;
+  const cx = sx(contact.x), cy = sy(contact.y), t = age / 1000, fade = 1 - smooth(age / 340);
+  const side = Math.sign(contact.x - contact.leafX) || 1, n = quality === 'edge' ? 7 : 5;
   ctx.save();
-  ctx.globalAlpha = .28 * strength;
-  ctx.strokeStyle = '#0A2228';
-  ctx.lineWidth = 1.2;
-  ctx.lineCap = 'round';
-  for (let i = 0; i < 2; i++) {
-    const bx = x - dir * i * 18, by = y + i * 7;
-    const flap = Math.sin(at / 170 + i) * 2.2;
-    ctx.beginPath();
-    ctx.moveTo(bx - 6, by + flap);
-    ctx.quadraticCurveTo(bx, by - 4 - flap, bx + 6, by + flap);
-    ctx.stroke();
+  if (age < 260) {
+    const u = smooth(age / 260);
+    ctx.strokeStyle = 'rgba(206,238,228,' + (.5 * (1 - u)) + ')'; ctx.lineWidth = .9;
+    ctx.beginPath(); ctx.ellipse(cx, cy + 1, 4 + 12 * u, 1 + 1.6 * u, 0, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.fillStyle = quality === 'dew' ? '#C4F7EF' : '#D8EEE6';
+  for (let i = 0; i < n; i++) {
+    const r1 = fract(Math.sin((index + 1) * 78.233 + i * 12.9898) * 43758.5453);
+    const r2 = fract(Math.sin((index + 3) * 39.425 + i * 4.1414) * 24634.6345);
+    const bias = quality === 'edge' ? side * .55 : 0;
+    const a = -Math.PI / 2 + bias + (r1 - .5) * 2.2, v = 55 + 60 * r2;
+    const x = cx + Math.cos(a) * v * t, y = cy - 2 + Math.sin(a) * v * t + 260 * t * t;
+    ctx.globalAlpha = .8 * fade;
+    ctx.beginPath(); ctx.arc(x, y, .8 + .7 * r2, 0, Math.PI * 2); ctx.fill();
   }
   ctx.restore();
 }
-function drawLightPass(at, event) {
-  if (event.strength <= .001) return;
-  const {strength, progress, slot} = event;
-  const dir = ambientHash(0xC2B2AE35 ^ slot) < .5 ? 1 : -1;
-  const x = dir > 0 ? -w * .15 + progress * w * 1.3 : w * 1.15 - progress * w * 1.3;
-  ctx.save();
-  const g = ctx.createRadialGradient(x, h * .22, 0, x, h * .22, w * .38);
-  g.addColorStop(0, 'rgba(255,234,192,' + (.14 * strength) + ')');
-  g.addColorStop(.45, 'rgba(231,220,174,' + (.06 * strength) + ')');
-  g.addColorStop(1, 'rgba(231,220,174,0)');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, w, h * .55);
-  ctx.restore();
-}
-function drawBackdrop(at, altitude) {
-  const drift = reduced.matches ? 0 : Math.sin(at / 14000) * 3;
-  const pulse = reduced.matches ? 0 : Math.sin(at / 17000) * .04;
-  const forestFade = 1 - .62 * altitude;
-  const rainFade = 1 - .58 * altitude;
-  const rainLullEvent = reduced.matches ? {strength:0,progress:0,slot:-1} : ambientEvent(at, 1, 13000, 1600, 1100);
-  const gustEvent = reduced.matches ? {strength:0,progress:0,slot:-1} : ambientEvent(at, 2, 11000, 900, 900);
-  const birdEvent = reduced.matches ? {strength:0,progress:0,slot:-1} : ambientEvent(at, 3, 19000, 2200, 1400);
-  const lightEvent = reduced.matches ? {strength:0,progress:0,slot:-1} : ambientEvent(at, 4, 23000, 2600, 1800);
-  const rainLull = rainLullEvent.strength, gust = gustEvent.strength;
-  const bird = birdEvent.strength, light = lightEvent.strength;
-  Object.assign(ambientVisual, {rainLull, gust, bird, light});
-  ctx.save();
-
-  // Diffuse rainbreak light. Screen-space only, with no hard circular edge.
-  ctx.globalAlpha = .66 + .28 * altitude + pulse + .12 * rainLull + .1 * light;
-  ctx.fillStyle = rainbreak;
-  ctx.fillRect(0, 0, w, h * .48);
-  drawLightPass(at, lightEvent);
-
-  // Higher altitude gradually opens the sky without introducing world-space bands.
-  ctx.globalAlpha = .04 + .15 * altitude;
-  ctx.fillStyle = '#DDE7DC';
-  ctx.beginPath();
-  ctx.ellipse(w * .54, h * .18, w * (.34 + .08 * altitude), h * .12, -.08, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalAlpha = .025 + .10 * altitude;
-  ctx.fillStyle = '#F0D0A9';
-  ctx.beginPath();
-  ctx.ellipse(w * .78, h * .08, w * .22, h * .08, .05, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Far forest layer: softer and lighter, clearly distinct from the foreground.
-  ctx.globalAlpha = .34 * (.72 + .28 * forestFade);
-  ctx.fillStyle = '#335C56';
-  ctx.beginPath();
-  ctx.moveTo(0, h); ctx.lineTo(0, h * .42);
-  ctx.bezierCurveTo(w * .06, h * .39, w * .1, h * .46, w * .15, h * .48);
-  ctx.bezierCurveTo(w * .21, h * .5, w * .22, h * .58, w * .3, h * .6);
-  ctx.bezierCurveTo(w * .34, h * .65, w * .29, h * .78, w * .34, h);
-  ctx.closePath(); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(w, h); ctx.lineTo(w, h * .34);
-  ctx.bezierCurveTo(w * .94, h * .37, w * .91, h * .45, w * .86, h * .48);
-  ctx.bezierCurveTo(w * .8, h * .53, w * .81, h * .61, w * .73, h * .64);
-  ctx.bezierCurveTo(w * .69, h * .7, w * .75, h * .8, w * .68, h);
-  ctx.closePath(); ctx.fill();
-
-  // Near forest layer: darker, taller, and more defined.
-  ctx.globalAlpha = .5 * forestFade;
-  ctx.fillStyle = '#102F31';
-  ctx.beginPath();
-  ctx.moveTo(0, h); ctx.lineTo(0, h * .57);
-  ctx.bezierCurveTo(w * .08, h * .51, w * .12, h * .59, w * .18, h * .61);
-  ctx.bezierCurveTo(w * .25, h * .65, w * .2, h * .76, w * .27, h);
-  ctx.closePath(); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(w, h); ctx.lineTo(w, h * .5);
-  ctx.bezierCurveTo(w * .94, h * .49, w * .88, h * .57, w * .83, h * .61);
-  ctx.bezierCurveTo(w * .76, h * .67, w * .82, h * .78, w * .74, h);
-  ctx.closePath(); ctx.fill();
-
-  // Authored pointed leaf silhouettes instead of flat ellipses.
-  const gustSway = gust * Math.sin(at / 125) * .095;
-  const sway = reduced.matches ? 0 : Math.sin(at / 9000) * .035 + gustSway;
-  edgeLeaf(8, h * .18 + drift, 29, 10, .35 + sway, .72 * forestFade, 1);
-  edgeLeaf(20, h * .31 - drift, 24, 9, -.26 + sway, .6 * forestFade, 1);
-  edgeLeaf(5, h * .47 + drift, 31, 11, .16 - sway, .67 * forestFade, 1);
-  edgeLeaf(w - 8, h * .22 - drift, 28, 10, -.32 - sway, .7 * forestFade, -1);
-  edgeLeaf(w - 18, h * .4 + drift, 25, 9, .28 - sway, .6 * forestFade, -1);
-  edgeLeaf(w - 4, h * .58 - drift, 32, 12, -.12 + sway, .68 * forestFade, -1);
-
-  // Sparse diagonal rain: deliberately irregular, atmospheric, and not gameplay-timed.
-  if (!reduced.matches) {
-    const rainStrength = rainFade * (1 - .74 * rainLull);
-    ctx.strokeStyle = 'rgba(215,241,235,' + (.17 * rainStrength) + ')'; ctx.lineWidth = .9;
-    for (let i = 0; i < 18; i++) {
-      const speed = 13 + (i % 5) * 4;
-      const x = ((i * 67 + at * .018 * speed) % (w + 120)) - 60;
-      const y = ((i * 113 + at * .026 * speed) % (h + 160)) - 80;
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 7, y + 24); ctx.stroke();
-    }
+function bestMotes(at) {
+  const age = visual.bestAt === null ? Infinity : at - visual.bestAt;
+  if (reduced.matches || age < 0 || age >= 1100) return;
+  const cx = sx(game.pivot.x), cy = sy(game.pivot.y), u = age / 1100;
+  ctx.save(); ctx.fillStyle = '#F6DFA8';
+  for (let i = 0; i < 10; i++) {
+    const a = i / 10 * Math.PI * 2 + u * 1.4, rad = 10 + 16 * smooth(u) + (i % 3) * 3;
+    ctx.globalAlpha = .85 * (1 - smooth(u)) * (i % 2 ? .7 : 1);
+    ctx.beginPath(); ctx.arc(cx + Math.cos(a) * rad, cy - 14 - 34 * smooth(u) * (.6 + .4 * (i % 4) / 3) + Math.sin(a) * rad * .45, 1 + (i % 2) * .5, 0, Math.PI * 2);
+    ctx.fill();
   }
-  drawBirdPass(at, birdEvent);
+  const halo = ctx.createRadialGradient(cx, cy - 14, 0, cx, cy - 14, 46);
+  halo.addColorStop(0, 'rgba(255,226,170,' + (.3 * (1 - smooth(u))) + ')'); halo.addColorStop(1, 'rgba(255,226,170,0)');
+  ctx.globalAlpha = 1; ctx.fillStyle = halo; ctx.fillRect(cx - 46, cy - 60, 92, 92);
   ctx.restore();
 }
 function drawBestMarker(at, hasNext) {
@@ -641,10 +624,11 @@ function drawBestMarker(at, hasNext) {
       ctx.restore();
     }
   }
-  const newBestAge = visual.pbAt === null ? Infinity : at - visual.pbAt;
-  const newBestVisible = newBestAge >= 0 && newBestAge < 760;
+  // Acknowledge passing the run-start best once, not on every later landing.
+  const newBestAge = visual.bestAt === null ? Infinity : at - visual.bestAt;
+  const newBestVisible = newBestAge >= 0 && newBestAge < 1200;
   if (newBestVisible) {
-    const fade = reduced.matches ? 1 : 1 - smooth(newBestAge / 760);
+    const fade = reduced.matches ? 1 : 1 - smooth((newBestAge - 500) / 700);
     ctx.save();
     ctx.globalAlpha = fade;
     ctx.textAlign = 'center';
@@ -749,17 +733,22 @@ let rendered = {}, lastDrawAt = 0;
 function draw(at) {
   lastDrawAt = at;
   if (visual.run !== game.runIndex) {
-    preview.valid = false; contact.active = false; visual.pbAt = null;
+    preview.valid = false; contact.active = false; visual.pbAt = null; visual.bestAt = null;
+    trail.vines.length = 0; trail.leaves.length = 0;
     visual.run = game.runIndex; visual.runPbStart = game.pb;
     Object.assign(support, {x: game.pivot.x, y: game.pivot.y, width: game.width});
   }
   if (game.phase === 'GROW') contact.active = false;
   game.advance(at);
   updateGrowSound();
+  updateAmbience(world.info.rain === undefined ? {forest: 1, rain: 1, rainLull: 0, gust: 0, bird: 0} : world.info);
   const phase = game.phase, index = game.index, run = game.runIndex, oldPB = game.pb, g = game.geom;
   const hasNext = phase === 'TOPPLE', elapsed = hasNext ? at - game.releaseAt : 0;
   const terminal = hasNext && elapsed >= CONTACT_MS && game.pending.success;
   const miss = hasNext && !game.pending.success && (game.length < g.h || elapsed >= CONTACT_MS);
+  const fallAge = miss && game.missVisibleAt !== null ? Math.max(0, at - game.missVisibleAt) : 0;
+  const resultReady = miss && game.missVisibleAt !== null &&
+    fallAge >= (reduced.matches ? 420 : RESULT_REVEAL_MS);
   const dewUseful = game.width < game.target.base * PLATFORM_WIDTH_SCALE * .995;
   const terminalLandingQuality = terminal ?
     classifyLanding(game.pending.offset, game.width, game.pending.droplet && dewUseful) : null;
@@ -805,19 +794,13 @@ function draw(at) {
   project(supportView, {x: support.x, y: support.y}, support.width, 0);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const a = 1 - Math.exp(-Math.max(0, game.camera) / 650);
-  const bg = ctx.createLinearGradient(0, 0, w, h);
-  bg.addColorStop(0, `rgb(${15 + 34 * a} ${43 + 35 * a} ${52 + 28 * a})`);
-  bg.addColorStop(.48, `rgb(${24 + 22 * a} ${61 + 24 * a} ${66 + 18 * a})`);
-  bg.addColorStop(1, `rgb(${35 + 10 * a} ${73 + 10 * a} ${71 + 14 * a})`);
-  ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-  ctx.globalAlpha = .76 + .2 * a; ctx.fillStyle = afterglow; ctx.fillRect(0, 0, w, h);
-  ctx.globalAlpha = 1 - .34 * a; ctx.fillStyle = mist; ctx.fillRect(0, 0, w, h);
-  ctx.globalAlpha = .7 - .34 * a; ctx.fillStyle = lowMist; ctx.fillRect(0, 0, w, h);
+  const scenery = drawWorld(ctx, world, {at, camera: game.camera, scale, seed: game.seed, reduced: reduced.matches});
+  Object.assign(ambientVisual, {rainLull: scenery.rainLull, gust: scenery.gust, bird: scenery.bird, light: scenery.light});
   ctx.globalAlpha = 1; ctx.fillStyle = vignette; ctx.fillRect(0, 0, w, h);
-  drawBackdrop(at, a);
   // The current foothold persists for the whole turn. Miko and the next vine
   // share the exact contact pivot on this visible leaf.
   const supportDent = settling ? settleDent(age, contact.quality) : 0;
+  drawTrail();
   leaf(supportView, 1, supportDent, 0, -1, false, false);
   vine();
   if (settling) {
@@ -844,7 +827,22 @@ function draw(at) {
     ctx.fillStyle = settling ? '#7EAE80' : '#659766'; ctx.globalAlpha = settling ? .85 : .7; ctx.beginPath();
     ctx.ellipse(sx(tip.x), sy(tip.y) + 3, 4, 1.2 + flex, -.1, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
   }
-  miko(angle, age, collected, terminal, miss, elapsed);
+  if (phase === 'WAIT' && contact.active && contact.index === index) landingSplash(age, contact.quality, index);
+  if (miss && game.missVisibleAt !== null) {
+    if (!reduced.matches) {
+      const fallY = Math.min(h + 180, .00072 * fallAge * fallAge);
+      const fallX = Math.sin(fallAge / 170) * Math.min(18, fallAge * .018);
+      if (sy(tip.y) + fallY < h + 90) {
+        ctx.save();
+        ctx.translate(fallX, fallY);
+        miko(angle, age, collected, terminal, true, elapsed);
+        ctx.restore();
+      }
+    }
+  } else {
+    miko(angle, age, collected, terminal, miss, elapsed);
+  }
+  bestMotes(at);
   drawDiagonalGrowAccent(at, diagonalGrow);
   if (!reduced.matches && settling && contact.reward && age < 90) {
     ctx.globalAlpha = 1 - age / 90; ctx.fillStyle = '#E0F4E8';
@@ -854,6 +852,13 @@ function draw(at) {
   ctx.restore();
   // Decoration is clipped, so authoritative surfaces need no second alpha composite.
   vine(true);
+  if (resultReady) {
+    // Settle the world behind the result so the numbers read at a glance.
+    const k = reduced.matches ? 1 : smooth(clamp((fallAge - RESULT_REVEAL_MS * .6) / (RESULT_REVEAL_MS * .4), 0, 1));
+    const scrim = ctx.createRadialGradient(w / 2, h * .57, 0, w / 2, h * .57, Math.max(w, h) * .6);
+    scrim.addColorStop(0, 'rgba(5,17,22,' + (.46 * k) + ')'); scrim.addColorStop(1, 'rgba(5,17,22,' + (.14 * k) + ')');
+    ctx.fillStyle = scrim; ctx.fillRect(0, 0, w, h);
+  }
   const bestMarker = drawBestMarker(at, hasNext);
   if (miss && audio.missRelease !== game.releaseAt) {
     audio.missRelease = game.releaseAt;
@@ -864,15 +869,22 @@ function draw(at) {
   brand.classList.toggle('visually-hidden', overlapsPlay(layout.brand, hasNext));
   heightEl.textContent = (game.height / 10).toFixed(1); pbEl.textContent = 'PB ' + (game.pb / 10).toFixed(1) + ' m';
   pbEl.classList.toggle('pb-emphasis', !reduced.matches && visual.pbAt !== null && at - visual.pbAt < 240);
-  gameoverEl.hidden = !gameOver;
-  if (gameOver) {
+  gameoverEl.hidden = !resultReady;
+  if (resultReady) {
     const runMeters = game.height / 10, pbMeters = game.pb / 10;
     const newRecord = game.height > visual.runPbStart + 1e-9;
     const tiedBest = !newRecord && game.pb > 0 && Math.abs(game.height - game.pb) < 1e-9;
+    const ending = endingFor(runMeters);
     gameoverCauseEl.textContent = game.pending?.reason === '短い' ? 'TOO SHORT' : 'TOO LONG';
     runResultEl.textContent = runMeters.toFixed(1) + ' m';
+    endingTitleEl.textContent = ending.title;
+    endingCopyEl.textContent = ending.copy;
+    recordStatusEl.hidden = false;
     recordStatusEl.classList.toggle('new-record', newRecord);
-    if (newRecord) {
+    if (pbMeters <= 0 && runMeters <= 0) {
+      recordStatusEl.hidden = true;
+      recordGapEl.hidden = true;
+    } else if (newRecord) {
       recordStatusEl.textContent = 'NEW BEST';
       recordGapEl.hidden = true;
     } else if (tiedBest) {
@@ -898,8 +910,10 @@ function draw(at) {
         Math.abs(game.pivot.y - support.y) <= 1e-9,
       diagonalGrowTurn: diagonalGrow.active, diagonalGrowSlot: diagonalGrow.slot,
       diagonalGrowAngle: diagonalGrow.active ? diagonalGrow.angle : 0,
-      ambient: {...ambientVisual},
+      ambient: {...ambientVisual}, scenery: {...scenery},
       bestMarkerVisible: bestMarker.markerVisible, newBestVisible: bestMarker.newBestVisible, altitudeMood: a,
+      trailVines: trail.vines.length, trailLeaves: trail.leaves.length, resultScrim: resultReady,
+      mikoFalling: miss && game.missVisibleAt !== null, fallAge, resultVisible: resultReady,
       hintDismissed: visual.hintDismissed, reducedMotion: reduced.matches}};
   game.painted(at);
   if (game.runIndex === run && game.index !== index) {
@@ -913,11 +927,21 @@ function draw(at) {
       leafX: landing?.leafX ?? game.pivot.x, leafY: landing?.leafY ?? game.pivot.y,
       width: landing?.width ?? game.width, r: landing?.r ?? 0,
       quality: landedQuality, edgeRatio: landing?.edgeRatio ?? 0});
-    if (landing) Object.assign(support, {x: landing.leafX, y: landing.leafY, width: landing.width});
+    if (landing) {
+      trail.leaves.push({...support});
+      trail.vines.push({fromX: landing.fromX, fromY: landing.fromY, x: landing.x, y: landing.y});
+      if (trail.leaves.length > 12) trail.leaves.shift();
+      if (trail.vines.length > 12) trail.vines.shift();
+      Object.assign(support, {x: landing.leafX, y: landing.leafY, width: landing.width});
+    }
     visual.dewAt = reward ? game.impactAt : null;
     cue(reward ? 'dew' : landedQuality === 'edge' ? 'land-edge' : landedQuality === 'clean' ? 'land-clean' : 'land');
     preview.valid = false;
     if (game.pb > oldPB) visual.pbAt = game.impactAt;
+    if (visual.bestAt === null && visual.runPbStart > 0 && game.height > visual.runPbStart + 1e-9) {
+      visual.bestAt = game.impactAt;
+      cue('best');
+    }
   }
   visual.phase = game.phase;
   if (game.pb !== lastSaved) {
@@ -928,6 +952,17 @@ function draw(at) {
 }
 
 function stamp(e) { return e.timeStamp > 1e12 ? e.timeStamp - performance.timeOrigin : e.timeStamp; }
+function resultVisible() {
+  return game.missVisibleAt !== null && !gameoverEl.hidden;
+}
+function blockResultBackgroundInput(e) {
+  if (!resultVisible() || e.target === retryButton || retryButton.contains(e.target)) return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+}
+document.addEventListener('pointerdown', blockResultBackgroundInput, true);
+document.addEventListener('pointerup', blockResultBackgroundInput, true);
+document.addEventListener('click', blockResultBackgroundInput, true);
 function releaseInput(at, cancel = false) {
   const releasingGrowth = game.phase === 'GROW' && !cancel;
   game.up(at, cancel);
@@ -935,7 +970,9 @@ function releaseInput(at, cancel = false) {
 }
 canvas.addEventListener('pointerdown', e => {
   if (pointer !== null || e.button !== 0) return;
-  e.preventDefault(); unlockAudio(); pointer = e.pointerId; canvas.setPointerCapture(pointer); game.down(stamp(e));
+  e.preventDefault();
+  if (game.missVisibleAt !== null) return;
+  unlockAudio(); pointer = e.pointerId; canvas.setPointerCapture(pointer); game.down(stamp(e));
 });
 function up(e, cancel = false) {
   if (e.pointerId !== pointer) return;
@@ -946,10 +983,30 @@ canvas.addEventListener('pointercancel', e => up(e, true));
 canvas.addEventListener('lostpointercapture', e => {
   if (e.pointerId === pointer) { pointer = null; releaseInput(stamp(e), true); }
 });
+retryButton.addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!resultVisible()) return;
+  pointer = null;
+  if (game.retry(stamp(e), 'result-button')) {
+    gameoverEl.hidden = true;
+    canvas.focus({preventScroll: true});
+  }
+});
 window.addEventListener('keydown', e => {
+  if (resultVisible()) {
+    if (e.target === retryButton && (e.code === 'Space' || e.code === 'Enter')) return;
+    e.preventDefault();
+    return;
+  }
   if (e.code === 'Space' && !e.repeat) { e.preventDefault(); unlockAudio(); game.down(stamp(e)); }
 });
 window.addEventListener('keyup', e => {
+  if (resultVisible()) {
+    if (e.target === retryButton && (e.code === 'Space' || e.code === 'Enter')) return;
+    e.preventDefault();
+    return;
+  }
   if (e.code === 'Space') { e.preventDefault(); releaseInput(stamp(e)); }
 });
 window.addEventListener('blur', () => { pointer = null; releaseInput(performance.now(), true); });
@@ -978,8 +1035,8 @@ Object.defineProperty(window, 'ametsutaV3', {value: Object.freeze({read: () => (
   rendered: structuredClone(rendered), stalls: structuredClone(stalls),
   audio: {
     supported: audio.supported, unlocked: audio.unlocked, lastCue: audio.lastCue, cueCount: audio.cueCount,
-    contextState: audio.ctx?.state ?? null, musicPlaying: Boolean(audio.musicTimer),
+    contextState: audio.ctx?.state ?? null, musicPlaying: Boolean(audio.musicTimer), ambienceReady: Boolean(audio.rainGain),
     growSoundReady: Boolean(audio.growOsc), growSoundActive: game.phase === 'GROW',
     growAudioWorldReference: GROW_AUDIO_WORLD_REF, growPitchHz: audio.growPitchHz, growFilterHz: audio.growFilterHz
   },
-  build: 'V3 R3.1 sensory finish'})})});
+  build: 'V3 R3.1 ascending world'})})});
