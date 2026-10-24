@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-17T11:50:36+09:00",
+  "updated_at": "2026-10-25T07:48:30+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-10-24",
+      "type": "weekly",
+      "published_at": "2026-10-24",
+      "title": "原油高とAI投資採算の再評価――米金利低下と株価の選別は何を示すか",
+      "summary": "S&P 500は週間-0.47%、Nasdaqは-0.71%の一方、Russell 2000は約+2%。米10年金利は5.09%から5.00%へ低下し、原油高とAI設備投資採算の再評価が重なった週を整理する。",
+      "path": "weekly/2026-10-24/",
+      "source_cycle": "investment-weekly-2026-10-24"
+    },
     {
       "id": "weekly-2026-10-17",
       "type": "weekly",
