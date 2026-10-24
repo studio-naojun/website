@@ -148,6 +148,7 @@
 .about-intro{display:grid;grid-template-columns:1fr 1fr;gap:100px;padding:0 0 80px;border-bottom:1px solid var(--rule)}
 .about-intro h1{font-size:36px;line-height:1.7;letter-spacing:-.06em;margin:0;font-weight:500}
 .about-intro p{font-size:14px;color:var(--quiet);line-height:2.1;margin:0 0 20px}
+.about-intro p a{color:var(--cobalt);text-decoration:underline;text-underline-offset:.2em}
 .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:42px;padding:55px 0 100px}
 .principle .mono{color:var(--cobalt)}
 .principle h2{font-size:21px;font-weight:500;margin:24px 0 15px}
