@@ -169,7 +169,6 @@ export class Game {
     this.plan = null;
     this.missVisibleAt = null;
     this.pending = null;
-    this.retryAt = null;
     this.buffered = false;
     this.impactAt = null;
   }
@@ -177,15 +176,26 @@ export class Game {
   get geom() { return geometry(this.pivot, this.target, this.width, this.index ? this.leaves[this.index - 1] : null); }
   down(at) {
     if (this.held) return;
+    if (this.missVisibleAt !== null && at >= this.missVisibleAt) return;
     this.held = true;
-    if (this.missVisibleAt !== null && at >= this.missVisibleAt) {
-      this.runIndex++;
-      this.seed = deriveRunSeed(this.baseSeed, this.runIndex);
-      this.reset();
-      this.retryAt = at;
-      this.begin(at);
-    } else if (this.phase === 'WAIT') this.begin(at);
+    if (this.phase === 'WAIT') this.begin(at);
     else if (this.phase === 'TOPPLE' && this.pending.success) this.buffered = true;
+  }
+  retry(at, source = '') {
+    if (source !== 'result-button') return false;
+    if (this.missVisibleAt === null || at < this.missVisibleAt) return false;
+    const previous = this.logs.at(-1);
+    this.runIndex++;
+    this.seed = deriveRunSeed(this.baseSeed, this.runIndex);
+    this.reset();
+    if (previous) {
+      previous.restartVisibleAt = at;
+      previous.retryPressAt = at;
+      previous.retryLatencyMs = 0;
+      previous.restartRunSeed = this.seed;
+      previous.restartRunIndex = this.runIndex;
+    }
+    return true;
   }
   begin(at) {
     this.phase = 'GROW';
@@ -226,17 +236,6 @@ export class Game {
   }
   // Renderer calls this AFTER drawing. A resolved miss alone never grants retry.
   painted(at) {
-    if (this.retryAt !== null && this.phase === 'GROW') {
-      const previous = this.logs.at(-1);
-      if (previous) {
-        previous.restartVisibleAt = at;
-        previous.retryPressAt = this.retryAt;
-        previous.retryLatencyMs = at - this.retryAt;
-        previous.restartRunSeed = this.seed;
-        previous.restartRunIndex = this.runIndex;
-      }
-      this.retryAt = null;
-    }
     if (this.phase !== 'TOPPLE') return;
     const elapsed = at - this.releaseAt;
     if (!this.pending.success && (this.length < this.geom.h || elapsed >= CONTACT_MS) && this.missVisibleAt === null) {
