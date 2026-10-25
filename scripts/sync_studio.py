@@ -93,6 +93,8 @@ def sync_page(root,path,source):
     if 'class="skip-link"' not in source:source=re.sub(r'(<body[^>]*>)',r'\1\n<a class="skip-link" href="#main">本文へスキップ</a>',source,count=1)
     if '/assets/css/studio.css' not in source:source=source.replace('</head>','  <link rel="stylesheet" href="/assets/css/studio.css?v='+VERSION+'">\n</head>',1)
     source=re.sub(r'/assets/css/studio\.css\?v=[^"\s]+','/assets/css/studio.css?v='+VERSION,source)
+    # Roll out the new first-party event script atomically across generated pages.
+    source=re.sub(r'(assets/js/main\.js)(?:\?v=[^"\s]+)?',r'\g<1>?v=20261025a',source)
     if '/assets/js/studio.js' not in source:source=source.replace('</body>','  <script src="/assets/js/studio.js?v=20261004" defer></script>\n</body>',1)
     if rel=='index.html':
         items=load_works(root)
