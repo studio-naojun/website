@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="{{DESCRIPTION}}">
+  <title>{{TITLE}} | AI開発・セキュリティ日報</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
+  <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
+</head>
+<body class="studio-site studio-interior studio-article">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<header class="site-header"></header>
+<main id="main">
+  <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
+  <header class="ai-dev-article-hero">
+    <div class="container">
+      <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
+      <div class="eyebrow">DAILY / {{PUBLISHED_AT}} / {{UPDATED_AT}}</div>
+      <h1>{{TITLE}}</h1>
+      <p class="ai-dev-lead">{{DECK}}</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：{{AS_OF_JST}}</p>
+    </div>
+  </header>
+  <article class="ai-dev-article">
+    {{ARTICLE_BODY}}
+    <aside class="source-note">
+      <h2>出典・更新履歴</h2>
+      {{SOURCE_NOTE}}
+      <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
+    </aside>
+  </article>
+</main>
+<footer class="site-footer"></footer>
+<script src="/assets/js/main.js?v=20261025a"></script>
+<script src="/assets/js/studio.js?v=20261004" defer></script>
+</body>
+</html>

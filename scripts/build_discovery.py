@@ -46,13 +46,13 @@ def load_article_entries() -> tuple[dict[str, dict[str, str]], list[dict[str, st
     entries: list[dict[str, str]] = []
     updated_values: list[str] = []
 
-    for section in ("admissions", "investment"):
+    for section in ("admissions", "investment", "ai-dev"):
         feed_path = ROOT / section / "feed.json"
         if not feed_path.exists():
             continue
         payload = json.loads(feed_path.read_text(encoding="utf-8"))
         updated = str(payload.get("updated_at", ""))
-        if updated:
+        if updated and payload.get("entries"):
             updated_values.append(updated)
         for raw in payload.get("entries", []):
             if not isinstance(raw, dict):
@@ -65,6 +65,7 @@ def load_article_entries() -> tuple[dict[str, dict[str, str]], list[dict[str, st
                 "id": str(raw.get("id", "")),
                 "type": str(raw.get("type", "article")),
                 "published_at": str(raw.get("published_at", "")),
+                "updated_at": str(raw.get("updated_at", raw.get("published_at", ""))),
                 "title": str(raw.get("title", "")),
                 "summary": str(raw.get("summary", "")),
                 "url": f"{SITE_URL}/{section}/{path}/",
@@ -111,6 +112,8 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
             "mainEntityOfPage": url,
             "publisher": organization,
         }
+        if article.get("updated_at") and article["updated_at"] != article["published_at"]:
+            structured["dateModified"] = article["updated_at"]
     elif url == SITE_URL + "/":
         structured = {
             "@context": "https://schema.org",
@@ -202,7 +205,7 @@ def build_sitemap(pages: list[tuple[str, dict[str, str] | None]], site_updated_a
     for url, article in pages:
         rows.append("  <url>")
         rows.append(f"    <loc>{html.escape(url)}</loc>")
-        lastmod = article.get("published_at", "") if article else site_updated_at
+        lastmod = article.get("updated_at", article.get("published_at", "")) if article else site_updated_at
         if lastmod:
             rows.append(f"    <lastmod>{html.escape(lastmod)}</lastmod>")
         rows.append("  </url>")
@@ -229,6 +232,15 @@ def render_section_links(section: str, entries: list[dict[str, str]]) -> str:
             '</article>'
             for item in items
         )
+    if section == "ai-dev":
+        return "\n".join(
+            f'<a class="article-entry" href="{html.escape(item["url"].removeprefix(SITE_URL + "/ai-dev/"), quote=True)}">'
+            f'<div><div class="article-kicker">DAILY · {html.escape(item["published_at"])}</div>'
+            f'<div class="article-title">{html.escape(item["title"])}</div>'
+            f'<p class="article-summary">{html.escape(item["summary"])}</p></div>'
+            '<div class="article-arrow" aria-hidden="true">→</div></a>'
+            for item in items
+        )
     raise ValueError(f"Unsupported section: {section}")
 
 
@@ -237,6 +249,8 @@ def with_static_section_links(source: str, section: str, entries: list[dict[str,
         pattern = r'(<div id="article-list" class="article-list">).*?(</div>\s*</div>\s*</section>)'
     elif section == "admissions":
         pattern = r'(<div id="admissions-report-list" class="admissions-report-list">).*?(</div>\s*</div>\s*</section>)'
+    elif section == "ai-dev":
+        pattern = r'(<div id="ai-dev-article-list" class="article-list">).*?(</div>\s*<p class="ai-dev-empty")'
     else:
         raise ValueError(f"Unsupported section: {section}")
     rendered = render_section_links(section, entries)
@@ -244,6 +258,9 @@ def with_static_section_links(source: str, section: str, entries: list[dict[str,
     source, count = re.subn(pattern, replacement, source, count=1, flags=re.DOTALL)
     if count != 1:
         raise ValueError(f"Could not render static {section} article links")
+    if section == "ai-dev":
+        # The empty message remains accessible when the feed has no entries.
+        source = re.sub(r'(<p class="ai-dev-empty")(?: hidden)?', r'\1 hidden' if rendered else r'\1', source, count=1)
     return source
 
 
@@ -262,7 +279,8 @@ def build_feed(entries: list[dict[str, str]], updated_at: str) -> str:
     ]
     for item in entries[:50]:
         published = item["published_at"]
-        updated = published + "T00:00:00+09:00" if published else updated_at
+        raw_updated = item.get("updated_at", "")
+        updated = raw_updated if "T" in raw_updated else (raw_updated or published) + "T00:00:00+09:00"
         rows.extend(
             [
                 "  <entry>",
@@ -296,6 +314,8 @@ def desired_files() -> dict[Path, str]:
             rendered = with_static_section_links(rendered, "investment", entries)
         elif url == SITE_URL + "/admissions/":
             rendered = with_static_section_links(rendered, "admissions", entries)
+        elif url == SITE_URL + "/ai-dev/":
+            rendered = with_static_section_links(rendered, "ai-dev", entries)
         outputs[page] = rendered
         sitemap_pages.append((url, article))
 
