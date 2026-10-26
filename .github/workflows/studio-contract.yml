@@ -10,6 +10,7 @@ on:
       - 'scripts/**'
       - 'investment/feed.json'
       - 'admissions/feed.json'
+      - 'ai-dev/feed.json'
       - '.github/workflows/studio-contract.yml'
   workflow_dispatch:
 permissions:

@@ -52,7 +52,7 @@ def replace_block(source,key,body):
 
 def sync_page(root,path,source):
     rel=path.relative_to(root).as_posix()
-    article=bool(re.search(r'<article class="(?:investment|admissions)-article"',source))
+    article=bool(re.search(r'<article class="(?:investment|admissions|ai-dev)-article"',source))
     config=json.loads((root/'content/site.json').read_text(encoding='utf-8'))
     youtube=config['youtube_url']
     store=config['store_url']
@@ -84,8 +84,8 @@ def sync_page(root,path,source):
             if not re.search(r'\baria-label(?:ledby)?=',tag):tag=tag[:-1]+f' aria-label="表{table_index}（横にスクロールできます）">'
             return tag
         source=re.sub(r'<table\b[^>]*>',accessible_table,source)
-        section='investment' if rel.startswith('investment/') else 'admissions'
-        label='投資レポート' if section=='investment' else '中学受験レポート'
+        section='investment' if rel.startswith('investment/') else ('ai-dev' if rel.startswith('ai-dev/') else 'admissions')
+        label={'investment':'投資レポート','admissions':'中学受験レポート','ai-dev':'AI開発・セキュリティ日報'}[section]
         if 'class="article-breadcrumb ' not in source:
             crumb=f'<nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/{section}/">{label}</a></nav>'
             source=source.replace('<main>','<main>\n'+crumb,1).replace('<main id="main">','<main id="main">\n'+crumb,1)
@@ -126,10 +126,10 @@ def pages(root):
     paths=set()
     for path in root.rglob('*.html'):
         rel=path.relative_to(root)
-        if any(p in {'.git','node_modules','tests','_partials'} for p in rel.parts):continue
+        if any(p in {'.git','node_modules','tests','_partials','_templates'} for p in rel.parts):continue
         source=path.read_text(encoding='utf-8')
-        if 'studio-site' in source or re.search(r'<article class="(?:investment|admissions)-article"',source):paths.add(path)
-    for section in ['investment','admissions']:
+        if 'studio-site' in source or re.search(r'<article class="(?:investment|admissions|ai-dev)-article"',source):paths.add(path)
+    for section in ['investment','admissions','ai-dev']:
         for item in json.loads((root/section/'feed.json').read_text(encoding='utf-8'))['entries']:
             path=root/section/item['path'].strip('/')/'index.html'
             if not path.is_file():raise ValueError('Missing article '+str(path))

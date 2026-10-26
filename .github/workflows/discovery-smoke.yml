@@ -6,6 +6,7 @@ on:
       - '**/*.html'
       - 'admissions/feed.json'
       - 'investment/feed.json'
+      - 'ai-dev/feed.json'
       - 'scripts/build_discovery.py'
       - 'sitemap.xml'
       - 'feed.xml'
