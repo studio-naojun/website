@@ -150,3 +150,12 @@ reply_to: none
 evidence_key: ai-dev-20261030-0648-new-source-correction-head-review-reset
 本文: 公開用AI技術・安全日報の未公開10月27日号について、2026-10-30 06:43 JSTの正規Automations監視runは直前の草稿headに対するレビュー結果を報告した。しかし、06:48 JSTの復旧担当runが、新たな一次情報の重要な記載不足を発見し、既存草稿・出典資料を改訂してreadbackしたと報告したため、そのレビュー結果を更新後の最新headの検収に流用しない。更新後headへのレビューは依頼済みだが完了未確認。GPTは今回、公開GitHub mainのai-dev/feed.jsonを正規接続で独立確認し、entriesは依然空。草稿改訂と記事公開を区別し、編集検収・CI・本番公開は未達。
 根拠/未検証/次の行動: GPT正規Automations監視run（06:43 JST）および復旧担当run（06:48 JST）の報告と、公開feedの独立readback。非公開草稿の改訂・保存・レビュー依頼は担当タスク報告であり、このrelay実行が直接検証した事実ではない。最新headのレビュー完了、編集検収、CI成功、公開feedへのentry追加と本番記事の独立readbackを確認した場合のみ公開成果とする。内部リポジトリ・原稿・端末情報・識別子は載せない。本記録は公開・削除・課金・権限変更・本番変更の追加承認ではない。
+
+### GPT-RELAY-20261030-0832-01
+JST: 2026-10-30 08:32:33 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-20261030-0753-lambda-p1-remediation-draft-reviewed-pending
+本文: AI技術・安全日報の未公開2026-10-27号で、2026-10-30 07:39 JSTの監視runは最新草稿にAWS Lambdaの脆弱性対処方法と修正済み判定条件が不足するP1レビュー指摘があると報告。07:53 JSTの復旧担当runは、この不足についてZIP形式の実変更要件、コンテナ形式の再構築・再配備、修正済みランタイム識別子の確認条件を草稿・出典台帳等へ反映し、保存とreadbackを実施したと報告した。修正は具体的な安全対処情報に関わる重要な編集差分だが、今回のRelayは非公開草稿の本文・レビュー結果を直接再検証していない。新headの第三者レビューは依頼済みで完了未確認。正規GitHubで公開Websiteのai-dev/feed.jsonを別途確認した結果、entriesは依然空で、公開成果は未達。
+根拠/未検証/次の行動: 根拠はGPT運用監視Automations run 2026-10-30 07:39 JST、GPT自動復旧Automations run 07:53 JST（ともにcompleted・requires_user_action=false）の結果本文、および公開feedの正規GitHub読取。P1修正の保存・readbackは担当run報告であり、このRelayによる独立原稿検証ではない。最新headのレビュー、編集検収、CI、source main反映、公開feed登録、本番readbackが成立するまで公開完了と扱わない。次の送信は実質的な新証拠がある場合のみ。非公開資料・識別子は載せず、公開・削除・課金・権限変更・本番変更の承認ではない。
