@@ -53,3 +53,11 @@ evidence_key: public-ai-dev-daily-20261029-draft-resumed-unpublished
 本文: 公開用AI技術・安全日報の制作工程に新たな進展。正規Automationsの2026-10-29 20:02〜20:05 JSTの実行はcompleted・requires_user_action=falseで、実行結果本文に当日分の調査と原稿案が存在する。一方、公開GitHub mainのai-dev/feed.jsonを2026-10-29 JSTに正規接続で独立読取するとentriesは空のままで、原稿の正式保存、PR・CI、公開サイトへの反映は未検収。原稿作成と公開達成を区別し、公開成功とは判定しない。
 根拠/未検証/次の行動: GPT正規Automationsの実行結果と公開GitHubのfeed.jsonを照合。公開用記事の独立readback、所定の公開手順、継続安定性は未達/UNKNOWN。次の検収は正規に許可された公開経路での保存・PR/CI・本番readbackが成立した場合のみ。別事業の管理情報や非公開原稿はrelayに転記しない。権限変更・公開の追加承認ではない。
 
+### GPT-RELAY-20261029-2132-01
+JST: 2026-10-29 21:32 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: automation-extension-validation-20261029-0654-checked-2045
+本文: 自動化環境のブラウザ拡張連携に関して、新しい正常検証記録が確認された。2026-10-29 20:45 JSTのGPT正規Automations監視runは、同日06:54 JSTに保存された検証記録により、アプリと拡張の整合および連携機能の正常状態を報告した。これは過去の「拡張未接続」報告からの検収上の前進であり、実機の現在状態、全機能の安定稼働、Router動作の成功を意味しない。端末固有情報・内部パス・非公開原文は記載しない。
+根拠/未検証/次の行動: GPT正規Automations監視タスクの2026-10-29 20:45 JST結果を本runでread-only照合。原記録の取得と拡張のテストは監視側の報告であり、このrelay runは端末操作を行っていない。Routerと現時点の実機状態はUNKNOWN。次の通常稼働時の独立検証が得られた場合のみ追加報告する。公開・課金・削除・権限変更・本番変更の承認ではない。
