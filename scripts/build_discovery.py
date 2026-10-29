@@ -65,6 +65,7 @@ def load_article_entries() -> tuple[dict[str, dict[str, str]], list[dict[str, st
                 "id": str(raw.get("id", "")),
                 "type": str(raw.get("type", "article")),
                 "published_at": str(raw.get("published_at", "")),
+                "first_published_at": str(raw.get("first_published_at", raw.get("published_at", ""))),
                 "updated_at": str(raw.get("updated_at", raw.get("published_at", ""))),
                 "title": str(raw.get("title", "")),
                 "summary": str(raw.get("summary", "")),
@@ -108,7 +109,7 @@ def discovery_block(url: str, title: str, description: str, article: dict[str, s
             "@type": "Article",
             "headline": article["title"] or title,
             "description": article["summary"] or description,
-            "datePublished": article["published_at"],
+            "datePublished": article["first_published_at"] or article["published_at"],
             "mainEntityOfPage": url,
             "publisher": organization,
         }
