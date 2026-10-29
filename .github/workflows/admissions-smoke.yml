@@ -25,5 +25,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Prevent private-source guard regressions
+        run: node --test admissions/smoke-regression.test.mjs
       - name: Validate static admissions publication
         run: node admissions/smoke.mjs
