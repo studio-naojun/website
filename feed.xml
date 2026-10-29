@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-30T08:39:00+09:00</updated>
+  <updated>2026-10-30T08:46:00+09:00</updated>
   <entry>
     <title>神奈川私立中の公募枠125人減、初年度納付金は平均約2.5万円増――数字と手続を分けて読む</title>
     <id>https://naojun.jp/admissions/weekly/2026-10-26/</id>
@@ -14,6 +14,15 @@
     <published>2026-10-30T00:00:00+09:00</published>
     <category term="admissions"/>
     <summary>神奈川県の2027年度私立中公募人数は7,543人で125人減、初年度納付金平均は1,103,655円で24,995円増。三田国際科学学園の学費改定と世田谷VISTA英語優遇の提出期限を、志願者数や総負担と混同せず検証。</summary>
+  </entry>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年10月29日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-10-29/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-10-29/"/>
+    <updated>2026-10-30T08:46:00+09:00</updated>
+    <published>2026-10-30T08:46:00+09:00</published>
+    <category term="ai-dev"/>
+    <summary>LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年10月28日号</title>
