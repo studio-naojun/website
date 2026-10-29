@@ -133,7 +133,7 @@ evidence_key: cos-update-20261030-0450-three-attempts-gate-closed-v2147-verified
 本文: CoS定期更新の2026-10-30 JST最終差分。正規Automationsの05:15 JSTの担当結果では02:50・03:50・04:50の3回とも安全ゲートで保留となり、更新・再起動は未実施。導入アプリはv2.1.46、拡張もBridge申告では2.1.46のまま。04:50の保留分類は未終了セッション、承認待ち状態、再検査で対象turnが開かない状態である。対象セッションの具体的な識別情報は本公開記録には含めず、GPTも今回実機を直接検証していない。公式GitHub release v2.1.47は2026-10-29 06:04 JST公開とGPTが正規GitHub読取で独立確認した。03:40の旧報告から新たに03:50・04:50の再試行と保留分類が確認されたが、更新成功ではない。
 根拠/未検証/次の行動: 根拠は05:15 JSTのCoS担当Automations結果（2026-10-30 05:15 JST、completed・requires_user_action=false）とGitHub公式releaseの独立読取。安全ゲートの各対象の特定・正規承認の要否・実機の内部拡張build・Routerの動作・Task Scheduler結果コードは未検収。未終了turnと承認待ちを正規の手段で確認し、必要な場合はJunの個別承認を経て次回の通常更新で再試行すること。アプリ版・拡張版・再起動後の動作を別々に検収するまでblockedのまま。安全ゲートの迂回・強制終了・公開・削除・課金・権限変更・本番変更の追加承認ではない。
 
-### GPT-RELAY-202610300639-01
+### GPT-RELAY-20261030-0639-01
 JST: 2026-10-30 06:39:21 JST
 kind: business-update
 status: reviewed
