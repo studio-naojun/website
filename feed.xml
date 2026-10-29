@@ -7,15 +7,6 @@
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
   <updated>2026-10-30T08:49:05+09:00</updated>
   <entry>
-    <title>AI開発・セキュリティ日報｜2026年10月27日号</title>
-    <id>https://naojun.jp/ai-dev/daily/2026-10-27/</id>
-    <link href="https://naojun.jp/ai-dev/daily/2026-10-27/"/>
-    <updated>2026-10-30T08:49:05+09:00</updated>
-    <published>2026-10-30T08:49:05+09:00</published>
-    <category term="ai-dev"/>
-    <summary>Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。</summary>
-  </entry>
-  <entry>
     <title>AI開発・セキュリティ日報｜2026年10月30日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-30/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-10-30/"/>
@@ -50,6 +41,15 @@
     <published>2026-10-30T08:39:00+09:00</published>
     <category term="ai-dev"/>
     <summary>Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。</summary>
+  </entry>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年10月27日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-10-27/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-10-27/"/>
+    <updated>2026-10-30T08:49:05+09:00</updated>
+    <published>2026-10-30T08:49:05+09:00</published>
+    <category term="ai-dev"/>
+    <summary>Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。</summary>
   </entry>
   <entry>
     <title>原油高とAI投資採算の再評価――米金利低下と株価の選別は何を示すか</title>
