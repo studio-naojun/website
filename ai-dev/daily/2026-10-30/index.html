@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。">
+  <title>AI開発・セキュリティ日報｜2026年10月30日号 | AI開発・セキュリティ日報</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
+  <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
+<!-- naojun-discovery:start -->
+  <link rel="canonical" href="https://naojun.jp/ai-dev/daily/2026-10-30/">
+  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NAOJUN STUDIOS">
+  <meta property="og:title" content="AI開発・セキュリティ日報｜2026年10月30日号">
+  <meta property="og:description" content="AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。">
+  <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-30/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月30日号","description":"AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-30/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T08:44:38.121+09:00"}</script>
+<!-- naojun-discovery:end -->
+</head>
+<body class="studio-site studio-interior studio-article">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<header class="site-header"><div class="container header-inner">
+<a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
+<button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="studio-nav">MENU <span class="menu-glyph" aria-hidden="true">＋</span></button>
+<nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
+
+<main id="main">
+  <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
+  <header class="ai-dev-article-hero">
+    <div class="container">
+      <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-10-30 / 更新 2026-10-30</div>
+      <h1>AI開発・セキュリティ日報｜2026年10月30日号</h1>
+      <p class="ai-dev-lead">AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 08:40 JST</p>
+    </div>
+  </header>
+  <article class="ai-dev-article">
+    <p><strong>調査時点：2026年10月30日朝 JST。</strong> 昨日の重要情報を「今日発生した事故」と誤記しません。情報の優先度は影響条件付きです。</p>
+<h2>本日の優先対応</h2>
+<ul>
+<li><strong>P1：AWS Lambda上でBrotli圧縮入力を扱う関数。</strong> AWSがNode.js向け更新のPhase 2開始日として10月30日を示しています。予定日だけで適用済みと判断せず、cold-startのruntime patch版を実測してください。</li>
+<li><strong>P2：GitHub Copilot Fusionのローカルモデル振り分けと費用の確認。</strong> 10月28日公開の新機能は10月30日の運用判断に影響します。ローカルモデルを選べてもクラウド通信が不要になるわけではありません。</li>
+<li><strong>P2：OpenAI APIで旧モデルを固定している開発者。</strong> 2027年1月・4月の廃止予定をdependency/設定から点検してください。これは10月30日発生の障害ではありません。</li>
+</ul>
+<h2>1. AWS Lambda：Brotli修正版の段階配布と実効確認（P1）</h2>
+<p><strong>何が起きたか。</strong> Brotli decoderの <code>CVE-2026-111497</code> に対してAWSは10月28日15:00 PDT（10月29日07:00 JST）にSecurity Bulletin 2026-155-AWSを発表、10月29日14:00 PDT（10月30日06:00 JST）に更新した。2026年10月30日は、Node.js 22/24/26のZIPランタイムで自動更新Phase 2を予定している日。ただし各AWSリージョンへの配信完了時刻は確約されていない。</p>
+<p><strong>影響対象・非該当条件。</strong> Lambdaの影響するNode.js/.NETランタイムで、攻撃者由来Brotli圧縮入力を展開する関数。Lambda管理基盤サービスそのものは対象外とAWSは明記。Python/Ruby/OS-only provided.al2023の標準ランタイムにはBrotliライブラリは含まれないが、利用者が独自にbundledした場合は別途更新が必要。</p>
+<p><strong>今すべき対処。</strong> Node.js 22/24/26用Lambdaコンテナbase imageは修正済みとAWSが説明。利用者のイメージは修正済みbaseで再ビルド・再デプロイする。ZIP形式はPhase 1が完了し、<strong>コードまたは設定を実際に更新すると</strong>修正runtimeを取り込める。設定値を変更しない「zero-change」再実行は十分ではない。Auto runtime update modeはPhase 2配布を確認する。Node.js 18/20等のサポート終了runtimeにはこのセキュリティ更新が届かないため、サポート対象へ移行する。</p>
+<p><strong>確認・rollback。</strong> CloudWatchのcold start <code>INIT_START</code>行に、Node 22は <code>nodejs:22.mainline.v157</code>以上、Node 24は <code>nodejs:24.mainline.v114</code>以上と表示されるか確認。Node 24は<code>process.version</code>だけではBrotli修正版の適用を判断できない。更新後に正常圧縮データの処理を確認。問題が出た場合も旧脆弱runtimeを外部公開し続けず、入力経路制限のもと復旧する。</p>
+<p><strong>未解明点。</strong> 10月30日朝の各リージョン配布完了・CodeBuildイメージ配信実績は未確認。予定は完了証拠ではない。次の13時/19時枠でも公式Bulletinと関数ログを照合する。</p>
+<p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-155-AWS（2026-10-28 PDT公表、10-29 PDT更新）<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>2. GitHub Copilot Fusionでローカルモデルの選択が可能に（P2）</h2>
+<p><strong>何が起きたか。</strong> GitHubは10月28日、Copilot Fusionのモデル自動振り分け（GA）と、ローカルモデルも選択できるexperimental previewを公開。Fusion Standard/High/Maxでは状況に応じて複数モデルをルーティングする。</p>
+<p><strong>対象・非該当。</strong> GitHub Copilotアプリ、CLI、VS Code等で対象機能を有効化する利用者。WindowsのWindows ML providerにはMAI Code 1.1 Flashのmanaged downloadがあり、macOS/LinuxでもCopilot CLIと互換するローカルOpenAI-compatible endpointを接続できる。<strong>Copilot appのローカル自動振り分けは現時点でWindows ML管理モデルに限定</strong>されており、macOSのBYOK設定だけで自動振り分け可能と断定できない。</p>
+<p><strong>影響・費用。</strong> Fusionは利用した各モデルの標準レートに従って課金される。Paidプラン向け30%割引はGitHubが「期間限定」と案内。ローカル推論が使えてもクラウドで振り分け判断を行うため、完全オフライン動作とはならない。</p>
+<p><strong>今すべき対処。</strong> Copilotを使うなら、利用プランとモデル選択、推論実行先、送信データ・費用上限を確認。CLIでexperimental modeと<code>/model</code>を確認し、Windows Copilot appではSettings &gt; Model providersのWindows ML、Settings &gt; ExperimentsのLocal model auto routing、VS Codeでは<code>chat.copilot.localModel.enabled</code>が提供される。未導入の人に設定変更の義務はない。</p>
+<p><strong>確認・rollback。</strong> 小さいテストで選択モデル、実際のcloud/local routingと課金を観測。品質が合わなければexperimental local routingを無効にして既存モデル選択へ戻す。</p>
+<p><strong>未解明点。</strong> 個々のPCのGPU/RAM適合とCopilotアカウントの利用権限、ローカルで選べるモデルは環境ごとに異なる。</p>
+<p><strong>一次情報：</strong> <a href="https://github.blog/changelog/2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models/" target="_blank" rel="noopener noreferrer">GitHub Copilot Fusion local models（2026-10-28）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion/" target="_blank" rel="noopener noreferrer">GitHub Copilot Fusion GA・料金（2026-10-28）<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>3. OpenAI API旧モデルの停止予定：計画的な移行準備（P2）</h2>
+<p><strong>事象。</strong> OpenAI公式Deprecationsは、2026年10月14日通知のGPT-4系列を2027年1月14日、10月1日通知のGPT-5.3-Codex/5.1等を2027年4月1日にAPIから削除予定と表示。<strong>10月30日の新規停止・障害ではない</strong>。</p>
+<p><strong>該当条件・非該当。</strong> APIで明示的に <code>gpt-4o-2024-08-06</code>、<code>gpt-4o-2024-11-20</code>、<code>gpt-4o-mini-2024-07-18</code>、<code>gpt-4.1-2025-04-14</code>、<code>gpt-4.1-mini-2025-04-14</code>等を参照するアプリは2027年1月14日までに切り替えが必要。GPT-5.3-Codex <code>gpt-5.3-codex</code>等は2027年4月1日が期限。モデル名を使用しない環境には該当しない。</p>
+<p><strong>影響・対処。</strong> 停止予定日を過ぎるとAPIエラーやジョブ失敗が発生する可能性。まず設定・IaC・CI・永続キューで固定したmodel IDを検索し、公式の推奨後継モデルへ段階移行。機能差・料金・制限に応じてテスト環境で出力品質、ツール呼び出し、JSON schema、料金を照合する。</p>
+<p><strong>確認・rollback。</strong> テスト・カナリア実行で成功率と費用を計測。停止日より前は旧モデルへ戻せるが、その停止日を越えたrollback先には使わない。期限と移行先は次回の公式更新で再確認する。</p>
+<p><strong>未解明点。</strong> 利用アプリ固有の互換性は未検証。公式の削除予定日は後日変更され得る。</p>
+<p><strong>一次情報：</strong> <a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener noreferrer">OpenAI API Deprecations（2026-10-30確認）<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>継続監視（重複記事なし）</h2>
+<p>10月29日号で詳述したLiteLLMの悪性配布版、PHP実悪用とAWS Strands Agents Toolsの脆弱性は引き続き該当条件を点検する。<strong>今日発見された別件として再掲しない。</strong> 公式一次資料の重大な更新が出た場合のみ、対象号の変更履歴と同日追記を行う。</p>
+<h2>この日報の更新履歴</h2><ul><li>対象日・初回公開日：2026年10月30日（JST）。</li><li>一次資料の調査時点：2026年10月30日08:40 JST。重要な後続情報は同一URLの更新履歴に記録します。</li></ul>
+    <aside class="source-note">
+      <h2>出典・更新履歴</h2>
+      <p>各節の一次出典から発表日、版、影響条件を確認できます。調査時点は2026年10月30日08:40 JSTです。</p>
+      <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
+    </aside>
+  </article>
+</main>
+<footer class="site-footer studio-footer"><div class="container">
+<div class="footer-top"><p>日々に、小さな発明を。<br>Small studio. Useful creations.</p><nav class="footer-links" aria-label="フッターナビゲーション"><a href="/works/">Works</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://bsky.app/profile/naojun.jp" target="_blank" rel="me noopener noreferrer">Bluesky <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="https://www.youtube.com/@naojunjp" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="/feed.xml">RSS ↗</a></nav></div>
+<div class="footer-wordmark" aria-hidden="true">NAOJUN STUDIOS.</div>
+<div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
+</div></footer>
+
+<script src="/assets/js/main.js?v=20261025a"></script>
+<script src="/assets/js/studio.js?v=20261004" defer></script>
+</body>
+</html>
