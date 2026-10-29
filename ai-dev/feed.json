@@ -7,7 +7,7 @@
       "type": "daily",
       "published_at": "2026-10-28",
       "updated_at": "2026-10-30T08:39:00+09:00",
-      "first_published_at": "2026-10-30T08:39:00+09:00",
+      "first_published_at": "2026-10-30",
       "title": "AI開発・セキュリティ日報｜2026年10月28日号",
       "summary": "Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。",
       "path": "daily/2026-10-28/",
