@@ -61,7 +61,7 @@ if (feed) {
       fail(`possible replacement-character corruption in article social metadata: ${entry.id}`);
     }
 
-    if (html.includes('ffz2bpjyj4-bot/kanade-report-library')) {
+    if (/kanade-report-library/i.test(html)) {
       fail(`private source repository exposed in public report: ${entry.id}`);
     }
   }
