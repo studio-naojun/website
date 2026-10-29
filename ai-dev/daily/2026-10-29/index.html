@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。">
+  <title>AI開発・セキュリティ日報｜2026年10月29日号 | AI開発・セキュリティ日報</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
+  <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
+<!-- naojun-discovery:start -->
+  <link rel="canonical" href="https://naojun.jp/ai-dev/daily/2026-10-29/">
+  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NAOJUN STUDIOS">
+  <meta property="og:title" content="AI開発・セキュリティ日報｜2026年10月29日号">
+  <meta property="og:description" content="LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。">
+  <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-29/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月29日号","description":"LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-29/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T08:46:00+09:00"}</script>
+<!-- naojun-discovery:end -->
+</head>
+<body class="studio-site studio-interior studio-article">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<header class="site-header"><div class="container header-inner">
+<a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
+<button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="studio-nav">MENU <span class="menu-glyph" aria-hidden="true">＋</span></button>
+<nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
+
+<main id="main">
+  <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
+  <header class="ai-dev-article-hero">
+    <div class="container">
+      <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-10-30 / 更新 2026-10-30</div>
+      <h1>AI開発・セキュリティ日報｜2026年10月29日号</h1>
+      <p class="ai-dev-lead">LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 朝 JST</p>
+    </div>
+  </header>
+  <article class="ai-dev-article">
+    <p>対象日：2026年10月29日。遡及調査：2026年10月30日朝JST。<strong>この号の実際の初回公開日は公開検収後に別記する。10月29日に公開済みだったとは主張しない。</strong></p>
+<h2>本日の優先対応</h2>
+<ul>
+<li><strong>P0（該当環境のみ）：LiteLLM悪性配布版</strong>。10月21日の1.107.0侵害をMicrosoftが10月23日に分析、GitHub Advisoryが10月29日に更新。該当版が実行された場合は、通常のアンインストールだけでなく環境・資格情報を調査する。</li>
+<li><strong>P0（公開PHP等の該当環境）：CVE-2026-109618・CVE-2026-109619</strong>。JPCERT/CCが10月29日に、特定ファイアウォール製品で攻撃成功を示す痕跡を追記。</li>
+<li><strong>P1：AWS Strands Agents Toolsのenvironment tool</strong>。LLMの指示によって秘密値のmaskを無効化できる条件を確認。修正版0.8.6を適用。</li>
+<li><strong>P1：AWS LambdaのBrotliランタイム</strong>。10月29日JSTのAWS告知は段階修正。Node 24は単なるprocess.versionでは修正判定できない。</li>
+</ul>
+<h2>1. LiteLLMの悪性PyPI/コンテナ版：秘密情報漏えいの調査（P0）</h2>
+<p><strong>事象。</strong> 2026年10月21日、PyPIと公式コンテナイメージ経由でLiteLLM 1.107.0の悪意ある配布物が公開された。Microsoftの10月23日分析では、影響環境でPythonの起動時に悪性コードが動作する場合があり、LiteLLM自体をimportすることは必須でない。10月29日に更新されたGitHub Advisoryには悪性版1.82.7、1.82.8、1.107.0が列挙された。<strong>10月29日発生の新しい侵害とは混同しない。</strong></p>
+<p><strong>対象・非該当。</strong> これらの悪性版のwheelやコンテナを取得し、実際に使用した環境。別の安全な版だけを使っている環境は当該悪性配布物の経路に非該当。バージョン文字列だけで感染は断定できず、実際に取得したwheelやコンテナdigestも確認が必要。</p>
+<p><strong>影響。</strong> Pythonの起動時フック等によりcloud keys、AI API keys、開発ツールの認証情報などが読み取られ外部へ送信され得る。悪性版が混入した環境では、その環境内でPythonやpipを起動して検証すると悪性コードを再実行する危険がある。</p>
+<p><strong>今する対処。</strong> 清浄な別環境からパッケージ配布履歴、コンテナdigest、CIログを点検し、疑いのある環境を隔離。証拠を保全したうえで信頼済みイメージから再構築し、アクセス可能だった資格情報を適切な権限者が失効・再発行する。GitHub Advisoryはこれらの悪性版に「patched versionsなし」としており、単一修正版番号を捏造しない。</p>
+<p><strong>確認・rollback。</strong> 清浄な環境への置換後、予期しない起動時フック・ネットワーク接続・秘密情報利用履歴を確認。旧イメージへのrollbackは行わず、隔離した以前のスナップショットは調査用としてのみ保存する。</p>
+<p><strong>未解明点。</strong> 個別環境で悪性wheelが実行されたか、どの秘密が流出したかはログやイメージ内容との照合が必要。</p>
+<p><strong>一次情報：</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/10/23/inside-the-litellm-1-107-0-supply-chain-compromise-credential-theft-through-python-startup-hooks/" target="_blank" rel="noopener noreferrer">Microsoft Security Research 2026-10-23<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">GitHub Advisory（2026-10-29更新）<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>2. PHPリモートコード実行：特定機器の侵害痕跡が追加報告（P0）</h2>
+<p><strong>事象。</strong> PHPのCVE-2026-109618・CVE-2026-109619は未認証でPHPの実行権限の任意コード実行につながり得る。PHP Groupの初報は10月21日、JPCERT/CCの注意喚起は10月22日。<strong>JPCERT/CCは10月29日の更新で、特定バージョンのファイアウォール製品への攻撃が成功した可能性を示す証拠と、Linuxカーネル権限昇格の連鎖を追記した。</strong> 影響機器の詳細製品名は確認できていない。</p>
+<p><strong>対象・非該当。</strong> PHP 8.2系8.2.35未満、8.3系8.3.36未満、8.4系8.4.27未満、8.5系8.5.12未満。8.1以前のEOL系は対応系列へ移行を検討。公開Web/PHP内蔵製品で攻撃入力が届く設定が優先。PHPを使わない静的サイトは本件のPHP実行経路に非該当。</p>
+<p><strong>被害。</strong> Webアプリ実行権限での侵害、不正ファイル作成、内部ネットワークへの横展開。全Webサイトが侵害されたわけではなく、現実に悪用できるかはメモリ配置・OS・アプリ実装などに依存する。</p>
+<p><strong>対処。</strong> 公式修正版またはディストリビューション提供のbackportを適用。実際のWeb SAPI/workerの版を確認し、アクセスログ、長い不審なPHPSESSID cookie、multipart/form-data、前後のHTTP 500、メモリ上限エラー、ワーカー異常終了を点検。アップデートできない場合の <code>session.upload_progress.enabled=0</code> は特定攻撃経路への限定的緩和策で、両CVEの完全修正ではない。</p>
+<p><strong>確認・rollback。</strong> 更新後にWebログインとupload等の機能試験、実稼働版確認、侵害痕跡の継続監視。回帰障害が起きても脆弱版で公開を継続せず、接続制限を保ったまま復旧する。証拠は保全。</p>
+<p><strong>未解明点。</strong> 被害機種や個別環境の侵害有無は未確定。1つのログ検出ルールで非侵害を証明できない。</p>
+<p><strong>一次情報：</strong> <a href="https://www.jpcert.or.jp/at/2026/at260033.html" target="_blank" rel="noopener noreferrer">JPCERT/CC 2026-10-22公開・10-29更新<span class="sr-only">（新しいタブ）</span></a>、<a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP Group 2026-10-21<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>3. AWS Strands Agents Tools：prompt経由の環境変数秘密漏えい（P1）</h2>
+<p><strong>事象。</strong> AWSは10月28日12:30 PDT（10月29日04:30 JST）、<code>CVE-2026-115415</code>を公表。Strands Agents Toolsの<code>environment</code> toolが、LLMが選ぶtool schema引数からsecret maskingを無効化できていた。処理対象の外部文書やprompt injectionにより、agent hostの環境変数（cloud credential/API key等）がマスクなしで返る可能性がある。</p>
+<p><strong>影響条件・非該当。</strong> <code>strands-agents-tools &gt;=0.1.0,&lt;0.8.6</code>で<code>environment</code> toolをagentにロードし、攻撃者がモデル入力へ影響を与えられる場合。packageだけを入れてtoolを使わない環境、または0.8.6以上で適切に修正された構成は報告経路に非該当。</p>
+<p><strong>対処。</strong> <code>strands-agents-tools 0.8.6</code>以上へ更新。maskingはoperatorのみが設定可能となりenvironment toolはdeprecateされた。直ちに上げられない場合はenvironment toolをagentから外し、長期secretをプロセス環境に置かず、外向き通信を信頼先へ制限。toolが実際にロードされていた場合はアクセス可能だった認証情報の見直し・必要なrotationを権限者が検討。</p>
+<p><strong>確認・rollback。</strong> 導入版、agent toolリスト、機密値maskingがLLM側から制御できないことをstagingで確認。障害時は旧環境toolを戻さず、該当toolを除いた設計へrollback。漏えいの実際の有無は個別のログ・secret利用履歴調査が必要。</p>
+<p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-154-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-154-AWS<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/strands-agents/tools/security/advisories/GHSA-qjx4-hg6g-2f34" target="_blank" rel="noopener noreferrer">GitHub advisory<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>4. AWS Lambda：Brotli修正の段階適用と検証条件（P1）</h2>
+<p><strong>事象。</strong> AWSは10月28日15:00 PDT（10月29日07:00 JST）にBrotli <code>CVE-2026-111497</code>のAWSサービス対応状況を更新。LambdaのNode.js 22/24・.NET 8/10等で該当decoderを使う場合はランタイム更新が必要。Lambda基盤そのものが脆弱・侵害されたという意味ではない。</p>
+<p><strong>該当条件・非該当。</strong> 影響ランタイムで、外部由来の圧縮データを展開する関数等。Brotli decoderを実行しない関数や対象版を使わない環境には、この経路による被害は直結しない。</p>
+<p><strong>対処。</strong> AWS管理のランタイム修正は段階配信。Node.js 24.22.1に別件の回帰問題があり、AWSは安定版へBrotli修正をbackport。ZIP関数は更新モード/実際に反映されたruntime versionを確認し、コンテナ形式では修正済みベースイメージへ再ビルド・再配置する。10月30日の自動配信予定を、すべての環境へ配信完了した確定証拠と混同しない。</p>
+<p><strong>確認・rollback。</strong> CloudWatchのcold-start <code>INIT_START</code>にNode.js22 <code>nodejs:22.mainline.v157</code>以上、Node.js24 <code>nodejs:24.mainline.v114</code>以上と出ていることを確認。<strong>Node.js 24ではprocess.versionのみで確認できない</strong>。正常なBrotli処理テストを実施。問題が起きても脆弱なdecoderを外部へ公開するrollbackは避ける。</p>
+<p><strong>未解明点。</strong> リージョン、関数、更新モードによる段階適用状況、独自コンテナやCI imageの更新完了は個々に検証が必要。</p>
+<p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-155-AWS<span class="sr-only">（新しいタブ）</span></a>（10月28日PDT）。</p>
+<h2>この日報の更新履歴</h2><ul><li>対象日：2026年10月29日。各社公式の発表日と調査日を区別しています。</li><li>実際の初回公開日：2026年10月30日（JST）。対象日に遡って公開したことにはなりません。</li><li>遡及調査：2026年10月30日朝（JST）。以後の重要な訂正・追補は更新日時を記録します。</li></ul>
+    <aside class="source-note">
+      <h2>出典・更新履歴</h2>
+      <p>原典へのリンクは各項目の直後に掲載。対象は2026年10月29日ですが、初回公開は2026年10月30日です。過去事件の続報と新規公告を区別しています。</p>
+      <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
+    </aside>
+  </article>
+</main>
+<footer class="site-footer studio-footer"><div class="container">
+<div class="footer-top"><p>日々に、小さな発明を。<br>Small studio. Useful creations.</p><nav class="footer-links" aria-label="フッターナビゲーション"><a href="/works/">Works</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://bsky.app/profile/naojun.jp" target="_blank" rel="me noopener noreferrer">Bluesky <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="https://www.youtube.com/@naojunjp" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="/feed.xml">RSS ↗</a></nav></div>
+<div class="footer-wordmark" aria-hidden="true">NAOJUN STUDIOS.</div>
+<div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
+</div></footer>
+
+<script src="/assets/js/main.js?v=20261025a"></script>
+<script src="/assets/js/studio.js?v=20261004" defer></script>
+</body>
+</html>
