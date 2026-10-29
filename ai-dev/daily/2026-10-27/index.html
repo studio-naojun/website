@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。">
+  <title>AI開発・セキュリティ日報｜2026年10月27日号 | AI開発・セキュリティ日報</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
+  <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
+<!-- naojun-discovery:start -->
+  <link rel="canonical" href="https://naojun.jp/ai-dev/daily/2026-10-27/">
+  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NAOJUN STUDIOS">
+  <meta property="og:title" content="AI開発・セキュリティ日報｜2026年10月27日号">
+  <meta property="og:description" content="Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。">
+  <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-27/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月27日号","description":"Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-27/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T08:49:05+09:00"}</script>
+<!-- naojun-discovery:end -->
+</head>
+<body class="studio-site studio-interior studio-article">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<header class="site-header"><div class="container header-inner">
+<a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
+<button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="studio-nav">MENU <span class="menu-glyph" aria-hidden="true">＋</span></button>
+<nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
+
+<main id="main">
+  <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
+  <header class="ai-dev-article-hero">
+    <div class="container">
+      <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-10-30 / 更新 2026-10-30</div>
+      <h1>AI開発・セキュリティ日報｜2026年10月27日号</h1>
+      <p class="ai-dev-lead">Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 事後復旧版 JST</p>
+    </div>
+  </header>
+  <article class="ai-dev-article">
+<p><strong>対象日：2026年10月27日。実際の初回公開日：2026年10月30日。</strong> 10月28〜30日に判明した事項は事後追補として区別し、当時の既知情報と混同しません。</p>
+<h2>本日の結論</h2>
+<p><strong>Googleは2026年10月27日、Chrome 156に計52件のセキュリティ修正を公表し、4件をCriticalと評価。</strong> Windows/Mac 156.0.8078.73/.74、Linux 156.0.8078.73の展開を案内した。公開日に確認できたChrome更新を最優先の確認事項とし、端末の実版を確認して正規更新する。Criticalは深刻度であり実悪用を意味しない。<a href="https://chromereleases.googleblog.com/2026/10/stable-channel-update-for-desktop_0562499947.html" target="_blank" rel="noopener noreferrer">10月27日公式告知<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p><strong>追加の重要確認：</strong> 10月27日（米東部時間）のCISA発表では、<strong>Brotli（CVE-2026-111497）とAdobe Commerce/Magento（CVE-2026-48356）</strong>が悪用確認済みのKEVに追加された。発表はJSTでは<strong>10月28日04:30</strong>であり、これは10月27日号に対する<strong>事後追補</strong>であって、10月27日JSTに把握済みだったと主張しない。Brotliの境界外書き込み自体はJPCERT/CCが10月26日に注意喚起しており、Node.js・Bun・Python向け実装などの組み込み影響を確認すべき案件である。<a href="https://content.govdelivery.com/accounts/USDHSCISA/bulletins/430af9d" target="_blank" rel="noopener noreferrer">CISA公式発表<span class="sr-only">（新しいタブ）</span></a>、<a href="https://www.jpcert.or.jp/at/2026/at260034.html" target="_blank" rel="noopener noreferrer">JPCERT/CC公式注意喚起<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p>Mozillaは10月27日、Firefox 159、ESR 153.6/115.44、Thunderbird 159/153.6について5件の製品別セキュリティ勧告（MFSA 2026-118〜122）を公開した。Firefox 159にはHigh評価のsandbox escapeやuse-after-freeなどが含まれる。利用製品の正規更新を確認する。重大度と実際の悪用は区別する。<a href="https://www.mozilla.org/en-US/security/advisories/" target="_blank" rel="noopener noreferrer">Mozilla公式一覧<span class="sr-only">（新しいタブ）</span></a>、<a href="https://www.mozilla.org/en-US/security/advisories/mfsa2026-118/" target="_blank" rel="noopener noreferrer">Firefox 159勧告<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p><strong>AI開発のサプライチェーン上の重要既報：</strong> Microsoftが10月23日に公表した分析によると、10月21日に配布された<strong>LiteLLM 1.107.0</strong>には資格情報を収集する悪意あるコードが含まれた。Python起動時に処理が走り得るため、LiteLLMを明示的にimportしなくても影響する可能性がある。一方、<strong>1.82.7と1.82.8も2026年3月24日の別のPyPI侵害で配布された悪性版</strong>であり、<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">GitHub Advisory<span class="sr-only">（新しいタブ）</span></a>は<strong>3版すべて</strong>を対象に挙げる。3月の公式Proxy Docker imageは<a href="https://github.com/BerriAI/litellm-docs/blob/main/blog/security_update_march_2026/index.md" target="_blank" rel="noopener noreferrer">LiteLLM公式報告<span class="sr-only">（新しいタブ）</span></a>で影響対象外とされるため、3月・10月の配布経路を混同しない。</p>
+<p><strong>3版のいずれか</strong>を使った疑いのある端末・CI/依存関係について、該当する配布時期・経路を調べ、当該Python環境で不用意に<code>python</code>/<code>pip</code>を起動せず、清浄な環境から影響を調査し、隔離・再構築・アクセスできた資格情報やセッションの失効/ローテーションを検討する。単にパッケージを消すだけでは残存リスクがある。<strong>10/27当日発覚の事件ではなく、既報の優先確認事項</strong>であり、非利用者が侵害されたと断定しない。<a href="https://www.microsoft.com/en-us/security/blog/2026/10/23/inside-the-litellm-1-107-0-supply-chain-compromise-credential-theft-through-python-startup-hooks/" target="_blank" rel="noopener noreferrer">Microsoftによる10/23の分析<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p><strong>開発・インフラ上の条件付きP1：</strong> AWSは10月26日（JSTでは10月27日）に、<code>@aws-cdk/aws-redshift-alpha</code>のCVE-2026-115418を公表した。実験モジュールでconstruct値を変更可能な場合に、Redshift superuser権限のSQLが意図しない形に変更され得る。対象moduleの利用有無と版数を確認し、修正版へ更新後にPUBLIC grantを確認する。<strong>全AWS利用者やRedshift本体に無条件に当てはまる脆弱性ではない。</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-151-aws/" target="_blank" rel="noopener noreferrer">AWS公式速報<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p>10月26日付でTailscaleが公開したセキュリティ通知4件は、SSHやServeを使う個人開発環境に関係する。通常のVPN接続だけを使う全員が同じ条件で影響を受けるわけではない。<strong>SSH転送とServeのbackend設定を確認し、該当するノードはv1.104.4以上へ更新</strong>することが現時点の公式対処となる。v1.104.4の公開は10月28日であり、10月27日時点で修正版が利用可能だったかのようには記載しない。出典：Tailscale <a href="https://tailscale.com/security-bulletins" target="_blank" rel="noopener noreferrer">Security Bulletins<span class="sr-only">（新しいタブ）</span></a>、<a href="https://tailscale.com/changelog" target="_blank" rel="noopener noreferrer">Changelog<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>AIによる脆弱性発見：Anthropicが5系統の攻撃チェーンを公表</h2>
+<p>Anthropic Frontier Red Teamは10月27日、研究モデルでChrome、Safari、Android、Windows、Linuxの5系統の攻撃チェーンを実証し、関係ベンダーへ協調開示したと発表した。WindowsのHTTP/3実装に関係するCVE-2026-33096（遠隔DoS）、Linux multipath TCPに関係するCVE-2026-98432（遠隔コード実行）なども紹介している。これは研究での実証と修正報告であり、攻撃者による実悪用や各端末へのパッチ適用を証明するものではない。<a href="https://www.anthropic.com/research/discovering-vulnerabilities-with-claude" target="_blank" rel="noopener noreferrer">Anthropic公式研究<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p>AnthropicはChromeに関して、研究由来の62 CVEがChrome 156までに修正されたと説明する。この数と、Googleの<strong>10月27日付Chrome更新での52件の修正</strong>は集計範囲が異なる可能性がある。両者を同一件数として置き換えたり、重複のない114件として足したりしない。OS/ブラウザの修正版適用については提供元の案内に従って確認する。</p>
+<h2>10月27日付のAI開発運用トピック</h2>
+<p>GitHubは組織GitHub AppからCopilot SDKをserver-to-server認証で呼べる<strong>public preview</strong>を公表した。導入時は組織側のCopilot Requests権限が必要で、使用量は組織に課金される。既存アカウントで自動的に有効化された無料機能ではない。<a href="https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication/" target="_blank" rel="noopener noreferrer">GitHub公式<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p>AWSはElastic BeanstalkのAmazon Linux 2023環境向けに、10月26日までのセキュリティ修正を含むplatform updatesを発表し、Node.js 26とPython 3.15の新しいplatform branchを追加した。配布地域と実際の適用版は環境ごとに確認する。<a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/relnotes/release-2026-10-27-al2023.html" target="_blank" rel="noopener noreferrer">AWS公式<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p>OpenAIはOracleアプリとChatGPTの連携計画、Oracle AI Workspace構想を発表した。一般利用者へのすべての新機能の提供開始を意味するわけではない。<a href="https://openai.com/index/oracle-apps-in-chatgpt/" target="_blank" rel="noopener noreferrer">OpenAI公式<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>優先度P1：Chrome 156のCritical 4件</h2>
+<p>Google分類Criticalの4件は CVE-2026-118306（FileSystemメモリ破損）、CVE-2026-118331（FileAPI入力検証不備）、CVE-2026-118348（Skia入力検証不備）、CVE-2026-118344（Layout use-after-free）。メモリ破損などの説明はGoogleの公開分類に基づき、これだけで特定端末の侵害・遠隔コード実行・実悪用を断定しない。<a href="https://chromereleases.googleblog.com/2026/10/stable-channel-update-for-desktop_0562499947.html" target="_blank" rel="noopener noreferrer">公式出典<span class="sr-only">（新しいタブ）</span></a>。Chromeを使う端末では正規更新の適用後にバージョンを独立確認する。更新は段階的に配布される。</p>
+<h2>優先度P1：Brotliの組み込み製品とCISA KEV対象の管理</h2>
+<p>Brotli（CVE-2026-111497）は圧縮データを展開する製品や依存ライブラリの確認が必要。JPCERT/CCは2026年10月26日に注意喚起し、Node.js・Bun・Python向けパッケージ等に波及し得ると説明した。Node.js 24系列の<strong>24.22.1</strong>は10月21日の公式セキュリティリリースに修正を含むが、別系列・別製品の修正版は各提供元で独立確認する。<a href="https://www.jpcert.or.jp/at/2026/at260034.html" target="_blank" rel="noopener noreferrer">JPCERT/CC<span class="sr-only">（新しいタブ）</span></a>、<a href="https://nodejs.org/en/blog/release/v24.22.1/" target="_blank" rel="noopener noreferrer">Node.js 24.22.1<span class="sr-only">（新しいタブ）</span></a>。CISAの10/27米東部時間発表は<strong>10/28 JSTの事後情報</strong>として掲載し、当時の対処可能性を偽らない。Adobe Commerce/Magentoを使う環境は同日のKEV追加（CVE-2026-48356）を確認する。使っていない製品の影響を断定しない。</p>
+<h2>優先度P1：Tailscaleを該当構成で使う開発・運用環境</h2>
+<ul>
+<li><strong>TS-2026-014：SSH Unixソケット転送</strong>。Tailscale SSHで認証済みピアにローカル／リモート転送を許す構成では、特権ソケットへのアクセスを許す可能性があった。修正後は認証されたユーザーの権限で転送する。SSHを使うだけで無条件にroot権限が得られるという意味ではない。</li>
+<li><strong>TS-2026-015：SSHセッションのメモリ枯渇</strong>。Tailscale SSHの認証済みセッションで特定のメッセージを連続送信すると、<code>tailscaled</code>のメモリ消費が増え、ノードの通信に影響する停止につながり得た。DoSの問題であり、単独で遠隔コード実行を示すものではない。</li>
+<li><strong>TS-2026-016：ServeのUnixソケットbackend</strong>。Unixソケット転送とbackendの指定条件が重なると、<code>tailscaled</code>などの特権ソケットにアクセスする危険があった。Serveのすべての配置ではなく、Unix backendや設定変更権限に着目する。</li>
+<li><strong>TS-2026-017：Serve TLSと複数mount</strong>。HTTP/2の同一接続に異なる権限条件のmountがあると、capabilityヘッダーが別リクエストに混ざる可能性があった。権限情報を利用して許可判定するアプリで影響が生じ得る。</li>
+</ul>
+<p>影響条件の詳細は<a href="https://tailscale.com/security-bulletins" target="_blank" rel="noopener noreferrer">Tailscaleの4件の公式セキュリティ通知<span class="sr-only">（新しいタブ）</span></a>に記載されている。実際に悪用された台数や侵害の発生について、この資料だけから断定しない。</p>
+<h2>AI推論基盤のP1：旧AWS Multi Model Serverは修正版なし</h2>
+<p>AWSは10月23日（JST10月24日）、サポート終了済みのMulti Model Server（MMS、公開版<strong>1.1.11以下すべて</strong>）について、モデルarchiveの展開によるファイル書込み先逸脱（CVE-2026-115812）と、モデル取得時の意図しないネットワーク宛先へのアクセス（CVE-2026-115813）を公表した。管理APIが認証なしで信頼されないネットワークから届く構成が特に危険。<strong>修正版はなく、AWSはサポート中のモデル提供基盤への移行を推奨</strong>する。暫定的に管理APIの到達元を絞るが、SageMaker型の同一ポート構成では単純なloopback化ができない。採用していない環境への一律の脆弱性断定は避ける。<a href="https://aws.amazon.com/security/security-bulletins/2026-148-aws/" target="_blank" rel="noopener noreferrer">AWS公式2026-148-AWS<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p>同じ10月23日発表のAWS MCP Server <code>run_script</code> sandbox検証不備（CVE-2026-115845）は<strong>managed service側で修正済み、顧客操作不要</strong>。認証済み利用者の隔離セッション内という条件を旧MMSの無認証管理API問題と混同しない。<a href="https://aws.amazon.com/security/security-bulletins/2026-149-aws/" target="_blank" rel="noopener noreferrer">AWS公式2026-149-AWS<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>Brotliの事後更新：AWS Lambdaではバージョン名だけで修復を判断しない</h2>
+<p>AWSの10月28日15:00 PDT（JST29日07:00）公表・10月29日14:00 PDT（JST30日06:00）更新の通知によると、Lambda Node.js 24 runtimeは<strong>Node.js 24.22.1の既知の回帰</strong>を避けるため、AWSが現行安定版に対象のBrotli修正を当てて段階配信する。アプリ側で<code>node --version</code>を確認するだけでは、このランタイムパッチの適用を判定できない。AWSはcold-startの<code>INIT_START</code>行でpatch versionを確認するよう案内している。これは10月27日号への<strong>事後追補</strong>であり、当日の修正済み事実として書かない。<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS公式2026-155-AWS<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p><strong>サポート終了版は移行が前提：</strong> Lambda Node.js 18/20はこのセキュリティ更新を受け取らない。Phase 2で自動修正されると待たず、サポートされているNode.js 22/24/26へ移行し、移行後の適用状態を確認する。<strong>修正を取り込む操作：</strong> LambdaのZIP形式のNode.js 22/24/26関数では、対象リージョンのPhase 1適用後、コードまたは設定を<strong>実際に変更</strong>して更新する（<code>UpdateFunctionCode</code>／<code>UpdateFunctionConfiguration</code>）。変更内容が同じままの更新ではランタイムpatchを取得できない。Auto runtime updateの関数はPhase 2で段階的に更新されるが、予定日だけで反映済みと判断しない。Lambdaコンテナ形式では<strong>更新済みのbase imageを使って再ビルド・再デプロイ</strong>する。更新後は新しいcold startのCloudWatch <code>INIT_START</code>行の識別子を確認し、<strong>Node.js 22は<code>nodejs:22.mainline.v157</code>以上、Node.js 24は<code>nodejs:24.mainline.v114</code>以上</strong>を修正到達の目安とする。Node.js 24の<code>process.version</code>にはAWS独自patchが反映されない。自前で同梱したBrotliライブラリは別途確認・更新が必要。<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS一次資料・適用と検証手順<span class="sr-only">（新しいタブ）</span></a>（10月30日JST確認した事後追補）。</p>
+<h2>具体的な確認・修復・検収</h2>
+<p>まずノードごとのTailscaleバージョンを <code>tailscale version</code> で確認し、Tailscale SSHを有効にしているか、forwardingを許すか、ServeでUnixソケットやTLS複数mountを使っているかを整理する。該当環境には、10月28日公開の<strong>v1.104.4以上</strong>を適用する。<a href="https://tailscale.com/changelog" target="_blank" rel="noopener noreferrer">公式変更履歴<span class="sr-only">（新しいタブ）</span></a>で最新の修正情報を確認したうえで、更新後はノードへの通常接続、SSH、Serveの公開機能、ログとサービス到達性を確認する。</p>
+<p>SSH forwardingを業務に使っていない構成では、公式通知にある <code>TS_SSH_DISABLE_FORWARDING=1</code> をservice環境で設定し再起動する緩和策もある。ただし変更は既存設定と復旧経路の確認後に行う。実行環境で前方互換性を推測して自動適用しない。障害があれば事前保存したservice設定へ戻す。</p>
+<h2>情報の時系列と未確認事項</h2>
+<ul>
+<li><strong>10月26日</strong>：TailscaleがTS-2026-014〜017を公表。</li>
+<li><strong>10月27日</strong>：Chrome 156のCritical 4件を含む52件の修正、Mozilla Firefox/Thunderbird 5件の製品別勧告を各社が公表。CISAは<strong>米東部時間10/27 15:30（JST10/28 04:30）</strong>にBrotli・Adobe CommerceのKEV追加を公表。時差を考慮して事後追補とする。本号の対象日の定期収集成果は復旧できていない。</li>
+<li><strong>10月28日</strong>：公式Changelogにv1.104.4を掲載。</li>
+<li><strong>10月29日</strong>：Chrome/Tailscaleの一次情報で未公開原稿を復旧作成。</li>
+<li><strong>10月30日</strong>：Brotli KEV・JPCERT/CC・Mozilla勧告、Android Chrome、AnthropicのAI安全研究、GitHub/AWS/OpenAIの同日告知を追加調査。各個別ノードの適用版・侵害有無、網羅的P0/P1調査は未確認。</li>
+</ul>
+<p>本記事はChromeとTailscaleの一次資料を照合し10月30日に復旧公開した<strong>10月27日号の遡及版</strong>であり、他ベンダーの重大情報がなかったことは証明しない。公式情報に変更があれば修正履歴を付けて再評価する。</p>
+
+<section class="source-note" aria-labelledby="source-note-heading">
+<h2 id="source-note-heading">一次資料・更新履歴</h2>
+<p>2026年10月27日号を、2026年10月30日に遡及して初回公開しました。10月28日から30日の各社修正・公表を、27日に判明済みだった情報として扱わず、事後追補と明記しています。具体的な影響は製品・構成・適用済み修正によって異なります。</p>
+<p>主要な一次資料：<a href="https://chromereleases.googleblog.com/2026/10/stable-channel-update-for-desktop_0562499947.html" target="_blank" rel="noopener noreferrer">Google Chrome Releases<span class="sr-only">（新しいタブ）</span></a>、<a href="https://tailscale.com/security-bulletins" target="_blank" rel="noopener noreferrer">Tailscale Security Bulletins<span class="sr-only">（新しいタブ）</span></a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Lambda Brotli更新履歴<span class="sr-only">（新しいタブ）</span></a>。</p>
+</section>
+</article>
+</main>
+<footer class="site-footer studio-footer"><div class="container">
+<div class="footer-top"><p>日々に、小さな発明を。<br>Small studio. Useful creations.</p><nav class="footer-links" aria-label="フッターナビゲーション"><a href="/works/">Works</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://bsky.app/profile/naojun.jp" target="_blank" rel="me noopener noreferrer">Bluesky <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="https://www.youtube.com/@naojunjp" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="/feed.xml">RSS ↗</a></nav></div>
+<div class="footer-wordmark" aria-hidden="true">NAOJUN STUDIOS.</div>
+<div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
+</div></footer>
+
+<script src="/assets/js/main.js?v=20261025a"></script>
+<script src="/assets/js/studio.js?v=20261004" defer></script>
+</body>
+</html>
