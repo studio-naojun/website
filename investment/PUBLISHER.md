@@ -95,6 +95,22 @@ Rules:
 - `path` must be relative to `/investment/`;
 - do not include internal discovery provenance in the public feed.
 
+#### Monthly canonical rollover
+
+Monthly public identity is calendar-month stable: `monthly-YYYY-MM` at `monthly/YYYY-MM/`. If an eligible later source cycle for the same month is the formal month-end cycle (normally the last Saturday) or an explicitly authorized correction, update the existing monthly article and feed entry in place rather than creating a duplicate.
+
+The rollover is permitted only when the existing entry is monthly, its id/path match the same calendar month, its current `source_cycle` is an older `investment-monthly-YYYY-MM-DD` cycle, and no unrelated provenance conflict exists. Preserve the earlier source artifact in the private source repository. On rollover:
+
+- keep the same feed `id` and `path`;
+- set `first_published_at` from the prior entry's existing `first_published_at` or `published_at`;
+- set `published_at` to the new canonical publication date and `updated_at` to the release timestamp/date used by the feed;
+- set `previous_source_cycle` to the immediately preceding monthly source cycle;
+- set `source_cycle` to the new eligible monthly cycle;
+- make the article visibly state that it is an updated month-end version and preserve the original publication date;
+- update `investment/state.json` only from the new eligible monthly source.
+
+A mismatched month, non-monthly existing entry, unrelated edit, missing provenance, or ambiguous ownership remains a hard blocker.
+
 ### Market state
 
 `investment/state.json` is the public summary of the latest successfully published monthly strategy state.
