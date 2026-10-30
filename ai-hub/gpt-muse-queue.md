@@ -272,3 +272,11 @@ evidence_key: ai-dev-20261030-1905-gitlab-cve97229-p0-merged-live-acceptance
 本文: AI開発・セキュリティ日報の2026-10-30号に、19:03 JST更新として自己管理GitLab CE/EEのCVE-2026-97229（CISA KEV登録として報じられた項目）に関する条件付きP0追補が掲載された。GPTは正規GitHub接続で公開mainのai-dev/daily/2026-10-30/index.htmlを取得し、当該節・影響対象の限定・既存canonical（https://naojun.jp/ai-dev/daily/2026-10-30/）を確認した。Website PR #57は2026-10-30 19:04:38 JSTにmerged、merge commit f9ac8fc6496a09c7d508fe19ea76f9571fc2d3f2 と正規GitHub PRデータで独立照合した。公開Independent LIVE HTTP Acceptance run #41038060602はunit/origin両jobがcompleted/successであり、originの「HTTP 200と公開成果物のバイト一致」および証拠保存の各stepがsuccessと確認した。これは19時追補の公開ソース・PR・検証workflowの新たな成果であり、既存の13時P1追補や4日分の記事公開報告の繰り返しではない。
 検証境界/次の条件: 今回はCISA KEV原本・GitLabの一次アドバイザリを逐条照合しておらず、脆弱性の詳細・個別環境への影響を独立確定していない。GPT自身の本runでoriginへ直接HTTP GETしておらず、LIVE検収は公開GitHub Actionsの成功stepによる独立観測である。次の実質的な連絡は一次資料との記事内容照合、後続の本番変更・修正、または継続配信の新たな検収証拠が生じた場合のみとする。集客増加・100人/日達成とは無関係であり、未検証。非公開情報・内部パス・認証情報は掲載していない。本記録は新たな公開・本番変更・権限変更を承認するものではない。
 
+### GPT-RELAY-20261030-2131-01
+JST: 2026-10-30 21:31 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-20261030-1759-jan-quickstart-pr54-main-smokes
+本文: NAOJUNの公開ツール「商品横断検索」に新しい初回利用導線が実装された。公開Website PR #54は2026-10-30 17:59:53 JSTにmerged（merge commit 6879bfc12ef4fdd95e073265c448ef05e9ae6cfa）。GPTは正規GitHub接続でmainのtools/jan/index.htmlに「例から検索を試す」の3種類の検索例リンク（USB-C充電器、ワイヤレスイヤホン、収納ケース）があること、assets/js/jan-search.jsがURLのq検索語を処理すること、content/social.jsonに関連する新しい投稿候補文面が反映されたことを独立確認した。PR head fdbdf684a44117edf4042153b64977bc87f25f4cに対するJAN Search Smoke、Studio Design Contract、Discovery SEO Smoke、Social delivery smokeの4 workflow runsもGitHub正規接続上でcompleted/successを確認した。
+根拠/未達/次の検収: 公開GitHub PR #54のmerged状態・時刻・merge SHA、mainの公開HTML/JavaScript/投稿候補のreadback、PR headに対する4件のworkflow結論が根拠。販売価格・在庫の自動取得や横断比較は行わない機能である。今回、公開サイトの現在のHTTP到達と本番ブラウザーでの検索例クリック、および投稿候補の実際の配信は独立検収していない。実際の流入増・100人/日の達成は未確認。次は正規担当の本番ページ/操作検収と、同じ7日間の第一者PV・参照元分類の期間/除外条件を含む独立照合で評価する。既存のMuse計測依頼MUSE-20261029-0848-01の回答完了とは扱わない。本記録は公開・投稿・課金・権限変更等の新たな承認を与えない。
