@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。">
+  <meta name="description" content="CISA KEV追加のGitLab悪用確認済みRCEと修正手順、AWS Private CA認可不備、Lambda Brotli配布、API廃止準備。">
   <title>AI開発・セキュリティ日報｜2026年10月30日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
@@ -14,10 +14,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年10月30日号">
-  <meta property="og:description" content="AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。">
+  <meta property="og:description" content="CISA KEV追加のGitLab悪用確認済みRCEと修正手順、AWS Private CA認可不備、Lambda Brotli配布、API廃止準備。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-30/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月30日号","description":"AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-30/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T13:00:39+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月30日号","description":"CISA KEV追加のGitLab悪用確認済みRCEと修正手順、AWS Private CA認可不備、Lambda Brotli配布、API廃止準備。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-30/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T19:03:17.555+09:00"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior studio-article">
@@ -32,22 +32,30 @@
   <header class="ai-dev-article-hero">
     <div class="container">
       <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
-      <div class="eyebrow">DAILY / 初回公開 2026-10-30 / 更新 2026-10-30 13:00 JST</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-10-30 / 更新 2026-10-30 19:03 JST</div>
       <h1>AI開発・セキュリティ日報｜2026年10月30日号</h1>
-      <p class="ai-dev-lead">AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 12:59 JST</p>
+      <p class="ai-dev-lead">CISA KEV追加のGitLab悪用確認済みRCEと修正手順、AWS Private CA認可不備、Lambda Brotli配布、API廃止準備。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 19:03 JST</p>
     </div>
   </header>
   <article class="ai-dev-article">
-    <p><strong>調査時点：2026年10月30日12:59 JST（13時追補）。</strong> 昨日の重要情報を「今日発生した事故」と誤記しません。情報の優先度は影響条件付きです。</p>
+    <p><strong>調査時点：2026年10月30日19:03 JST（19時追補。13時内容は維持）。</strong> 昨日の重要情報を「今日発生した事故」と誤記しません。情報の優先度は影響条件付きです。</p>
 <h2>本日の優先対応</h2>
 <ul>
+<li><strong>P0（19時追補）：自己管理GitLabのCVE-2026-97229がCISA KEVに追加。</strong> インターネット到達可能な脆弱版GitLab CE/EEでは公式修正版への更新と侵害痕跡の調査を優先。GitLab.com/Dedicatedは公式によれば修正済み。10月12日公表の問題と10月29日のKEV収載を区別する。</li>
 <li><strong>P1（13時追補）：AWS Private CA Connector for Kubernetes。</strong> 名前空間限定の承認権限でcluster issuerの証明書が発行できる条件付き認可不備。修正版へ上げる前に <code>issuerRef.kind</code> を確認し、証明書renewal停止を防ぐ。</li>
 <li><strong>P1：AWS Lambda上でBrotli圧縮入力を扱う関数。</strong> AWSがNode.js向け更新のPhase 2開始日として10月30日を示しています。予定日だけで適用済みと判断せず、cold-startのruntime patch版を実測してください。</li>
 <li><strong>P2：GitHub Copilot Fusionのローカルモデル振り分けと費用の確認。</strong> 10月28日公開の新機能は10月30日の運用判断に影響します。ローカルモデルを選べてもクラウド通信が不要になるわけではありません。</li>
 <li><strong>P2：OpenAI APIで旧モデルを固定している開発者。</strong> 2027年1月・4月の廃止予定をdependency/設定から点検してください。これは10月30日発生の障害ではありません。</li>
 </ul>
-<h2>1. AWS Private CA Connector for Kubernetes：証明書発行権限の取り違え（P1・10月30日追補）</h2>
+<h2>1. Self-managed GitLab：悪用確認済みのCI/CD正規表現RCE（P0・19時追補）</h2>
+<p><strong>何が起きたか。</strong> GitLab CE/EEのCI/CD設定内で扱う正規表現のコンパイル処理に整数オーバーフロー（<code>CVE-2026-97229</code>）があり、条件が揃うと未認証の外部入力からGitLabサーバー上で任意コード実行に至り得る。GitLabは<strong>2026-10-12</strong>に修正版を公開済み。CISAは<strong>2026-10-29</strong>にKEV（実際に悪用が確認された脆弱性のカタログ）へ収載し、データ <code>2026.10.29</code> は <strong>2026-10-30 04:09 JST頃</strong>に公開された。つまり「10月30日に初めて脆弱性が公表された」のではない。KEV登録は悪用の根拠だが、すべてのGitLab設置が侵害された証拠ではない。</p>
+<p><strong>影響する版・環境。</strong> 自己管理のGitLab CE/EEで19.2系の19.2.8未満、19.3系の19.3.5未満、19.4系の19.4.2未満。CI/CD用正規表現を不正な外部入力から評価できる経路を持つ場合にサーバー侵害の恐れがある。<strong>GitLab.comとGitLab DedicatedはGitLab公式によれば修正済み</strong>で、利用者が自己管理サーバーをアップグレードする案件ではない。GitHubの利用だけではこのGitLab製品の攻撃経路に該当しない。</p>
+<p><strong>直ちに取る対処。</strong> GitLab公式がこのCVEの修正を含むと案内した初期版は19.2.8 / 19.3.5 / 19.4.2。ただし<strong>2026-10-21に別の重大な正規表現RCE（<code>CVE-2026-110264</code>）</strong>の修正も追加されたため、初期パッチ版で止めない。後続修正を含む最低版は19.2.9 / 19.3.6 / 19.4.3 / 19.5.1（18.11/19.0/19.1にはそれぞれ18.11.13 / 19.0.10 / 19.1.9）。10月29日には19.5.3 / 19.4.5 / 19.3.7 / 19.2.10等の更に新しい<strong>バグ修正版（新たなsecurity fixはなし）</strong>も発行された。まず対象製品・実稼働版・公開経路を照合し、バックアップとデータベースmigrationに伴う停止影響を確認して、サポート中の最新patchへ計画的かつ迅速に更新する。更新前は管理・CI/CDへの外部到達範囲を制限するが、これはパッチの完全な代替ではない。</p>
+<p><strong>対応確認・rollback。</strong> 稼働GitLabの版とGitLab公式の影響表を照合し、更新後にログイン・repository・pipeline・runnerを正常確認する。GitLabは<code>CVE-2026-97229</code>の悪用試行の検出に役立つ公式の6検知ルールも公開しているため、未修正期間の監査・プロセス異常・CIのsecretアクセスを調べる。侵害痕跡がある場合、パッチだけでは侵害が解消しないため、認証情報の再発行と信頼できる復旧を別途検討する。rollbackする場合も脆弱版を外部公開し続けず、接続制限した環境で障害を切り分ける。</p>
+<p><strong>未解明点・次回確認。</strong> 悪用の観測件数や攻撃者の権限取得経路はCISA登録だけでは特定できない。個別環境の公開・CI設定と侵害有無も未確認。次回はCISA更新、GitLabの公式検知情報、更新中のself-managed環境の正常性を確認する。</p>
+<p><strong>一次情報：</strong> <a href="https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer">CISA KEV dataset（catalogVersion 2026.10.29、dateAdded 2026-10-29）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-4-2-released/" target="_blank" rel="noopener noreferrer">GitLab 2026-10-12 Critical Patch Release<span class="sr-only">（新しいタブ）</span></a>、<a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/" target="_blank" rel="noopener noreferrer">GitLab 2026-10-21 Critical Patch Release<span class="sr-only">（新しいタブ）</span></a>、<a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-3-released/" target="_blank" rel="noopener noreferrer">GitLab 2026-10-29 patch（security fix追加なし）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://www.ruby-lang.org/en/news/2026/10/23/regexp-fixes-for-gitlab-cves/" target="_blank" rel="noopener noreferrer">Ruby公式の正規表現engine修正説明（2026-10-23）<span class="sr-only">（新しいタブ）</span></a>。</p>
+<h2>2. AWS Private CA Connector for Kubernetes：証明書発行権限の取り違え（P1・10月30日追補）</h2>
 <p><strong>何が起きたか。</strong> AWSは10月29日09:30 PDT（10月30日01:30 JST）に<code>CVE-2026-119115</code>（GitHub Advisory <code>GHSA-hjrh-q6pg-mh82</code>）を公表した。cert-managerとAWS Private CAを接続する<code>aws-privateca-issuer</code>で、承認ポリシーが名前空間スコープのissuerのみを認めている<strong>認証済み</strong>ユーザーが、条件次第で権限外のクラスタースコープissuerから証明書（下位CA証明書を含む）を取得できる。これは権限境界を越える発行リスクであり、<strong>未認証で誰でも侵入できる問題や実悪用の確認済み報告ではない</strong>。</p>
 <p><strong>対象と非該当。</strong> <code>aws-privateca-issuer</code> <strong>v1.10.1未満</strong>、またはEKS add-on <strong>v1.10.1-eksbuild.1未満</strong>を実際に使い、名前空間限定の証明書承認・RBACとクラスタースコープissuerが共存する構成を優先する。これらを導入していない開発環境や、攻撃に必要な認証済み承認権限・issuer構成が存在しない場合は、説明された権限越えの経路に該当しない。</p>
 <p><strong>影響。</strong> 権限外のCAで不適切な証明書を発行でき、証明書の信頼境界に影響し得る。CVSS 8.5は深刻度の目安だが、悪用確認や全環境へのP0指定の根拠ではない。</p>
@@ -55,7 +63,7 @@
 <p><strong>暫定緩和・検証・rollback。</strong> すぐ更新できない場合、証明書承認ポリシーとRBACをissuerの<strong>名前とkindの両方</strong>で制約する。事前に現行のissuer参照と期限・承認ルールを記録し、更新後は既存の証明書申請・renewalをテスト、<code>Failed</code>や<code>Pending</code>の状態を点検する。回帰障害が出た場合も旧脆弱版へ無制限に戻さず、issuer参照の誤設定を直すか発行権限を制限した状態で復旧する。</p>
 <p><strong>未解明点と次の確認。</strong> 個別クラスタの承認ルール、発行履歴、実悪用の有無は未確認。次回はAWS更新と配布元advisory、該当環境の実際のissuer設定・証明書発行ログを照合する。</p>
 <p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-156-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-156-AWS（2026-10-29 09:30 PDT公開）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/cert-manager/aws-privateca-issuer/security/advisories/GHSA-hjrh-q6pg-mh82" target="_blank" rel="noopener noreferrer">cert-manager公式GitHub Advisory（2026-10-29）<span class="sr-only">（新しいタブ）</span></a>。</p>
-<h2>2. AWS Lambda：Brotli修正版の段階配布と実効確認（P1）</h2>
+<h2>3. AWS Lambda：Brotli修正版の段階配布と実効確認（P1）</h2>
 <p><strong>何が起きたか。</strong> Brotli decoderの <code>CVE-2026-111497</code> に対してAWSは10月28日15:00 PDT（10月29日07:00 JST）にSecurity Bulletin 2026-155-AWSを発表、10月29日14:00 PDT（10月30日06:00 JST）に更新した。2026年10月30日は、Node.js 22/24/26のZIPランタイムで自動更新Phase 2を予定している日。ただし各AWSリージョンへの配信完了時刻は確約されていない。</p>
 <p><strong>影響対象・非該当条件。</strong> Lambdaの影響するNode.js/.NETランタイムで、攻撃者由来Brotli圧縮入力を展開する関数。Lambda管理基盤サービスそのものは対象外とAWSは明記。Python/Ruby/OS-only provided.al2023の標準ランタイムにはBrotliライブラリは含まれないが、利用者が独自にbundledした場合は別途更新が必要。</p>
 <p><strong>対象ランタイムと公式記載。</strong> AWSはNode.js 22/24/26と.NET 8・.NET 9（コンテナのみ）・.NET 10を対象に挙げる。不正なBrotli圧縮入力の展開はネイティブdecoderのバッファオーバーフローを起こし、コード実行やプロセスメモリの読み出しにつながり得る。ただしAWS上の個々の関数が侵害されたとの証拠ではない。<code>INIT_START</code>の確認基準はNode.js 22 <code>nodejs:22.mainline.v157</code>以上、Node.js 24 <code>nodejs:24.mainline.v114</code>以上。Node.js 26の最低修正runtime識別子は現行Bulletinに未掲載。.NET 8は <code>dotnet:8.mainline.v165</code> 以上が掲載された。.NET 10は原典に <code>otnet:10.mainline.v113</code> と記されているが、先頭文字欠落が疑われるため、推測した修正版文字列を使わずAWSの訂正情報を確認する。.NET 9はコンテナのみが対象。</p>
@@ -64,7 +72,7 @@
 <p><strong>確認・rollback。</strong> CloudWatchのcold start <code>INIT_START</code>行に、Node 22は <code>nodejs:22.mainline.v157</code>以上、Node 24は <code>nodejs:24.mainline.v114</code>以上と表示されるか確認。Node 24は<code>process.version</code>だけではBrotli修正版の適用を判断できない。更新後に正常圧縮データの処理を確認。問題が出た場合も旧脆弱runtimeを外部公開し続けず、入力経路制限のもと復旧する。</p>
 <p><strong>未解明点。</strong> 10月30日朝の各リージョン配布完了・CodeBuildイメージ配信実績は未確認。予定は完了証拠ではない。13時にはAWS公式Bulletinを再確認したが、各リージョンの関数ログは取得していない。19時枠で原典と実機の適用状態を分けて再確認する。</p>
 <p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-155-AWS（2026-10-28 PDT公表、10-29 PDT更新）<span class="sr-only">（新しいタブ）</span></a>。</p>
-<h2>3. GitHub Copilot Fusionでローカルモデルの選択が可能に（P2）</h2>
+<h2>4. GitHub Copilot Fusionでローカルモデルの選択が可能に（P2）</h2>
 <p><strong>何が起きたか。</strong> GitHubは10月28日、Copilot Fusionのモデル自動振り分け（GA）と、ローカルモデルも選択できるexperimental previewを公開。Fusion Standard/High/Maxでは状況に応じて複数モデルをルーティングする。</p>
 <p><strong>対象・非該当。</strong> GitHub Copilotアプリ、CLI、VS Code等で対象機能を有効化する利用者。WindowsのWindows ML providerにはMAI Code 1.1 Flashのmanaged downloadがあり、macOS/LinuxでもCopilot CLIと互換するローカルOpenAI-compatible endpointを接続できる。<strong>Copilot appのローカル自動振り分けは現時点でWindows ML管理モデルに限定</strong>されており、macOSのBYOK設定だけで自動振り分け可能と断定できない。</p>
 <p><strong>影響・費用。</strong> Fusionは利用した各モデルの標準レートに従って課金される。Paidプラン向け30%割引はGitHubが「期間限定」と案内。ローカル推論が使えてもクラウドで振り分け判断を行うため、完全オフライン動作とはならない。</p>
@@ -73,7 +81,7 @@
 <p><strong>未解明点。</strong> 個々のPCのGPU/RAM適合とCopilotアカウントの利用権限、ローカルで選べるモデルは環境ごとに異なる。</p>
 <p><strong>料金・導入条件。</strong> Copilot Fusion有料ユーザー向け30%割引は公式Changelogで「期間限定」と案内されているが、終了日は掲載されていない。Fusion GAと、ローカルモデル選択のexperimental previewは別の提供条件なので混同しない。</p>
 <p><strong>一次情報：</strong> <a href="https://github.blog/changelog/2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models/" target="_blank" rel="noopener noreferrer">GitHub Copilot Fusion local models（2026-10-28）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion/" target="_blank" rel="noopener noreferrer">GitHub Copilot Fusion GA・料金（2026-10-28）<span class="sr-only">（新しいタブ）</span></a>。</p>
-<h2>4. OpenAI API旧モデルの停止予定：計画的な移行準備（P2）</h2>
+<h2>5. OpenAI API旧モデルの停止予定：計画的な移行準備（P2）</h2>
 <p><strong>事象。</strong> OpenAI公式Deprecationsは、2026年10月14日通知のGPT-4系列を2027年1月14日、10月1日通知のGPT-5.3-Codex/5.1等を2027年4月1日にAPIから削除予定と表示。<strong>10月30日の新規停止・障害ではない</strong>。</p>
 <p><strong>該当条件・非該当。</strong> APIで明示的に <code>gpt-4o-2024-08-06</code>、<code>gpt-4o-2024-11-20</code>、<code>gpt-4o-mini-2024-07-18</code>、<code>gpt-4.1-2025-04-14</code>、<code>gpt-4.1-mini-2025-04-14</code>等を参照するアプリは2027年1月14日までに切り替えが必要。GPT-5.3-Codex <code>gpt-5.3-codex</code>等は2027年4月1日が期限。対象model ID・aliasだけでなく、SDK・ツールの既定値、環境変数、バックグラウンド処理にも対象model IDが含まれないと確認できた場合だけ非該当。aliasの実際の解決先が未確認なら非該当と断定せず、対象ID・移行先の完全な一覧は公式Deprecations表を参照する。</p>
 <p><strong>影響・対処。</strong> 停止予定日を過ぎるとAPIエラーやジョブ失敗が発生する可能性。まず設定・IaC・CI・永続キューで固定したmodel IDを検索し、公式の推奨後継モデルへ段階移行。機能差・料金・制限に応じてテスト環境で出力品質、ツール呼び出し、JSON schema、料金を照合する。</p>
@@ -82,7 +90,7 @@
 <p><strong>一次情報：</strong> <a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener noreferrer">OpenAI API Deprecations（2026-10-30確認）<span class="sr-only">（新しいタブ）</span></a>。</p>
 <h2>継続監視（重複記事なし）</h2>
 <p><a href="/ai-dev/daily/2026-10-29/">10月29日号</a>で扱ったLiteLLM悪性配布、PHPの侵害可能性、AWS Strands Agents Toolsについて、影響する環境では引き続き優先度P0/P1に応じて確認する。一次情報：<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">LiteLLM GitHub Advisory（最終更新10月22日）</a>、<a href="https://www.jpcert.or.jp/at/2026/at260033.html" target="_blank" rel="noopener noreferrer">JPCERT/CC PHP注意喚起（10月29日追補）</a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-154-aws/" target="_blank" rel="noopener noreferrer">AWS Strands 2026-154</a>。新たな侵害発生を確認したわけではないため、本日の新規案件として数えない。公式更新があれば確認日時を明示して同一URLへ追記する。</p>
-<h2>この日報の更新履歴</h2><ul><li>2026-10-30 13:00 JST：AWS 2026-156のKubernetes issuer認可不備とアップグレード前の証明書renewal互換性確認をP1追補。AWS 2026-155の.NET 8修正識別子と.NET10原文の表記疑義も追記。<a href="https://aws.amazon.com/security/security-bulletins/2026-156-aws/" target="_blank" rel="noopener noreferrer">AWS 2026-156</a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS 2026-155</a>。実際の初回公開日2026-10-30は維持。</li><li>2026-10-30 10:13 JST：ClaudeレビューF1〜F6に基づきAWS影響ランタイムの全対象と未掲載の識別子、Auto/Manual配布の未確定状態、FusionとOpenAI APIの条件、前号の一次資料を追補（根拠：<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS</a>、<a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener noreferrer">OpenAI</a>）。初回公開日2026-10-30は維持。</li><li>対象日・初回公開日：2026年10月30日（JST）。</li><li>一次資料の調査時点：2026年10月30日08:40 JST。重要な後続情報は同一URLの更新履歴に記録します。</li></ul>
+<h2>この日報の更新履歴</h2><ul><li>2026-10-30 19:03 JST：CISA KEV 2026.10.29にGitLab CVE-2026-97229の悪用確認登録を認め、10月12日・21日・29日の公式修正版の違い、影響条件・対策・侵害確認をP0追補。初回公開日2026-10-30は維持。<a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-4-2-released/" target="_blank" rel="noopener noreferrer">GitLab公式</a>。</li><li>2026-10-30 13:00 JST：AWS 2026-156のKubernetes issuer認可不備とアップグレード前の証明書renewal互換性確認をP1追補。AWS 2026-155の.NET 8修正識別子と.NET10原文の表記疑義も追記。<a href="https://aws.amazon.com/security/security-bulletins/2026-156-aws/" target="_blank" rel="noopener noreferrer">AWS 2026-156</a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS 2026-155</a>。実際の初回公開日2026-10-30は維持。</li><li>2026-10-30 10:13 JST：ClaudeレビューF1〜F6に基づきAWS影響ランタイムの全対象と未掲載の識別子、Auto/Manual配布の未確定状態、FusionとOpenAI APIの条件、前号の一次資料を追補（根拠：<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS</a>、<a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener noreferrer">OpenAI</a>）。初回公開日2026-10-30は維持。</li><li>対象日・初回公開日：2026年10月30日（JST）。</li><li>一次資料の調査時点：2026年10月30日08:40 JST。重要な後続情報は同一URLの更新履歴に記録します。</li></ul>
     <aside class="source-note">
       <h2>出典・更新履歴</h2>
       <p>各節の一次出典から発表日、版、影響条件を確認できます。初回調査は2026年10月30日08:40 JST、追加調査は同日12:59 JSTです。</p>
