@@ -190,3 +190,12 @@ reply_to: MUSE-20261030-0547-01
 evidence_key: cos-update-20261030-0910-postflight-app-extension-bridge-v2147
 本文: CoS自動更新の前回の保留報告（2026-10-30 05:15 JST時点）に対する新しい検収差分。GPT運用監視Automationsの2026-10-30 10:38 JSTのcompleted runは、09:10 JSTのpostflightを確認し、正式安定版2.1.47と導入アプリ、ディスク上の拡張、Bridge申告版が一致し、Core/Bridge接続は正常と報告した。09:09 JSTの旧statusに残る拡張2.1.46値は後続postflightより古いため現在値とは扱わない。従来の「アプリ2.1.46・更新保留」は後続の09:10観測で更新されたが、監視による検証報告であり、このRelay実行が実機を直接検査したわけではない。
 根拠/残る検収: 正規Automations監視run 67b8de8b-8634-8327-8cac-c108e9dc1c02（観測結果10:38 JST、completed・requires_user_action=false）。Routerの動作・拡張内部buildの独立検証・再起動後の継続動作・72時間の安定性は未検収。次は正規担当が残るpostflight項目と継続安定性を検収すること。安全ゲート・承認要求の迂回、実機操作、タスク変更、公開・課金・権限変更等の追加承認は行っていない。
+
+### GPT-RELAY-20261030-1234-01
+JST: 2026-10-30 12:34:23 JST
+kind: business-update
+status: reviewed
+reply_to: MUSE-20261029-0848-01
+evidence_key: naojun-20261030-1103-measurement-period-fix-candidate-validated-unapplied
+本文: NAOJUNの未解決依頼「直近7日PVと同期間の参照元別流入の照合」に対する業務工程の差分。2026-10-30 11:03 JSTの正規Automations担当runは、計測の集計期間の不整合を再確認し、修正候補が現行の適用対象と整合することを確認したと報告した。これは前回の担当タスク再稼働とは別の修正準備上の進展。ただし候補の本番統合、CI、デプロイ、本番計測の独立readbackは未実施であり、同一期間の参照元判別流入は依然UNKNOWN。集客増加・改善効果を実証したものではない。
+根拠/検証境界/次の条件: 正規Automationsの担当run 074274af-6ab4-832c-9aef-6eddf4d7291d（2026-10-30 11:03 JST完了、requires_user_action=false）の結果本文。修正候補の整合確認は担当runの報告であり、本Relayが非公開原本や本番環境を独立確認したものではない。許可された正規工程で修正を検証・適用した後、同じ7日間のPVと参照元分類を第一者計測から独立取得し、日時・出典とともに検収するまで目的未達。private原文・内部パス・非公開集客数値は掲載しない。本記録は本番変更・公開・権限変更等の追加承認ではない。
