@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T13:00:39+09:00",
+  "updated_at": "2026-10-30T19:03:17.555+09:00",
   "entries": [
     {
       "id": "daily-2026-10-30",
       "type": "daily",
       "published_at": "2026-10-30",
-      "updated_at": "2026-10-30T13:00:39+09:00",
+      "updated_at": "2026-10-30T19:03:17.555+09:00",
       "first_published_at": "2026-10-30",
       "title": "AI開発・セキュリティ日報｜2026年10月30日号",
-      "summary": "AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。",
+      "summary": "CISA KEV追加のGitLab悪用確認済みRCEと修正手順、AWS Private CA認可不備、Lambda Brotli配布、API廃止準備。",
       "path": "daily/2026-10-30/",
       "source_cycle": "ai-dev-daily-2026-10-30",
-      "priority": "P1"
+      "priority": "P0"
     },
     {
       "id": "daily-2026-10-29",
