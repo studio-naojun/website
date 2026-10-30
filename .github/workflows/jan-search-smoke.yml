@@ -36,6 +36,9 @@ jobs:
           node --check assets/js/jan-search.js
           node --check tools/jan/ci-smoke.mjs
 
+      - name: JAN example link regression
+        run: python3 -m unittest discover -s tests -p test_jan_quickstart.py
+
   browser-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
