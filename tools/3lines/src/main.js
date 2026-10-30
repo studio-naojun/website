@@ -7,6 +7,7 @@ const source = document.querySelector('#source-text');
 const charCount = document.querySelector('#char-count');
 const inputError = document.querySelector('#input-error');
 const submitButton = document.querySelector('#summarize-button');
+const sampleButton = document.querySelector('#sample-button');
 const statusCard = document.querySelector('.status-card');
 const statusLabel = document.querySelector('#status-label');
 const statusDetail = document.querySelector('#status-detail');
@@ -28,6 +29,7 @@ const badReasons = document.querySelector('#bad-reasons');
 const styles = [...document.querySelectorAll('.style-option')];
 const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 const state = { style: 'gist', result: null, generationId: null, feedbackRating: null, running: false, detailOpen: false };
+const SAMPLE_TEXT = '【架空のお知らせ】駅前の公共スペースは来月から平日午後8時まで利用できます。土日はこれまでどおり午後5時までです。作業席は新たに20席増えますが、混雑時には一人2時間を目安に交代してください。予約は不要で、空席は入口の案内表示で確認できます。正式な運用開始日は来月1日です。';
 
 function setStatus(label, detail, mode = 'ready') {
   statusLabel.textContent = label;
@@ -47,6 +49,7 @@ function updateCount() {
 function setBusy(busy) {
   state.running = busy;
   submitButton.disabled = busy;
+  sampleButton.disabled = busy;
   retryButton.disabled = busy;
   source.readOnly = busy;
   form.setAttribute('aria-busy', String(busy));
@@ -183,6 +186,14 @@ async function sendBadReason(reason) {
   feedbackStatus.textContent = outcome.status === 'unavailable' ? '理由を受け付けました（集計先は未設定です）。' : outcome.status === 'failed' ? '理由は確認しましたが、集計先へ送信できませんでした。' : '理由も受け付けました。';
 }
 
+sampleButton.addEventListener('click', () => {
+  if (state.running) return;
+  source.value = SAMPLE_TEXT;
+  updateCount();
+  setInputError();
+  setStatus('例文を入力しました', '架空の案内文です。「3行！」を押すと試せます。');
+  source.focus();
+});
 source.addEventListener('input', updateCount);
 form.addEventListener('submit', (event) => { event.preventDefault(); runSummary({ preserveResult: false, focus: true }); });
 retryButton.addEventListener('click', () => runSummary({ preserveResult: false, focus: true }));
