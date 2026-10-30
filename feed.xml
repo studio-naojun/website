@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-30T10:13:14+09:00</updated>
+  <updated>2026-10-30T10:14:59.671+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年10月30日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-30/</id>
@@ -37,8 +37,8 @@
     <title>AI開発・セキュリティ日報｜2026年10月28日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-28/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-10-28/"/>
-    <updated>2026-10-30T08:39:00+09:00</updated>
-    <published>2026-10-30T08:39:00+09:00</published>
+    <updated>2026-10-30T10:14:59.671+09:00</updated>
+    <published>2026-10-30T10:14:59.671+09:00</published>
     <category term="ai-dev"/>
     <summary>Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。</summary>
   </entry>
