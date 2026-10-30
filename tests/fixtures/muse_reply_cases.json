@@ -1,0 +1,41 @@
+[
+  {
+    "id": "direct_help",
+    "draft": "押している間にツタが伸びます。離すと倒れるので、短めに倒すと操作しやすいです。",
+    "expected_flags": [],
+    "expected_status": "draft"
+  },
+  {
+    "id": "canned_praise",
+    "draft": "素晴らしい視点ですね！ぜひチェックしてください！",
+    "expected_flags": [
+      "canned_phrasing"
+    ],
+    "expected_status": "needs_edit"
+  },
+  {
+    "id": "irrelevant_promotion",
+    "draft": "新作です！ https://naojun.jp/",
+    "expected_flags": [
+      "unsolicited_url"
+    ],
+    "expected_status": "needs_edit"
+  },
+  {
+    "id": "duplicate",
+    "draft": "なるほど。そこは調整したい点です。",
+    "previous": [
+      "なるほど。そこは調整したい点です。"
+    ],
+    "expected_flags": [
+      "duplicate"
+    ],
+    "expected_status": "needs_edit"
+  },
+  {
+    "id": "short_answer",
+    "draft": "今のところiPhoneでは動きません。ブラウザ版のみ対応しています。",
+    "expected_flags": [],
+    "expected_status": "draft"
+  }
+]
