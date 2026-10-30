@@ -7,6 +7,19 @@ try {
   await page.route('https://unpkg.com/**', (route) => route.abort());
   await page.goto('http://127.0.0.1:4173/tools/jan/', { waitUntil: 'domcontentloaded' });
 
+  // Real browser click on the new first-visit path, without contacting retailers.
+  const example = page.locator('[data-jan-example="1"]');
+  await example.click();
+  await page.waitForFunction(() => !document.querySelector('#store-search')?.hidden);
+  const prefilled = await page.locator('#jan-code').inputValue();
+  if (prefilled !== 'USB-C 充電器 65W') {
+    throw new Error(`JAN quick-start example did not prefill search: ${prefilled}`);
+  }
+  if (new URL(page.url()).searchParams.get('q') !== prefilled) {
+    throw new Error('JAN example URL did not retain the selected query');
+  }
+  await page.goto('http://127.0.0.1:4173/tools/jan/', { waitUntil: 'domcontentloaded' });
+
   await page.locator('#jan-code').fill('   ');
   await page.locator('#jan-search-form').evaluate((form) => form.requestSubmit());
   await page.waitForFunction(() => !document.querySelector('#jan-error')?.hidden);
