@@ -5,6 +5,12 @@ document.querySelectorAll('[data-year]').forEach((el) => {
 (() => {
   const isProduction = location.hostname === 'naojun.jp' || location.hostname === 'www.naojun.jp';
   if (!isProduction) return;
+  // Do not count explicit test traffic or visitors who opted out.
+  const requestedSource = new URLSearchParams(location.search).get('utm_source');
+  if (navigator.webdriver || navigator.doNotTrack === '1' ||
+      navigator.globalPrivacyControl === true || requestedSource === 'qa' ||
+      requestedSource === 'internal_test') return;
+  try { if (localStorage.getItem('naojun-analytics-off') === '1') return; } catch (_) {}
 
   try {
     const payload = new URLSearchParams({
@@ -111,6 +117,25 @@ document.querySelectorAll('[data-year]').forEach((el) => {
       }).catch(() => {});
     } catch (_) {}
   };
+
+  // A date-only marker deduplicates this browser within a JST calendar day.
+  // This is an estimate, never a verified-human count. No identity is issued.
+  const countDailyBrowser = () => {
+    try {
+      const day = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+      const key = 'naojun-daily-visit-v1';
+      if (localStorage.getItem(key) === day) return;
+      localStorage.setItem(key, day);
+      // Mark before sending: a lost response may undercount, never trigger a
+      // blind duplicate. Blocked storage skips this estimate, not navigation.
+      emit('daily_visit');
+    } catch (_) {}
+  };
+  if (navigator.locks && typeof navigator.locks.request === 'function') {
+    navigator.locks.request('naojun-daily-visit-v1', countDailyBrowser).catch(() => {});
+  } else {
+    countDailyBrowser();
+  }
 
   if (firstLanding) emit('landing');
   if (path === '/koechara/') emit('koechara_entry');

@@ -1,0 +1,19 @@
+name: Daily visitor measurement smoke
+on:
+  pull_request:
+    paths:
+      - 'assets/js/main.js'
+      - 'tests/daily-visit.test.mjs'
+      - '.github/workflows/metrics-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/daily-visit.test.mjs
