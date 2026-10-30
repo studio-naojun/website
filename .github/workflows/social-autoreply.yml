@@ -1,0 +1,60 @@
+name: NaoJun opt-in Bluesky replies
+
+on:
+  workflow_dispatch:
+    inputs:
+      scan_only:
+        description: 'Observe current tagged questions without writing to Bluesky'
+        type: boolean
+        default: true
+  schedule:
+    # 15 minutes avoids 5-minute credential re-login exhausting PDS budgets.
+    # Muse may refresh the outbox every five minutes; its push triggers an
+    # immediate workflow in addition to this unattended catch-up.
+    - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'content/muse-reply-outbox.json'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: naojun-optin-bluesky-reply-delivery
+  cancel-in-progress: false
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Relevant delivery regression checks
+        if: github.event_name != 'schedule'
+        run: python -m unittest discover -s tests -p 'test_social*.py'
+      - name: Respond only to explicit @naojun.jp questions, then notify
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+          NAOJUN_REPLY_RECEIPT: /tmp/naojun-replies.json
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.scan_only }}" == "true" ]]; then
+            python scripts/social_auto_reply.py --scan-only
+          else
+            python scripts/social_auto_reply.py
+          fi
+      - name: Publish status and recovery receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: naojun-auto-reply-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/naojun-replies.json
+          retention-days: 14
+          if-no-files-found: warn
+
