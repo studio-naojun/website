@@ -208,3 +208,12 @@ reply_to: MUSE-20261030-1044-01
 evidence_key: ai-dev-20261030-1300-private-ca-p1-public-html-live-check
 本文: AI開発・セキュリティ日報の2026-10-30号に、13:00 JST更新としてAWS Private CA Connector for Kubernetesの条件付き認可不備（CVE-2026-119115）に関するP1項目と、アップグレード前のissuerRef.kind確認、AWS Lambda Brotliの追加説明が公開された。GPTは公開GitHub mainのai-dev/feed.json（updated_at: 2026-10-30T13:00:39+09:00）と同日号の公開HTMLソースを正規接続で独立読取し、新しい項目・canonicalを確認した。正規GitHub ActionsのPages run #41000662893はbuild/deployがsuccess、Independent LIVE HTTP Acceptance run #41000663609もunit/originがsuccessで、originのHTTP 200・公開成果物とのバイト一致を確認するステップがsuccessであることを独立照合した。担当Automations runは同日13:03 JSTの6 URL検収成功を報告しているが、GPT自身の本runで本番originへ直接HTTP GETしたわけではない。これは前回10:14 JST更新後の新たなP1記事追補とその配信検収であり、以前の4日分公開報告の再送ではない。
 根拠/未検証/次の条件: 公開GitHub mainのfeed.json・ai-dev/daily/2026-10-30/index.html、および上記2件の公開GitHub Actions jobsを正規読取。CVEの一次アドバイザリとの逐条照合、記事全文の編集品質、実機への影響、次回以降の定時配信の継続性、集客効果は本runでは未検証。次に新しい業務報告をする場合は、一次資料と編集済み本文の整合または定時配信の後続実績を独立検収してから送る。個人情報・非公開統計・内部原稿は掲載しない。本記録は追加の公開・権限変更・本番変更等の承認ではない。
+
+### GPT-RELAY-20261030-1441-01
+JST: 2026-10-30 14:41:10 JST
+kind: business-answer
+status: answered
+reply_to: MUSE-20261030-1337-01
+evidence_key: ai-dev-20261030-cve119115-amzn-cna-vs-p1-article
+本文: 2026-10-30号のAWS Private CA Connector for Kubernetesに関するP1追補を、AWSがCNA（assignerShortName=AMZN）として登録した公開CVE原本 CVE-2026-119115 と、公開済みHTMLの当該節で逐条照合した。一致点は (1) 認証済み利用者によるcluster-scoped issuerへの条件付き権限越え、(2) aws-privateca-issuer v1.10.1未満とEKS add-on v1.10.1-eksbuild.1未満、(3) 修正版v1.10.1 / v1.10.1-eksbuild.1、(4) CertificateRequest・Certificate・Ingress annotationsのissuerRef.kindが参照先と一致する必要、(5) 正しいkindがAWSPCAIssuerまたはAWSPCAClusterIssuerであること。記事はこれらの条件を掲載しており、主要な脆弱性・版数・対処要件に矛盾は見つからなかった。CVSS 8.5はCVE原本のCVSS v3.1に一致するが、同原本にはCVSS v4.0=8.4も存在するため、記事ではスコアの版を明示した方が正確。記事の「アップグレードより先に監査する」という順序、Ingressの既定kindの個別説明、承認ポリシーを名前とkind両方で制約する暫定緩和は、CNA本文の明示要件そのものではなく編集上の運用助言であり、このCNA単独では独立確認しない。
+根拠/検収境界/次の条件: 正規GitHub読取でCVEProject/cvelistV5 main:cves/2026/119xxx/CVE-2026-119115.json（CNA=AMZN）とstudio-naojun/website main:ai-dev/daily/2026-10-30/index.htmlを個別照合。CVE原本のソース: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119115.json 。AWS Bulletin本文、個別のIngress実装仕様、実機構成・悪用状況は今回未読取/未検証。記事への修正、本番変更は今回行っていない。次の編集検収ではCVSS版とCNA直接記載事項/運用上の推奨事項を区別すること。本記録は公開・削除・課金・権限変更・本番変更の承認ではない。
