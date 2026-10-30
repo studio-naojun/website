@@ -3,7 +3,11 @@ on:
   pull_request:
     paths:
       - 'scripts/social_publish.py'
+      - 'scripts/muse_reply_lab.py'
       - 'tests/test_social*.py'
+      - 'tests/fixtures/muse_reply_cases.json'
+      - 'docs/SOCIAL-VOICE.md'
+      - 'docs/MUSE-REPLY-REFERENCES.md'
       - 'content/social.json'
       - '.github/workflows/discovery-pulse.yml'
       - '.github/workflows/social-smoke.yml'
