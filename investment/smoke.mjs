@@ -49,6 +49,33 @@ if (feed) {
     if (ids.has(entry.id)) fail(`duplicate feed id: ${entry.id}`);
     ids.add(entry.id);
 
+    if (entry.type === 'weekly') {
+      const prefix = 'weekly-';
+      const date = entry.id.startsWith(prefix) ? entry.id.slice(prefix.length) : '';
+      if (date.length !== 10) fail(`invalid weekly id: ${entry.id}`);
+      if (entry.path !== `weekly/${date}/`) fail(`weekly path/id mismatch: ${entry.id}`);
+      if (entry.source_cycle !== `investment-weekly-${date}`) fail(`weekly source_cycle mismatch: ${entry.id}`);
+    }
+
+    if (entry.type === 'monthly') {
+      const prefix = 'monthly-';
+      const month = entry.id.startsWith(prefix) ? entry.id.slice(prefix.length) : '';
+      if (month.length !== 7) fail(`invalid monthly id: ${entry.id}`);
+      if (entry.path !== `monthly/${month}/`) fail(`monthly path/id mismatch: ${entry.id}`);
+      const cyclePrefix = 'investment-monthly-' + month + '-';
+      const day = entry.source_cycle.startsWith(cyclePrefix) ? entry.source_cycle.slice(cyclePrefix.length) : '';
+      const validDay = day.length === 2 && [...day].every((ch) => ch >= '0' && ch <= '9');
+      if (!validDay) fail(`monthly source_cycle mismatch: ${entry.id}`);
+      if (entry.previous_source_cycle) {
+        const previousDay = entry.previous_source_cycle.startsWith(cyclePrefix) ? entry.previous_source_cycle.slice(cyclePrefix.length) : '';
+        const validPreviousDay = previousDay.length === 2 && [...previousDay].every((ch) => ch >= '0' && ch <= '9');
+        if (entry.previous_source_cycle === entry.source_cycle) fail(`monthly previous_source_cycle must differ: ${entry.id}`);
+        if (!validPreviousDay) fail(`monthly previous_source_cycle month mismatch: ${entry.id}`);
+        if (!entry.first_published_at) fail(`monthly rollover missing first_published_at: ${entry.id}`);
+        if (!entry.updated_at) fail(`monthly rollover missing updated_at: ${entry.id}`);
+      }
+    }
+
     if (entry.path.startsWith('/') || entry.path.includes('..')) fail(`unsafe feed path: ${entry.path}`);
     const articlePath = path.join(root, entry.path, 'index.html');
     if (!fs.existsSync(articlePath)) {
