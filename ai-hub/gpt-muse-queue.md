@@ -308,3 +308,11 @@ evidence_key: cos-20261031-0250-v2148-unapplied-event-scan-incomplete
 本文: CoS v2.1.48のWindows導入状況について、2026-10-31 03:13 JST完了の既存定期検収担当runが、02:50 JSTの更新試行記録を照合した結果、アプリ導入版とブラウザ拡張版はともにv2.1.47のままで、v2.1.48の更新は未適用と報告した。標準updaterの準備段階後、安全ゲートがイベント履歴の完全性を確認できず更新を保留した。前回2026-10-30 23:34の「新版公開確認・実機導入未確認」から、今回新たに「02:50観測では未適用、保留原因は履歴検査の不完全性」と特定した差分である。Core・Bridgeの接続は担当runの報告上正常だが、Routerは未検査であり、全面的な接続検収完了とは扱わない。
 根拠/未達/次の検収条件: 根拠は上記担当の正規定期実行結果（completed、2026-10-31 03:13 JST）であり、このRelay自身はWindows実機や非公開ログを独立取得していないため、実機状態の独立verifiedとはしない。イベント履歴検査の完全性と安全ゲートを通常の許可工程で回復した後、アプリ版・拡張版・接続・postflightを別々に再検証し、双方v2.1.48かつ接続正常を確認した場合だけ更新完了とする。承認回避、セッション強制終了、権限変更は禁止されたまま。非公開原本・端末パス・機密情報は転記しない。本記録は別経路による更新や追加の実行権限を許可しない。
 
+### GPT-RELAY-20261031-0731-01
+JST: 2026-10-31 07:31 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-20261031-0700-pr58-merged-feed-main
+本文: AI開発・セキュリティ日報の2026年10月31日号が、公開GitHub mainに新規反映された。2026-10-31 07:00:31 JST更新のai-dev/feed.jsonにdaily-2026-10-31が追加され、ai-dev/daily/2026-10-31/index.htmlに同日号とcanonical https://naojun.jp/ai-dev/daily/2026-10-31/ を確認。内容はCursorのClaude Code拡張の悪意ある版、Ivanti Connect Secureの既知悪用脆弱性、GitHub Dependabotアラートの表示障害を、対象条件と対処を分けて扱う。GitHub PR #58は2026-10-31 07:01:48 JSTにmerged、merge commit 3e5566661ee1b36ab6491348060cc4f204c329d0 が当該記事・feed・サイトマップ等を変更したことを独立照合した。前回06:30 JSTの検収時点では10月31日号が未掲載だったため、これは新しい公開main反映成果である。
+根拠/検証境界: GitHub PR https://github.com/studio-naojun/website/pull/58 とmerge commit https://github.com/studio-naojun/website/commit/3e5566661ee1b36ab6491348060cc4f204c329d0、main記事 blob e77b9f3d8cd06ff5678cbdcb5a539b12228d1fb1、main feed blob 302f71d748d53a0f5b9d16d12ecd1be324de6dd5 を正規GitHub接続で独立取得。今回のRelayは本番originのHTTP到達・公開ページの描画・GitHub Actionsの配信成功・個別の一次アドバイザリとの逐条照合・読者到達/流入増を未検証であり、main反映と本番配信・編集内容の正確性・事業効果を同一視しない。次の検収は既存の正規担当が本番URLの配信と一次資料の一致を別々に確認すること。非公開情報・未公開事業統計は含まず、この連絡は追加の公開・投稿・本番変更・課金・権限変更を許可しない。
