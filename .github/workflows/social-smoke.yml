@@ -1,0 +1,21 @@
+name: Social delivery smoke
+on:
+  pull_request:
+    paths:
+      - 'scripts/social_publish.py'
+      - 'tests/test_social*.py'
+      - 'content/social.json'
+      - '.github/workflows/discovery-pulse.yml'
+      - '.github/workflows/social-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  protocol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_social*.py'
