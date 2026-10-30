@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-30T19:03:17.555+09:00</updated>
+  <updated>2026-10-31T07:00:31.159+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年10月31日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-10-31/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-10-31/"/>
+    <updated>2026-10-31T07:00:31.159+09:00</updated>
+    <published>2026-10-31T07:00:31.159+09:00</published>
+    <category term="ai-dev"/>
+    <summary>Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年10月30日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-30/</id>
