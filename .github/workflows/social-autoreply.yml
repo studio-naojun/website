@@ -44,11 +44,26 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           NAOJUN_REPLY_RECEIPT: /tmp/naojun-replies.json
         run: |
+          set +e
+          args=()
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.scan_only }}" == "true" ]]; then
-            python scripts/social_auto_reply.py --scan-only
-          else
-            python scripts/social_auto_reply.py
+            args+=(--scan-only)
           fi
+          code=1
+          for attempt in 1 2 3; do
+            python scripts/social_auto_reply.py "${args[@]}"
+            code=$?
+            if [[ "$code" -eq 0 ]]; then break; fi
+            # Only transient gateway/timeout/rate-limit failures are retried.
+            # An explicit 401/403/approval denial does not authorize a bypass.
+            status="$(python -c 'import json; p=json.load(open("/tmp/naojun-replies.json"));print(p.get("http_status",""))' 2>/dev/null)"
+            case "$status" in
+              408|429|500|502|503|504) ;;
+              *) break ;;
+            esac
+            if [[ "$attempt" -lt 3 ]]; then sleep $((attempt * 8)); fi
+          done
+          exit "$code"
       - name: Publish status and recovery receipt
         if: always()
         uses: actions/upload-artifact@v4
