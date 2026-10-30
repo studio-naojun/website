@@ -17,7 +17,7 @@
   <meta property="og:description" content="Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-28/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月28日号","description":"Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-28/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T08:39:00+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月28日号","description":"Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-28/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T10:14:59.671+09:00"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior studio-article">
@@ -39,7 +39,7 @@
     </div>
   </header>
   <article class="ai-dev-article">
-    <p>対象日：2026年10月28日（主に各社の現地発表日）。遡及調査：2026年10月30日08:30 JST。<strong>初回公開は10月28日ではなく、公開検証を終えた実際の日時を別記する。</strong></p>
+    <p>対象日：2026年10月28日（主に各社の現地発表日）。遡及調査：2026年10月30日08:30 JST。<strong>初回公開日は2026年10月30日（JST）です。2026年10月28日への遡及発行ではありません。</strong> 公開後の訂正確認：2026年10月30日10:14 JST。</p>
 <h2>本日の優先対応</h2>
 <ul>
 <li><strong>P0（条件付き）：Brotli CVE-2026-111497</strong>。攻撃者が用意したBrotliデータを脆弱な実装で展開する公開処理を優先点検。10月27日のCISA KEV追加は既知問題の悪用確認で、10月28日の新規発見ではない。</li>
@@ -47,40 +47,40 @@
 </ul>
 <h2>1. Brotliデコーダーの悪用確認（P0：到達可能な該当実装）</h2>
 <p><strong>起きたこと。</strong> Google BrotliのC言語decoderの境界外書き込み「CVE-2026-111497」。細工された圧縮ストリームを展開した場合、異常終了・メモリ情報漏えい・任意コード実行の可能性がある。Google修正版は10月21日、JPCERT/CC公表は10月26日、CISA KEV収載は10月27日。収載は悪用の存在を意味し、どの利用者も侵害された意味ではない。</p>
-<p><strong>影響と非該当。</strong> Brotli 1.0.3〜1.0.9、1.1.0、1.2.0など、該当C decoderを含む環境で攻撃者が送信可能なBrotliデータの展開が必要。Node.js、Bun、Python拡張や組込製品にも影響が及び得る。ライブラリが存在してもデコード経路がなければ本経路の成立は確認できない。</p>
-<p><strong>直ちに取る対処。</strong> Brotli 1.0.10／1.1.1／1.2.1の各修正版系列、または製品ベンダーの修正リリースへ更新。Node.jsの公式セキュリティ版22.23.4、24.22.1、26.12.1などを選ぶ際は、後続のNode.js 24.22.2と個別ベンダーの回帰注意も確認する。コンテナやビルド済み成果物も作り直す。更新できなければ外部由来Brotliデータのデコード経路を制限する。</p>
+<p><strong>影響と非該当。</strong> Brotli C decoder v1.0.3以上v1.0.10未満、v1.1.0以上v1.1.1未満、v1.2.0以上v1.2.1未満（それぞれ修正は1.0.10／1.1.1／1.2.1）など、該当C decoderを含む環境で攻撃者が送信可能なBrotliデータの展開が必要。Node.js、Bun、Python拡張や組込製品にも影響が及び得る。ライブラリが存在してもデコード経路がなければ本経路の成立は確認できない。</p>
+<p><strong>直ちに取る対処。</strong> Brotli 1.0.10／1.1.1／1.2.1の各修正版系列、または製品ベンダーの修正リリースへ更新。独自運用するNode.jsは公式修正版22.23.4、24.22.1、26.12.1以降の対応版を確認する。<strong>Node.js 24.22.1はBrotli修正を含む</strong>が、AWS Lambdaの<strong>managed Node.js 24 runtime</strong>についてはAWSが24.22.1の既知の回帰を避けるため安定版への対象パッチ適用を段階実施している。自前のNode.jsとAWS managed runtimeを同一の版番号だけで判定しない。24.22.2がこの回帰を修正したという公式確認はない。コンテナやビルド済み成果物も作り直す。更新できなければ外部由来Brotliデータのデコード経路を制限する。</p>
 <p><strong>確認・rollback。</strong> 実行中のアプリとコンテナが修正済み実装を使うか、正常な圧縮データが処理できるかを確認。障害時も旧脆弱版へ無条件に戻さず、外部デコードを停止・制限した状態で修正方法を選ぶ。</p>
 <p><strong>未解明点。</strong> 静的リンク製品、ディストリビューションのバックポート、各プラットフォームへの配信状況は提供元に照会する。</p>
-<p><strong>一次情報：</strong> <a href="https://www.jpcert.or.jp/at/2026/at260034.html" target="_blank" rel="noopener noreferrer">JPCERT/CC 2026-10-26<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/google/brotli/releases/tag/v1.2.1" target="_blank" rel="noopener noreferrer">Google Brotli 1.2.1<span class="sr-only">（新しいタブ）</span></a>、<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV<span class="sr-only">（新しいタブ）</span></a>（2026-10-27登録）。</p>
+<p><strong>一次情報：</strong> <a href="https://www.jpcert.or.jp/at/2026/at260034.html" target="_blank" rel="noopener noreferrer">JPCERT/CC 2026-10-26<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/google/brotli/releases/tag/v1.2.1" target="_blank" rel="noopener noreferrer">Google Brotli 1.2.1<span class="sr-only">（新しいタブ）</span></a>、<a href="https://nodejs.org/en/blog/release/v24.22.1/" target="_blank" rel="noopener noreferrer">Node.js 24.22.1 security release 10/21<span class="sr-only">（新しいタブ）</span></a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-155-AWS（managed runtimeの回帰・修正方針）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV<span class="sr-only">（新しいタブ）</span></a>（2026-10-27登録）。</p>
 <h2>2. Tailscale SSH・Serve：4件の修正を含む1.104.4（P1）</h2>
 <p><strong>起きたこと。</strong> Tailscaleは10月26日にTS-2026-014〜017を公開し、10月28日に修正版1.104.4を配布した。014はSSHのUnix socket forwardingがroot専用ソケットへ到達し得る問題、015は認証済みSSHセッションによるメモリ枯渇、016はServe Unix backendが特権ソケットへ到達し得る問題、017はTLS ServeのHTTP/2同時リクエスト間でcapabilitiesが混線し得る問題。</p>
 <p><strong>影響と非該当。</strong> 014はTailscale SSHとforwarding許可、015はTailscale SSH serverへの認証済み接続、016はServeのUnix socket backendとローカルoperator/書込権限、017はTLS Serveで権限要件が異なる2 mount以上・HTTP/2同時通信が条件。通常のVPN利用だけではこれらの条件を一律に満たさない。</p>
-<p><strong>直ちに取る対処。</strong> 該当機能を使うノードを1.104.4以上へ更新し、更新前に切断時の復旧手段を確保。014について更新できない場合、提供元が示す <code>TS_SSH_DISABLE_FORWARDING=1</code> をtailscaledサービス環境に設定して再起動すればSSH forwardingのみを停止できるが、通信断の影響を評価する。</p>
+<p><strong>直ちに取る対処。</strong> 該当機能を使うノードを1.104.4以上へ更新し、更新前に切断時の復旧手段を確保。014について更新できない場合、提供元が示す <code>TS_SSH_DISABLE_FORWARDING=1</code> をtailscaledサービス環境に設定して再起動すればSSH forwardingのみを停止できるが、通信断の影響を評価する。<strong>この暫定策が対象にするのはTS-2026-014だけで、015のSSHメモリ枯渇、016/017のServe問題は解決しない</strong>。各問題とも公式修正版は1.104.4以上であり、015には認証済みSSHセッション、016にはServe Unix backend設定権限、017にはTLS Serve・異なる権限の複数mount・HTTP/2同時通信が必要。</p>
 <p><strong>確認・rollback。</strong> <code>tailscale version</code> と実際のSSH/Serve設定を確認し、更新後はVPN、SSH、Serveを順に疎通確認。旧版へ戻すなら問題のforwarding/Serve構成を閉じた状態のみ。SSHサーバーを使っていない人には014/015の直接対処は原則不要。</p>
 <p><strong>未解明点。</strong> 各端末の実行バージョン・機能の有効状態は端末ごとに実測が必要。侵害は確認していない。</p>
 <p><strong>一次情報：</strong> <a href="https://tailscale.com/security-bulletins" target="_blank" rel="noopener noreferrer">Tailscale Security Bulletins 2026-10-26<span class="sr-only">（新しいタブ）</span></a>、<a href="https://tailscale.com/changelog" target="_blank" rel="noopener noreferrer">公式Changelog 1.104.4<span class="sr-only">（新しいタブ）</span></a>。</p>
 <h2>3. GitHub Actions lockfilesが正式公開（P2）</h2>
 <p><strong>起きたこと。</strong> GitHubは現地2026年10月28日、workflow dependency lockfilesをGAとした。tagやbranch参照を人間が読めるままにし、実行時はlockfileに記録したcommitを使用する。</p>
-<p><strong>該当条件・影響。</strong> GitHub Actionsを利用し、外部Actionsやreusable workflowsの可変参照を管理したいリポジトリ。GitHub Free/Team/Enterprise Cloud等で利用可能。Actionsを使わない環境には直接影響しない。</p>
+<p><strong>該当条件・影響。</strong> GitHub Actionsを利用し、外部Actionsやreusable workflowsの可変参照を管理したいリポジトリ。GitHub Free/Team/Enterprise Cloud（データレジデンシー版を含む）等で利用可能。再利用workflow・間接依存も固定対象になり、lockfile導入済みworkflowの各依存を固定する。Actionsを使わない環境には直接影響しない。</p>
 <p><strong>対処。</strong> GitHub CLIの<code>gh actions-lock</code>拡張で<code>.github/workflows/actions.lock</code>を生成・レビューし、対象workflowを段階導入する。Dependenciesを固定する前にコードと提供元を確認する。</p>
 <p><strong>確認・rollback。</strong> CIでlockfileの同期検査と通常のworkflow成功を確認。問題がある場合は対象workflowのロック設定をPRで戻し、検証済みのcommit固定を別の方法で維持。lockfile自体は悪意ある依存コードを検出しない。</p>
 <p><strong>未解明点。</strong> リポジトリ固有の権限ポリシー、既存Dependabotとの適合は導入時に確認。</p>
 <p><strong>一次情報：</strong> <a href="https://github.blog/changelog/2026-10-28-github-actions-workflow-lockfiles-are-generally-available/" target="_blank" rel="noopener noreferrer">GitHub Changelog 2026-10-28<span class="sr-only">（新しいタブ）</span></a>。</p>
 <h2>4. Node.js 26 LTS移行と24系の更新（P2）</h2>
 <p><strong>起きたこと。</strong> Node.js 26.13.0は10月28日に「Lithium」LTSへ移行し、2029年4月末まで更新予定。同版は26.12.1から主にLTS表記メタデータ更新で、新たな重大修正の追加ではない。同日に24.22.2 LTSも公開された。</p>
-<p><strong>該当条件・影響。</strong> Node.js 22/24から26へ移行する開発環境・サーバー・CI、特にLinux公式バイナリはNode.js 25以降で<code>libatomic</code>が別途必要となる場合がある。Node.jsを使わない環境は非該当。</p>
+<p><strong>該当条件・影響。</strong> Node.js 22/24から26へ移行する開発環境・サーバー・CI、<strong>Linux向け公式バイナリ</strong>はNode.js 25以降で<code>libatomic</code>にリンクされ、ディストリビューションによっては追加導入が必要な場合がある。Windows/macOSに一律必要とはしない。Node.jsを使わない環境は非該当。</p>
 <p><strong>対処。</strong> 依存SDK・ネイティブモジュール・Docker/CIの互換性を段階検証し、現在のサポート対象LTSで安定運用できていれば即時一斉移行は不要。Brotliの修正取り込みも利用中の各系列で確認する。</p>
 <p><strong>確認・rollback。</strong> <code>node --version</code>、lockfile/ビルド/テストを確認し、問題が出た場合は先に検証済みのサポート対象LTSへ戻す。</p>
 <p><strong>未解明点。</strong> 個別依存パッケージの互換性とネイティブビルドへの影響は利用者ごとに異なる。</p>
 <p><strong>一次情報：</strong> <a href="https://nodejs.org/en/blog/release/v26.13.0" target="_blank" rel="noopener noreferrer">Node.js 26.13.0<span class="sr-only">（新しいタブ）</span></a>、<a href="https://nodejs.org/en/blog/release/v24.22.2" target="_blank" rel="noopener noreferrer">Node.js 24.22.2<span class="sr-only">（新しいタブ）</span></a>（いずれも2026-10-28）。</p>
 <h2>5. GitHub Agentic WorkflowsがGA（P2）</h2>
 <p><strong>起きたこと。</strong> GitHubは10月28日、自然言語のMarkdownをActions YAMLに変換するAgentic WorkflowsをGAとした。Issue分類、CI失敗調査、ドキュメント更新などを自動化できる。</p>
-<p><strong>該当条件・影響。</strong> GitHub Actions内でcoding agentを動かしたい利用者。標準で読み取り専用権限、sandboxとsafe outputsを備えるが、出力や権限設定のレビューは必要。既存workflowが自動切り替えされるわけではない。標準Copilot CLI engineにはCopilot licenseが必要。</p>
+<p><strong>該当条件・影響。</strong> GitHub Actions内でcoding agentを動かしたい利用者。標準で読み取り専用権限、sandboxとsafe outputsを備えるが、出力や権限設定のレビューは必要。既存workflowが自動切り替えされるわけではない。GitHub Free/Team/Enterpriseで利用でき、<strong>既定のCopilot CLI engineを使う場合のみCopilot licenseが必要</strong>。他のagentを選べても利用条件・費用の確認は別途必要。</p>
 <p><strong>対処。</strong> 導入前に権限と予算を確認し、まずread-only処理を少量動かして出力検証から始める。実運用への変更は通常PRとしてレビュー。</p>
 <p><strong>確認・rollback。</strong> 生成YAMLのpermissions、AI経由の出力、実行ログ、予算と実動作を検証。失敗時は新しいworkflowだけを無効化して既存CIを維持する。</p>
 <p><strong>未解明点。</strong> 組織ポリシー・課金・利用モデルは利用環境による。</p>
 <p><strong>一次情報：</strong> <a href="https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/" target="_blank" rel="noopener noreferrer">GitHub Changelog 2026-10-28<span class="sr-only">（新しいタブ）</span></a>。</p>
-<h2>この日報の更新履歴</h2><ul><li>対象日：2026年10月28日。発表日は原典の現地日付、調査は10月30日。</li><li>初回公開日：2026年10月30日（JST）。過去日付に遡って公開したものではありません。</li><li>初稿作成・一次資料の再確認：2026年10月30日08:30 JST。重要な追加訂正は同じ記事に変更履歴として残します。</li></ul>
+<h2>この日報の更新履歴</h2><ul><li>対象日：2026年10月28日。発表日は原典の現地日付、調査は10月30日。</li><li>初回公開日：2026年10月30日（JST）。過去日付に遡って公開したものではありません。</li><li>初稿作成・一次資料の再確認：2026年10月30日08:30 JST。</li><li>2026年10月30日10:14 JST：公式一次資料との再照合に基づき、Brotli版・Node.js/AWS managed runtime・Tailscale個別緩和策・GitHub GA条件・Node.js 26 Linux限定条件・初回公開日を同一URLで追記訂正。</li></ul>
     <aside class="source-note">
       <h2>出典・更新履歴</h2>
       <p>一次出典は各項目の直後に記載しています。対象日2026年10月28日、初回公開日2026年10月30日（JST）。悪用確認と製品ごとの影響条件を区別して調査しています。</p>
