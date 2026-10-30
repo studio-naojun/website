@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T10:04:06+09:00",
+  "updated_at": "2026-10-30T10:07:10+09:00",
   "entries": [
     {
       "id": "daily-2026-10-30",
@@ -18,7 +18,7 @@
       "id": "daily-2026-10-29",
       "type": "daily",
       "published_at": "2026-10-29",
-      "updated_at": "2026-10-30T10:04:06+09:00",
+      "updated_at": "2026-10-30T10:07:10+09:00",
       "first_published_at": "2026-10-30",
       "title": "AI開発・セキュリティ日報｜2026年10月29日号",
       "summary": "LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。",
