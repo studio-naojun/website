@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T10:14:59.671+09:00",
+  "updated_at": "2026-10-30T13:00:39+09:00",
   "entries": [
     {
       "id": "daily-2026-10-30",
       "type": "daily",
       "published_at": "2026-10-30",
-      "updated_at": "2026-10-30T10:13:14+09:00",
+      "updated_at": "2026-10-30T13:00:39+09:00",
       "first_published_at": "2026-10-30",
       "title": "AI開発・セキュリティ日報｜2026年10月30日号",
-      "summary": "AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。",
+      "summary": "AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。",
       "path": "daily/2026-10-30/",
       "source_cycle": "ai-dev-daily-2026-10-30",
       "priority": "P1"
