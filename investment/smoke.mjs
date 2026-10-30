@@ -50,76 +50,29 @@ if (feed) {
     ids.add(entry.id);
 
     if (entry.type === 'weekly') {
-      const match = entry.id.match(/^weekly-(\d{4}-\d{2}-\d{2})$/);
-      if (!match) fail(`invalid weekly id: ${entry.id}`);
-      else {
-        const date = match[1];
-        if (entry.path !== `weekly/${date}/`) fail(`weekly path/id mismatch: ${entry.id}`);
-        if (entry.source_cycle !== `investment-weekly-${date}`) fail(`weekly source_cycle mismatch: ${entry.id}`);
-      }
+      const prefix = 'weekly-';
+      const date = entry.id.startsWith(prefix) ? entry.id.slice(prefix.length) : '';
+      if (date.length !== 10) fail(`invalid weekly id: ${entry.id}`);
+      if (entry.path !== `weekly/${date}/`) fail(`weekly path/id mismatch: ${entry.id}`);
+      if (entry.source_cycle !== `investment-weekly-${date}`) fail(`weekly source_cycle mismatch: ${entry.id}`);
     }
 
     if (entry.type === 'monthly') {
-      const match = entry.id.match(/^monthly-(\d{4}-\d{2})$/);
-      if (!match) fail(`invalid monthly id: ${entry.id}`);
-      else {
-        const month = match[1];
-        const cyclePattern = new RegExp(`^investment-monthly-${month}-\\d{2}import fs from 'node:fs';
-import path from 'node:path';
-
-const root = path.resolve('investment');
-const required = [
-  'index.html',
-  'feed.json',
-  'state.json',
-  'assets/investment.css',
-  'assets/investment.js',
-  'PUBLISHER.md',
-  '_templates/article-template.html'
-];
-
-let failed = false;
-const fail = (message) => {
-  failed = true;
-  console.error(`FAIL: ${message}`);
-};
-
-for (const relative of required) {
-  if (!fs.existsSync(path.join(root, relative))) fail(`missing ${relative}`);
-}
-
-let feed;
-let state;
-try {
-  feed = JSON.parse(fs.readFileSync(path.join(root, 'feed.json'), 'utf8'));
-} catch (error) {
-  fail(`feed.json invalid: ${error.message}`);
-}
-
-try {
-  state = JSON.parse(fs.readFileSync(path.join(root, 'state.json'), 'utf8'));
-} catch (error) {
-  fail(`state.json invalid: ${error.message}`);
-}
-
-if (feed) {
-  if (feed.schema_version !== 1) fail('feed schema_version must be 1');
-  if (!Array.isArray(feed.entries)) fail('feed.entries must be an array');
-
-  const ids = new Set();
-  for (const entry of feed.entries || []) {
-    for (const field of ['id', 'type', 'published_at', 'title', 'summary', 'path', 'source_cycle']) {
-      if (!entry[field]) fail(`feed entry missing ${field}: ${entry.id || '<unknown>'}`);
-    }
-);
-        if (entry.path !== `monthly/${month}/`) fail(`monthly path/id mismatch: ${entry.id}`);
-        if (!cyclePattern.test(entry.source_cycle)) fail(`monthly source_cycle mismatch: ${entry.id}`);
-        if (entry.previous_source_cycle) {
-          if (entry.previous_source_cycle === entry.source_cycle) fail(`monthly previous_source_cycle must differ: ${entry.id}`);
-          if (!cyclePattern.test(entry.previous_source_cycle)) fail(`monthly previous_source_cycle month mismatch: ${entry.id}`);
-          if (!entry.first_published_at) fail(`monthly rollover missing first_published_at: ${entry.id}`);
-          if (!entry.updated_at) fail(`monthly rollover missing updated_at: ${entry.id}`);
-        }
+      const prefix = 'monthly-';
+      const month = entry.id.startsWith(prefix) ? entry.id.slice(prefix.length) : '';
+      if (month.length !== 7) fail(`invalid monthly id: ${entry.id}`);
+      if (entry.path !== `monthly/${month}/`) fail(`monthly path/id mismatch: ${entry.id}`);
+      const cyclePrefix = 'investment-monthly-' + month + '-';
+      const day = entry.source_cycle.startsWith(cyclePrefix) ? entry.source_cycle.slice(cyclePrefix.length) : '';
+      const validDay = day.length === 2 && [...day].every((ch) => ch >= '0' && ch <= '9');
+      if (!validDay) fail(`monthly source_cycle mismatch: ${entry.id}`);
+      if (entry.previous_source_cycle) {
+        const previousDay = entry.previous_source_cycle.startsWith(cyclePrefix) ? entry.previous_source_cycle.slice(cyclePrefix.length) : '';
+        const validPreviousDay = previousDay.length === 2 && [...previousDay].every((ch) => ch >= '0' && ch <= '9');
+        if (entry.previous_source_cycle === entry.source_cycle) fail(`monthly previous_source_cycle must differ: ${entry.id}`);
+        if (!validPreviousDay) fail(`monthly previous_source_cycle month mismatch: ${entry.id}`);
+        if (!entry.first_published_at) fail(`monthly rollover missing first_published_at: ${entry.id}`);
+        if (!entry.updated_at) fail(`monthly rollover missing updated_at: ${entry.id}`);
       }
     }
 
