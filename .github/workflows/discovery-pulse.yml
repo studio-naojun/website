@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       publish_latest_bluesky:
-        description: 'Post the latest Admissions and Investment entries to Bluesky'
+        description: 'Deliver the next unpublished owned item (deduplicated)'
         required: false
-        default: false
+        default: true
         type: boolean
       update_bluesky_profile:
         description: 'Refresh the NAOJUN STUDIOS Bluesky profile text'
@@ -20,62 +20,51 @@ on:
         type: boolean
   schedule:
     - cron: '15 0 * * *'
+    - cron: '23 * * * *'
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - '**/*.html'
       - 'admissions/feed.json'
       - 'investment/feed.json'
+      - 'ai-dev/feed.json'
+      - 'content/social.json'
       - 'sitemap.xml'
       - 'feed.xml'
       - 'robots.txt'
       - 'scripts/**'
+      - 'tests/test_social_publish.py'
       - '.github/workflows/discovery-pulse.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   pulse:
+    if: github.event_name != 'schedule' || github.event.schedule == '15 0 * * *'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Refresh discovery assets
         run: python scripts/build_discovery.py
       - name: Commit refreshed discovery assets
         run: |
-          if git diff --quiet; then
-            echo "Discovery assets already current."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- '**/*.html' sitemap.xml feed.xml robots.txt '*.txt'
-          git commit -m "Refresh discovery metadata"
+          git commit -m 'Refresh discovery metadata'
           git push
       - name: Notify IndexNow and WebSub
         run: python scripts/notify_discovery.py
-      - name: Publish new entries to Bluesky
-        if: github.event_name == 'push'
-        env:
-          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
-          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
-        run: python scripts/bluesky_publish.py --before "${{ github.event.before }}"
-      - name: Publish latest entries to Bluesky
-        if: github.event_name == 'workflow_dispatch' && inputs.publish_latest_bluesky
-        env:
-          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
-          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
-        run: python scripts/bluesky_publish.py --latest
       - name: Update Bluesky profile
         if: github.event_name == 'workflow_dispatch' && inputs.update_bluesky_profile
         env:
@@ -88,3 +77,42 @@ jobs:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
         run: python scripts/bluesky_profile.py --refresh-handle
+  social:
+    if: github.event_name != 'workflow_dispatch' || inputs.publish_latest_bluesky
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    concurrency:
+      group: naojun-owned-bluesky-publisher
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Focused delivery checks after code changes
+        if: github.event_name != 'schedule'
+        run: python -m unittest discover -s tests -p test_social_publish.py
+      - name: Deliver and reconcile one pending owned item
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          NAOJUN_SOCIAL_RECEIPT: /tmp/naojun-social-result.json
+        run: |
+          set +e
+          code=1
+          for attempt in 1 2 3; do
+            python scripts/social_publish.py
+            code=$?
+            if [ "$code" -eq 0 ] || [ "$code" -eq 2 ]; then break; fi
+            if [ -f /tmp/naojun-social-result.json ] && grep -q '"http_status": 429' /tmp/naojun-social-result.json; then break; fi
+            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 10)); fi
+          done
+          exit "$code"
+      - name: Keep publication receipt, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: naojun-social-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/naojun-social-result.json
+          retention-days: 14
+          if-no-files-found: warn
