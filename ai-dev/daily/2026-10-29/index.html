@@ -17,7 +17,7 @@
   <meta property="og:description" content="LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-29/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月29日号","description":"LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-29/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T10:04:06+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月29日号","description":"LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-29/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T10:07:10+09:00"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior studio-article">
@@ -42,19 +42,19 @@
     <p>対象日：2026年10月29日。遡及調査：2026年10月30日朝JST。<strong>この号は2026年10月30日に遡及して初回公開しました。10月29日に公開済みだったとは主張しません。初回公開の正確な分秒は確認できていません。</strong></p>
 <h2>本日の優先対応</h2>
 <ul>
-<li><strong>P0（該当環境のみ）：LiteLLM悪性配布版</strong>。10月21日の1.107.0侵害をMicrosoftが10月23日に分析、GitHub Advisoryが10月29日に更新。該当版が実行された場合は、通常のアンインストールだけでなく環境・資格情報を調査する。</li>
+<li><strong>P0（該当環境のみ）：LiteLLM悪性配布版</strong>。10月21日の1.107.0侵害をMicrosoftが10月23日に分析、GitHub Advisoryは10月22日に更新（10月29日は本号の遡及調査日）。該当版が実行された場合は、通常のアンインストールだけでなく環境・資格情報を調査する。</li>
 <li><strong>P0（公開PHP等の該当環境）：CVE-2026-109618・CVE-2026-109619</strong>。JPCERT/CCが10月29日に、あるファイアウォール製品の特定バージョンについて「侵害の成功を示唆する痕跡」が報告されたと追記。個別環境での侵害を断定しない。</li>
 <li><strong>P1：AWS Strands Agents Toolsのenvironment tool</strong>。LLMの指示によって秘密値のmaskを無効化できる条件を確認。修正版0.8.6を適用。</li>
 <li><strong>P1：AWS LambdaのBrotliランタイム</strong>。10月29日JSTのAWS告知は段階修正。Node 24は単なるprocess.versionでは修正判定できない。</li>
 </ul>
 <h2>1. LiteLLMの悪性PyPI/コンテナ版：秘密情報漏えいの調査（P0）</h2>
-<p><strong>事象。</strong> 2026年10月21日、PyPIと公式コンテナイメージ経由でLiteLLM 1.107.0の悪意ある配布物が公開された。Microsoftの10月23日分析では、影響環境でPythonの起動時に悪性コードが動作する場合があり、LiteLLM自体をimportすることは必須でない。10月29日に更新されたGitHub Advisoryには悪性版1.82.7、1.82.8、1.107.0が列挙された。1.82.7・1.82.8は2026年3月の別の侵害配布であり、10月21日の1.107.0と事件日・配布経路を混同しない。GitHubの「patched versions: none」は悪性版の扱いを表すもので、すべての将来版が危険という意味ではない。<strong>10月29日発生の新しい侵害とは混同しない。</strong></p>
+<p><strong>事象。</strong> 2026年10月21日、PyPIと公式コンテナイメージ経由でLiteLLM 1.107.0の悪意ある配布物が公開された。Microsoftの10月23日分析では、影響環境でPythonの起動時に悪性コードが動作する場合があり、LiteLLM自体をimportすることは必須でない。10月22日更新のGitHub Advisoryには悪性版1.82.7、1.82.8、1.107.0が列挙された。1.82.7・1.82.8は2026年3月の別の侵害配布であり、10月21日の1.107.0と事件日・配布経路を混同しない。GitHubの「patched versions: none」は悪性版の扱いを表すもので、すべての将来版が危険という意味ではない。<strong>10月29日発生の新しい侵害とは混同しない。</strong></p>
 <p><strong>対象・非該当。</strong> これらの悪性版のwheelやコンテナを取得し、実際に使用した環境。別の安全な版だけを使っている環境は当該悪性配布物の経路に非該当。バージョン文字列だけで感染は断定できず、実際に取得したwheelやコンテナdigestも確認が必要。</p>
 <p><strong>影響。</strong> Pythonの起動時フック等によりcloud keys、AI API keys、開発ツールの認証情報などが読み取られ外部へ送信され得る。悪性版が混入した環境では、その環境内でPythonやpipを起動して検証すると悪性コードを再実行する危険がある。</p>
 <p><strong>今する対処。</strong> 清浄な別環境からパッケージ配布履歴、コンテナdigest、CIログを点検し、疑いのある環境を隔離。証拠を保全したうえで信頼済みイメージから再構築し、アクセス可能だった資格情報を適切な権限者が失効・再発行する。GitHub Advisoryはこれらの悪性版に「patched versionsなし」としており、単一修正版番号を捏造しない。</p>
 <p><strong>確認・rollback。</strong> 清浄な環境への置換後、予期しない起動時フック・ネットワーク接続・秘密情報利用履歴を確認。旧イメージへのrollbackは行わず、隔離した以前のスナップショットは調査用としてのみ保存する。</p>
 <p><strong>未解明点。</strong> 個別環境で悪性wheelが実行されたか、どの秘密が流出したかはログやイメージ内容との照合が必要。</p>
-<p><strong>一次情報：</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/10/23/inside-the-litellm-1-107-0-supply-chain-compromise-credential-theft-through-python-startup-hooks/" target="_blank" rel="noopener noreferrer">Microsoft Security Research 2026-10-23<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">GitHub Advisory（2026-10-29更新）<span class="sr-only">（新しいタブ）</span></a>。</p>
+<p><strong>一次情報：</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/10/23/inside-the-litellm-1-107-0-supply-chain-compromise-credential-theft-through-python-startup-hooks/" target="_blank" rel="noopener noreferrer">Microsoft Security Research 2026-10-23<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">GitHub Advisory（2026-10-22更新）<span class="sr-only">（新しいタブ）</span></a>。</p>
 <h2>2. PHPリモートコード実行：特定機器の侵害痕跡が追加報告（P0）</h2>
 <p><strong>事象。</strong> PHPのCVE-2026-109618・CVE-2026-109619は未認証でPHPの実行権限の任意コード実行につながり得る。PHP Groupの初報は10月21日、JPCERT/CCの注意喚起は10月22日。<strong>JPCERT/CCは10月29日の更新で、あるファイアウォール製品の特定バージョンに対する「侵害の成功を示唆する痕跡」が報告されたと記載した。報告にはPHP脆弱性とLinuxカーネル権限昇格の連鎖、横展開を試みたことを示唆する痕跡も含まれるが、全PHP利用環境における侵害成功を意味しない。</strong> 影響機器の詳細製品名は確認できていない。</p>
 <p><strong>対象・非該当。</strong> PHP 8.2系8.2.35未満、8.3系8.3.36未満、8.4系8.4.27未満、8.5系8.5.12未満。8.1以前のEOL系はサポート系列への移行を優先。PHP 7.4/8.0/8.1には例外的に限定緩和策が示されているが、一般的な修正版の提供や完全修復と混同しない。公開Web/PHP内蔵製品で攻撃入力が届く設定が優先。PHPを使わない静的サイトは本件のPHP実行経路に非該当。</p>
@@ -76,7 +76,7 @@
 <p><strong>確認・rollback。</strong> CloudWatchのcold-start <code>INIT_START</code>にNode.js22 <code>nodejs:22.mainline.v157</code>以上、Node.js24 <code>nodejs:24.mainline.v114</code>以上と出ていることを確認。<strong>Node.js 24ではprocess.versionのみで確認できない</strong>。Node.js 26の検収用最小patch識別子は参照時点の公式通知に未記載であり推測しない。.NET 8/10の識別子についても更新される公式通知と実際の<code>INIT_START</code>を照合し、未検証の適用完了を断定しない。正常なBrotli処理テストを実施。問題が起きても脆弱なdecoderを外部へ公開するrollbackは避ける。</p>
 <p><strong>未解明点。</strong> リージョン、関数、更新モードによる段階適用状況、独自コンテナやCI imageの更新完了は個々に検証が必要。</p>
 <p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-155-AWS<span class="sr-only">（新しいタブ）</span></a>（10月28日PDT）。</p>
-<h2>この日報の更新履歴</h2><ul><li>対象日：2026年10月29日。各社公式の発表日と調査日を区別しています。</li><li>実際の初回公開日：2026年10月30日（JST）。対象日に遡って公開したことにはなりません。</li><li>遡及調査：2026年10月30日朝（JST）。以後の重要な訂正・追補は更新日時を記録します。</li></ul>
+<h2>この日報の更新履歴</h2><ul><li>訂正（2026-10-30 10:07 JST）：GitHub Advisory GHSA-92x9-889m-jgmw の更新日を一次資料に合わせ、誤った10月29日から実際の10月22日へ訂正。<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">GitHub Advisory原本</a>を確認。</li><li>対象日：2026年10月29日。各社公式の発表日と調査日を区別しています。</li><li>実際の初回公開日：2026年10月30日（JST）。対象日に遡って公開したことにはなりません。</li><li>遡及調査：2026年10月30日朝（JST）。以後の重要な訂正・追補は更新日時を記録します。</li></ul>
     <aside class="source-note">
       <h2>出典・更新履歴</h2>
       <p>原典へのリンクは各項目の直後に掲載。対象は2026年10月29日ですが、初回公開は2026年10月30日です。過去事件の続報と新規公告を区別しています。</p>
