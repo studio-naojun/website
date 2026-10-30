@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-30T09:52:02+09:00</updated>
+  <updated>2026-10-30T10:04:06+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年10月30日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-30/</id>
@@ -28,8 +28,8 @@
     <title>AI開発・セキュリティ日報｜2026年10月29日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-29/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-10-29/"/>
-    <updated>2026-10-30T08:46:00+09:00</updated>
-    <published>2026-10-30T08:46:00+09:00</published>
+    <updated>2026-10-30T10:04:06+09:00</updated>
+    <published>2026-10-30T10:04:06+09:00</published>
     <category term="ai-dev"/>
     <summary>LiteLLM悪性配布版とPHP侵害の続報、Strands Agents Toolsの環境変数漏えい問題、AWS Lambda Brotli修正の確認手順を整理。</summary>
   </entry>
