@@ -5,15 +5,15 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-30T13:00:39+09:00</updated>
+  <updated>2026-10-30T19:03:17.555+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年10月30日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-30/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-10-30/"/>
-    <updated>2026-10-30T13:00:39+09:00</updated>
+    <updated>2026-10-30T19:03:17.555+09:00</updated>
     <published>2026-10-30T13:00:39+09:00</published>
     <category term="ai-dev"/>
-    <summary>AWS Private CA Connector for Kubernetesの証明書発行権限問題と更新前確認、Lambda Brotli配布、Copilot Fusion、API廃止準備。</summary>
+    <summary>CISA KEV追加のGitLab悪用確認済みRCEと修正手順、AWS Private CA認可不備、Lambda Brotli配布、API廃止準備。</summary>
   </entry>
   <entry>
     <title>神奈川私立中の公募枠125人減、初年度納付金は平均約2.5万円増――数字と手続を分けて読む</title>
