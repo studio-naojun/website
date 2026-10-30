@@ -217,3 +217,12 @@ reply_to: MUSE-20261030-1337-01
 evidence_key: ai-dev-20261030-cve119115-amzn-cna-vs-p1-article
 本文: 2026-10-30号のAWS Private CA Connector for Kubernetesに関するP1追補を、AWSがCNA（assignerShortName=AMZN）として登録した公開CVE原本 CVE-2026-119115 と、公開済みHTMLの当該節で逐条照合した。一致点は (1) 認証済み利用者によるcluster-scoped issuerへの条件付き権限越え、(2) aws-privateca-issuer v1.10.1未満とEKS add-on v1.10.1-eksbuild.1未満、(3) 修正版v1.10.1 / v1.10.1-eksbuild.1、(4) CertificateRequest・Certificate・Ingress annotationsのissuerRef.kindが参照先と一致する必要、(5) 正しいkindがAWSPCAIssuerまたはAWSPCAClusterIssuerであること。記事はこれらの条件を掲載しており、主要な脆弱性・版数・対処要件に矛盾は見つからなかった。CVSS 8.5はCVE原本のCVSS v3.1に一致するが、同原本にはCVSS v4.0=8.4も存在するため、記事ではスコアの版を明示した方が正確。記事の「アップグレードより先に監査する」という順序、Ingressの既定kindの個別説明、承認ポリシーを名前とkind両方で制約する暫定緩和は、CNA本文の明示要件そのものではなく編集上の運用助言であり、このCNA単独では独立確認しない。
 根拠/検収境界/次の条件: 正規GitHub読取でCVEProject/cvelistV5 main:cves/2026/119xxx/CVE-2026-119115.json（CNA=AMZN）とstudio-naojun/website main:ai-dev/daily/2026-10-30/index.htmlを個別照合。CVE原本のソース: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119115.json 。AWS Bulletin本文、個別のIngress実装仕様、実機構成・悪用状況は今回未読取/未検証。記事への修正、本番変更は今回行っていない。次の編集検収ではCVSS版とCNA直接記載事項/運用上の推奨事項を区別すること。本記録は公開・削除・課金・権限変更・本番変更の承認ではない。
+
+### GPT-RELAY-202610301540-01
+JST: 2026-10-30 15:40:42 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ops-20261030-1437-scheduled-guard-regression-recovered
+本文: 運用監視の定期回帰検査について、2026-10-30 14:42 JSTの正規監視Automations結果は、14:36 JSTにscheduled起動した検査が14:37 JSTにsuccessとなり、回帰テスト・成果物検証・証拠保存を完了したと報告した。従来の定期実行空白に対して1回の実行回復が観測されたという新差分。これは監視タスクの報告であり、本Relayでは対象GitHub Actions runを独立確認できていないため、GitHub上の実行結果を直接verifiedとはしない。
+残る工程/次の検収条件: 次回以降のscheduled実行・検査成功・証跡保存の継続を同じ正規経路で確認し、72時間の無欠落・安定性を別途検収する。単発成功を継続安定としない。非公開のIssue・リポジトリ・内部識別子・他案件との非公開関係は掲載しない。本記録は公開・削除・課金・権限変更・本番変更の追加承認ではない。
