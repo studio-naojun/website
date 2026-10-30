@@ -17,7 +17,7 @@
   <meta property="og:description" content="AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-30/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月30日号","description":"AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-30/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T08:44:38.121+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月30日号","description":"AWS LambdaのBrotli修正Phase 2の予定と実効確認、GitHub Copilot Fusionのローカルモデル対応、OpenAI API旧モデルの廃止準備。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-30/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T10:13:14+09:00"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior studio-article">
@@ -49,7 +49,9 @@
 <h2>1. AWS Lambda：Brotli修正版の段階配布と実効確認（P1）</h2>
 <p><strong>何が起きたか。</strong> Brotli decoderの <code>CVE-2026-111497</code> に対してAWSは10月28日15:00 PDT（10月29日07:00 JST）にSecurity Bulletin 2026-155-AWSを発表、10月29日14:00 PDT（10月30日06:00 JST）に更新した。2026年10月30日は、Node.js 22/24/26のZIPランタイムで自動更新Phase 2を予定している日。ただし各AWSリージョンへの配信完了時刻は確約されていない。</p>
 <p><strong>影響対象・非該当条件。</strong> Lambdaの影響するNode.js/.NETランタイムで、攻撃者由来Brotli圧縮入力を展開する関数。Lambda管理基盤サービスそのものは対象外とAWSは明記。Python/Ruby/OS-only provided.al2023の標準ランタイムにはBrotliライブラリは含まれないが、利用者が独自にbundledした場合は別途更新が必要。</p>
+<p><strong>対象ランタイムと公式記載。</strong> AWSはNode.js 22/24/26と.NET 8・.NET 9（コンテナのみ）・.NET 10を対象に挙げる。不正なBrotli圧縮入力の展開はネイティブdecoderのバッファオーバーフローを起こし、コード実行やプロセスメモリの読み出しにつながり得る。ただしAWS上の個々の関数が侵害されたとの証拠ではない。<code>INIT_START</code>の確認基準はNode.js 22 <code>nodejs:22.mainline.v157</code>以上、Node.js 24 <code>nodejs:24.mainline.v114</code>以上。Node.js 26と.NETの個別修正runtime識別子は、本確認時点のAWS Bulletinに具体値が掲載されていないため、推測しない。</p>
 <p><strong>今すべき対処。</strong> Node.js 22/24/26用Lambdaコンテナbase imageは修正済みとAWSが説明。利用者のイメージは修正済みbaseで再ビルド・再デプロイする。ZIP形式はPhase 1が完了し、<strong>コードまたは設定を実際に更新すると</strong>修正runtimeを取り込める。設定値を変更しない「zero-change」再実行は十分ではない。Auto runtime update modeはPhase 2配布を確認する。Node.js 18/20等のサポート終了runtimeにはこのセキュリティ更新が届かないため、サポート対象へ移行する。</p>
+<p><strong>Phase 2と復旧判断。</strong> 10月30日は自動更新の目標日であり、全リージョンへの配信完了を保証しない。Autoモードでも適用結果をcold-startの<code>INIT_START</code>で確認し、Manual固定runtimeや依存ライブラリ内の暗黙のBrotli展開は別途点検する。回帰障害が出た場合はアプリケーションの変更を切り戻しても、脆弱なruntimeへ再固定しない。</p>
 <p><strong>確認・rollback。</strong> CloudWatchのcold start <code>INIT_START</code>行に、Node 22は <code>nodejs:22.mainline.v157</code>以上、Node 24は <code>nodejs:24.mainline.v114</code>以上と表示されるか確認。Node 24は<code>process.version</code>だけではBrotli修正版の適用を判断できない。更新後に正常圧縮データの処理を確認。問題が出た場合も旧脆弱runtimeを外部公開し続けず、入力経路制限のもと復旧する。</p>
 <p><strong>未解明点。</strong> 10月30日朝の各リージョン配布完了・CodeBuildイメージ配信実績は未確認。予定は完了証拠ではない。次の13時/19時枠でも公式Bulletinと関数ログを照合する。</p>
 <p><strong>一次情報：</strong> <a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS Security Bulletin 2026-155-AWS（2026-10-28 PDT公表、10-29 PDT更新）<span class="sr-only">（新しいタブ）</span></a>。</p>
@@ -60,17 +62,18 @@
 <p><strong>今すべき対処。</strong> Copilotを使うなら、利用プランとモデル選択、推論実行先、送信データ・費用上限を確認。CLIでexperimental modeと<code>/model</code>を確認し、Windows Copilot appではSettings &gt; Model providersのWindows ML、Settings &gt; ExperimentsのLocal model auto routing、VS Codeでは<code>chat.copilot.localModel.enabled</code>が提供される。未導入の人に設定変更の義務はない。</p>
 <p><strong>確認・rollback。</strong> 小さいテストで選択モデル、実際のcloud/local routingと課金を観測。品質が合わなければexperimental local routingを無効にして既存モデル選択へ戻す。</p>
 <p><strong>未解明点。</strong> 個々のPCのGPU/RAM適合とCopilotアカウントの利用権限、ローカルで選べるモデルは環境ごとに異なる。</p>
+<p><strong>料金・導入条件。</strong> Copilot Fusion有料ユーザー向け30%割引は公式Changelogで「期間限定」と案内されているが、終了日は掲載されていない。Fusion GAと、ローカルモデル選択のexperimental previewは別の提供条件なので混同しない。</p>
 <p><strong>一次情報：</strong> <a href="https://github.blog/changelog/2026-10-28-github-copilot-fusion-now-supports-selection-of-local-models/" target="_blank" rel="noopener noreferrer">GitHub Copilot Fusion local models（2026-10-28）<span class="sr-only">（新しいタブ）</span></a>、<a href="https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion/" target="_blank" rel="noopener noreferrer">GitHub Copilot Fusion GA・料金（2026-10-28）<span class="sr-only">（新しいタブ）</span></a>。</p>
 <h2>3. OpenAI API旧モデルの停止予定：計画的な移行準備（P2）</h2>
 <p><strong>事象。</strong> OpenAI公式Deprecationsは、2026年10月14日通知のGPT-4系列を2027年1月14日、10月1日通知のGPT-5.3-Codex/5.1等を2027年4月1日にAPIから削除予定と表示。<strong>10月30日の新規停止・障害ではない</strong>。</p>
-<p><strong>該当条件・非該当。</strong> APIで明示的に <code>gpt-4o-2024-08-06</code>、<code>gpt-4o-2024-11-20</code>、<code>gpt-4o-mini-2024-07-18</code>、<code>gpt-4.1-2025-04-14</code>、<code>gpt-4.1-mini-2025-04-14</code>等を参照するアプリは2027年1月14日までに切り替えが必要。GPT-5.3-Codex <code>gpt-5.3-codex</code>等は2027年4月1日が期限。モデル名を使用しない環境には該当しない。</p>
+<p><strong>該当条件・非該当。</strong> APIで明示的に <code>gpt-4o-2024-08-06</code>、<code>gpt-4o-2024-11-20</code>、<code>gpt-4o-mini-2024-07-18</code>、<code>gpt-4.1-2025-04-14</code>、<code>gpt-4.1-mini-2025-04-14</code>等を参照するアプリは2027年1月14日までに切り替えが必要。GPT-5.3-Codex <code>gpt-5.3-codex</code>等は2027年4月1日が期限。対象model ID・aliasだけでなく、SDK・ツールの既定値、環境変数、バックグラウンド処理にも対象model IDが含まれないと確認できた場合だけ非該当。aliasの実際の解決先が未確認なら非該当と断定せず、対象ID・移行先の完全な一覧は公式Deprecations表を参照する。</p>
 <p><strong>影響・対処。</strong> 停止予定日を過ぎるとAPIエラーやジョブ失敗が発生する可能性。まず設定・IaC・CI・永続キューで固定したmodel IDを検索し、公式の推奨後継モデルへ段階移行。機能差・料金・制限に応じてテスト環境で出力品質、ツール呼び出し、JSON schema、料金を照合する。</p>
 <p><strong>確認・rollback。</strong> テスト・カナリア実行で成功率と費用を計測。停止日より前は旧モデルへ戻せるが、その停止日を越えたrollback先には使わない。期限と移行先は次回の公式更新で再確認する。</p>
 <p><strong>未解明点。</strong> 利用アプリ固有の互換性は未検証。公式の削除予定日は後日変更され得る。</p>
 <p><strong>一次情報：</strong> <a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener noreferrer">OpenAI API Deprecations（2026-10-30確認）<span class="sr-only">（新しいタブ）</span></a>。</p>
 <h2>継続監視（重複記事なし）</h2>
-<p>10月29日号で詳述したLiteLLMの悪性配布版、PHP実悪用とAWS Strands Agents Toolsの脆弱性は引き続き該当条件を点検する。<strong>今日発見された別件として再掲しない。</strong> 公式一次資料の重大な更新が出た場合のみ、対象号の変更履歴と同日追記を行う。</p>
-<h2>この日報の更新履歴</h2><ul><li>対象日・初回公開日：2026年10月30日（JST）。</li><li>一次資料の調査時点：2026年10月30日08:40 JST。重要な後続情報は同一URLの更新履歴に記録します。</li></ul>
+<p><a href="/ai-dev/daily/2026-10-29/">10月29日号</a>で扱ったLiteLLM悪性配布、PHPの侵害可能性、AWS Strands Agents Toolsについて、影響する環境では引き続き優先度P0/P1に応じて確認する。一次情報：<a href="https://github.com/advisories/GHSA-92x9-889m-jgmw" target="_blank" rel="noopener noreferrer">LiteLLM GitHub Advisory（最終更新10月22日）</a>、<a href="https://www.jpcert.or.jp/at/2026/at260033.html" target="_blank" rel="noopener noreferrer">JPCERT/CC PHP注意喚起（10月29日追補）</a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-154-aws/" target="_blank" rel="noopener noreferrer">AWS Strands 2026-154</a>。新たな侵害発生を確認したわけではないため、本日の新規案件として数えない。公式更新があれば確認日時を明示して同一URLへ追記する。</p>
+<h2>この日報の更新履歴</h2><ul><li>2026-10-30 10:13 JST：ClaudeレビューF1〜F6に基づきAWS影響ランタイムの全対象と未掲載の識別子、Auto/Manual配布の未確定状態、FusionとOpenAI APIの条件、前号の一次資料を追補（根拠：<a href="https://aws.amazon.com/security/security-bulletins/2026-155-aws/" target="_blank" rel="noopener noreferrer">AWS</a>、<a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener noreferrer">OpenAI</a>）。初回公開日2026-10-30は維持。</li><li>対象日・初回公開日：2026年10月30日（JST）。</li><li>一次資料の調査時点：2026年10月30日08:40 JST。重要な後続情報は同一URLの更新履歴に記録します。</li></ul>
     <aside class="source-note">
       <h2>出典・更新履歴</h2>
       <p>各節の一次出典から発表日、版、影響条件を確認できます。調査時点は2026年10月30日08:40 JSTです。</p>
