@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。">
+  <title>AI開発・セキュリティ日報｜2026年10月31日号 | AI開発・セキュリティ日報</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
+  <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
+<!-- naojun-discovery:start -->
+  <link rel="canonical" href="https://naojun.jp/ai-dev/daily/2026-10-31/">
+  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NAOJUN STUDIOS">
+  <meta property="og:title" content="AI開発・セキュリティ日報｜2026年10月31日号">
+  <meta property="og:description" content="Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。">
+  <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-31/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月31日号","description":"Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。","datePublished":"2026-10-31","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-31/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-31T07:00:31.159+09:00"}</script>
+<!-- naojun-discovery:end -->
+</head>
+<body class="studio-site studio-interior studio-article">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<header class="site-header"><div class="container header-inner">
+<a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
+<button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="studio-nav">MENU <span class="menu-glyph" aria-hidden="true">＋</span></button>
+<nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
+<main id="main">
+  <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
+  <header class="ai-dev-article-hero">
+    <div class="container">
+      <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-10-31 / 更新 2026-10-31 07:00 JST</div>
+      <h1>AI開発・セキュリティ日報｜2026年10月31日号</h1>
+      <p class="ai-dev-lead">Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-31 07:00 JST</p>
+    </div>
+  </header>
+  <article class="ai-dev-article">
+    <p><strong>確認時点：2026年10月31日06:59 JST。初回公開：2026年10月31日。</strong> 昨日以前に発生した事件と本日判明した追補を分けて掲載する。</p>
+<h2>本日の優先対応</h2>
+<p><strong>P0・該当者のみ：</strong> Cursor拡張機能マーケットプレイスから特定期間にClaude Code拡張の悪意ある版を導入したWindows/macOS端末は、単なるアンインストールではなく残存するSSH設定・自動起動設定の点検と侵害対応が必要。Cursor公式は10月30日（米国太平洋時間）の更新で対象版を<strong>2.1.312と2.1.313の両方</strong>と明示した。</p>
+<p><strong>P0・該当者のみ：</strong> Ivanti Connect Secureの公開VPN装置では、悪用確認済みの脆弱性を組み合わせる攻撃を想定し、修正版適用と侵害痕跡確認を優先する。CISAは10月30日に関連する<strong>CVE-2026-118527 / CVE-2026-111357</strong>をKEVに追加した。</p>
+<p><strong>P2：</strong> GitHub Dependabotアラート画面のエラーが10月31日早朝JST時点で公式調査中。アラート表示失敗を「脆弱性が存在しない」と判断しない。</p>
+<h2>1. Claude Code拡張の悪意ある配布版：Cursor Marketplace経由だけを対象に確認（P0）</h2>
+<p><strong>何が起きたか。</strong> CursorのVS Code Extension Marketplaceで公開された <code>Anthropic.claude-code</code> <strong>2.1.312 / 2.1.313</strong>に、Anthropicが開発していない悪意ある処理が混入した。端末情報を送信し、攻撃者のSSH公開鍵を許可リストへ追加し、SSH接続を繰り返す永続化を試みる。Cursorは配布停止、マーケットプレイスの再構築、攻撃サーバーの停止を報告している。多くの一般権限のWindows/macOSではSSHサービス有効化に失敗した可能性があるが、<strong>鍵や永続化の痕跡を残す可能性は消えない</strong>。</p>
+<p><strong>該当条件。</strong> 2026年10月29日02:27〜13:35 <strong>PT（太平洋夏時間）</strong>、日本時間10月29日18:27〜10月30日05:35に、<strong>Cursor拡張機能マーケットプレイス</strong>から該当2バージョンをインストール・更新したmacOSまたはWindows端末。Anthropic公式配布、他のマーケットプレイスや別バージョンまで一律に侵害されたとする根拠はない。Cursorアプリ自体を使うだけで該当するわけでもない。</p>
+<p><strong>被害の可能性と直ちにする対処。</strong> 拡張のインストール元・版・更新履歴を確認し、該当または疑いがあれば端末を影響調査へ回す。Cursorが公式に示す検査・修復スクリプトを<strong>原典から取得して内容と実行権限を点検</strong>し、SSHの <code>authorized_keys</code> に不審な <code>svc-telemetry</code> の痕跡、macOS LaunchAgent / Windowsスケジュールタスク・SSHサービス・通信履歴を調べる。痕跡がある端末は隔離し、不要な鍵・永続化・プロセスを取り除き、クリーンな端末から接触可能だった秘密情報の失効・再発行と再構築の要否を判断する。<strong>拡張の削除だけでは十分とは限らない。</strong></p>
+<p><strong>対処確認・復旧。</strong> 不審なSSH鍵や自動起動設定が消え、再起動後に復活せず、正常なClaude Code操作ができることを確認。復旧する場合は公式に検証された正常版を新規導入し、悪意ある版の再インストールを避ける。インストール履歴が曖昧なら「影響なし」と断定せず保留する。Cursorは攻撃サーバー停止を報告したが、端末側の侵害調査の代わりにはならない。</p>
+<p><strong>日時・根拠。</strong> 初報10月29日PT、公式更新10月30日11:30 PT（<strong>10月31日03:30 JST</strong>）、今回確認2026-10-31 06:59 JST。一次情報：<a href="https://cursor.com/blog/claude-code-extension-security-notice" target="_blank" rel="noopener noreferrer">Cursor公式Security Notice</a>。端末ごとの実行有無や、漏えい・侵害の有無は別途調査を要する。</p>
+<h2>2. Ivanti Connect Secure：悪用確認された脆弱性連鎖を点検（P0／対象機器のみ）</h2>
+<p><strong>何が起きたか。</strong> 米CISAは既知の悪用が確認された脆弱性（KEV）に <code>CVE-2026-118527</code> と <code>CVE-2026-111357</code> を<strong>10月30日</strong>追加した。前者は認証済みの攻撃者による予測可能な場所への不正ファイル書込み、後者はローカル認証済み攻撃者の権限昇格の問題。すでにKEV収載されていた <code>CVE-2026-104935</code> と組み合わせられる。個々の問題を「単独で誰でも遠隔root実行できる」とは表現しない。</p>
+<p><strong>該当条件・非該当。</strong> <strong>Ivanti Connect Secureを運用するVPNゲートウェイ</strong>の影響版・攻撃経路が対象。認証の有無や接続経路はCVEごとに異なる。Tailscaleだけを使う端末、一般のWindows/macOS端末、GitHub利用者全員に当てはまる話ではない。設置機器の正確なファームウェア版・到達経路を調べて判定する。</p>
+<p><strong>今すべき対処。</strong> Ivanti公式アドバイザリとサポート先で<strong>機種・現行buildに対応する最新の修正版</strong>を確認し、バックアップ・冗長系・接続維持を考慮して迅速に適用する。報告されている連鎖全体が修正対象かを確認し、最初の <code>CVE-2026-104935</code> のみを修正して終了と判断しない。外部公開を減らす暫定制限は補助策。侵害済み装置はアップデートだけで安全が回復するとは限らないため、公開期間のログ、外部への通信、認証情報利用状況を点検する。</p>
+<p><strong>確認・rollback。</strong> 実行版と公式影響表・修正表を照合し、VPN接続・管理機能の正常動作を確認する。障害時に脆弱なゲートウェイを無条件で公開復旧させず、予備機などで接続を維持しながら復旧方法を選ぶ。Ivanti公式ページが認証・アクセス制限のため確認できない場合、修正版番号は推測で確定しない。侵害調査には装置外のログや提供元の指針も利用する。</p>
+<p><strong>日時・根拠。</strong> CISA KEV版 <code>2026.10.30</code> 公開10月30日17:02 UTC（<strong>10月31日02:02 JST</strong>）、今回確認2026-10-31 06:59 JST。一次情報：<a href="https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer">CISA KEVの公式公開JSON</a>、<a href="https://hub.ivanti.com/s/article/Security-Advisory-Ivanti-Connect-Secure-CVE-2026-104935?language=en_US" target="_blank" rel="noopener noreferrer">Ivanti公式アドバイザリ（アクセス制限がある場合あり）</a>。未知点：対象機種別パッチ移行経路、個別環境の侵害有無、攻撃開始時点。</p>
+<h2>3. GitHub Dependabotのアラート閲覧でエラー（P2・継続状況要確認）</h2>
+<p><strong>何が起きたか。</strong> GitHub公式ステータスでは10月30日20:59 UTC（<strong>10月31日05:59 JST</strong>）に、<strong>一部のDependabotアラートを閲覧するとエラーになる</strong>問題の調査開始を記録した。10月30日21:44 UTC（同日付の日本時間10月31日06:44 JST）でも調査中。前夜のActions/Pages/Webhooksの一時的性能低下はすでに復旧と案内されている。これらを侵害や依存関係の悪性化と混同しない。</p>
+<p><strong>影響条件。</strong> GitHubのDependabot alerts閲覧画面でエラーを受けた利用者。GitHub Actions/PagesのすべてのCIやサイトが障害中という意味ではない。運用上は脆弱性アラートの表示遅延に注意する。</p>
+<p><strong>今すべき対処と確認。</strong> 脆弱性表示に失敗したら画面のエラー時刻・リポジトリを控え、公式statusのincident更新を確認してから再試行。特に期限付き修正は、既存のlockfile・依存関係・ベンダーアドバイザリ等で別途照合し、<strong>アラートが空だから安全</strong>とは判断しない。変更を急ぐ必要がなければ解消後に閲覧をやり直す。回復時には元の画面でアラート一覧が取得できるかを検証する。</p>
+<p><strong>日時・根拠。</strong> 初報2026年10月30日20:59 UTC、最新の公式確認21:44 UTC、今回確認2026-10-31 06:59 JST。一次情報：<a href="https://www.githubstatus.com/api/v2/summary.json" target="_blank" rel="noopener noreferrer">GitHub Status公式JSON</a>。この原稿の後に復旧した場合は訂正履歴へ追記し、再公開前に状態を読み直す。</p>
+<h2>この日報の確認範囲と更新履歴</h2>
+<p>2026年10月31日朝JST、Cursor、CISA KEV、Ivanti公式アドバイザリ案内、GitHub Statusの一次資料を優先した。Vendor側のパッチ詳細が取得できない箇所は未確認とした。見出しのP0は<strong>該当条件に合う場合のみ</strong>即時対応の意味であり、利用者の端末・VPNが侵害されたという断定ではない。</p>
+<ul>
+<li><strong>2026-10-31 06:59 JST：初稿作成（公開前）。</strong> 以降は同じ日次ID・同じURLで、確認済みの訂正だけ更新日時と変更履歴を追加する。</li>
+</ul>
+    <aside class="source-note">
+      <h2>出典・更新履歴</h2>
+      <p>初回公開：2026年10月31日。最終確認：2026-10-31 07:00 JST。根拠：<a href="https://cursor.com/blog/claude-code-extension-security-notice" target="_blank" rel="noopener noreferrer">Cursor公式</a>、<a href="https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer">CISA KEV</a>、<a href="https://www.githubstatus.com/api/v2/summary.json" target="_blank" rel="noopener noreferrer">GitHub Status</a>。</p>
+      <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
+    </aside>
+  </article>
+</main>
+<footer class="site-footer studio-footer"><div class="container">
+<div class="footer-top"><p>日々に、小さな発明を。<br>Small studio. Useful creations.</p><nav class="footer-links" aria-label="フッターナビゲーション"><a href="/works/">Works</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://bsky.app/profile/naojun.jp" target="_blank" rel="me noopener noreferrer">Bluesky <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="https://www.youtube.com/@naojunjp" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="/feed.xml">RSS ↗</a></nav></div>
+<div class="footer-wordmark" aria-hidden="true">NAOJUN STUDIOS.</div>
+<div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
+</div></footer>
+<script src="/assets/js/main.js?v=20261025a"></script>
+<script src="/assets/js/studio.js?v=20261004" defer></script>
+</body>
+</html>
