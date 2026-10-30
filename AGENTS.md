@@ -1,28 +1,12 @@
-# NaoJun site updates
+# NAOJUN STUDIOS — 開発・運用方針 2026-10-30
 
-Before changing or adding a page, read `docs/SITE-GUIDE.md`. It is the site's shared
-design and content contract. Then read the relevant `PUBLISHER.md` for articles.
+優先成果は naojun.jp 全体の価値ある訪問と継続利用。Koechara販売だけに最適化しない。無料ツール・ゲーム・調査記事・映像の入口を増やす。
 
-- Preserve the theme: **日々に、小さな発明を。 / Small studio. Useful creations.**
-- Use `content/works.json` for work names, links, category, short description,
-  availability and home selection; use `content/site.json` for the official channel.
-- Edit shared chrome in `_partials/header.html` and `_partials/footer.html`, not in
-  each generated page. Artwork lives in `_partials/covers/`.
-- Start new work pages from `works/_templates/project-template.html`. Start articles
-  from the appropriate `investment/_templates/` or `admissions/_templates/` template.
-- After editing, run `python scripts/sync_studio.py`, then
-  `python scripts/build_discovery.py`; commit the generated HTML/metadata together.
-- Before release, run `python scripts/test_studio_contract.py`,
-  `python scripts/sync_studio.py --check`, `python scripts/design-integrity.py`,
-  `python scripts/build_discovery.py --check`, plus affected existing smoke checks.
-- Visually check the changed page at mobile and desktop sizes. Any layout, CSS or
-  interactive change also needs relevant Chromium/WebKit browser checks. Automatic
-  pass results do not replace visual review.
-- Keep canonical URLs, analytics, contact and sales contracts stable. Use only
-  verified NaoJun-owned branding and destinations. Do not import unrelated site
-  identities, account identifiers or tracking configuration.
-- Do not silently change publication authority. The existing publisher contracts
-  govern releases; this design contract adds consistency checks, not approval gates.
+- 正本は `main`。用途別に `docs/SITE-GUIDE.md` と必要な `PUBLISHER.md` を確認する。作品データは `content/works.json`、公式リンクは `content/site.json`、共通部品は `_partials/`。生成物だけを手作業で修正しない。
+- 文言・画像説明・メタデータ・リンク・既存公式SNSの普通の更新には変更箇所の短い確認だけを実施し、正規経路で公開して本番を1回読み戻す。毎回全プロジェクト・4画面幅・2ブラウザー・多重AIレビューを必須にしない。
+- 台帳や記事、共通部品は必要な `scripts/sync_studio.py` と `scripts/build_discovery.py` を一度実行して入力と出力を揃える。共通UI・動作変更には対象の回帰確認、代表的なモバイル・PC確認。認証・決済・個人情報・重要な事実は影響に見合う検証。品質や実績を偽らない。
+- 公開済サイト・公式SNSの通常編集は所有者が継続運用を承認済み。毎回別の承認ゲートを追加しない。一時通信失敗は短い再試行と次の定期枠から復旧。Muse・CoS・Windows・検索通知など別工程の失敗で独立した許可済みの公開を止めない。実際の拒否・認証切れ・権限変更は迂回しない。
+- **Jun Operations Portalが唯一の運用入口。** 新しいアクセス統計・実行予定・改善結果・SNS返信案をポータルへ統合するか、そこから既存詳細画面へリンクする。別ポータルを増やさず、プライベートな管理URL・情報を一般公開サイトに載せない。
+- Blueskyの通常配信は既存の `scripts/social_publish.py` と `content/social.json` に集約。5分周期のMuseは会話の観測・自然な返信案の編集に使い、頻繁な自動返信、宣伝コメント、DM・自動フォローは行わない。詳細は `docs/SOCIAL-VOICE.md`。
 
-The public-facing copy must not describe build scripts, internal agents or workflow
-implementation. Keep those details in repository documentation.
+「日々に、小さな発明を。」を保ち、内部の自動化や開発規約より訪問者に役立つ内容を先に伝える。
