@@ -46,8 +46,20 @@ def canonical(url: str) -> str:
 
 
 def record_key(item: dict) -> str:
+    # Post lexicon requires a 13-character TID, not an arbitrary hash key.
+    # Persist identity across retries using the campaign publication day and
+    # deterministic microseconds/clock bits; actual createdAt remains truthful.
     identity = str(item['id']) + '\n' + canonical(item['url'])
-    return 'nj-' + hashlib.sha256(identity.encode('utf-8')).hexdigest()[:32]
+    seed = int.from_bytes(hashlib.sha256(identity.encode('utf-8')).digest()[:8], 'big')
+    date_hint = item.get('not_before') or item.get('published_at')
+    if not date_hint:
+        match = re.search(r'(20\d{2})-?(\d{2})-?(\d{2})', str(item['id']))
+        date_hint = '-'.join(match.groups()) if match else '2026-10-30'
+    anchor = dt(str(date_hint))
+    micros = int(anchor.timestamp() * 1_000_000) + ((seed >> 10) % 1_000_000)
+    value = (micros << 10) | (seed & 1023)
+    alphabet = '234567abcdefghijklmnopqrstuvwxyz'
+    return ''.join(alphabet[(value >> shift) & 31] for shift in range(60, -1, -5))
 
 
 def valid_item(item: dict) -> bool:
@@ -144,6 +156,12 @@ def request_json(url: str, payload=None, token=None) -> dict:
             return json.loads(response.read().decode('utf-8'))
     except urllib.error.HTTPError as exc:
         body = exc.read(2048)
+        try:
+            api_code = json.loads(body).get('error', '')
+            if isinstance(api_code, str) and re.fullmatch(r'[A-Za-z0-9_]{1,64}', api_code):
+                exc.api_error = api_code
+        except (ValueError, AttributeError):
+            pass
         if 'getRecord?' in url and exc.code in (400, 404):
             try:
                 error = json.loads(body).get('error')
@@ -199,7 +217,7 @@ def publish_one(client, token, did, item, now, sleeper=time.sleep):
     try:
         client.request(client.pds + '/xrpc/com.atproto.repo.createRecord', payload, token)
     except urllib.error.HTTPError as exc:
-        if exc.code in (401, 403):
+        if 400 <= exc.code < 500 and exc.code != 409:
             raise
         uncertain = True
     except (urllib.error.URLError, TimeoutError, ConnectionError):
@@ -306,8 +324,9 @@ def main(argv=None, *, environ=None, root=ROOT):
         result.update(status='delivery_pending', error_type=type(exc).__name__)
         if isinstance(exc, urllib.error.HTTPError):
             result['http_status'] = exc.code
+            result['api_error'] = getattr(exc, 'api_error', 'unknown')
         write_result(result)
-        return 2 if isinstance(exc, urllib.error.HTTPError) and exc.code in (401, 403) else 1
+        return 2 if isinstance(exc, urllib.error.HTTPError) and 400 <= exc.code < 500 else 1
 
 
 if __name__ == '__main__':
