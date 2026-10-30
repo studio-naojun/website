@@ -49,6 +49,130 @@ if (feed) {
     if (ids.has(entry.id)) fail(`duplicate feed id: ${entry.id}`);
     ids.add(entry.id);
 
+    if (entry.type === 'weekly') {
+      const match = entry.id.match(/^weekly-(\\d{4}-\\d{2}-\\d{2})$/);
+      if (!match) fail(`invalid weekly id: ${entry.id}`);
+      else {
+        const date = match[1];
+        if (entry.path !== `weekly/${date}/`) fail(`weekly path/id mismatch: ${entry.id}`);
+        if (entry.source_cycle !== `investment-weekly-${date}`) fail(`weekly source_cycle mismatch: ${entry.id}`);
+      }
+    }
+
+    if (entry.type === 'monthly') {
+      const match = entry.id.match(/^monthly-(\\d{4}-\\d{2})$/);
+      if (!match) fail(`invalid monthly id: ${entry.id}`);
+      else {
+        const month = match[1];
+        if (entry.path !== `monthly/${month}/`) fail(`monthly path/id mismatch: ${entry.id}`);
+        if (!new RegExp(`^investment-monthly-${month}-\\\\d{2}import fs from 'node:fs';
+import path from 'node:path';
+
+const root = path.resolve('investment');
+const required = [
+  'index.html',
+  'feed.json',
+  'state.json',
+  'assets/investment.css',
+  'assets/investment.js',
+  'PUBLISHER.md',
+  '_templates/article-template.html'
+];
+
+let failed = false;
+const fail = (message) => {
+  failed = true;
+  console.error(`FAIL: ${message}`);
+};
+
+for (const relative of required) {
+  if (!fs.existsSync(path.join(root, relative))) fail(`missing ${relative}`);
+}
+
+let feed;
+let state;
+try {
+  feed = JSON.parse(fs.readFileSync(path.join(root, 'feed.json'), 'utf8'));
+} catch (error) {
+  fail(`feed.json invalid: ${error.message}`);
+}
+
+try {
+  state = JSON.parse(fs.readFileSync(path.join(root, 'state.json'), 'utf8'));
+} catch (error) {
+  fail(`state.json invalid: ${error.message}`);
+}
+
+if (feed) {
+  if (feed.schema_version !== 1) fail('feed schema_version must be 1');
+  if (!Array.isArray(feed.entries)) fail('feed.entries must be an array');
+
+  const ids = new Set();
+  for (const entry of feed.entries || []) {
+    for (const field of ['id', 'type', 'published_at', 'title', 'summary', 'path', 'source_cycle']) {
+      if (!entry[field]) fail(`feed entry missing ${field}: ${entry.id || '<unknown>'}`);
+    }
+).test(entry.source_cycle)) {
+          fail(`monthly source_cycle mismatch: ${entry.id}`);
+        }
+        if (entry.previous_source_cycle) {
+          if (entry.previous_source_cycle === entry.source_cycle) fail(`monthly previous_source_cycle must differ: ${entry.id}`);
+          if (!new RegExp(`^investment-monthly-${month}-\\\\d{2}import fs from 'node:fs';
+import path from 'node:path';
+
+const root = path.resolve('investment');
+const required = [
+  'index.html',
+  'feed.json',
+  'state.json',
+  'assets/investment.css',
+  'assets/investment.js',
+  'PUBLISHER.md',
+  '_templates/article-template.html'
+];
+
+let failed = false;
+const fail = (message) => {
+  failed = true;
+  console.error(`FAIL: ${message}`);
+};
+
+for (const relative of required) {
+  if (!fs.existsSync(path.join(root, relative))) fail(`missing ${relative}`);
+}
+
+let feed;
+let state;
+try {
+  feed = JSON.parse(fs.readFileSync(path.join(root, 'feed.json'), 'utf8'));
+} catch (error) {
+  fail(`feed.json invalid: ${error.message}`);
+}
+
+try {
+  state = JSON.parse(fs.readFileSync(path.join(root, 'state.json'), 'utf8'));
+} catch (error) {
+  fail(`state.json invalid: ${error.message}`);
+}
+
+if (feed) {
+  if (feed.schema_version !== 1) fail('feed schema_version must be 1');
+  if (!Array.isArray(feed.entries)) fail('feed.entries must be an array');
+
+  const ids = new Set();
+  for (const entry of feed.entries || []) {
+    for (const field of ['id', 'type', 'published_at', 'title', 'summary', 'path', 'source_cycle']) {
+      if (!entry[field]) fail(`feed entry missing ${field}: ${entry.id || '<unknown>'}`);
+    }
+).test(entry.previous_source_cycle)) {
+            fail(`monthly previous_source_cycle month mismatch: ${entry.id}`);
+          }
+          if (!entry.first_published_at) fail(`monthly rollover missing first_published_at: ${entry.id}`);
+          if (!entry.updated_at) fail(`monthly rollover missing updated_at: ${entry.id}`);
+        }
+      }
+    }
+
     if (entry.path.startsWith('/') || entry.path.includes('..')) fail(`unsafe feed path: ${entry.path}`);
     const articlePath = path.join(root, entry.path, 'index.html');
     if (!fs.existsSync(articlePath)) {
