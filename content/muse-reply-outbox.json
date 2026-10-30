@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "purpose": "Muse-prepared, opt-in-only reply candidates. The bot independently verifies the original mention before publishing.",
+  "items": []
+}
+

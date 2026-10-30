@@ -101,8 +101,9 @@ def thread_context(payload: dict, *, owner_did: str = OWN_DID) -> dict:
         "target_uri": target["uri"],
         "target_cid": target["cid"],
         "root_uri": expected_root,
+        "root_cid": posts[0]["cid"],
         "thread": [
-            {k: p[k] for k in ("uri", "author_handle", "author_did", "text")}
+            {k: p[k] for k in ("uri", "cid", "author_handle", "author_did", "text")}
             for p in posts
         ],
         "invocation": "reply_to_own_thread" if direct else "explicit_mention",
