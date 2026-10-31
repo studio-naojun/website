@@ -7,6 +7,7 @@ on:
       - 'scripts/x_markets_oauth2_post.mjs'
       - 'scripts/x_markets_oauth2_post.test.mjs'
       - 'scripts/x_markets_auth_probe.mjs'
+      - 'scripts/x_markets_fingerprint_compare.mjs'
       - 'scripts/x_markets_independent_verify.mjs'
       - '.github/workflows/x-markets-api-test.yml'
   push:
@@ -22,6 +23,11 @@ on:
         type: string
         default: ''
         required: false
+      secret_fingerprints:
+        description: 'Diagnostic only: SHA256 fingerprints of 4 X Console keys; NEVER enter plaintext keys'
+        type: string
+        default: ''
+        required: false
       mode:
         description: 'dry-run makes no API call; verify-only checks account via API; publish-test posts one labeled test'
         type: choice
@@ -31,6 +37,7 @@ on:
           - dry-run
           - verify-only
           - diagnose
+          - compare-keys
           - verify-library
           - publish-test
 permissions:
@@ -53,6 +60,15 @@ jobs:
         run: node --test scripts/x_markets_oauth2_post.test.mjs
       - name: Check credential probe syntax
         run: node --check scripts/x_markets_auth_probe.mjs
+      - name: Compare X Console and GitHub credential fingerprints without printing values
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'compare-keys'
+        env:
+          X_EXPECT_SECRET_SHA256: ${{ inputs.secret_fingerprints }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+          NAOJUN_X_ACCESS_TOKEN: ${{ secrets.NAOJUN_X_ACCESS_TOKEN }}
+          NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/x_markets_fingerprint_compare.mjs
       - name: Probe app-only and OAuth1 credentials without posting
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'diagnose'
         env:
@@ -74,7 +90,7 @@ jobs:
           NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
         run: node scripts/x_markets_independent_verify.mjs
       - name: Preview or send single X API test post
-        if: github.event_name == 'workflow_dispatch' && inputs.mode != 'diagnose' && inputs.mode != 'verify-library'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode != 'diagnose' && inputs.mode != 'verify-library' && inputs.mode != 'compare-keys'
         env:
           X_POST_MODE: ${{ inputs.mode }}
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
