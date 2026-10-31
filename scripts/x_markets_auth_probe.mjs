@@ -45,6 +45,12 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   const [key,secret,token,tokenSecret]=values;
   const creds={key,secret,token,tokenSecret};
   log('Credential presence: all four provided; values withheld');
+  if (env.X_EXPECT_API_KEY_SUFFIX) {
+    const expected=String(env.X_EXPECT_API_KEY_SUFFIX);
+    if (!/^[A-Za-z0-9_-]{4,12}$/.test(expected)) throw new Error('Unexpected expected Consumer Key suffix format');
+    log('Publisher Consumer Key suffix matches GitHub Secret: '+key.endsWith(expected));
+  }
+
   log('Per-secret newline flags (values withheld):');
   for (let i=0;i<NAMES.length;i++) {
     const value=values[i];
