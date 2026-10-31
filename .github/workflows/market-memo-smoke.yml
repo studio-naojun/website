@@ -1,0 +1,23 @@
+name: NAOJUN Market Memo Smoke
+on:
+  pull_request:
+    paths:
+      - 'investment/markets/**'
+      - '.github/workflows/market-memo-smoke.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'investment/markets/**'
+      - '.github/workflows/market-memo-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test investment/markets/markets.test.mjs
