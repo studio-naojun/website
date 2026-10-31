@@ -4,6 +4,8 @@ on:
     paths:
       - 'scripts/x_markets_post.mjs'
       - 'scripts/x_markets_post.test.mjs'
+      - 'scripts/x_markets_oauth2_post.mjs'
+      - 'scripts/x_markets_oauth2_post.test.mjs'
       - 'scripts/x_markets_auth_probe.mjs'
       - 'scripts/x_markets_independent_verify.mjs'
       - '.github/workflows/x-markets-api-test.yml'
@@ -47,6 +49,8 @@ jobs:
           node-version: '22'
       - name: Test request signing, duplicate prevention and account guard
         run: node --test scripts/x_markets_post.test.mjs
+      - name: Test OAuth2 publisher guards and no-post defaults
+        run: node --test scripts/x_markets_oauth2_post.test.mjs
       - name: Check credential probe syntax
         run: node --check scripts/x_markets_auth_probe.mjs
       - name: Probe app-only and OAuth1 credentials without posting
