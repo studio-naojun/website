@@ -48,8 +48,8 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   log('Per-secret newline flags (values withheld):');
   for (let i=0;i<NAMES.length;i++) {
     const value=values[i];
-    log('  '+NAMES[i]+': newline='+/[\\r\\n]/.test(value)+
-        '; lineCount='+value.split(/\\r\\n|\\r|\\n/).length+
+    log('  '+NAMES[i]+': newline='+/[\r\n]/.test(value)+
+        '; lineCount='+value.split(/\r\n|\r|\n/).length+
         '; surrounding-spaces='+(value!==value.trim()));
   }
 
@@ -102,9 +102,9 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
     const known=['invalid_client','invalid_grant','unauthorized_client','invalid_token','expired_token'];
     if (known.includes(body?.error)) log('X error category: '+body.error);
   }
-  if (values.some(v=>/[\\r\\n]/.test(v))) {
+  if (values.some(v=>/[\r\n]/.test(v))) {
     // Diagnostic only: never persist or log the normalized keys.
-    const cleaned=values.map(v=>v.replace(/[\\r\\n]/g,''));
+    const cleaned=values.map(v=>v.replace(/[\r\n]/g,''));
     const [cleanKey,cleanSecret,cleanToken,cleanTokenSecret]=cleaned;
     const cleanBasic=Buffer.from(enc(cleanKey)+':'+enc(cleanSecret),'utf8').toString('base64');
     const altApp=await fetchImpl(HOST+'/oauth2/token',{
