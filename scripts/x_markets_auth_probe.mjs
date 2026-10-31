@@ -45,6 +45,14 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   const [key,secret,token,tokenSecret]=values;
   const creds={key,secret,token,tokenSecret};
   log('Credential presence: all four provided; values withheld');
+  log('Per-secret newline flags (values withheld):');
+  for (let i=0;i<NAMES.length;i++) {
+    const value=values[i];
+    log('  '+NAMES[i]+': newline='+/[\\r\\n]/.test(value)+
+        '; lineCount='+value.split(/\\r\\n|\\r|\\n/).length+
+        '; surrounding-spaces='+(value!==value.trim()));
+  }
+
   log('Credential structure: embedded-newline='+values.some(v=>/[\r\n]/.test(v))+
       '; surrounding-quotes='+values.some(v=>/^['"]|['"]$/.test(v))+
       '; duplicate-values='+(new Set(values).size !== values.length));
@@ -93,6 +101,31 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
     if (code!==undefined) log('X error numeric code: '+code);
     const known=['invalid_client','invalid_grant','unauthorized_client','invalid_token','expired_token'];
     if (known.includes(body?.error)) log('X error category: '+body.error);
+  }
+  if (values.some(v=>/[\\r\\n]/.test(v))) {
+    // Diagnostic only: never persist or log the normalized keys.
+    const cleaned=values.map(v=>v.replace(/[\\r\\n]/g,''));
+    const [cleanKey,cleanSecret,cleanToken,cleanTokenSecret]=cleaned;
+    const cleanBasic=Buffer.from(enc(cleanKey)+':'+enc(cleanSecret),'utf8').toString('base64');
+    const altApp=await fetchImpl(HOST+'/oauth2/token',{
+      method:'POST',
+      headers:{Authorization:'Basic '+cleanBasic,'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+      body:'grant_type=client_credentials',
+      signal:AbortSignal.timeout(15000),
+    });
+    await altApp.text(); // Never log the token or response.
+    log('App-only exchange with internal CR/LF removed in memory: HTTP '+altApp.status);
+    const cleanAuth=auth('GET',userUrl,{key:cleanKey,secret:cleanSecret,token:cleanToken,tokenSecret:cleanTokenSecret});
+    const altUser=await fetchImpl(userUrl,{
+      method:'GET',headers:{Authorization:cleanAuth},signal:AbortSignal.timeout(15000),
+    });
+    const altText=await altUser.text();
+    log('OAuth1 with internal CR/LF removed in memory: HTTP '+altUser.status);
+    if (altUser.ok) {
+      let cleanMe={};
+      try { cleanMe=JSON.parse(altText); } catch {}
+      log('Corrected OAuth1 username matches: '+(cleanMe?.data?.username?.toLowerCase()==='naojun_markets'));
+    }
   }
   if (appResp.status===200 && userResp.status===401)
     log('DIAGNOSIS: Consumer Key/Secret pair is accepted; OAuth1 user token pair or signature/app association is rejected.');
