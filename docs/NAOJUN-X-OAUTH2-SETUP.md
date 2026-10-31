@@ -22,11 +22,30 @@
 
 The existing GitHub workflow runs the OAuth 2.0 regression tests, but **does not have a GitHub-hosted OAuth 2.0 refresh-token mechanism**. A GitHub Actions dry-run success is not proof of API credentials. Do not enable scheduled publishing in GitHub Actions until safe rotating-refresh-token storage is implemented.
 
+## Windows local execution (verified)
+
+The approved OAuth 2.0 runtime is installed on the user's authorized Windows machine:
+
+- Encrypted token store (Windows user DPAPI): `%LOCALAPPDATA%\NAOJUN-Markets\oauth2.tokens.dpapi`
+- Local command entrypoint: `%LOCALAPPDATA%\NAOJUN-Markets\oauth2_runner.mjs`
+- Pinned repository checkout: `Z:\AI\Runtime\NAOJUN-Markets\website`
+- Audited checkout revision: `feb73d9c9c7cad4fbf9956f9b89689b6e2c8cfea`; the local runner refuses to execute if the checkout changes without repinning.
+- Verified 2026-10-31: all 10 OAuth2 unit tests passed; local `dry-run` and live read-only `verify-only` passed, including `GET /2/users/me` account validation.
+
+Example PowerShell commands:
+
+```powershell
+node "$env:LOCALAPPDATA\NAOJUN-Markets\oauth2_runner.mjs" dry-run
+node "$env:LOCALAPPDATA\NAOJUN-Markets\oauth2_runner.mjs" verify-only
+```
+
+The runner can also accept `publish-test` for a **real public post**, but this has **not** been executed. Do not schedule or invoke that mode without explicit publishing authorization. No credentials are printed or committed.
+
 ## Remaining before live recurring market updates
 
-1. Wire the Windows DPAPI token provider/refresh mechanism to the publisher and verify it without posting.
-2. Explicitly authorize the first real labeled test post and confirm its permalink.
-3. Define the schedule and source-approved market facts (data redistribution rights are not yet verified).
-4. Configure a monthly spending limit; the dashboard previously showed an unlimited cycle limit while automatic recharge was off.
+1. Authorize a first real, clearly labeled public test post and confirm its permalink.
+2. Agree on the recurring content source, posting cadence, and redistribution/licensing rights for market data.
+3. Configure a spending ceiling before recurring operation. The dashboard had a $10 total balance with $5 promotional credit and auto-recharge off, but the billing-cycle limit was unlimited.
+4. Decide whether real publishing should stay on the Windows DPAPI runtime or use a separate hosted refresh-token store. GitHub Actions currently has **no** safe OAuth2 refresh-token rotation; manual dry-run CI remains active.
 
-Do not automatically schedule market-data posts merely because the API credentials now work.
+The X OAuth2 user grant is scoped to `tweet.read tweet.write users.read offline.access` and does not grant DM access. Do not re-enter the legacy OAuth1 keys to continue OAuth2 testing.
