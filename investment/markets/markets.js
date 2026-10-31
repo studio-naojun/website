@@ -183,7 +183,7 @@ function renderProvenance(used, publishedAt) {
   root.replaceChildren();
   root.append(document.createTextNode(`公開データの最終更新：${jpTime(publishedAt)}。`));
   for (const series of used) {
-    const text = document.createTextNode(` ${series.id}：${series.source.name}（${series.sampling === 'official_close' ? '米国市場公式終値' : 'BTC/USD現物 UTC 00:00区切り'}、最終観測 ${jpTime(series.observed_at)}、観測時ステータス ${series.market_status}）`);
+    const text = document.createTextNode(` ${series.id}：${series.source.name}（${series.sampling === 'official_close' ? '米国市場公式終値' : 'BTC/USD現物 JST 06:30基準'}、最終観測 ${jpTime(series.observed_at)}、観測時ステータス ${series.market_status}）`);
     const link = document.createElement('a');
     link.href = series.source.url; // verifyHistory checks against the approved HTTPS origin.
     link.target = '_blank';
@@ -226,7 +226,7 @@ function setupLicensedHistory(verified) {
       dates = filtered.map((point) => point.date);
       lines = [{ id: item.id, name: INSTRUMENTS[item.id].name, values: filtered.map((point) => point.value) }];
     }
-    $('history-meta').textContent = `対象：${isCompare ? '米国3指数・同一取引日の公式終値（共通初日=100）' : `${INSTRUMENTS[chosen].name} ${INSTRUMENTS[chosen].sampling === 'utc_00_close' ? '現物・UTC日次区切り' : '公式終値'}`} / 期間：${range} / ${dates.length ? `${dates[0]}〜${dates.at(-1)}・${dates.length}観測日` : '表示可能な観測日なし'}`;
+    $('history-meta').textContent = `対象：${isCompare ? '米国3指数・同一取引日の公式終値（共通初日=100）' : `${INSTRUMENTS[chosen].name} ${INSTRUMENTS[chosen].sampling === 'jst_0630_spot' ? '現物・JST 06:30基準' : '公式終値'}`} / 期間：${range} / ${dates.length ? `${dates[0]}〜${dates.at(-1)}・${dates.length}観測日` : '表示可能な観測日なし'}`;
     plotChart(dates, lines, isCompare);
     renderTable(dates, lines, isCompare);
     renderProvenance(used, verified.published_at);
@@ -253,6 +253,56 @@ function setupLicensedHistory(verified) {
   $('history-licensed').hidden = false;
   render();
 }
+
+
+async function refreshPublishedArticles() {
+  try {
+    const response = await fetch('/investment/feed.json', { cache: 'no-store' });
+    if (!response.ok) return;
+    const feed = await response.json();
+    if (!Array.isArray(feed.entries)) return;
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
+    const today=p.year+'-'+p.month+'-'+p.day;
+    const safePath=new RegExp('^(weekly/[0-9]{4}-[0-9]{2}-[0-9]{2}/|monthly/[0-9]{4}-[0-9]{2}/)
+fetch('/investment/markets/history.json', { cache: 'no-store' })
+  .then((response) => response.ok ? response.json() : null)
+  .then((payload) => {
+    const verified = verifyHistory(payload);
+    if (verified.ok) setupLicensedHistory(verified);
+  })
+  .catch(() => {
+    // The static no-data copy and official chart links remain usable offline.
+  });
+);
+    const safeDate=new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}
+fetch('/investment/markets/history.json', { cache: 'no-store' })
+  .then((response) => response.ok ? response.json() : null)
+  .then((payload) => {
+    const verified = verifyHistory(payload);
+    if (verified.ok) setupLicensedHistory(verified);
+  })
+  .catch(() => {
+    // The static no-data copy and official chart links remain usable offline.
+  });
+);
+    const recent=feed.entries.filter(x=>x && ['weekly','monthly'].includes(x.type)
+      && typeof x.published_at==='string' && safeDate.test(x.published_at) && x.published_at<=today
+      && typeof x.title==='string' && x.title.length>0 && x.title.length<240
+      && typeof x.path==='string' && safePath.test(x.path)).slice(0,2);
+    if (!recent.length) return;
+    const fragment=document.createDocumentFragment();
+    for (const item of recent) {
+      const a=document.createElement('a');a.className='markets-related-entry';a.href='/investment/'+item.path;
+      const stamp=document.createElement('span');stamp.className='markets-related-date';stamp.textContent=item.type.toUpperCase()+' · '+item.published_at;
+      const title=document.createElement('strong');title.className='markets-related-title';title.textContent=item.title;
+      a.append(stamp,title);fragment.append(a);
+    }
+    document.getElementById('markets-related-list').replaceChildren(fragment);
+  } catch {
+    // The static article links remain available offline and without JavaScript.
+  }
+}
+refreshPublishedArticles();
 
 setupExternalChart();
 fetch('/investment/markets/history.json', { cache: 'no-store' })
