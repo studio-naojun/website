@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "as_of": "2026-10-04",
-  "updated_note": "2026年10月4日の月次Research Artifactに基づく6〜18か月の投資地図。",
-  "source_cycle": "investment-monthly-2026-10-04",
+  "as_of": "2026-10-31",
+  "updated_note": "2026年10月31日月次Research Artifactの独自条件付き6〜18か月投資地図。市場観測やコンセンサスと予想を混同しない。",
+  "source_cycle": "investment-monthly-2026-10-31",
   "regime": {
-    "name": "高金利下の狭いソフトランディング",
+    "name": "強い実需と粘着インフレ下の高金利・株式選別",
     "confidence": "中"
   },
   "scenarios": [
     {
       "id": "soft-landing-high-rates",
-      "label": "ソフトランディング / 高金利下の緩やかな減速",
+      "label": "ソフトランディング / 高金利持続",
       "probability": 35
     },
     {
@@ -21,12 +21,12 @@
     {
       "id": "stagflation",
       "label": "スタグフレーション",
-      "probability": 25
+      "probability": 30
     },
     {
       "id": "recession",
       "label": "景気後退",
-      "probability": 20
+      "probability": 15
     },
     {
       "id": "nonlinear-policy-geopolitics",
@@ -37,39 +37,39 @@
   "forecasts": [
     {
       "id": "sp500",
-      "label": "S&P 500 年末",
-      "value": "7,850",
-      "range": "7,000–8,300"
+      "label": "S&P 500 年末（独自予想）",
+      "value": "7,600",
+      "range": "6,900–8,200"
     },
     {
       "id": "us10y",
-      "label": "米10年国債 年末",
-      "value": "5.00%",
-      "range": "4.60–5.70%"
+      "label": "米10年国債 年末（独自予想）",
+      "value": "4.95%",
+      "range": "4.50–5.60%"
     },
     {
       "id": "fed-funds",
-      "label": "Fed funds 年末",
+      "label": "Fed funds 年末（独自予想）",
       "value": "3.75–4.00%",
       "range": "3.75–4.25%"
     },
     {
       "id": "usd-jpy",
-      "label": "USD/JPY 年末",
-      "value": "156円",
-      "range": "150–163円"
+      "label": "USD/JPY 年末（独自予想）",
+      "value": "155円",
+      "range": "147–165円"
     },
     {
       "id": "cpi",
-      "label": "米CPI 12月前年比",
-      "value": "+3.5%",
-      "range": "2.9–4.4%"
+      "label": "米CPI 12月前年比（独自予想）",
+      "value": "+3.6%",
+      "range": "3.0–4.5%"
     },
     {
       "id": "core-pce",
-      "label": "Core PCE Q4/Q4",
+      "label": "Core PCE 12月前年比（独自予想）",
       "value": "+3.2%",
-      "range": "2.7–3.6%"
+      "range": "2.7–3.7%"
     }
   ]
 }

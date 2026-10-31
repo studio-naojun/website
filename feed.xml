@@ -5,7 +5,25 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-10-31T07:00:31.159+09:00</updated>
+  <updated>2026-10-31T10:03:00+09:00</updated>
+  <entry>
+    <title>強い米GDPと粘着インフレ、AI投資の採算懸念――10月末の株・金利を読む</title>
+    <id>https://naojun.jp/investment/weekly/2026-10-31/</id>
+    <link href="https://naojun.jp/investment/weekly/2026-10-31/"/>
+    <updated>2026-10-31T00:00:00+09:00</updated>
+    <published>2026-10-31T00:00:00+09:00</published>
+    <category term="investment"/>
+    <summary>米GDP前期比年率+3.4%とCore PCE前年比+3.1%の併存、AI投資への市場評価、Fed・日銀の据え置きを一次資料で整理する。</summary>
+  </entry>
+  <entry>
+    <title>10月末・月次投資戦略――強い成長と粘着インフレ、AI資本支出の回収を6〜18か月で検証</title>
+    <id>https://naojun.jp/investment/monthly/2026-10/</id>
+    <link href="https://naojun.jp/investment/monthly/2026-10/"/>
+    <updated>2026-10-31T10:03:00+09:00</updated>
+    <published>2026-10-31T10:03:00+09:00</published>
+    <category term="investment"/>
+    <summary>米Q3 GDP+3.4%、PCE物価前年比+3.6%、Fed・日銀据え置き、AI企業の利益と投資負担を比較し、シナリオと年末予想を改定する。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年10月31日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-10-31/</id>
@@ -113,15 +131,6 @@
     <published>2026-10-05T00:00:00+09:00</published>
     <category term="admissions"/>
     <summary>10月入りで2027年度の正式募集要項・出願情報が増加。女子学院、湘南学園、渋幕を例に「公開・更新」と「制度変更」を分け、低ニュース密度週をそのまま整理する。</summary>
-  </entry>
-  <entry>
-    <title>月次投資戦略 2026年10月 — 雇用は急減速、企業利益はまだ強い。焦点は「利益が金利に勝てるか」</title>
-    <id>https://naojun.jp/investment/monthly/2026-10/</id>
-    <link href="https://naojun.jp/investment/monthly/2026-10/"/>
-    <updated>2026-10-04T00:00:00+09:00</updated>
-    <published>2026-10-04T00:00:00+09:00</published>
-    <category term="investment"/>
-    <summary>米雇用+2.9万人へ急減速する一方、実質PCEと企業利益はなお底堅い。S&amp;P 500 7,850、米10年5.00%、USD/JPY 156円を中心に、ソフトランディングとスタグフレーションの境界を検証する。</summary>
   </entry>
   <entry>
     <title>雇用は冷えた。それでも長期金利は上がった――焦点は「再加速」から「粘着インフレ」へ</title>
