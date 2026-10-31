@@ -206,6 +206,13 @@ sampleButtons.forEach((button) => button.addEventListener('click', () => {
   source.value = sample.text;
   updateCount();
   setInputError();
+  // A new example invalidates the result from the previous input.
+  resultSection.hidden = true;
+  errorSection.hidden = true;
+  state.result = null;
+  state.generationId = null;
+  state.feedbackRating = null;
+  setDetailOpen(false);
   setStatus('例文を入力しました', sample.label + 'を入力しました。「3行！」を押すと試せます。');
   source.focus();
 }));
