@@ -28,7 +28,7 @@ test('missing secrets fail before API call',async()=>{
 });
 test('multiline secrets are rejected before API calls',async()=>{
  let calls=0;
- const bad={...env,NAOJUN_X_API_SECRET:'first\\nsecond'};
+ const bad={...env,NAOJUN_X_API_SECRET:'first\nsecond'};
  await assert.rejects(()=>run({mode:'verify-only',env:bad,log:()=>{},fetchImpl:()=>{calls++;throw Error('called');}}),/Malformed X API secrets.*NAOJUN_X_API_SECRET/);
  assert.equal(calls,0);
 });
