@@ -26,6 +26,12 @@ test('dry run never calls API',async()=>{
 test('missing secrets fail before API call',async()=>{
  await assert.rejects(()=>run({mode:'publish-test',env:{},now:time,log:()=>{},fetchImpl:()=>{throw Error('network');}}),/credentials/);
 });
+test('multiline secrets are rejected before API calls',async()=>{
+ let calls=0;
+ const bad={...env,NAOJUN_X_API_SECRET:'first\nsecond'};
+ await assert.rejects(()=>run({mode:'verify-only',env:bad,log:()=>{},fetchImpl:()=>{calls++;throw Error('called');}}),/Malformed X API secrets.*NAOJUN_X_API_SECRET/);
+ assert.equal(calls,0);
+});
 test('wrong account blocked',async()=>{
  let n=0;
  await assert.rejects(()=>run({mode:'publish-test',env,now:time,log:()=>{},fetchImpl:()=>{n++;return response({data:{id:'9',username:'naojunjp'}});}}),/Wrong X account/);
