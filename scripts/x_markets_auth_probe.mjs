@@ -45,6 +45,11 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   const [key,secret,token,tokenSecret]=values;
   const creds={key,secret,token,tokenSecret};
   log('Credential presence: all four provided; values withheld');
+  // Compare only shape and length against the newly issued X Developer Console pair.
+  // Never display credential values, prefixes, suffixes, or hashes.
+  log('Access Token X-console format match: '+(token.length===50 && /^\d+-[A-Za-z0-9_-]+$/.test(token)));
+  log('Access Token Secret X-console length/form match: '+(tokenSecret.length===45 && /^[A-Za-z0-9_-]+$/.test(tokenSecret)));
+
   if (env.X_EXPECT_API_KEY_SUFFIX) {
     const expected=String(env.X_EXPECT_API_KEY_SUFFIX);
     if (!/^[A-Za-z0-9_-]{4,12}$/.test(expected)) throw new Error('Unexpected expected Consumer Key suffix format');
