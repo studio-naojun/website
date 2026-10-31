@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="長い日本語文章を、3つの意味単位にまとめるブラウザ内要約ツール。">
   <title>究極の3行 | NAOJUN STUDIOS</title>
-  <link rel="stylesheet" href="app.css?v=1.7.0">
+  <link rel="stylesheet" href="app.css?v=1.7.1">
 <!-- naojun-discovery:start -->
   <link rel="canonical" href="https://naojun.jp/tools/3lines/">
   <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
@@ -40,8 +40,13 @@
         placeholder="Xなどからコピーした文章をここに貼り付けてください。"
         aria-describedby="input-help input-error"></textarea>
       <div class="sample-action">
-        <button id="sample-button" class="secondary-button" type="button" aria-describedby="sample-help">架空の例文で試す</button>
-        <p id="sample-help" class="field-help">例文が入力欄に入ります。入力済みの文章は置き換わります。</p>
+        <p class="sample-heading" id="sample-heading">使い道から試す（すべて架空の例文）</p>
+        <div class="sample-options" role="group" aria-labelledby="sample-heading">
+          <button id="sample-button" class="secondary-button sample-option" type="button" data-sample="notice" aria-describedby="sample-help">お知らせを整理</button>
+          <button class="secondary-button sample-option" type="button" data-sample="meeting" aria-describedby="sample-help">会議メモを整理</button>
+          <button class="secondary-button sample-option" type="button" data-sample="comparison" aria-describedby="sample-help">比較メモを整理</button>
+        </div>
+        <p id="sample-help" class="field-help">選ぶと例文が入力欄に入ります。入力済みの文章は置き換わります。続けて「3行！」を押してください。</p>
       </div>
       <p id="input-help" class="field-help">10,000文字以上の長文にも対応。追加モデルのダウンロードは不要で、入力した文章はこのブラウザ内だけで整理します。</p>
       <p id="input-error" class="error-message" role="alert" hidden></p>
@@ -126,6 +131,6 @@
     <p class="disclaimer">これは要約です。内容の真偽を確認するものではありません。</p>
   </main>
   <script>window.THREELINES_CONFIG = { feedbackEndpoint: '' };</script>
-  <script type="module" src="src/main.js?v=1.7.0"></script>
+  <script type="module" src="src/main.js?v=1.7.1"></script>
 </body>
 </html>

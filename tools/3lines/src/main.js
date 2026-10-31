@@ -7,7 +7,7 @@ const source = document.querySelector('#source-text');
 const charCount = document.querySelector('#char-count');
 const inputError = document.querySelector('#input-error');
 const submitButton = document.querySelector('#summarize-button');
-const sampleButton = document.querySelector('#sample-button');
+const sampleButtons = [...document.querySelectorAll('.sample-option')];
 const statusCard = document.querySelector('.status-card');
 const statusLabel = document.querySelector('#status-label');
 const statusDetail = document.querySelector('#status-detail');
@@ -29,7 +29,20 @@ const badReasons = document.querySelector('#bad-reasons');
 const styles = [...document.querySelectorAll('.style-option')];
 const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 const state = { style: 'gist', result: null, generationId: null, feedbackRating: null, running: false, detailOpen: false };
-const SAMPLE_TEXT = '【架空のお知らせ】駅前の公共スペースは来月から平日午後8時まで利用できます。土日はこれまでどおり午後5時までです。作業席は新たに20席増えますが、混雑時には一人2時間を目安に交代してください。予約は不要で、空席は入口の案内表示で確認できます。正式な運用開始日は来月1日です。';
+const SAMPLE_TEXTS = {
+  notice: {
+    label: '架空のお知らせ',
+    text: '【架空のお知らせ】駅前の公共スペースは来月から平日午後8時まで利用できます。土日はこれまでどおり午後5時までです。作業席は新たに20席増えますが、混雑時には一人2時間を目安に交代してください。予約は不要で、空席は入口の案内表示で確認できます。正式な運用開始日は来月1日です。',
+  },
+  meeting: {
+    label: '架空の会議メモ',
+    text: '【架空の会議メモ】新しい案内ページは来週の水曜日に公開する方向で合意しました。担当の佐藤さんが月曜日までに文章を整え、田中さんが火曜日にリンクとスマートフォン表示を確認します。画像の用意が遅れているため、公開時には既存のイラストを暫定使用します。公開翌日に利用状況を点検し、問題があれば内容を更新します。予算や公開日を変更する場合は担当者間で再確認します。',
+  },
+  comparison: {
+    label: '架空の比較メモ',
+    text: '【架空の比較メモ】Aプランは月額800円で基本機能が使えますが、ファイルの保存は100件までです。Bプランは月額1,200円で保存件数の制限がなく、共有機能も利用できます。Cプランは無料ですが、共有機能はありません。週に数回だけ個人で使うならC、保存と共有が必要ならBが候補です。AとBの価格は架空の設定で、実在サービスの料金ではありません。',
+  },
+};
 
 function setStatus(label, detail, mode = 'ready') {
   statusLabel.textContent = label;
@@ -49,7 +62,7 @@ function updateCount() {
 function setBusy(busy) {
   state.running = busy;
   submitButton.disabled = busy;
-  sampleButton.disabled = busy;
+  for (const button of sampleButtons) button.disabled = busy;
   retryButton.disabled = busy;
   source.readOnly = busy;
   form.setAttribute('aria-busy', String(busy));
@@ -186,14 +199,23 @@ async function sendBadReason(reason) {
   feedbackStatus.textContent = outcome.status === 'unavailable' ? '理由を受け付けました（集計先は未設定です）。' : outcome.status === 'failed' ? '理由は確認しましたが、集計先へ送信できませんでした。' : '理由も受け付けました。';
 }
 
-sampleButton.addEventListener('click', () => {
+sampleButtons.forEach((button) => button.addEventListener('click', () => {
   if (state.running) return;
-  source.value = SAMPLE_TEXT;
+  const sample = SAMPLE_TEXTS[button.dataset.sample];
+  if (!sample) return;
+  source.value = sample.text;
   updateCount();
   setInputError();
-  setStatus('例文を入力しました', '架空の案内文です。「3行！」を押すと試せます。');
+  // A new example invalidates the result from the previous input.
+  resultSection.hidden = true;
+  errorSection.hidden = true;
+  state.result = null;
+  state.generationId = null;
+  state.feedbackRating = null;
+  setDetailOpen(false);
+  setStatus('例文を入力しました', sample.label + 'を入力しました。「3行！」を押すと試せます。');
   source.focus();
-});
+}));
 source.addEventListener('input', updateCount);
 form.addEventListener('submit', (event) => { event.preventDefault(); runSummary({ preserveResult: false, focus: true }); });
 retryButton.addEventListener('click', () => runSummary({ preserveResult: false, focus: true }));
