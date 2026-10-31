@@ -5,6 +5,7 @@ on:
       - 'scripts/x_markets_post.mjs'
       - 'scripts/x_markets_post.test.mjs'
       - 'scripts/x_markets_auth_probe.mjs'
+      - 'scripts/x_markets_independent_verify.mjs'
       - '.github/workflows/x-markets-api-test.yml'
   push:
     branches: [main]
@@ -28,6 +29,7 @@ on:
           - dry-run
           - verify-only
           - diagnose
+          - verify-library
           - publish-test
 permissions:
   contents: read
@@ -56,8 +58,19 @@ jobs:
           NAOJUN_X_ACCESS_TOKEN: ${{ secrets.NAOJUN_X_ACCESS_TOKEN }}
           NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
         run: node scripts/x_markets_auth_probe.mjs
+      - name: Install pinned independent OAuth client for verification
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify-library'
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund twitter-api-v2@1.29.1
+      - name: Verify OAuth1 with independent X client (no post)
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify-library'
+        env:
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+          NAOJUN_X_ACCESS_TOKEN: ${{ secrets.NAOJUN_X_ACCESS_TOKEN }}
+          NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/x_markets_independent_verify.mjs
       - name: Preview or send single X API test post
-        if: github.event_name == 'workflow_dispatch' && inputs.mode != 'diagnose'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode != 'diagnose' && inputs.mode != 'verify-library'
         env:
           X_POST_MODE: ${{ inputs.mode }}
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
