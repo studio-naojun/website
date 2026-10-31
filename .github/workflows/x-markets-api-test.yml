@@ -1,0 +1,48 @@
+name: NAOJUN Markets X API Test
+on:
+  pull_request:
+    paths:
+      - 'scripts/x_markets_post.mjs'
+      - 'scripts/x_markets_post.test.mjs'
+      - '.github/workflows/x-markets-api-test.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/x_markets_post.mjs'
+      - 'scripts/x_markets_post.test.mjs'
+      - '.github/workflows/x-markets-api-test.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run makes no API call; publish-test posts one labeled test'
+        type: choice
+        default: dry-run
+        required: true
+        options:
+          - dry-run
+          - publish-test
+permissions:
+  contents: read
+concurrency:
+  group: naojun-markets-x-post
+  cancel-in-progress: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test request signing, duplicate prevention and account guard
+        run: node --test scripts/x_markets_post.test.mjs
+      - name: Preview or send single X API test post
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          X_POST_MODE: ${{ inputs.mode }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+          NAOJUN_X_ACCESS_TOKEN: ${{ secrets.NAOJUN_X_ACCESS_TOKEN }}
+          NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/x_markets_post.mjs
