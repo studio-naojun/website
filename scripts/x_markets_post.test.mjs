@@ -32,6 +32,15 @@ test('multiline secrets are rejected before API calls',async()=>{
  await assert.rejects(()=>run({mode:'verify-only',env:bad,log:()=>{},fetchImpl:()=>{calls++;throw Error('called');}}),/Malformed X API secrets.*NAOJUN_X_API_SECRET/);
  assert.equal(calls,0);
 });
+test('duplicate consumer and user credentials are rejected before network requests',async()=>{
+ for(const field of ['NAOJUN_X_ACCESS_TOKEN','NAOJUN_X_ACCESS_TOKEN_SECRET']){
+   const replacement=field==='NAOJUN_X_ACCESS_TOKEN' ? 'NAOJUN_X_API_KEY' : 'NAOJUN_X_API_SECRET';
+   const bad={...env,[field]:env[replacement]};
+   let calls=0;
+   await assert.rejects(()=>run({mode:'verify-only',env:bad,log:()=>{},fetchImpl:()=>{calls++;throw new Error('network called');}}),/GitHub Secrets mismatch/);
+   assert.equal(calls,0);
+ }
+});
 test('wrong account blocked',async()=>{
  let n=0;
  await assert.rejects(()=>run({mode:'publish-test',env,now:time,log:()=>{},fetchImpl:()=>{n++;return response({data:{id:'9',username:'naojunjp'}});}}),/Wrong X account/);
