@@ -43,13 +43,13 @@ def latest_entries(root: Path) -> tuple[bytes, dict[str, dict]]:
         kind = item.get("type")
         if kind == "weekly":
             date = str(item.get("id", ""))[7:]
-            if not re.fullmatch(r"20\\d{2}-\\d{2}-\\d{2}", date):
+            if not re.fullmatch(r"20\d{2}-\d{2}-\d{2}", date):
                 raise LiveVerificationError("invalid weekly id")
             if item.get("path") != f"weekly/{date}/" or item.get("source_cycle") != f"investment-weekly-{date}":
                 raise LiveVerificationError("weekly source-cycle mismatch")
         elif kind == "monthly":
             month = str(item.get("id", ""))[8:]
-            if not re.fullmatch(r"20\\d{2}-\\d{2}", month):
+            if not re.fullmatch(r"20\d{2}-\d{2}", month):
                 raise LiveVerificationError("invalid monthly id")
             if item.get("path") != f"monthly/{month}/" or not str(item.get("source_cycle", "")).startswith(f"investment-monthly-{month}-"):
                 raise LiveVerificationError("monthly source-cycle mismatch")
