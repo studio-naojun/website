@@ -184,6 +184,7 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
     log('DIAGNOSIS: App credential exchange rejected as invalid; Consumer Key/Secret pair or app identity is the first suspect.');
   else
     log('DIAGNOSIS: review both independent HTTP statuses; no posting attempted.');
+  if (userResp.status !== 200) throw new Error('OAuth1 authentication not verified; see safe diagnostic statuses above.');
   return {appStatus:appResp.status,userStatus:userResp.status};
 }
 
