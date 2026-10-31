@@ -27,9 +27,18 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
     body:'grant_type=client_credentials',
     signal:AbortSignal.timeout(15000),
   });
-  // Read but never log the bearer token or response body.
-  await appResp.text();
+  // Parse only error-code metadata; never log the bearer token, response body, or arbitrary errors.
+  const appRaw=await appResp.text();
+  let appBody={};
+  if (!appResp.ok) {
+    try {appBody=JSON.parse(appRaw);} catch {}
+  }
   log('App-only Consumer Key/Secret exchange: HTTP '+appResp.status);
+  const appCode=Array.isArray(appBody?.errors) ? appBody.errors.map(e=>e?.code).find(Number.isInteger) : undefined;
+  if (appCode!==undefined) log('App-only X error numeric code: '+appCode);
+  const allowedAppReasons=['invalid_client','client-not-enrolled','client-forbidden','unsupported_authentication','invalid_grant'];
+  if (allowedAppReasons.includes(appBody?.error)) log('App-only X error category: '+appBody.error);
+  if (allowedAppReasons.includes(appBody?.reason)) log('App-only X reason: '+appBody.reason);
 
   const userUrl=HOST+'/2/users/me';
   const userResp=await fetchImpl(userUrl,{
@@ -54,8 +63,8 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   }
   if (appResp.status===200 && userResp.status===401)
     log('DIAGNOSIS: Consumer Key/Secret pair is accepted; OAuth1 user token pair or signature/app association is rejected.');
-  else if (appResp.status===401 && userResp.status===401)
-    log('DIAGNOSIS: Consumer Key/Secret pair is not accepted by app-only exchange; check pair and app identity.');
+  else if ((appResp.status===401 || (appResp.status===403 && appCode===99)) && userResp.status===401)
+    log('DIAGNOSIS: App credential exchange rejected as invalid; Consumer Key/Secret pair or app identity is the first suspect.');
   else
     log('DIAGNOSIS: review both independent HTTP statuses; no posting attempted.');
   return {appStatus:appResp.status,userStatus:userResp.status};
