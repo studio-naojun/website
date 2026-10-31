@@ -27,3 +27,16 @@ jobs:
           node-version: '22'
       - name: Validate static investment publication
         run: node investment/smoke.mjs
+      - name: Test independent origin acceptance logic
+        run: python -m unittest discover -s investment -p 'test_live_verify.py' -v
+      - name: Verify public Pages origin for latest weekly and monthly (push only)
+        if: github.event_name == 'push'
+        run: python investment/live_verify.py --receipt recovery-artifacts/investment-live-proof.json
+      - name: Preserve public HTTP acceptance receipt
+        if: always() && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: investment-live-proof-${{ github.run_id }}
+          path: recovery-artifacts/investment-live-proof.json
+          retention-days: 14
+          if-no-files-found: warn
