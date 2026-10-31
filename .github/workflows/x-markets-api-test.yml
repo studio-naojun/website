@@ -4,6 +4,7 @@ on:
     paths:
       - 'scripts/x_markets_post.mjs'
       - 'scripts/x_markets_post.test.mjs'
+      - 'scripts/x_markets_auth_probe.mjs'
       - '.github/workflows/x-markets-api-test.yml'
   push:
     branches: [main]
@@ -21,6 +22,7 @@ on:
         options:
           - dry-run
           - verify-only
+          - diagnose
           - publish-test
 permissions:
   contents: read
@@ -38,8 +40,18 @@ jobs:
           node-version: '22'
       - name: Test request signing, duplicate prevention and account guard
         run: node --test scripts/x_markets_post.test.mjs
+      - name: Check credential probe syntax
+        run: node --check scripts/x_markets_auth_probe.mjs
+      - name: Probe app-only and OAuth1 credentials without posting
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'diagnose'
+        env:
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+          NAOJUN_X_ACCESS_TOKEN: ${{ secrets.NAOJUN_X_ACCESS_TOKEN }}
+          NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/x_markets_auth_probe.mjs
       - name: Preview or send single X API test post
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode != 'diagnose'
         env:
           X_POST_MODE: ${{ inputs.mode }}
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
