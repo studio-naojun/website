@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。">
+  <title>AI開発・セキュリティ日報｜2026年11月1日号 | AI開発・セキュリティ日報</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
+  <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
+<!-- naojun-discovery:start -->
+  <link rel="canonical" href="https://naojun.jp/ai-dev/daily/2026-11-01/">
+  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NAOJUN STUDIOS">
+  <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月1日号">
+  <meta property="og:description" content="偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。">
+  <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-01/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月1日号","description":"偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。","datePublished":"2026-11-01","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-01/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-01T07:01:41.061+09:00"}</script>
+<!-- naojun-discovery:end -->
+</head>
+<body class="studio-site studio-interior studio-article">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<header class="site-header"><div class="container header-inner">
+<a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
+<button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="studio-nav">MENU <span class="menu-glyph" aria-hidden="true">＋</span></button>
+<nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
+<main id="main">
+  <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
+  <header class="ai-dev-article-hero">
+    <div class="container">
+      <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-11-01 / 更新 2026-11-01 07:01 JST</div>
+      <h1>AI開発・セキュリティ日報｜2026年11月1日号</h1>
+      <p class="ai-dev-lead">偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　初回確認：2026-11-01 朝JST・記事データ更新：07:01 JST</p>
+    </div>
+  </header>
+  <article class="ai-dev-article">
+    <p><strong>調査時点：2026年11月1日朝JST。</strong> 10月27〜30日の一次資料に基づき、見落とすと影響する条件と今日できる確認を整理した。<strong>11月1日に新たな大規模侵害が発生したという記事ではない。</strong> 最新の一次情報を必要に応じて確認する。</p>
+<h2>本日の優先対応</h2>
+<p><strong>P1（該当者限定）：</strong> 「ChatGPT / Claudeの新しいデスクトップ版」を名乗るGitHubの非公式ZIPをWindowsで実行した場合、正規署名付きexeだけでなく同梱DLLや永続化を確認する。公式提供物全体が侵害されたという話ではない。</p>
+<p><strong>P2（Webhook運用者）：</strong> GitHubからのWebhookを固定の着信IP許可リストで制御している場合、GitHub公式Meta APIに追加された3範囲を確認する。自動同期済みなら原則作業不要。</p>
+<p><strong>P2（開発者向け）：</strong> GitHub Dependabotの「到達可能性分析」は一部のEnterprise Cloud JavaScript/TypeScript向けプレビュー。警告が「Unreachable」でも無条件に放置しない。</p>
+<h2>1. 偽AIデスクトップ配布と署名済み実行ファイルの悪用（P1：該当ZIP実行者のみ）</h2>
+<p><strong>何が起きたか。</strong> Check Point Researchは<strong>2026年10月27日</strong>に、ChatGPT・Claude等を模した偽GitHubプロジェクトが配布する悪性インストーラについて調査結果を公表した。攻撃者は本物の署名済みOpenAI/Anthropic実行ファイルと、不正な <code>winmm.dll</code> を同じZIPに入れ、利用者に実行させる。正規exeが同梱されたDLLを読み込み、Yobaと呼ばれる不正処理が動く。調査されたサンプルではローダーを通じたマイナー実行も観測された。これは<strong>非公式配布物の問題</strong>であり、OpenAIやAnthropicの公式ダウンロードが侵害されたとの発表ではない。</p>
+<p><strong>該当・非該当条件。</strong> ChatGPT/Claude等の実行ファイルを模した<strong>出所不明のGitHub release ZIP</strong>をWindowsで取得し、<code>Setup.exe</code> などを実際に実行した場合に調査が必要。報告されたサンプルは管理者権限が必要な処理段階を含むが、「管理者で実行していないので絶対に安全」とは断定しない。単にGitHubでコードを閲覧しただけ、公式配布先から正規アプリを導入しただけでは、この報告された配布経路に該当しない。別件であるCursor Marketplace拡張混入（10月31日号）とも区別する。</p>
+<p><strong>起こり得る被害。</strong> 実行時のDLL読み込みからローダーや追加ペイロードが起動し、CPU資源の不正利用や持続的な実行に至る可能性がある。個々の端末の侵害や情報漏えいを、配布物の存在だけから断定しない。</p>
+<p><strong>今すべき対処。</strong> 非公式ZIPを使用せず、正規の製品配布経路を確認する。該当ZIPを実行した疑いがある場合、まず端末を安全に隔離して社内管理者/専門家と調査する。ZIP全体と同梱DLLの検証、Windowsのスケジュールタスク、不審な <code>ProgramData\\WMProcess</code> 配下の実行ファイル・DLL、プロセスと通信、セキュリティ製品の検知履歴を確認する。疑わしいものを自己判断で実行し直さない。接触した可能性のある認証情報は信頼できる別端末から調査・失効を判断する。</p>
+<p><strong>確認・復旧。</strong> クリーンなインストーラで再構築し、持続化されたタスク・DLLがないか、再起動前後に再検査する。正常なアプリ署名だけでZIP全体を安全と判断しない。バックアップ復元も感染前か検証する。公式調査の対象サンプル・感染期間以外の亜種については別途確認が必要。</p>
+<p><strong>日時・一次出典。</strong> 調査公表2026-10-27、今朝2026-11-01 JSTに再確認：<a href="https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/" target="_blank" rel="noopener noreferrer">Check Point Research公式調査</a>。</p>
+<h2>2. GitHub Webhook送信元の3 CIDR追加（P2：固定IP allowlist利用時のみ）</h2>
+<p><strong>何が変わったか。</strong> GitHubは<strong>2026年10月29日</strong>、github.comのWebhook送信元として次のCIDRをMeta APIの <code>hooks</code> 配列へ追加した：<code>9.234.98.160/28</code>、<code>9.234.98.176/28</code>、<code>9.234.106.48/28</code>。Webhook受信側が静的な送信元IP許可リストを固定していると、正規Webhookを拒否する可能性がある。</p>
+<p><strong>対象と対処。</strong> github.comからのWebhook受信をIPベースで制限する運用が対象。Meta APIの <code>hooks</code> 値を定期的に同期している構成ではこの追加について通常は対処不要。固定リストの場合、公式Meta APIの現在値を信頼できるネットワーク管理経路から確認し、必要な範囲のみ許可リストに追加する。リストを無条件に全開放しない。</p>
+<p><strong>確認・復旧。</strong> テストWebhookを正規手順で配送して受信HTTPとGitHub Delivery履歴の一致を確認。問題があれば直前の許可リストをバックアップから復元できるようにする一方、正当な配送を拒否しないか再検査する。Webhook署名の検証をIP制限の代わりに省略しない。GitHub Enterprise Serverなど同じ配送元ではないサービスにこの3 CIDRを機械的に追加する根拠はない。</p>
+<p><strong>日時・一次出典。</strong> GitHub Changelog 2026-10-29、2026-11-01 JST確認：<a href="https://github.blog/changelog/2026-10-29-webhook-ip-ranges-added-to-the-meta-api/" target="_blank" rel="noopener noreferrer">GitHub公式告知</a>。</p>
+<h2>3. Dependabot Reachability Analysisの公開プレビュー（P2：任意）</h2>
+<p><strong>何が変わったか。</strong> GitHubは<strong>2026年10月28日</strong>、Dependabot alertsで依存ライブラリの脆弱なコードに実際に到達し得るかを補助評価する機能をpublic previewとして発表。現時点の案内ではGitHub Enterprise CloudのJavaScript/TypeScriptリポジトリ（npm/yarn/pnpm lockfileを利用）を対象に、明示的な有効化が必要。</p>
+<p><strong>影響と非該当。</strong> 導入しないリポジトリや対象外言語・プランの通常スキャンが直ちに変わるものではない。到達可能性が高いものから対応優先順位をつける材料になる。ただし「Potentially reachable」は到達可能性を否定できないことを意味し、「Unreachable」も利用経路やデプロイ形態の変化を見落とさないために再評価が必要。</p>
+<p><strong>今すべき対処・確認。</strong> 対象条件に合い、権限と運用方針が許す場合のみ試す。従来の依存スキャン・lockfile点検と合わせて修正優先順位を判断し、保留したアラートにも理由を残す。新しい検査結果と実際のアプリテスト・依存の更新履歴を照合する。元のアラート一覧・優先順位付けに戻せるよう変更履歴を保持する。プレビュー機能の提供範囲や精度は今後変わる可能性がある。</p>
+<p><strong>日時・一次出典。</strong> GitHub Changelog 2026-10-28、2026-11-01 JST確認：<a href="https://github.blog/changelog/2026-10-28-prioritize-dependabot-alerts-with-reachability-analysis/" target="_blank" rel="noopener noreferrer">GitHub公式告知</a>。</p>
+<h2>4. OpenAI検索系障害は10月31日早朝JSTに解消（P2・状況整理）</h2>
+<p><strong>何が起きたか。</strong> OpenAI Statusは2026年10月30日19:38 UTC頃からDots、ChatGPT Workと一部ChatGPT thinking体験に検索エラーが発生したと記録。<strong>同日21:14 UTC頃（10月31日06:14 JST）に解消済み</strong>。これは11月1日に発生した障害ではなく、通常のLLM APIが一律に停止したとの意味でもない。</p>
+<p><strong>対処・確認。</strong> 対象時間帯に失敗した検索処理は、重複した書込み・送信が成立していないことを確認したうえで必要なものだけ再実行する。後続が依存する場合はデータ取得成功・既存結果との一致を確認。現在新たな異常があるときは別インシデントとして公式statusを確認する。</p>
+<p><strong>一次出典。</strong> <a href="https://status.openai.com/incidents/01M6754SR14HCQ3E9FX426E2N7" target="_blank" rel="noopener noreferrer">OpenAI公式Incident</a>（解消報告2026-10-30 UTC）。</p>
+<h2>確認範囲と更新履歴</h2>
+<p>2026-11-01朝JST、上記公式調査・GitHub Changelog・OpenAI/GitHub Status・CISA管理KEVの公開情報を照合。新規の大規模P0を作為的に設定しない。上記の重要情報は10月27〜30日に原典公表されたもので、11月1日に新規発生したと断定しない。</p>
+<p>- <strong>2026-11-01 朝JST：</strong> 初稿・根拠照合。初回公開時刻とLIVE検証結果は公開後の証跡で確定し、未公開段階で時刻を捏造しない。</p>
+    <aside class="source-note">
+      <h2>出典・更新履歴</h2>
+      <p>調査：2026年11月1日朝JST。記事データ初回更新：2026-11-01 07:01 JST。原典は2026年10月27〜30日に公開されたもので、11月1日に新規発生した事件として扱っていません。</p>
+      <p>一次資料：<a href="https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/" target="_blank" rel="noopener noreferrer">Check Point Research</a>、<a href="https://github.blog/changelog/2026-10-29-webhook-ip-ranges-added-to-the-meta-api/" target="_blank" rel="noopener noreferrer">GitHub Webhook</a>、<a href="https://github.blog/changelog/2026-10-28-prioritize-dependabot-alerts-with-reachability-analysis/" target="_blank" rel="noopener noreferrer">Dependabot Reachability</a>、<a href="https://status.openai.com/incidents/01M6754SR14HCQ3E9FX426E2N7" target="_blank" rel="noopener noreferrer">OpenAI Status</a>。</p>
+      <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
+    </aside>
+  </article>
+</main>
+<footer class="site-footer studio-footer"><div class="container">
+<div class="footer-top"><p>日々に、小さな発明を。<br>Small studio. Useful creations.</p><nav class="footer-links" aria-label="フッターナビゲーション"><a href="/works/">Works</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://bsky.app/profile/naojun.jp" target="_blank" rel="me noopener noreferrer">Bluesky <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="https://www.youtube.com/@naojunjp" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="/feed.xml">RSS ↗</a></nav></div>
+<div class="footer-wordmark" aria-hidden="true">NAOJUN STUDIOS.</div>
+<div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
+</div></footer>
+<script src="/assets/js/main.js?v=20261025a"></script>
+<script src="/assets/js/studio.js?v=20261004" defer></script>
+</body>
+</html>
