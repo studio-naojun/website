@@ -39,6 +39,10 @@ export async function run({mode=process.env.X_POST_MODE||'dry-run',env=process.e
   const text=testText(now);
   if (mode==='dry-run') {log('DRY RUN: no API request or public post.\n'+text);return {status:'dry-run',text};}
   const creds={key:env.NAOJUN_X_API_KEY,secret:env.NAOJUN_X_API_SECRET,token:env.NAOJUN_X_ACCESS_TOKEN,tokenSecret:env.NAOJUN_X_ACCESS_TOKEN_SECRET};
+  const malformed=['NAOJUN_X_API_KEY','NAOJUN_X_API_SECRET','NAOJUN_X_ACCESS_TOKEN','NAOJUN_X_ACCESS_TOKEN_SECRET']
+    .filter(name=>/[\r\n]/.test(env[name]||''));
+  if (malformed.length) throw new Error('Malformed X API secrets (embedded newline): '+malformed.join(', ')+'. Re-paste each as a single credential value.');
+
   auth('GET',HOST+'/2/users/me',creds);
   const me=await xRequest('GET','/2/users/me',creds,{fetchImpl});
   if (!me.data?.id || me.data.username?.toLowerCase()!==HANDLE) throw new Error('Wrong X account; expected @'+HANDLE+'. Aborting.');
