@@ -10,12 +10,44 @@ const NAMES = [
   'NAOJUN_X_ACCESS_TOKEN_SECRET',
 ];
 
+function diagnosticCategory(raw) {
+  let body;
+  try { body=JSON.parse(raw); } catch { return 'non-json-response'; }
+  const result=[];
+  const codes=Array.isArray(body?.errors) ? body.errors.map(e=>e?.code).filter(Number.isInteger) : [];
+  if (codes.length) result.push('x-codes='+codes.slice(0,3).join(','));
+  const categories=new Set([
+    'invalid_client','invalid_grant','unauthorized_client','invalid_token','expired_token',
+    'authentication_failure','authenticity_token_error',
+    'client-not-enrolled','client-forbidden','user-not-enrolled',
+    'not-authorized-for-resource','invalid-credentials','usage-capped',
+    'CreditsDepleted','insufficient-credits'
+  ]);
+  for (const value of [body?.error,body?.reason,body?.errors?.[0]?.label]) {
+    if (categories.has(value)) result.push('category='+value);
+  }
+  const note=[body?.detail,body?.message,body?.errors?.[0]?.message].filter(x=>typeof x==='string').join(' ');
+  if (/unable to verify your credentials/i.test(note)) result.push('message=credentials-not-verified');
+  else if (/not enrolled|attached to a project/i.test(note)) result.push('message=app-not-enrolled');
+  else if (/no credits|credits depleted|insufficient credits/i.test(note)) result.push('message=credits-depleted');
+  else if (/rate limit|too many requests/i.test(note)) result.push('message=rate-limit');
+  const type=body?.type;
+  if (typeof type==='string') {
+    const suffix=type.match(/^https:\/\/api\.(?:x|twitter)\.com\/2\/problems\/([a-z-]{1,60})$/)?.[1];
+    if (suffix) result.push('problem-type='+suffix);
+  }
+  return result.join('; ')||'generic-error';
+}
+
 export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}={}) {
   const values=NAMES.map(name => env[name]);
   if (values.some(value => !value)) throw new Error('One or more GitHub Secrets are missing');
   const [key,secret,token,tokenSecret]=values;
   const creds={key,secret,token,tokenSecret};
   log('Credential presence: all four provided; values withheld');
+  log('Credential structure: embedded-newline='+values.some(v=>/[\r\n]/.test(v))+
+      '; surrounding-quotes='+values.some(v=>/^['"]|['"]$/.test(v))+
+      '; duplicate-values='+(new Set(values).size !== values.length));
   log('Credential formatting: ' + (
     values.some(value => value.trim() !== value) ? 'leading/trailing whitespace detected' : 'no leading/trailing whitespace'
   ));
@@ -48,6 +80,7 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   });
   const raw=await userResp.text();
   log('OAuth1 user authentication: HTTP '+userResp.status);
+  if (!userResp.ok) log('OAuth1 diagnostic: '+diagnosticCategory(raw));
   if (userResp.ok) {
     let payload;
     try {payload=JSON.parse(raw);} catch {throw new Error('Unexpected user response');}
