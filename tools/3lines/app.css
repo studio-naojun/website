@@ -33,6 +33,11 @@ button { cursor: pointer; }
 textarea { display: block; width: 100%; min-height: 220px; resize: vertical; border: 1px solid var(--line); border-radius: 12px; padding: 14px; color: var(--ink); background: #fff; font-size: 1rem; line-height: 1.75; outline: none; }
 textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--soft-accent); }
 .field-help { margin: 9px 0 14px; color: var(--muted); font-size: .78rem; line-height: 1.6; }
+.sample-action { margin-top: 12px; }
+.sample-heading { margin: 0 0 8px; font-weight: 800; font-size: .84rem; }
+.sample-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.sample-option { min-height: 42px; font-size: .82rem; }
+.sample-option:disabled { cursor: wait; opacity: .65; }
 .error-message, .error-card p { color: #a33f2c; font-size: .86rem; line-height: 1.6; }
 .primary-button, .secondary-button { border: 0; border-radius: 999px; font-weight: 800; transition: transform .15s ease, background .15s ease; }
 .primary-button { width: 100%; padding: 14px 20px; color: #fff; background: var(--accent); font-size: 1.08rem; }
