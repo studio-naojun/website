@@ -127,6 +127,57 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
       log('Corrected OAuth1 username matches: '+(cleanMe?.data?.username?.toLowerCase()==='naojun_markets'));
     }
   }
+  if (values.some(v=>/[\r\n]/.test(v))) {
+    const segments=values.map(v=>v.split(/\r\n|\r|\n/).filter(Boolean));
+    const lineChoices=segments.map(lines=>lines.length>1?lines.slice(0,2):lines);
+    // Never log a credential, candidate, Authorization header, response body, or bearer token.
+    // At most two app-only exchanges; stop early if a pairing succeeds.
+    let appMatch=null;
+    for (let i=0;i<lineChoices[1].length;i++) {
+      const basicCandidate=Buffer.from(enc(lineChoices[0][0])+':'+enc(lineChoices[1][i]),'utf8').toString('base64');
+      const resp=await fetchImpl(HOST+'/oauth2/token',{
+        method:'POST',
+        headers:{Authorization:'Basic '+basicCandidate,'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+        body:'grant_type=client_credentials',signal:AbortSignal.timeout(15000),
+      });
+      await resp.text();
+      log('App-only with API_SECRET segment '+(i+1)+': HTTP '+resp.status);
+      if (resp.ok) {appMatch=i;break;}
+    }
+    // At most eight read-only user authentication requests across possible two-line selections.
+    // This is diagnostic only and never alters credentials or sends posts.
+    const candidates=[];
+    for (let i=0;i<lineChoices[1].length;i++) {
+      if (appMatch!==null && i!==appMatch) continue;
+      for (let j=0;j<lineChoices[2].length;j++) {
+        for (let k=0;k<lineChoices[3].length;k++) candidates.push([i,j,k]);
+      }
+    }
+    let matched=false;
+    for (const [i,j,k] of candidates.slice(0,8)) {
+      const trial={
+        key:lineChoices[0][0],
+        secret:lineChoices[1][i],
+        token:lineChoices[2][j],
+        tokenSecret:lineChoices[3][k],
+      };
+      const resp=await fetchImpl(userUrl,{
+        method:'GET',
+        headers:{Authorization:auth('GET',userUrl,trial)},
+        signal:AbortSignal.timeout(15000),
+      });
+      const rawTrial=await resp.text();
+      if (resp.ok) {
+        let data={};
+        try {data=JSON.parse(rawTrial);} catch {}
+        log('VALID COMBINATION: API_SECRET segment='+(i+1)+
+          '; ACCESS_TOKEN segment='+(j+1)+'; ACCESS_TOKEN_SECRET segment='+(k+1)+
+          '; correct_account='+(data?.data?.username?.toLowerCase()==='naojun_markets'));
+        matched=true;break;
+      }
+    }
+    if (!matched) log('No valid OAuth1 pair among '+Math.min(8,candidates.length)+' newline-separated combinations.');
+  }
   if (appResp.status===200 && userResp.status===401)
     log('DIAGNOSIS: Consumer Key/Secret pair is accepted; OAuth1 user token pair or signature/app association is rejected.');
   else if ((appResp.status===401 || (appResp.status===403 && appCode===99)) && userResp.status===401)
