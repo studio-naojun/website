@@ -45,6 +45,11 @@ export async function diagnose({env=process.env,fetchImpl=fetch,log=console.log}
   const [key,secret,token,tokenSecret]=values;
   const creds={key,secret,token,tokenSecret};
   log('Credential presence: all four provided; values withheld');
+  // Report duplicate secret *names* only; never reveal their values.
+  for(let i=0;i<values.length;i++) for(let j=i+1;j<values.length;j++) {
+    if(values[i] === values[j]) log('DUPLICATE SECRET VALUES: '+NAMES[i]+' equals '+NAMES[j]);
+  }
+
   // Compare only shape and length against the newly issued X Developer Console pair.
   // Never display credential values, prefixes, suffixes, or hashes.
   log('Access Token X-console format match: '+(token.length===50 && /^\d+-[A-Za-z0-9_-]+$/.test(token)));
