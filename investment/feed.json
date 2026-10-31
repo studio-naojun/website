@@ -1,7 +1,28 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T07:48:30+09:00",
+  "updated_at": "2026-10-31T10:03:00+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-10-31",
+      "type": "weekly",
+      "published_at": "2026-10-31",
+      "title": "強い米GDPと粘着インフレ、AI投資の採算懸念――10月末の株・金利を読む",
+      "summary": "米GDP前期比年率+3.4%とCore PCE前年比+3.1%の併存、AI投資への市場評価、Fed・日銀の据え置きを一次資料で整理する。",
+      "path": "weekly/2026-10-31/",
+      "source_cycle": "investment-weekly-2026-10-31"
+    },
+    {
+      "id": "monthly-2026-10",
+      "type": "monthly",
+      "published_at": "2026-10-31",
+      "title": "10月末・月次投資戦略――強い成長と粘着インフレ、AI資本支出の回収を6〜18か月で検証",
+      "summary": "米Q3 GDP+3.4%、PCE物価前年比+3.6%、Fed・日銀据え置き、AI企業の利益と投資負担を比較し、シナリオと年末予想を改定する。",
+      "path": "monthly/2026-10/",
+      "source_cycle": "investment-monthly-2026-10-31",
+      "first_published_at": "2026-10-04",
+      "previous_source_cycle": "investment-monthly-2026-10-04",
+      "updated_at": "2026-10-31T10:03:00+09:00"
+    },
     {
       "id": "weekly-2026-10-24",
       "type": "weekly",
@@ -28,15 +49,6 @@
       "summary": "【10月10日号・遡及補完】10月9日までの資料で、S&P 500週間+1.15%、サービス価格指数74.0、貿易赤字1,056億ドル、FOMC議事要旨を整理。実際の公開日は10月17日。",
       "path": "weekly/2026-10-10/",
       "source_cycle": "investment-weekly-2026-10-10"
-    },
-    {
-      "id": "monthly-2026-10",
-      "type": "monthly",
-      "published_at": "2026-10-04",
-      "title": "月次投資戦略 2026年10月 — 雇用は急減速、企業利益はまだ強い。焦点は「利益が金利に勝てるか」",
-      "summary": "米雇用+2.9万人へ急減速する一方、実質PCEと企業利益はなお底堅い。S&P 500 7,850、米10年5.00%、USD/JPY 156円を中心に、ソフトランディングとスタグフレーションの境界を検証する。",
-      "path": "monthly/2026-10/",
-      "source_cycle": "investment-monthly-2026-10-04"
     },
     {
       "id": "weekly-2026-10-03",

@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://naojun.jp/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/about/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/admissions/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/admissions/special/r4-2009-2026/</loc>
@@ -62,7 +62,7 @@
   </url>
   <url>
     <loc>https://naojun.jp/ai-dev/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/ai-dev/daily/2026-10-27/</loc>
@@ -86,11 +86,11 @@
   </url>
   <url>
     <loc>https://naojun.jp/contact/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/investment/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/investment/monthly/2026-09/</loc>
@@ -98,7 +98,7 @@
   </url>
   <url>
     <loc>https://naojun.jp/investment/monthly/2026-10/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-31T10:03:00+09:00</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/investment/weekly/2026-08-09/</loc>
@@ -149,43 +149,47 @@
     <lastmod>2026-10-24</lastmod>
   </url>
   <url>
+    <loc>https://naojun.jp/investment/weekly/2026-10-31/</loc>
+    <lastmod>2026-10-31</lastmod>
+  </url>
+  <url>
     <loc>https://naojun.jp/kanade/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/koechara/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/koechara/desktop-mascot-guide/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/privacy/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/stay/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/tools/3lines/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/tools/jan/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/works/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/works/ametsuta/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
   <url>
     <loc>https://naojun.jp/works/ametsuta/play/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-10-31</lastmod>
   </url>
 </urlset>
