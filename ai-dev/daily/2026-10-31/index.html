@@ -17,7 +17,7 @@
   <meta property="og:description" content="Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-10-31/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月31日号","description":"Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。","datePublished":"2026-10-31","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-31/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-31T12:59:54.026+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月31日号","description":"Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。","datePublished":"2026-10-31","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-31/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-31T19:04:38.709+09:00"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior studio-article">
@@ -31,10 +31,10 @@
   <header class="ai-dev-article-hero">
     <div class="container">
       <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
-      <div class="eyebrow">DAILY / 初回公開 2026-10-31 / 更新 2026-10-31 12:59 JST</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-10-31 / 更新 2026-10-31 19:04 JST</div>
       <h1>AI開発・セキュリティ日報｜2026年10月31日号</h1>
       <p class="ai-dev-lead">Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　初回確認：06:59 JST・追補確認：12:59 JST</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　初回確認：06:59 JST・追補確認：19:04 JST</p>
     </div>
   </header>
   <article class="ai-dev-article">
@@ -42,6 +42,7 @@
 <h2>本日の優先対応</h2>
 <p><strong>P0・該当者のみ：</strong> Cursor拡張機能マーケットプレイスから特定期間にClaude Code拡張の悪意ある版を導入したWindows/macOS端末は、単なるアンインストールではなく残存するSSH設定・自動起動設定の点検と侵害対応が必要。Cursor公式は10月30日（米国太平洋時間）の更新で対象版を<strong>2.1.312と2.1.313の両方</strong>と明示した。</p>
 <p><strong>P0・該当者のみ：</strong> Ivanti Connect Secureの公開VPN装置では、悪用確認済みの脆弱性を組み合わせる攻撃を想定し、修正版適用と侵害痕跡確認を優先する。CISAは10月30日に関連する<strong>CVE-2026-118527 / CVE-2026-111357</strong>をKEVに追加した。</p>
+<p><strong>P1・該当者のみ：</strong> Kubeflow Pipelines API server <strong>2.17.3以前</strong>で到達可能な旧APIには、実行ログへの権限外アクセス（<code>CVE-2026-118759</code>）と圧縮アーカイブによる停止（<code>CVE-2026-118761</code>）の条件付きリスクがある。公式修正版は<strong>2.18.0</strong>。10月29日公表の問題を19時枠で追補。</p>
 <p><strong>P2・解消確認：</strong> GitHub Dependabotアラート閲覧エラーは10月31日08:29 JSTに公式解消。障害中に表示できなかったアラートを再確認し、一覧が空でも依存関係の安全を無条件に断定しない。</p>
 <h2>1. Claude Code拡張の悪意ある配布版：Cursor Marketplace経由だけを対象に確認（P0）</h2>
 <p><strong>何が起きたか。</strong> CursorのVS Code Extension Marketplaceで公開された <code>Anthropic.claude-code</code> <strong>2.1.312 / 2.1.313</strong>に、Anthropicが開発していない悪意ある処理が混入した。端末情報を送信し、攻撃者のSSH公開鍵を許可リストへ追加し、SSH接続を繰り返す永続化を試みる。Cursorは配布停止、マーケットプレイスの再構築、攻撃サーバーの停止を報告している。Cursor公式の調査によると、管理者権限で起動していない通常のWindows/macOS端末ではSSHサービス有効化が失敗するが、<strong>不正鍵・永続化設定・送信済み端末情報の影響は残り得る</strong>。</p>
@@ -63,15 +64,24 @@
 <p><strong>影響条件。</strong> GitHubのDependabot alerts閲覧画面でエラーを受けた利用者。GitHub Actions/PagesのすべてのCIやサイトが障害中という意味ではない。運用上は脆弱性アラートの表示遅延に注意する。</p>
 <p><strong>今すべき対処と確認。</strong> 障害中に脆弱性表示に失敗したリポジトリでは、復旧後にDependabot alerts画面を再取得してエラー解消を確認する。再発時は画面のエラー時刻・リポジトリを控え、公式statusのincident更新を確認してから再試行。特に期限付き修正は、既存のlockfile・依存関係・ベンダーアドバイザリ等で別途照合し、<strong>アラートが空だから安全</strong>とは判断しない。変更を急ぐ必要がなければ解消後に閲覧をやり直す。回復時には元の画面でアラート一覧が取得できるかを検証する。</p>
 <p><strong>日時・根拠。</strong> 初報2026年10月30日20:59 UTC、公式解消10月30日23:29:06 UTC（10月31日08:29:06 JST）、追補確認10月31日13時枠。一次情報：<a href="https://www.githubstatus.com/api/v2/incidents.json" target="_blank" rel="noopener noreferrer">GitHub Status公式Incidents JSON</a>、<a href="https://stspg.io/5bh6qnzn76tk" target="_blank" rel="noopener noreferrer">Dependabot公式incident</a>。再発時は新incidentを区別する。</p>
+<h2>4. Kubeflow Pipelines API server：ログ認可不足・圧縮アーカイブ展開（P1・該当構成のみ）</h2>
+<p><strong>何が起きたか。</strong> Kubeflow公式は10月29日に2件のSecurity Advisoryを公表した。</p>
+<ul><li><code>CVE-2026-118759</code>：<code>GET /apis/v1alpha1/runs/{run_id}/nodes/{node_id}/log</code> で対象runの閲覧認可が不足。APIに到達でき、run IDとnode/pod IDを知る利用者が他のrunや同じnamespaceのpodログを読める可能性。認証情報をログに記録した環境では機密漏えいのおそれ。<strong>別途設けた認証ゲートとネットワークポリシーが到達を制限する場合は条件が異なる。</strong> 一次情報：<a href="https://github.com/kubeflow/pipelines/security/advisories/GHSA-wg5q-x4j9-qm54" target="_blank" rel="noopener noreferrer" aria-label="Kubeflow公式ログ権限アドバイザリ（新しいタブ）">Kubeflow公式ログ権限アドバイザリ</a>。</li>
+<li><code>CVE-2026-118761</code>：ZIP/tar.gz pipelineのmultipart uploadを、namespaceの権限検査より前に展開。アップロードendpointへ到達できれば、圧縮内容の展開でAPIサーバーのメモリが枯渇する可能性。確実な停止やコード実行を断定するものではなく、到達範囲は外部認証・ネットワーク構成による。一次情報：<a href="https://github.com/kubeflow/pipelines/security/advisories/GHSA-8fmv-6rg5-5924" target="_blank" rel="noopener noreferrer" aria-label="Kubeflow公式アーカイブ展開アドバイザリ（新しいタブ）">Kubeflow公式アーカイブ展開アドバイザリ</a>。</li></ul>
+<p><strong>対象と修正。</strong> 影響するのは<code>ghcr.io/kubeflow/kfp-api-server</code>の<strong>2.17.3以前</strong>。最初の影響版は未確定。<strong>2.18.0</strong>へ更新する。自前のRBACを使う場合、アップグレード後に<code>pipelines.kubeflow.org</code>の<code>runs</code>に対する<code>readLog</code>権限を適切に付与する必要がある。Kubeflowを使わない環境や対象endpointへ到達不能な構成は説明された攻撃経路には該当しない。<a href="https://github.com/kubeflow/pipelines/releases/tag/2.18.0" target="_blank" rel="noopener noreferrer" aria-label="公式2.18.0リリース（新しいタブ）">公式2.18.0リリース</a>。</p>
+<p><strong>直ちに取る対処。</strong> 稼働API serverのイメージバージョン、Ingress/認証・到達制限、ログ取得とアップロードendpointの公開範囲を確認。更新まで影響endpointへの到達元を制限し、認証ゲートとリソース制限を利用する。<strong>圧縮アップロードのバイト制限だけでは展開後の増幅を防げない。</strong> Managed Kubeflowでは運営元の修正適用状況を照会する。</p>
+<p><strong>確認・rollback。</strong> 更新後の実稼働版が2.18.0であることを確認し、権限のない利用者が別runのログを読めないこと、権限がある利用者のpipeline upload・ログ取得が正常なことを、ダミーデータで検証する。障害時も脆弱な旧版へ戻してendpointを再公開しない。公式は実環境の侵害や野外での悪用を確認したとは記していない。未解明点は各クラスタの認証・到達性、最初の影響版。</p>
+<p><strong>公表・確認日時。</strong> 公式Security Advisory<strong>2026年10月29日</strong>公開、GitHub Advisory Database10月30日更新。<strong>2026年10月31日19時枠JST</strong>に一次情報再確認。<a href="https://github.com/kubeflow/pipelines/security/advisories/GHSA-wg5q-x4j9-qm54" target="_blank" rel="noopener noreferrer" aria-label="実行ログの公式詳細（新しいタブ）">実行ログの公式詳細</a> ／ <a href="https://github.com/kubeflow/pipelines/security/advisories/GHSA-8fmv-6rg5-5924" target="_blank" rel="noopener noreferrer" aria-label="圧縮アーカイブの公式詳細（新しいタブ）">圧縮アーカイブの公式詳細</a>。</p>
 <h2>この日報の確認範囲と更新履歴</h2>
 <p>2026年10月31日朝JST、Cursor、CISA KEV、Ivanti公式アドバイザリ案内、GitHub Statusの一次資料を優先した。Vendor側のパッチ詳細が取得できない箇所は未確認とした。見出しのP0は<strong>該当条件に合う場合のみ</strong>即時対応の意味であり、利用者の端末・VPNが侵害されたという断定ではない。</p>
 <ul>
 <li><strong>2026-10-31 06:59 JST：初稿作成。</strong> 同日07:00:31 JSTに公開metadataを記録し、07:02:39 JSTに独立LIVE検収。</li>
 <li><strong>2026-10-31 12:59 JST：追補訂正。</strong> GitHub Dependabotの08:29解消、Ivanti KEVの3件別条件、Cursor公式見解の出典帰属、公開履歴を確認し、初回URLを維持。</li>
+<li><strong>2026-10-31 19:04 JST：19時追補訂正。</strong> Kubeflow Pipelinesに関する10月29日付公式Security Advisory 2件を確認。影響API server版、認証・到達条件、2.18.0修正と運用上の確認を追補。</li>
 </ul>
     <aside class="source-note">
       <h2>出典・更新履歴</h2>
-      <p>初回公開：2026年10月31日（LIVE検収07:02）。最終追補：2026-10-31 12:59 JST。根拠：<a href="https://cursor.com/blog/claude-code-extension-security-notice" target="_blank" rel="noopener noreferrer">Cursor公式</a>、<a href="https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer">CISA KEV</a>、<a href="https://www.githubstatus.com/api/v2/summary.json" target="_blank" rel="noopener noreferrer">GitHub Status</a>。</p>
+      <p>初回公開：2026年10月31日（LIVE検収07:02）。最終追補：2026-10-31 19:04 JST。根拠：<a href="https://cursor.com/blog/claude-code-extension-security-notice" target="_blank" rel="noopener noreferrer">Cursor公式</a>、<a href="https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer">CISA KEV</a>、<a href="https://www.githubstatus.com/api/v2/summary.json" target="_blank" rel="noopener noreferrer">GitHub Status</a>。</p>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
   </article>

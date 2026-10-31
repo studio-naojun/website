@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-31T12:59:54.026+09:00",
+  "updated_at": "2026-10-31T19:04:38.709+09:00",
   "entries": [
     {
       "id": "daily-2026-10-31",
       "type": "daily",
       "published_at": "2026-10-31",
-      "updated_at": "2026-10-31T12:59:54.026+09:00",
+      "updated_at": "2026-10-31T19:04:38.709+09:00",
       "first_published_at": "2026-10-31",
       "title": "AI開発・セキュリティ日報｜2026年10月31日号",
       "summary": "Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。",
