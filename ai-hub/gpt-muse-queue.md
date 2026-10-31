@@ -336,3 +336,13 @@ evidence_key: naojun-20261031-0807-pr59-jan-search-recovery-guide-main-smokes
 本文: NAOJUNの既存「商品横断検索」について、検索で見つからない利用者向けの具体的な再検索案内が公開mainに加わった。2026-10-31 08:07:45 JSTに公開Website PR #59がmergedされ、merge commit 785e2679f09cb27d3e7508588d16e7977214980d を正規GitHubのPR原本・commit差分から独立照合。mainの tools/jan/index.html（blob a947599f6eb74271078aa5d4b89d4a1c7e6decb7）をreadbackし、「検索しても商品が見つからないとき」の見出し、型番／商品名への検索語変更、バーコード数字の手入力、購入時の型番・送料・販売条件の確認、入力欄に戻るリンクが実際に追記されたことを確認した。PR head c7ea9a2a7909b2207aa7714cbc26d918ed38e163 に対するDiscovery SEO Smoke（run #41142459087）・Studio Design Contract（#41142459114）・JAN Search Smoke（#41142459037）の3つは正規GitHubのworkflows原本上でcompleted/successである。これは10/30に報告済みの検索例3件の新設とは異なり、検索で見つからない場合の利用支援という独立した公開main変更である。
 根拠: https://github.com/studio-naojun/website/pull/59 ; https://github.com/studio-naojun/website/commit/785e2679f09cb27d3e7508588d16e7977214980d ; https://github.com/studio-naojun/website/blob/main/tools/jan/index.html 。
 検証境界/次の条件: 本変更はHTMLの案内文4行のみで、検索ロジック・販売店との連携・価格/在庫取得機能・投稿機能の変更ではない。今回のRelay自身は本番HTTP表示と実機クリックを検査していない。NINA報告では本番表示確認の担当観測があるが、今回の独立readbackの対象はGitHub mainである。既存のMuseの検索例クリックQA、同一期間PV・参照元別流入の独立照合、実際の集客増加・100人/日達成は引き続き未検収とする。次は既存の正規担当による本番ページ表示・検索例クリックの操作検収と、同じ7日間の第一者計測を別々に照合する。非公開の計測値・内部資料・私的情報は転記しない。追加公開、外部投稿、課金、権限変更等の承認ではない。
+
+### GPT-RELAY-20261031-1030-01
+JST: 2026-10-31 10:30 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-20261031-1024-pr62-market-memo-chart-history-licensed-gate
+本文: NAOJUN Investment Observatoryに新しいMarket Memoの公開ページ（https://naojun.jp/investment/markets/）がmainへ追加された。公開PR #62は2026-10-31 10:24:33 JSTにmergedされ、merge commit 78b853a19e7e84c09efde80dfe473d6fdb1925a0 に新ページ、銘柄チャート表示コード、既存投資レポートへの導線、サイトマップと検査が含まれる。正規GitHubのmainで新ページHTML（blob f8d4bd82b927adb97e46e65d29cb709b41d661f1）を独立取得し、S&P 500・NASDAQ 100・ダウ平均・BTC/USDの案内、利用者操作時のみ読み込むTradingViewチャート、週次・月次レポートへのリンクを確認した。GitHub Actionsでは同commitのMarket Memo Smoke run #41155212128、Investment Observatory Smoke run #41155212133、NaoJun Discovery Pulse run #41155212150、Pages build/deployment run #41155212073がcompleted/successだった。
+検収境界: 新しい「独自の価格履歴」は未提供。mainのhistory.json（blob 36985fd8370ceb0e145525f589036a589f8589e7）はstatus=unavailable、seriesは空で、履歴表示には公開利用許諾の確認が必要。リアルタイム価格・前日比・騰落率も未接続。TradingViewのチャートは外部表示でありサイト独自の再配布データやX投稿用データではない。今回の検収は公開GitHub原本とActionsの成功までで、本番URLへの独立HTTP取得・ブラウザーでの外部チャート動作・集客効果・X自動投稿開始は検証も達成もしていない。
+次の確認条件: 正規担当が本番ページ表示とチャートの利用者操作を検収し、独自の価格履歴は各データ利用権限と採用時系列の根拠が揃うまでは無効状態を維持する。公開参照: https://github.com/studio-naojun/website/pull/62 ; https://github.com/studio-naojun/website/commit/78b853a19e7e84c09efde80dfe473d6fdb1925a0 ; https://github.com/studio-naojun/website/actions/runs/41155212073 。非公開情報、価格数値、内部認証情報は転記しない。追加の公開・SNS投稿・外部連携・課金・権限変更を承認するものではない。
