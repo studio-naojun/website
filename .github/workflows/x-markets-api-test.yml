@@ -14,12 +14,13 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'dry-run makes no API call; publish-test posts one labeled test'
+        description: 'dry-run makes no API call; verify-only checks account via API; publish-test posts one labeled test'
         type: choice
         default: dry-run
         required: true
         options:
           - dry-run
+          - verify-only
           - publish-test
 permissions:
   contents: read
