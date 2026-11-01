@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
-  "status": "empty",
-  "candidate": null
+  "status": "approved",
+  "candidate": {
+    "id": "social_eb9e5e48424d746ebdc78361b1f1",
+    "selectionId": "gpt_20261101_1608",
+    "account": "security",
+    "topicId": "gitlab-cve-2026-97229-kev-deadline-20261101",
+    "campaignId": "sg_eb9e5e48424d746e",
+    "canonicalUrl": "https://naojun.jp/ai-dev/daily/2026-10-30/",
+    "approvedBy": "NINA",
+    "approvedAt": "2026-11-01T07:23:45Z",
+    "platform": "x",
+    "text": "GitLabを自己管理しているなら、CVE-2026-97229の対応を確認したい。CISAは悪用確認済みとして登録し、米連邦機関には11月1日の対応期限を設定。影響版と公開範囲を照合し、公式修正版への更新と侵害痕跡の確認を。GitLab.com利用者とは対応が異なります。\n\nhttps://naojun.jp/ai-dev/daily/2026-10-30/?utm_source=x&utm_medium=organic_social&utm_campaign=sg_eb9e5e48424d746e",
+    "textSha256": "15142c6116f7ed00f875ef133fb91b14d07c92abcd9a971d248205d7ac8e6eed"
+  }
 }
