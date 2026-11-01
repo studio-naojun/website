@@ -1,17 +1,8 @@
 name: NAOJUN Editorial X Publisher
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'admissions/feed.json'
-      - 'ai-dev/feed.json'
-      - 'scripts/x_editorial_publish.mjs'
-      - 'scripts/x_editorial_publish.test.mjs'
-      - 'scripts/x_account_runtime.mjs'
-      - '.github/workflows/x-editorial-publish.yml'
-  schedule:
-    - cron: '17 * * * *'
+  # NINA's single approved-candidate publisher now owns automatic X writes.
+  # Keep legacy scripts available only for a no-network diagnostic dry-run.
   workflow_dispatch:
     inputs:
       mode:
@@ -21,8 +12,6 @@ on:
         required: true
         options:
           - dry-run
-          - verify-only
-          - publish-one
 
 permissions:
   contents: write
@@ -64,12 +53,12 @@ jobs:
       - name: Publish new editorial articles
         if: github.event_name != 'workflow_dispatch' || inputs.mode != 'verify-only'
         env:
-          X_EDITORIAL_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'publish-one' }}
+          X_EDITORIAL_MODE: dry-run
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
           NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
         run: node scripts/x_editorial_publish.mjs
       - name: Persist X article receipts
-        if: always() && (github.event_name != 'workflow_dispatch' || inputs.mode == 'publish-one')
+        if: false
         shell: bash
         run: |
           if git diff --quiet -- content/x-editorial-state.json; then

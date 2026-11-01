@@ -1,25 +1,16 @@
 name: NAOJUN Markets Publisher
 
 on:
-  schedule:
-    - cron: '17 0,5,10 * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'investment/feed.json'
-      - 'scripts/x_markets_publish.mjs'
-      - 'scripts/x_markets_publish.test.mjs'
-      - '.github/workflows/x-markets-publish.yml'
+  # Original market article auto-POSTs yield to NINA's central X publishing decision.
   workflow_dispatch:
     inputs:
       mode:
         description: 'dry-run makes no API call; publish-one publishes at most one unpublished Markets entry'
         type: choice
-        default: publish-one
+        default: dry-run
         required: true
         options:
           - dry-run
-          - publish-one
 
 permissions:
   contents: write
@@ -43,12 +34,12 @@ jobs:
         run: node --test scripts/x_account_runtime.test.mjs scripts/x_markets_publish.test.mjs scripts/x_markets_post.test.mjs
       - name: Publish at most one Markets entry
         env:
-          X_MARKETS_PUBLISH_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'publish-one' }}
+          X_MARKETS_PUBLISH_MODE: dry-run
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
           NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
         run: node scripts/x_markets_publish.mjs
       - name: Persist publication receipt
-        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'publish-one'
+        if: false
         shell: bash
         run: |
           if git diff --quiet -- content/x-markets-state.json; then

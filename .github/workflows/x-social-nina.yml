@@ -1,0 +1,62 @@
+name: NINA Approved Social X Publisher
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/x-social-approved.json'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        required: true
+        default: dry-run
+        options:
+          - dry-run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: naojun-x-approved-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Refresh canonical main
+        run: git pull --ff-only origin main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test NINA X publishing contracts
+        run: node --test scripts/x_social_publish.test.mjs scripts/x_markets_post.test.mjs scripts/x_account_runtime.test.mjs
+      - name: Publish exactly the NINA-approved original post
+        env:
+          X_SOCIAL_MODE: ${{ github.event_name == 'push' && 'publish-one' || 'dry-run' }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_social_publish.mjs
+      - name: Persist receipt, including uncertain POST outcomes
+        if: always()
+        shell: bash
+        run: |
+          if git diff --quiet -- content/x-social-state.json; then
+            echo 'No change in NINA social receipts.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add content/x-social-state.json
+          git commit -m 'chore(social): persist NINA publication receipt'
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then exit 0; fi
+            sleep $((attempt*2))
+          done
+          exit 1

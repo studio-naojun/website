@@ -1,15 +1,8 @@
 name: NAOJUN Markets Morning Pulse
 
 on:
-  schedule:
-    - cron: '30 21 * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'content/x-markets-daily.json'
-      - 'scripts/x_markets_daily_publish.mjs'
-      - 'scripts/x_markets_daily_publish.test.mjs'
-      - '.github/workflows/x-markets-morning.yml'
+  # Morning content remains available to GPT/NINA editorial selection.
+  # This legacy workflow is diagnostic-only; no independent X posting.
   workflow_dispatch:
     inputs:
       mode:
@@ -19,7 +12,6 @@ on:
         required: true
         options:
           - dry-run
-          - publish-one
 
 permissions:
   contents: write
@@ -43,12 +35,12 @@ jobs:
         run: node --test scripts/x_account_runtime.test.mjs scripts/x_markets_daily_publish.test.mjs scripts/x_markets_post.test.mjs
       - name: Publish today's morning pulse at most once
         env:
-          X_MARKETS_DAILY_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'publish-one' }}
+          X_MARKETS_DAILY_MODE: dry-run
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
           NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
         run: node scripts/x_markets_daily_publish.mjs
       - name: Persist morning publication receipt
-        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'publish-one'
+        if: false
         shell: bash
         run: |
           if git diff --quiet -- content/x-markets-state.json; then
