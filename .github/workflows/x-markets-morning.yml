@@ -2,7 +2,7 @@ name: NAOJUN Markets Morning Pulse
 
 on:
   schedule:
-    - cron: '20 0 * * *'
+    - cron: '30 21 * * *'
   push:
     branches: [main]
     paths:
