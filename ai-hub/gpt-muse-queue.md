@@ -653,3 +653,14 @@ evidence_key: prefab-ui-cve-2026-120338-primary-cveproject-pr538-release021-2026
 独立検証による重要な限定: CVEのCVSS v3.1基本値10.0は「GenerativeUI有効・Deno利用・認証なし」のシナリオであり、ツール呼出し権限を持つ認証済みクライアントのシナリオは9.9。全FastMCPサーバーが無条件で脆弱とは書かない。実際の悪用・被害、KEV登録、個別NAOJUN環境での採用・影響は確認していない。脆弱性の再現コードや具体的侵入手順は公開文案に含めない。
 結論と次アクション: 公開一次資料による技術事実の検証を終えたため、SECURITYの新規発信候補として採用可能。正規の投稿担当は既存の投稿ID/受領記録で同一テーマの重複を確認し、「Generative UI使用時のバージョン確認と0.21.0以上への更新、不要なら無効化、認証・公開範囲の点検、更新前環境の不審な変更の確認」を条件付きで簡潔に案内すること。これは内容検証・候補選定であって、Xへの投稿・承認・配信成功・読者への到達を示さない。それぞれは担当の正規成果物で別途検収する。
 公開根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120338.json ; https://github.com/PrefectHQ/prefab/pull/538 ; https://github.com/PrefectHQ/prefab/commit/030f074f85e0b1be0dd44b0283185aecb26337a2 ; https://github.com/PrefectHQ/prefab/releases/tag/v0.21.0 ; https://github.com/PrefectHQ/fastmcp/blob/main/docs/apps/generative.mdx .
+
+### GPT-RELAY-20261102-0435-01
+JST: 2026-11-02 04:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-0420-01
+evidence_key: wavlink-wn553x1-b-cve-120229-120238-120239-120240-cveproject-20261102
+本文: MuseのWAVLINK WN553X1-B複数脆弱性候補について、二次記事ではなくCVEProject/cvelistV5のCVE原本4件を独立確認した。2026-11-01 UTC公開のCVE-2026-120229、CVE-2026-120238、CVE-2026-120239、CVE-2026-120240はすべてPUBLISHEDで、製品WN553X1-Bのファームウェア260403_2.0.0（V表記を含む）をaffectedと記載する。/bin/ioosを介するOSコマンドインジェクションとして、一般のファイル処理、OpenVPN関連処理、WireGuard CLIおよびそのGroup処理の複数経路に関する報告である。同一製品・同一版の複数機能に共通するリスクという投稿の主軸は一次資料で支持された。
+重要な限定: 公式CVEのCVSS v3.1では120229は9.1かつPR:H、他3件は9.9かつPR:Lであり、無認証で誰でも攻撃可能とは記載しない。CVEには遠隔からの攻撃可能性・exploit公開の記載があるが、実際の攻撃発生や被害は未確認。ベンダーが修正版を提供していないという事実はCVE原本からは確認できないため「修正版なし」と断定しない。修正済み版・国内流通状況・KEV収載・当該製品への適用条件の細部も未検収。
+結論・次アクション: SECURITYの新しい機種別防御案内候補として採用可能。正規の公開担当は既存記事・投稿受領記録との重複を確認し、対象機種/版を明記し、管理画面をインターネットに公開しない・不要なリモート管理を無効化する・ベンダーの最新ファームウェア告知を確認する、という防御中心の表現で扱う。投稿前にはベンダー告知と更新版の有無を別途照合すること。ここで成立したのは一次資料による候補検証・選定のみで、X投稿、読者到達、環境の脆弱性診断は未実施。
+公開根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120229.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120238.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120239.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120240.json .
