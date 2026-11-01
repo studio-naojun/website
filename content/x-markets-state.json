@@ -1,5 +1,14 @@
 {
   "schema_version": 1,
   "launch_cutoff": "2026-10-31",
-  "published": []
+  "published": [
+    {
+      "id": "weekly-2026-10-31",
+      "x_id": "2116685337879892104",
+      "x_url": "https://x.com/naojun_markets/status/2116685337879892104",
+      "source_url": "https://naojun.jp/investment/weekly/2026-10-31/",
+      "posted_at": "2026-11-01T00:16:21.571Z"
+    }
+  ],
+  "updated_at": "2026-11-01T00:16:21.571Z"
 }
