@@ -1,0 +1,91 @@
+name: NAOJUN Editorial X Publisher
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'admissions/feed.json'
+      - 'ai-dev/feed.json'
+      - 'scripts/x_editorial_publish.mjs'
+      - 'scripts/x_editorial_publish.test.mjs'
+      - 'scripts/x_account_runtime.mjs'
+      - '.github/workflows/x-editorial-publish.yml'
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run makes no network call; verify-only checks both X accounts; publish-one posts at most one new article per channel'
+        type: choice
+        default: dry-run
+        required: true
+        options:
+          - dry-run
+          - verify-only
+          - publish-one
+
+permissions:
+  contents: write
+
+concurrency:
+  group: naojun-editorial-x-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Refresh latest main state
+        run: git pull --ff-only origin main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test editorial X publisher
+        run: node --test scripts/x_account_credentials.test.mjs scripts/x_account_runtime.test.mjs scripts/x_editorial_publish.test.mjs scripts/x_markets_post.test.mjs
+      - name: Verify JUKEN account without posting
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify-only'
+        env:
+          TARGET_HANDLE: naojun_juken
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_account_verify.mjs
+      - name: Verify SECURITY account without posting
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify-only'
+        env:
+          TARGET_HANDLE: naojun_security
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_account_verify.mjs
+      - name: Publish new editorial articles
+        if: github.event_name != 'workflow_dispatch' || inputs.mode != 'verify-only'
+        env:
+          X_EDITORIAL_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'publish-one' }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_editorial_publish.mjs
+      - name: Persist X article receipts
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.mode == 'publish-one')
+        shell: bash
+        run: |
+          if git diff --quiet -- content/x-editorial-state.json; then
+            echo 'No editorial X receipt to persist.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add content/x-editorial-state.json
+          git commit -m 'chore(x): record editorial publication'
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            sleep $((attempt * 2))
+          done
+          echo 'Unable to persist editorial X receipt after 3 attempts.' >&2
+          exit 1

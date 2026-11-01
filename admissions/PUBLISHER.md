@@ -39,6 +39,22 @@ Jun's routine review happens after publication on the live URL. Jun retains corr
 
 If the source draft or evidence changes materially during publication processing, return to review before merge.
 
+## Automatic X distribution
+
+After a new `admissions/feed.json` entry reaches `main`, the public article is distributed automatically to
+`@naojun_juken` by `.github/workflows/x-editorial-publish.yml`.
+
+- only a newly seen immutable feed `id` is eligible; updates/corrections to the same published `id` do not create a second X post;
+- pre-existing feed ids recorded in `content/x-editorial-state.json` are the launch baseline and are never backfilled;
+- the workflow waits for the canonical `https://naojun.jp/admissions/.../` URL to return live before posting;
+- the X account is verified as exactly `@naojun_juken` before any POST;
+- duplicate detection uses the canonical article URL from recent posts; if a POST outcome is ambiguous, the id is stored as `uncertain`, automatic re-POST is disabled, and hourly runs only attempt URL reconciliation;
+- the public feed title/summary are the only article content used for the X copy; private source-repository material is never used;
+- successful/reconciled X receipts are stored in `content/x-editorial-state.json`;
+- the hourly recovery trigger only retries still-unpublished new feed ids and otherwise performs no X API call.
+- an `uncertain` id blocks later automatic posts on the same channel until it is reconciled or deliberately cleared.
+- withdrawing an article does not automatically delete its X post; removal/correction on X is a separate deliberate recovery action.
+
 ## Source repository
 
 `ffz2bpjyj4-bot/kanade-report-library`
