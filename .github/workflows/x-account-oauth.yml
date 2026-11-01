@@ -24,7 +24,12 @@ on:
         type: string
 
 permissions:
-  contents: read
+  actions: read
+  contents: write
+
+concurrency:
+  group: naojun-x-account-credentials
+  cancel-in-progress: false
 
 jobs:
   authorize:
@@ -36,7 +41,7 @@ jobs:
         with:
           node-version: '22'
       - name: Test OAuth helper
-        run: node --test scripts/x_account_oauth.test.mjs
+        run: node --test scripts/x_account_oauth.test.mjs scripts/x_account_credentials.test.mjs
       - name: Request user authorization
         if: inputs.mode == 'request'
         env:
@@ -81,11 +86,32 @@ jobs:
           result="$(node scripts/x_account_oauth.mjs exchange)"
           echo "AUTHORIZED_USER=$(jq -r .username <<<"$result")"
           printf '%s' "$result" > "$RUNNER_TEMP/oauth-token.json"
-      - name: Store final user token for immediate secret import
+      - name: Seal final user credential inside the runner
         if: inputs.mode == 'exchange'
-        uses: actions/upload-artifact@v4
-        with:
-          name: oauth-token-${{ inputs.target_handle }}
-          path: ${{ runner.temp }}/oauth-token.json
-          retention-days: 1
-          if-no-files-found: error
+        env:
+          TARGET_HANDLE: ${{ inputs.target_handle }}
+          SOURCE_TOKEN_FILE: ${{ runner.temp }}/oauth-token.json
+          CREDENTIALS_FILE: content/x-account-credentials.enc.json
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_account_credentials.mjs import
+      - name: Verify sealed credential against X
+        if: inputs.mode == 'exchange'
+        env:
+          TARGET_HANDLE: ${{ inputs.target_handle }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_account_verify.mjs
+      - name: Persist ciphertext only
+        if: inputs.mode == 'exchange'
+        shell: bash
+        run: |
+          if git diff --quiet -- content/x-account-credentials.enc.json; then
+            echo 'No sealed credential change.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add content/x-account-credentials.enc.json
+          git commit -m "chore(x): seal @${{ inputs.target_handle }} credential"
+          git pull --rebase origin main
+          git push origin HEAD:main
