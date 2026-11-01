@@ -516,3 +516,14 @@ evidence_key: naojun-markets-monthly-2026-10-x-receipt-24651088-20261101
 実質依頼/検収条件: 既存の正規X運用担当が許可済み経路で月次投稿ID 2116760866498723862 の実際の公開本文・出典URL・公開状態を受領記録と照合し、同一月次記事の重複がないことを確認して報告する。受領記録のID・公開URL・本文の出典リンクが一致し、重複防止結果が示されれば、この月次1件の投稿成立を検収可能。追加投稿・削除・認証・課金・権限変更はこのrelayでは行わず、未確認の効果を成果に数えない。
 公開根拠: https://github.com/studio-naojun/website/commit/246510884a34326a47041228f6c9da0371a9e6f0 ; https://github.com/studio-naojun/website/blob/main/content/x-markets-state.json ; https://github.com/studio-naojun/website/blob/main/investment/monthly/2026-10/index.html ; https://github.com/studio-naojun/website/blob/main/investment/feed.json .
 
+
+### GPT-RELAY-20261101-1530-01
+JST: 2026-11-01 15:30 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-editorial-x-pr98-merge-account-verify-runs-41279022692-41279053303
+本文: NAOJUN STUDIOSの公開記事を対象にしたX自動配信機能がPR #98で2026-11-01 14:59:54 JSTにmainへmergeされた（merge commit 97a005123a420c8fa1477620301c4824c4b74e07）。新規公開feed IDのみを候補とし、既存IDは配信開始時のbaselineに含めて再投稿しない。canonical公開ページのLIVE確認・所定アカウント照合・記事URLによる重複確認・送信結果が曖昧な場合のuncertain保存と自動再POST抑止を実装している。公開GitHubのworkflow、実装script、test、受領stateの原本を読んだ。
+実行証拠: mainへのpush run #41279022692はsuccessでpublisherテスト・publish判定・受領state保存ステップが成功。さらに同じmerge SHAでのworkflow_dispatch run #41279053303（verify-only）もsuccessで、2つの公開配信先アカウント確認ステップは各success、投稿処理と受領state保存はskipped。現行mainのcontent/x-editorial-state.json（blob 7ddd47dea1f5a0befb7a8cee5d687e611bcff815）では両チャンネルともpublished:[]、uncertain:[]であり、今回の成功runをX投稿成立と取り違えない。PR #98本体は6ファイル変更で、投稿用workflow blobは7aa8c6388e2eae07f58c629757f966b5b3dbd75b。
+成果と次の受入条件: 新規記事IDでの初回本番投稿実績はまだない。正規X運用担当が最初の新規公開記事について、feed ID・LIVE記事URL・対象アカウント・X投稿ID/公開URL・state受領記録の一致と重複なしを照合すること。候補なし、LIVE未反映、uncertain時は投稿成功とせず、重複POSTを行わず復旧確認へ回す。閲覧・流入・集客効果は別検証。既知のAtom published上書き、Markets投稿重複疑義も本件では解消しない。認証情報・非公開本文・個人/受験者情報はこのrelayに含めず、追加投稿・削除・認証・課金・権限変更を指示するものではない。
+公開根拠: https://github.com/studio-naojun/website/pull/98 ; https://github.com/studio-naojun/website/commit/97a005123a420c8fa1477620301c4824c4b74e07 ; https://github.com/studio-naojun/website/actions/runs/41279022692 ; https://github.com/studio-naojun/website/actions/runs/41279053303 ; https://github.com/studio-naojun/website/blob/main/content/x-editorial-state.json .
