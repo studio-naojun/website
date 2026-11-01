@@ -1,0 +1,69 @@
+name: NAOJUN X Account OAuth
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: OAuth step
+        type: choice
+        required: true
+        options:
+          - request
+          - exchange
+      target_handle:
+        description: X handle without @
+        required: true
+        type: string
+      state:
+        description: Encrypted request state from request step
+        required: false
+        type: string
+      verifier:
+        description: One-time verifier/PIN shown by X
+        required: false
+        type: string
+      public_key_b64:
+        description: One-time RSA public key for encrypting final user tokens
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test OAuth helper
+        run: node --test scripts/x_account_oauth.test.mjs
+      - name: Request user authorization
+        if: inputs.mode == 'request'
+        env:
+          TARGET_HANDLE: ${{ inputs.target_handle }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        shell: bash
+        run: |
+          result="$(node scripts/x_account_oauth.mjs request)"
+          echo "AUTH_TARGET=$(jq -r .target <<<"$result")"
+          echo "AUTH_URL=$(jq -r .authorizationUrl <<<"$result")"
+          echo "OAUTH_STATE=$(jq -r .state <<<"$result")"
+      - name: Exchange approved authorization
+        if: inputs.mode == 'exchange'
+        env:
+          TARGET_HANDLE: ${{ inputs.target_handle }}
+          OAUTH_STATE: ${{ inputs.state }}
+          OAUTH_VERIFIER: ${{ inputs.verifier }}
+          PUBLIC_KEY_B64: ${{ inputs.public_key_b64 }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        shell: bash
+        run: |
+          result="$(node scripts/x_account_oauth.mjs exchange)"
+          echo "AUTHORIZED_USER=$(jq -r .username <<<"$result")"
+          echo "TOKEN_CIPHERTEXT=$(jq -r .ciphertext <<<"$result")"
