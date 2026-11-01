@@ -132,7 +132,12 @@ document.querySelectorAll('[data-year]').forEach((el) => {
     } catch (_) {}
   };
   if (navigator.locks && typeof navigator.locks.request === 'function') {
-    navigator.locks.request('naojun-daily-visit-v1', countDailyBrowser).catch(() => {});
+    try {
+      navigator.locks.request('naojun-daily-visit-v1', countDailyBrowser)
+        .catch(() => countDailyBrowser());
+    } catch (_) {
+      countDailyBrowser();
+    }
   } else {
     countDailyBrowser();
   }
