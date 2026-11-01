@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {makePost, run, selectCandidate} from './x_markets_publish.mjs';
+import {makePost, matchingPosts, run, selectCandidate} from './x_markets_publish.mjs';
 
 const feed = {
   entries: [
@@ -31,6 +31,15 @@ test('post copy uses canonical investment URL and stays compact', () => {
   assert.ok([...post.text].length < 180);
 });
 
+test('duplicate detection uses expanded URL instead of t.co-rendered text', () => {
+  const rows = [{
+    id:'p1',
+    text:'【NAOJUN Markets】\n週次タイトル\n\n週次要約\n\nhttps://t.co/abc123',
+    entities:{urls:[{url:'https://t.co/abc123',expanded_url:'https://naojun.jp/investment/weekly/2026-10-31/'}]},
+  }];
+  assert.equal(matchingPosts(rows, 'https://naojun.jp/investment/weekly/2026-10-31/').length, 1);
+});
+
 test('publish accepts successful X response with id but without echoed text', async () => {
   const calls = [];
   const fetchImpl = async (url, init) => {
@@ -39,7 +48,7 @@ test('publish accepts successful X response with id but without echoed text', as
       ? {data:{id:'u1',username:'naojun_markets'}}
       : url.includes('/tweets?')
         ? {data:[]}
-        : {data:{id:'p1'}};
+        : {data:{id:'p1',text:'https://t.co/shortened'}};
     return new Response(JSON.stringify(payload), {status: init.method === 'POST' ? 201 : 200});
   };
   const files = new Map([

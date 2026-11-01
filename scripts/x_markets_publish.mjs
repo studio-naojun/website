@@ -26,6 +26,26 @@ export function makePost(entry) {
   };
 }
 
+function canonicalUrl(value) {
+  try {
+    const url = new URL(String(value));
+    url.hash = '';
+    url.search = '';
+    url.pathname = url.pathname.replace(/\/+$/, '') + '/';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+export function matchingPosts(rows, sourceUrl) {
+  const wanted = canonicalUrl(sourceUrl);
+  if (!wanted || !Array.isArray(rows)) return [];
+  return rows.filter(row => (row?.entities?.urls || []).some(entity =>
+    canonicalUrl(entity?.expanded_url || entity?.unwound_url || entity?.url) === wanted
+  ));
+}
+
 export function selectCandidate(feed, state, now = new Date()) {
   const published = new Set((state?.published ?? []).map(row => row?.id).filter(Boolean));
   const cutoff = state?.launch_cutoff || DEFAULT_LAUNCH_CUTOFF;
@@ -94,29 +114,28 @@ export async function run({
     throw new Error('Wrong X account; expected @' + HANDLE + '. Aborting.');
   }
 
-  const recent = await xRequest('GET', '/2/users/' + encodeURIComponent(me.data.id) + '/tweets?max_results=20', creds, {fetchImpl});
+  const recent = await xRequest('GET', '/2/users/' + encodeURIComponent(me.data.id) + '/tweets?max_results=20&tweet.fields=entities', creds, {fetchImpl});
   if (recent.data != null && !Array.isArray(recent.data)) throw new Error('Unverifiable recent posts; aborting.');
-  const duplicate = (recent.data || []).find(row => row?.text === post.text);
+  const existing = matchingPosts(recent.data || [], post.url);
+  const duplicate = existing[0];
   let id;
   let status;
   if (duplicate?.id) {
     id = duplicate.id;
     status = 'reconciled';
+    log('RECONCILED existing Markets post count: ' + existing.length);
   } else {
     try {
       const result = await xRequest('POST', '/2/tweets', creds, {body: {text: post.text}, fetchImpl});
       if (!result.data?.id) throw new Error('X POST succeeded without a tweet id.');
-      if (result.data.text != null && result.data.text !== post.text) {
-        throw new Error('X POST returned a mismatched tweet body.');
-      }
       id = result.data.id;
       status = 'posted';
     } catch (error) {
       // A timed-out or otherwise ambiguous POST is never blindly retried.
-      // Re-read recent posts once and reconcile only an exact body match.
-      const after = await xRequest('GET', '/2/users/' + encodeURIComponent(me.data.id) + '/tweets?max_results=20', creds, {fetchImpl});
+      // Re-read recent posts once and reconcile only the same expanded source URL.
+      const after = await xRequest('GET', '/2/users/' + encodeURIComponent(me.data.id) + '/tweets?max_results=20&tweet.fields=entities', creds, {fetchImpl});
       if (after.data != null && !Array.isArray(after.data)) throw error;
-      const recovered = (after.data || []).find(row => row?.text === post.text);
+      const recovered = matchingPosts(after.data || [], post.url)[0];
       if (!recovered?.id) throw error;
       id = recovered.id;
       status = 'reconciled';
@@ -137,7 +156,7 @@ export async function run({
   state.updated_at = now.toISOString();
   await writeFile(statePath, JSON.stringify(state, null, 2) + '\n', 'utf8');
   log(status.toUpperCase() + ': ' + url);
-  return {status, candidate: candidate.id, id, url};
+  return {status, candidate: candidate.id, id, url, existing_count: existing.length};
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
