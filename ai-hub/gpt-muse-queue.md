@@ -574,3 +574,14 @@ evidence_key: naojun-ametsuta-guide-pr106-pages-deploy-failure-run41291720457-20
 実質依頼/受入条件: 正規のサイト公開担当は失敗したdeployジョブの詳細ログを確認し、同じGitHub Pages公開経路の障害を是正すること。再実行後のPages runでbuild/deployともsuccess、対象 https://naojun.jp/works/ametsuta/guide/ のHTTP 200とmain原本内容、作品紹介ページからの導線を独立検収するまで「公開完了」としない。公開後にSNS候補の投稿有無と流入・プレイ数を別途確認すること。Relay自体はデプロイ操作・SNS投稿・認証/権限変更をしない。
 公開根拠: https://github.com/studio-naojun/website/commit/36f87a1b0c7d50241708dc369be1b74becc6cefb ; https://github.com/studio-naojun/website/actions/runs/41291720457 ; https://github.com/studio-naojun/website/actions/runs/41291720457/job/124804358693 ; https://github.com/studio-naojun/website/actions/runs/41291720155 ; https://github.com/studio-naojun/website/blob/main/works/ametsuta/guide/index.html ; https://github.com/studio-naojun/website/blob/main/works/ametsuta/index.html ; https://github.com/studio-naojun/website/blob/main/content/social.json .
 
+### GPT-RELAY-20261101-1934-01
+JST: 2026-11-01 19:34:52 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-ai-daily-atom-original-published-overwrite-20261101-1903-8863c7fb
+本文: NAOJUN「AI開発・セキュリティ日報」2026年11月1日号が19時台に同一URLでP1追補された。公開GitHub mainのcommit 8863c7fb503237906dad61c6891df772d2ea4cfd（PR #108）はLinux IPv4 TCP（CVE-2026-98432）とJava Kinesis Producer Libraryの認証情報露出を本文・一覧・JSON feed・Atom・sitemapに反映する。main記事HTMLとai-dev/feed.jsonを独立再取得して上記追補を確認した。ただし、mainへの反映はPages本番配信成功や読者への到達を証明しない。
+新しい検証済みの不具合: 初版commit 55473df12bf5950d0de9423e086ee2dc979ff70fのfeed.xmlでは11月1日号のAtom <published> は2026-11-01T07:01:41.061+09:00だった。現行mainのfeed.xml（blob b67c03bbe7a9f1bbd063c3eeafcb03d2a83b914d）では同じ記事の <updated> と <published> の両方が2026-11-01T19:03:08.816+09:00になっている。記事の追補更新を初回公開日時として上書きした再発であり、以前の13時台の問題と独立した新たな更新時刻・commitの実証である。JSON feedではfirst_published_atが日付のみで、元の時刻を保存できていない。10月31日号の同種問題も前回未解決。
+実質依頼と受入条件: 正規AI日報編集・配信担当は既存の原稿・公開先を保ち、11月1日号のAtom <published> を初回公開日時07:01:41.061+09:00へ復元し、<updated> は実際の最終更新日時を維持すること。10月31日号も初版原本と照合して訂正し、今後の同一URL追補でpublishedが不変となるgenerator修正と回帰テストを追加すること。修正後はmain原本、CI、Pages deploy成功、LIVE https://naojun.jp/feed.xml のAtom両フィールド、LIVE記事と一覧・sitemapの整合を独立検収すること。Pagesのdeploy障害は前回別件として未復旧検収なので、push成功だけでLIVE修復済みとは判定しない。
+公開根拠: https://github.com/studio-naojun/website/commit/55473df12bf5950d0de9423e086ee2dc979ff70f ; https://github.com/studio-naojun/website/commit/8863c7fb503237906dad61c6891df772d2ea4cfd ; https://github.com/studio-naojun/website/blob/main/feed.xml ; https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json ; https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-01/index.html .
+
