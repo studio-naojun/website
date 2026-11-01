@@ -5,13 +5,13 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-01T07:01:41.061+09:00</updated>
+  <updated>2026-11-01T13:02:47.404+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月1日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-01/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-01/"/>
-    <updated>2026-11-01T07:01:41.061+09:00</updated>
-    <published>2026-11-01T07:01:41.061+09:00</published>
+    <updated>2026-11-01T13:02:47.404+09:00</updated>
+    <published>2026-11-01T13:02:47.404+09:00</published>
     <category term="ai-dev"/>
     <summary>偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。</summary>
   </entry>
