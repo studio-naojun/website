@@ -1,4 +1,4 @@
-name: NaoJun opt-in Bluesky replies
+name: NaoJun legacy Bluesky reply scan (read-only)
 
 on:
   workflow_dispatch:
@@ -7,15 +7,6 @@ on:
         description: 'Observe current tagged questions without writing to Bluesky'
         type: boolean
         default: true
-  schedule:
-    # 15 minutes avoids 5-minute credential re-login exhausting PDS budgets.
-    # Muse may refresh the outbox every five minutes; its push triggers an
-    # immediate workflow in addition to this unattended catch-up.
-    - cron: '*/15 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'content/muse-reply-outbox.json'
 
 permissions:
   contents: read
@@ -37,7 +28,7 @@ jobs:
       - name: Relevant delivery regression checks
         if: github.event_name != 'schedule'
         run: python -m unittest discover -s tests -p 'test_social*.py'
-      - name: Respond only to explicit @naojun.jp questions, then notify
+      - name: Read-only legacy notification scan (never send replies)
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
@@ -45,10 +36,7 @@ jobs:
           NAOJUN_REPLY_RECEIPT: /tmp/naojun-replies.json
         run: |
           set +e
-          args=()
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.scan_only }}" == "true" ]]; then
-            args+=(--scan-only)
-          fi
+          args=(--scan-only)
           code=1
           for attempt in 1 2 3; do
             python scripts/social_auto_reply.py "${args[@]}"
