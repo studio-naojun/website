@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {dailyMarker, matchingDailyPosts, run, selectDailyCandidate, validateDailyEntry} from './x_markets_daily_publish.mjs';
+import {sealCredential} from './x_account_credentials.mjs';
 
 const now = new Date('2026-11-02T00:10:00Z');
 const entry = {
@@ -43,6 +44,10 @@ test('publish posts at most once and records receipt', async () => {
   await mkdir(join(root, 'content'), {recursive:true});
   await writeFile(join(root, 'content/x-markets-daily.json'), JSON.stringify({schema_version:1,entry}));
   await writeFile(join(root, 'content/x-markets-state.json'), JSON.stringify({schema_version:1,published:[]}));
+  await writeFile(join(root,'content/x-account-credentials.enc.json'),JSON.stringify({
+    schema_version:1,encryption:'aes-256-gcm-hkdf-sha256',
+    accounts:{naojun_markets:{username:'naojun_markets',user_id:'u1',updated_at:'2026-11-01T00:00:00Z',sealed:sealCredential({accessToken:'t',accessTokenSecret:'ts'},'s','naojun_markets')}},
+  }));
 
   const calls = [];
   const fetchImpl = async (url, init) => {
@@ -60,7 +65,7 @@ test('publish posts at most once and records receipt', async () => {
     root,
     now,
     fetchImpl,
-    env:{NAOJUN_X_API_KEY:'k',NAOJUN_X_API_SECRET:'s',NAOJUN_X_ACCESS_TOKEN:'t',NAOJUN_X_ACCESS_TOKEN_SECRET:'ts'},
+    env:{NAOJUN_X_API_KEY:'k',NAOJUN_X_API_SECRET:'s'},
     log:()=>{},
   });
   assert.equal(result.status, 'posted');

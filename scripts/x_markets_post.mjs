@@ -1,10 +1,12 @@
 // Official X API single-post test only. No licensed market-data content or recurring scheduler.
 import {createHmac, randomBytes} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
-import {resolve} from 'node:path';
+import {dirname, resolve} from 'node:path';
+import {loadAccountCredentials} from './x_account_runtime.mjs';
 
 const HOST = 'https://api.x.com';
 const HANDLE = 'naojun_markets';
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const enc = x => encodeURIComponent(String(x)).replace(/[!'()*]/g, x => '%' + x.charCodeAt(0).toString(16).toUpperCase());
 export function jstDay(date = new Date()) {
   const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {timeZone: 'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(date).filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
@@ -14,7 +16,7 @@ export function testText(date = new Date()) {
   return '【NAOJUN Markets／X API動作確認 ' + jstDay(date) + '】\nこれは公式APIからの自動投稿テストです。市場データの定期配信はまだ開始していません。';
 }
 export function auth(method, endpoint, c, options={}) {
-  for (const k of ['key', 'secret', 'token', 'tokenSecret']) if (!c[k]) throw new Error('Missing X API credentials (four NAOJUN_X_* secrets required).');
+  for (const k of ['key', 'secret', 'token', 'tokenSecret']) if (!c[k]) throw new Error('Missing X API credentials.');
   const u = new URL(endpoint);
   if (u.origin !== HOST || u.protocol !== 'https:') throw new Error('Unexpected API origin.');
   const o = {oauth_consumer_key:c.key, oauth_nonce:options.nonce ?? randomBytes(16).toString('hex'), oauth_signature_method:'HMAC-SHA1', oauth_timestamp:String(options.timestamp ?? Math.floor(Date.now()/1000)), oauth_token:c.token, oauth_version:'1.0'};
@@ -34,20 +36,15 @@ export async function xRequest(method,path,creds,{body,fetchImpl=fetch}={}) {
   if (!response.ok) throw new Error('X API HTTP '+response.status+': '+String(payload.title||payload.detail||payload.message||'Request failed').slice(0,120));
   return payload;
 }
-export async function run({mode=process.env.X_POST_MODE||'dry-run',env=process.env,now=new Date(),fetchImpl=fetch,log=console.log}={}) {
+export async function run({mode=process.env.X_POST_MODE||'dry-run',env=process.env,now=new Date(),fetchImpl=fetch,log=console.log,storePath=resolve(ROOT,'content/x-account-credentials.enc.json')}={}) {
   if (!['dry-run','verify-only','publish-test'].includes(mode)) throw new Error('Unsupported mode.');
   const text=testText(now);
   if (mode==='dry-run') {log('DRY RUN: no API request or public post.\n'+text);return {status:'dry-run',text};}
-  const creds={key:env.NAOJUN_X_API_KEY,secret:env.NAOJUN_X_API_SECRET,token:env.NAOJUN_X_ACCESS_TOKEN,tokenSecret:env.NAOJUN_X_ACCESS_TOKEN_SECRET};
-  if (env.NAOJUN_X_API_KEY && env.NAOJUN_X_API_KEY === env.NAOJUN_X_ACCESS_TOKEN)
-    throw new Error('GitHub Secrets mismatch: Access Token is identical to Consumer Key. Copy OAuth 1.0 Access Token into NAOJUN_X_ACCESS_TOKEN.');
-  if (env.NAOJUN_X_API_SECRET && env.NAOJUN_X_API_SECRET === env.NAOJUN_X_ACCESS_TOKEN_SECRET)
-    throw new Error('GitHub Secrets mismatch: Access Token Secret is identical to Consumer Secret. Copy OAuth 1.0 Access Token Secret into NAOJUN_X_ACCESS_TOKEN_SECRET.');
-
-  const malformed=['NAOJUN_X_API_KEY','NAOJUN_X_API_SECRET','NAOJUN_X_ACCESS_TOKEN','NAOJUN_X_ACCESS_TOKEN_SECRET']
+  const malformed=['NAOJUN_X_API_KEY','NAOJUN_X_API_SECRET']
     .filter(name=>/[\r\n]/.test(env[name]||''));
-  if (malformed.length) throw new Error('Malformed X API secrets (embedded newline): '+malformed.join(', ')+'. Re-paste each as a single credential value.');
+  if (malformed.length) throw new Error('Malformed shared X app credentials (embedded newline): '+malformed.join(', ')+'.');
 
+  const creds=await loadAccountCredentials({target:HANDLE,env,storePath});
   auth('GET',HOST+'/2/users/me',creds);
   const me=await xRequest('GET','/2/users/me',creds,{fetchImpl});
   if (!me.data?.id || me.data.username?.toLowerCase()!==HANDLE) throw new Error('Wrong X account; expected @'+HANDLE+'. Aborting.');

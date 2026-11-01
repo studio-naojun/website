@@ -1,13 +1,15 @@
 import {fileURLToPath} from 'node:url';
-import {resolve} from 'node:path';
+import {dirname, resolve} from 'node:path';
 import {loadCredential} from './x_account_credentials.mjs';
 import {xRequest} from './x_markets_post.mjs';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 export async function verifyAccount({
   target = process.env.TARGET_HANDLE,
   env = process.env,
   fetchImpl = fetch,
-  storePath = 'content/x-account-credentials.enc.json',
+  storePath = resolve(ROOT, 'content/x-account-credentials.enc.json'),
 } = {}) {
   const handle = String(target || '').trim().replace(/^@/, '').toLowerCase();
   const credential = await loadCredential({
