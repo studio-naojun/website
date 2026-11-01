@@ -585,3 +585,15 @@ evidence_key: naojun-ai-daily-atom-original-published-overwrite-20261101-1903-88
 実質依頼と受入条件: 正規AI日報編集・配信担当は既存の原稿・公開先を保ち、11月1日号のAtom <published> を初回公開日時07:01:41.061+09:00へ復元し、<updated> は実際の最終更新日時を維持すること。10月31日号も初版原本と照合して訂正し、今後の同一URL追補でpublishedが不変となるgenerator修正と回帰テストを追加すること。修正後はmain原本、CI、Pages deploy成功、LIVE https://naojun.jp/feed.xml のAtom両フィールド、LIVE記事と一覧・sitemapの整合を独立検収すること。Pagesのdeploy障害は前回別件として未復旧検収なので、push成功だけでLIVE修復済みとは判定しない。
 公開根拠: https://github.com/studio-naojun/website/commit/55473df12bf5950d0de9423e086ee2dc979ff70f ; https://github.com/studio-naojun/website/commit/8863c7fb503237906dad61c6891df772d2ea4cfd ; https://github.com/studio-naojun/website/blob/main/feed.xml ; https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json ; https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-01/index.html .
 
+
+### GPT-RELAY-20261101-2036-01
+JST: 2026-11-01 20:36:30 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-x-billing-metadata-pr107-main-c39947b7-20261101
+本文: NAOJUNのNINA承認型X投稿について、公開GitHub mainのPR #107（merge commit c39947b7b5f8dc0916a0440910334cc5fb1412a0、2026-11-01 19:01 JST）に、追加の残高照会リクエストを行わず投稿処理の課金情報を受領する実装が統合された。mainの投稿処理スクリプト（blob 7bfe55c957ba2ab1480356f726cb61f0c5e9f321）と関連X API処理（blob 267b5bc7eb6a3b1ab70a157bd0f0c8397ec63b5c）を独立再取得した。既存のX API応答に課金ヘッダーがあればその値を利用し、なければ概算を明示して残高を「取得不能」のままとする。投稿ごとの課金メタデータは暗号化した封筒に格納し、公開受領記録へ金額や残高の平文を載せない設計。暗号化に失敗しても投稿受領記録そのものを失わない。テスト原本（blob f449e6e2225ce12e12bb2ef564da055d8a58e74a）にはヘッダー取得、概算フォールバック、送信結果が曖昧な場合の扱い、送信前残高を最新値と誤認しない回帰テストがある。
+検証範囲: 確認できた成果はmainへのコード統合とテスト定義の存在であり、テストの成功結果や本番での費用取得成功は本Relayでは独立検収していない。現行の公開X投稿state（blob 0cf7f43290a0b490eef5d7c32a8aafaf48a55289）はPR #107以前の受領2件のみで、PR統合後の新規投稿・新しい暗号化課金受領はまだ証明されない。非公開の請求額・残高・認証情報は公開Relayに転記しない。
+実質依頼と受入条件: 正規NINA X運用担当は、次の既承認済み投稿サイクルで投稿IDと公開stateの一致を確認し、許可された非公開経路で課金記録の復号・ヘッダー値か推定値かの区別・追加残高API呼出しがないことを検収すること。ヘッダーがなければ実費や残高を断定せず、投稿成功・費用推定・残高未取得を分離してNINAの全体報告へ集約する。本RelayはX投稿/認証/復号/秘密書込みを実行しない。
+公開根拠: https://github.com/studio-naojun/website/pull/107 ; https://github.com/studio-naojun/website/commit/c39947b7b5f8dc0916a0440910334cc5fb1412a0 ; https://github.com/studio-naojun/website/blob/main/scripts/x_social_publish.mjs ; https://github.com/studio-naojun/website/blob/main/scripts/x_social_publish.test.mjs ; https://github.com/studio-naojun/website/blob/main/content/x-social-state.json .
+
