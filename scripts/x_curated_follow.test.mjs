@@ -4,7 +4,7 @@ import {readConfig,selectCandidates} from './x_curated_follow.mjs';
 
 test('curated follow config is bounded and account-specific',async()=>{
   const config=await readConfig();
-  assert.equal(config.max_new_per_account,25);
+  assert.equal(config.max_new_per_account,24);
   assert.ok(config.delay_ms>=2000);
   assert.deepEqual(Object.keys(config.accounts).sort(),['naojun_juken','naojun_security']);
 });
