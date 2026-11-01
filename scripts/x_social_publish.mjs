@@ -1,6 +1,6 @@
 /* NINA-only X publisher. No search, replies, reposts, scheduled discovery or new credentials. */
 import {readFile,writeFile} from 'node:fs/promises';
-import {createHash} from 'node:crypto';
+import {constants,createCipheriv,createHash,publicEncrypt,randomBytes} from 'node:crypto';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {loadAccountCredentials} from './x_account_runtime.mjs';
@@ -14,6 +14,7 @@ const POINTS=x=>[...String(x)];
 const HEX=/^[a-f0-9]{64}$/;
 const SLUG=/^[a-z0-9][a-z0-9_-]{5,78}$/;
 const CAMPAIGN=/^sg_[a-z0-9]{16,32}$/;
+const RATE=Object.freeze({userRead:0.010,ownedPostRead:0.001,postCreateWithUrl:0.200});
 const date=s=>typeof s==='string'&&Number.isFinite(Date.parse(s));
 // Conservative X weighted length: CJK / astral characters weigh two,
 // a URL occupies the fixed t.co length (23) even when very long.
@@ -28,6 +29,77 @@ export function xWeight(value){
   },0);
 }
 const readJson=async(path,fallback)=>{try{return JSON.parse(await readFile(path,'utf8'));}catch(e){if(e.code==='ENOENT')return fallback;throw e;}};
+const roundUsd=value=>Math.round((Number(value)||0)*1e6)/1e6;
+function billingTracker(now=new Date()){
+  const rows=[],ownedPostIds=new Set();
+  let observedCost=0,headerCoverage=true,remaining=null,remainingSequence=0,postCreateObserved=false,attemptCount=0;
+  const attempt=()=>{attemptCount++;};
+  const observe=event=>{
+    const charged=event.creditsChargedUsd;
+    if(charged==null)headerCoverage=false; else observedCost+=charged;
+    if(event.creditsRemainingUsd!=null){remaining=event.creditsRemainingUsd;remainingSequence=attemptCount;}
+    const path=String(event.path||'');
+    if(event.method==='POST'&&path==='/2/tweets')postCreateObserved=true;
+    if(event.method==='GET'&&/^\/2\/users\/[^/]+\/tweets\?/.test(path)){
+      for(const item of Array.isArray(event.payload?.data)?event.payload.data:[]){
+        if(item?.id)ownedPostIds.add(String(item.id));
+      }
+    }
+    rows.push({method:event.method,path:path.replace(/\?.*$/,''),chargedUsd:charged});
+  };
+  const finish=({posted=false,postMayHaveSucceeded=false}={})=>{
+    let estimate=RATE.userRead+ownedPostIds.size*RATE.ownedPostRead;
+    if(posted||postMayHaveSucceeded)estimate+=RATE.postCreateWithUrl;
+    const completeHeaders=headerCoverage&&rows.length&&(!postMayHaveSucceeded||postCreateObserved);
+    const currentRemaining=remainingSequence===attemptCount?remaining:null;
+    return {
+      schemaVersion:1,
+      costUsd:roundUsd(completeHeaders?observedCost:estimate),
+      costMode:completeHeaders?'response_headers':'rate_estimate',
+      remainingUsd:currentRemaining==null?null:roundUsd(currentRemaining),
+      balanceMode:currentRemaining==null?'unavailable_no_extra_request':'response_header',
+      observedAt:now.toISOString(),
+      requestCount:attemptCount,
+      postCreateObserved,
+    };
+  };
+  return {attempt,observe,finish};
+}
+async function sealBilling(root,billing,receiptId,xId,log=()=>{}){
+  let pem;
+  try{pem=await readFile(resolve(root,'content/x-billing-public.pem'),'utf8');}
+  catch(error){
+    log('::warning::X billing public key unavailable; billing notification will be unavailable. code='+
+      String(error?.code||error?.name||'error').slice(0,40));
+    return null;
+  }
+  try{
+    const aesKey=randomBytes(32),iv=randomBytes(12);
+    const aad=Buffer.from('naojun-x-billing-v1|'+receiptId+'|'+xId);
+    const cipher=createCipheriv('aes-256-gcm',aesKey,iv);
+    cipher.setAAD(aad);
+    const ciphertext=Buffer.concat([
+      cipher.update(JSON.stringify(billing),'utf8'),
+      cipher.final(),
+    ]);
+    const wrappedKey=publicEncrypt({
+      key:pem,
+      padding:constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash:'sha256',
+    },aesKey);
+    return {
+      schemaVersion:1,
+      alg:'RSA-OAEP-SHA256+A256GCM',
+      wrappedKey:wrappedKey.toString('base64'),
+      iv:iv.toString('base64'),
+      tag:cipher.getAuthTag().toString('base64'),
+      ciphertext:ciphertext.toString('base64'),
+    };
+  }catch(error){
+    log('::warning::X billing envelope could not be sealed: '+String(error?.code||error?.name||'error').slice(0,80));
+    return null;
+  }
+}
 const cleanUrl=v=>{
   try{
     const x=new URL(v);
@@ -99,17 +171,24 @@ export async function run({mode=process.env.X_SOCIAL_MODE||'dry-run',env=process
   // If a response was lost, an uncertain item stops further automatic POSTs.
   const creds=await loadAccountCredentials({target:candidate.handle,env,
     storePath:resolve(root,'content/x-account-credentials.enc.json')});
-  const me=await xRequest('GET','/2/users/me',creds,{fetchImpl});
+  const billing=billingTracker(now);
+  const request=(method,path,options={})=>{
+    billing.attempt();
+    return xRequest(method,path,creds,{...options,fetchImpl,onResponse:billing.observe});
+  };
+  const me=await request('GET','/2/users/me');
   if(!me.data?.id||me.data?.username?.toLowerCase()!==candidate.handle)throw Error('wrong_x_identity');
   const recentUrl='/2/users/'+encodeURIComponent(me.data.id)+'/tweets?max_results=20&tweet.fields=entities';
-  const recent=await xRequest('GET',recentUrl,creds,{fetchImpl});
+  const recent=await request('GET',recentUrl);
   if(!Array.isArray(recent.data)&&recent.data!==undefined)throw Error('unverifiable_x_recent_posts');
   let matching=(recent.data||[]).find(row=>row.text===candidate.text||
     asUrl(row,candidate.canonicalUrl,candidate.campaignId));
   let id=matching?.id,status='reconciled';
+  let postAttempted=false;
   if(!id){
     try{
-      const posted=await xRequest('POST','/2/tweets',creds,{body:{text:candidate.text},fetchImpl});
+      postAttempted=true;
+      const posted=await request('POST','/2/tweets',{body:{text:candidate.text}});
       if(!posted.data?.id)throw Error('uncertain_x_post_response');
       id=posted.data.id;status='posted';
     }catch(error){
@@ -118,7 +197,7 @@ export async function run({mode=process.env.X_SOCIAL_MODE||'dry-run',env=process
       const match=/X API HTTP (\d{3})\b/.exec(String(error?.message||''));
       if(match&&Number(match[1])>=400&&Number(match[1])<500)throw error;
       try{
-        const after=await xRequest('GET',recentUrl,creds,{fetchImpl});
+        const after=await request('GET',recentUrl);
         matching=(after.data||[]).find(row=>row.text===candidate.text||
           asUrl(row,candidate.canonicalUrl,candidate.campaignId));
         id=matching?.id;
@@ -132,10 +211,15 @@ export async function run({mode=process.env.X_SOCIAL_MODE||'dry-run',env=process
       }
     }
   }
+  const billingReceipt=billing.finish({
+    posted:status==='posted',
+    postMayHaveSucceeded:postAttempted&&status==='reconciled'
+  });
+  const billingEnvelope=await sealBilling(root,billingReceipt,candidate.id,String(id),log);
   const receipt={id:candidate.id,selectionId:candidate.selectionId,account:candidate.account,
     topicId:candidate.topicId,campaignId:candidate.campaignId,textSha256:candidate.textSha256,
     canonicalUrl:candidate.canonicalUrl,xId:String(id),xUrl:'https://x.com/'+candidate.handle+'/status/'+id,
-    publishedAt:now.toISOString(),status};
+    publishedAt:now.toISOString(),status,...(billingEnvelope?{billingEnvelope}:{})};
   state.published.push(receipt);
   state.updatedAt=now.toISOString();
   await writeFile(statePath,JSON.stringify(state,null,2)+'\n','utf8');

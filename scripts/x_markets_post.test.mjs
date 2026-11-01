@@ -8,7 +8,9 @@ import {join} from 'node:path';
 const time=new Date('2026-10-30T16:00:00Z');
 const c={key:'a',secret:'b',token:'c',tokenSecret:'d'};
 const env={NAOJUN_X_API_KEY:'a',NAOJUN_X_API_SECRET:'b'};
-const response=(data,status=200)=>({ok:status<400,status,text:async()=>JSON.stringify(data)});
+const response=(data,status=200,headers={})=>({ok:status<400,status,
+ headers:{get:name=>headers[String(name).toLowerCase()]??null},
+ text:async()=>JSON.stringify(data)});
 const storeRoot=await mkdtemp(join(tmpdir(),'x-markets-post-store-'));
 const storePath=join(storeRoot,'credentials.json');
 await writeFile(storePath,JSON.stringify({
@@ -34,6 +36,17 @@ test('OAuth signature deterministic and signs query',()=>{
  assert.notEqual(a,auth('GET','https://api.x.com/2/users/me?foo=1',c,opts));
  assert.match(a,/oauth_signature=/);
  assert.throws(()=>auth('GET','https://example.com/path',c),/origin/);
+});
+test('xRequest exposes billing headers only through an optional response observer',async()=>{
+ const seen=[];
+ const {xRequest}=await import('./x_markets_post.mjs');
+ const data=await xRequest('GET','/2/users/me',c,{fetchImpl:()=>response({data:{id:'1'}},200,{
+  'x-credits-charged':'0.010','x-credits-remaining':'4.990'
+ }),onResponse:event=>seen.push(event)});
+ assert.equal(data.data.id,'1');
+ assert.equal(seen.length,1);
+ assert.equal(seen[0].creditsChargedUsd,0.01);
+ assert.equal(seen[0].creditsRemainingUsd,4.99);
 });
 test('dry run never calls API',async()=>{
  const r=await run({mode:'dry-run',env:{},now:time,log:()=>{},fetchImpl:()=>{throw Error('network');}});

@@ -27,13 +27,29 @@ export function auth(method, endpoint, c, options={}) {
   o.oauth_signature = createHmac('sha1',key).update(base).digest('base64');
   return 'OAuth ' + Object.entries(o).sort(([a],[b])=>a<b?-1:a>b?1:0).map(([k,v])=>enc(k)+'="'+enc(v)+'"').join(', ');
 }
-export async function xRequest(method,path,creds,{body,fetchImpl=fetch}={}) {
+const headerNumber=(headers,name)=>{
+  const raw=headers?.get?.(name);
+  if(raw==null||raw==='')return null;
+  const value=Number(raw);
+  return Number.isFinite(value)&&value>=0?value:null;
+};
+export async function xRequest(method,path,creds,{body,fetchImpl=fetch,onResponse}={}) {
   const url = HOST+path;
   const response = await fetchImpl(url,{method,headers:{Authorization:auth(method,url,creds),...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(15000)});
   const raw = await response.text();
   let payload;
   try {payload=raw?JSON.parse(raw):{};} catch {throw new Error('X API unreadable response: HTTP '+response.status);}
   if (!response.ok) throw new Error('X API HTTP '+response.status+': '+String(payload.title||payload.detail||payload.message||'Request failed').slice(0,120));
+  if(onResponse){
+    onResponse({
+      method:method.toUpperCase(),
+      path,
+      status:response.status,
+      payload,
+      creditsChargedUsd:headerNumber(response.headers,'x-credits-charged'),
+      creditsRemainingUsd:headerNumber(response.headers,'x-credits-remaining'),
+    });
+  }
   return payload;
 }
 export async function run({mode=process.env.X_POST_MODE||'dry-run',env=process.env,now=new Date(),fetchImpl=fetch,log=console.log,storePath=resolve(ROOT,'content/x-account-credentials.enc.json')}={}) {
