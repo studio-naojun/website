@@ -18,10 +18,13 @@ function authCreds(creds){
   };
 }
 
-async function requestJson(method,endpoint,creds,{fetchImpl=fetch}={}){
+async function requestJson(method,endpoint,creds,{fetchImpl=fetch,body=null}={}){
+  const headers={Authorization:oauthHeader(method,endpoint,authCreds(creds))};
+  if(body!==null) headers['Content-Type']='application/json';
   const response=await fetchImpl(endpoint,{
     method,
-    headers:{Authorization:oauthHeader(method,endpoint,authCreds(creds))},
+    headers,
+    ...(body!==null?{body:JSON.stringify(body)}:{}),
     signal:AbortSignal.timeout(30000),
   });
   const raw=await response.text();
@@ -83,23 +86,36 @@ async function verifyIdentity(handle,creds,{fetchImpl=fetch}={}){
 }
 
 async function lookupUsers(candidates,creds,{fetchImpl=fetch}={}){
-  const endpoint=API+'/1.1/users/lookup.json?include_entities=false&screen_name='+enc(candidates.join(','));
-  const users=await requestJson('GET',endpoint,creds,{fetchImpl});
+  const endpoint=API+'/2/users/by?usernames='+enc(candidates.join(','))
+    +'&user.fields=description,protected,public_metrics,verified,created_at';
+  const payload=await requestJson('GET',endpoint,creds,{fetchImpl});
   const map=new Map();
-  for(const user of Array.isArray(users)?users:[]){
-    const handle=String(user?.screen_name||'').toLowerCase();
+  for(const user of Array.isArray(payload?.data)?payload.data:[]){
+    const handle=String(user?.username||'').toLowerCase();
     if(handle) map.set(handle,user);
   }
   return map;
 }
 
-async function lookupFriendships(candidates,creds,{fetchImpl=fetch}={}){
-  const endpoint=API+'/1.1/friendships/lookup.json?screen_name='+enc(candidates.join(','));
-  const relationships=await requestJson('GET',endpoint,creds,{fetchImpl});
+async function lookupFriendships(sourceUserId,candidates,creds,{fetchImpl=fetch}={}){
+  const wanted=new Set(candidates.map(value=>String(value).toLowerCase()));
   const map=new Map();
-  for(const item of Array.isArray(relationships)?relationships:[]){
-    const handle=String(item?.screen_name||'').toLowerCase();
-    if(handle) map.set(handle,new Set(item.connections||[]));
+  let token='';
+  let pages=0;
+  do{
+    const endpoint=API+'/2/users/'+enc(sourceUserId)+'/following?max_results=100'
+      +(token?'&pagination_token='+enc(token):'');
+    const payload=await requestJson('GET',endpoint,creds,{fetchImpl});
+    for(const item of Array.isArray(payload?.data)?payload.data:[]){
+      const handle=String(item?.username||'').toLowerCase();
+      if(wanted.has(handle)) map.set(handle,new Set(['following']));
+    }
+    token=String(payload?.meta?.next_token||'');
+    pages++;
+  }while(token&&pages<20);
+  if(token) throw new Error('Following lookup exceeded pagination bound.');
+  for(const handle of wanted){
+    if(!map.has(handle)) map.set(handle,new Set());
   }
   return map;
 }
@@ -129,12 +145,12 @@ export function selectCandidates(orderedCandidates,userMap,relationshipMap,maxNe
       continue;
     }
     selected.push({
-      handle:String(user.screen_name),
-      id:String(user.id_str||user.id||''),
+      handle:String(user.username),
+      id:String(user.id||''),
       pinnedId,
       name:String(user.name||''),
       description:String(user.description||'').replace(/\s+/g,' ').slice(0,220),
-      followers:Number(user.followers_count||0),
+      followers:Number(user.public_metrics?.followers_count||0),
     });
     if(selected.length>=maxNew) break;
   }
@@ -142,15 +158,15 @@ export function selectCandidates(orderedCandidates,userMap,relationshipMap,maxNe
 }
 
 async function followOne(target,creds,{fetchImpl=fetch}={}){
-  const endpoint=API+'/1.1/friendships/create.json?user_id='+enc(target.id);
-  const user=await requestJson('POST',endpoint,creds,{fetchImpl});
-  if(String(user?.id_str||user?.id||'')!==String(target.id)){
-    throw new Error('Follow response user id mismatch for @'+target.handle+'.');
+  const endpoint=API+'/2/users/'+enc(creds.userId)+'/following';
+  const payload=await requestJson('POST',endpoint,creds,{
+    fetchImpl,
+    body:{target_user_id:String(target.id)},
+  });
+  if(payload?.data?.following!==true&&payload?.data?.pending_follow!==true){
+    throw new Error('X did not confirm follow for @'+target.handle+'.');
   }
-  if(String(user?.screen_name||'').toLowerCase()!==target.handle.toLowerCase()){
-    throw new Error('Follow response handle mismatch for @'+target.handle+'.');
-  }
-  return user;
+  return payload;
 }
 
 export async function planAccount(handle,candidates,maxNew,{
@@ -164,7 +180,7 @@ export async function planAccount(handle,candidates,maxNew,{
   const normalized=candidates.map(value=>candidateHandle(value));
   const users=await lookupUsers(normalized,creds,{fetchImpl});
   const resolved=[...users.keys()];
-  const relationships=resolved.length?await lookupFriendships(resolved,creds,{fetchImpl}):new Map();
+  const relationships=resolved.length?await lookupFriendships(creds.userId,resolved,creds,{fetchImpl}):new Map();
   const plan=selectCandidates(normalized,users,relationships,maxNew);
   for(const item of plan.selected){
     log('SELECT @'+handle+' -> @'+item.handle+' id='+item.id+' | '+item.name+' | followers='+item.followers+' | '+item.description);
@@ -200,12 +216,14 @@ export async function run({
   for(let accountIndex=0;accountIndex<plans.length;accountIndex++){
     const {handle,creds,plan}=plans[accountIndex];
     let followed=0;
+    const confirmedTargets=[];
     let attempt=0;
     for(const target of plan.selected){
       attempt++;
       try{
         await followOne(target,creds,{fetchImpl});
         followed++;
+        confirmedTargets.push(target);
         log('FOLLOWED @'+handle+' -> @'+target.handle+' ('+followed+'/'+config.max_new_per_account+')');
       }catch(error){
         log('FOLLOW_FAILED @'+handle+' -> @'+target.handle+' '+error.message);
@@ -223,6 +241,16 @@ export async function run({
         if(fatal) throw error;
       }
       if(attempt<plan.selected.length) await sleep(config.delay_ms);
+    }
+    if(confirmedTargets.length){
+      const verifyMap=await lookupFriendships(
+        creds.userId,
+        confirmedTargets.map(target=>target.handle.toLowerCase()),
+        creds,
+        {fetchImpl},
+      );
+      const missing=confirmedTargets.filter(target=>!verifyMap.get(target.handle.toLowerCase())?.has('following'));
+      if(missing.length) throw new Error('Follow readback missing: '+missing.map(target=>'@'+target.handle).join(', '));
     }
     log('DONE @'+handle+' followed='+followed+' planned='+plan.selected.length);
     if(accountIndex<plans.length-1) await sleep(5000);

@@ -11,10 +11,10 @@ test('curated follow config is bounded and account-specific',async()=>{
 
 test('selection preserves priority and excludes already-following, protected and unresolved accounts',()=>{
   const users=new Map([
-    ['a',{screen_name:'a',name:'A',description:'useful',followers_count:100}],
-    ['b',{screen_name:'b',name:'B',description:'existing',followers_count:200}],
-    ['c',{screen_name:'c',name:'C',description:'protected',followers_count:300,protected:true}],
-    ['d',{screen_name:'d',name:'D',description:'useful',followers_count:400}],
+    ['a',{id:'1',username:'a',name:'A',description:'useful',public_metrics:{followers_count:100}}],
+    ['b',{id:'2',username:'b',name:'B',description:'existing',public_metrics:{followers_count:200}}],
+    ['c',{id:'3',username:'c',name:'C',description:'protected',public_metrics:{followers_count:300},protected:true}],
+    ['d',{id:'4',username:'d',name:'D',description:'useful',public_metrics:{followers_count:400}}],
   ]);
   const relationships=new Map([
     ['a',new Set()],
@@ -29,7 +29,7 @@ test('selection preserves priority and excludes already-following, protected and
 
 test('selection carries pinned ids so apply can detect handle reuse',()=>{
   const users=new Map([
-    ['a',{id_str:'123',screen_name:'a',name:'A',description:'useful',followers_count:100}],
+    ['a',{id:'123',username:'a',name:'A',description:'useful',public_metrics:{followers_count:100}}],
   ]);
   const plan=selectCandidates([{handle:'a',id:'123'}],users,new Map([['a',new Set()]]),1);
   assert.equal(plan.selected[0].id,'123');
