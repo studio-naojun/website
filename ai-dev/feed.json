@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01T07:01:41.061+09:00",
+  "updated_at": "2026-11-01T13:02:47.404+09:00",
   "entries": [
     {
       "id": "daily-2026-11-01",
       "type": "daily",
       "published_at": "2026-11-01",
-      "updated_at": "2026-11-01T07:01:41.061+09:00",
+      "updated_at": "2026-11-01T13:02:47.404+09:00",
       "first_published_at": "2026-11-01",
       "title": "AI開発・セキュリティ日報｜2026年11月1日号",
       "summary": "偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。",
