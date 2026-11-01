@@ -1,0 +1,39 @@
+name: NAOJUN X Curated Follow
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Plan only, or apply up to 25 curated follows per account
+        required: true
+        type: choice
+        default: plan
+        options:
+          - plan
+          - apply
+
+permissions:
+  contents: read
+
+concurrency:
+  group: naojun-x-curated-follow
+  cancel-in-progress: false
+
+jobs:
+  follow:
+    if: inputs.mode != 'apply' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test curated follow guardrails
+        run: node --test scripts/x_curated_follow.test.mjs scripts/x_account_runtime.test.mjs scripts/x_account_credentials.test.mjs
+      - name: Plan or apply curated follows
+        env:
+          X_FOLLOW_MODE: ${{ inputs.mode }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_curated_follow.mjs
