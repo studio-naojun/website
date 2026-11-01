@@ -103,12 +103,24 @@ export async function run({
     id = duplicate.id;
     status = 'reconciled';
   } else {
-    const result = await xRequest('POST', '/2/tweets', creds, {body: {text: post.text}, fetchImpl});
-    if (!result.data?.id || result.data.text !== post.text) {
-      throw new Error('Uncertain POST response; inspect account before retrying.');
+    try {
+      const result = await xRequest('POST', '/2/tweets', creds, {body: {text: post.text}, fetchImpl});
+      if (!result.data?.id) throw new Error('X POST succeeded without a tweet id.');
+      if (result.data.text != null && result.data.text !== post.text) {
+        throw new Error('X POST returned a mismatched tweet body.');
+      }
+      id = result.data.id;
+      status = 'posted';
+    } catch (error) {
+      // A timed-out or otherwise ambiguous POST is never blindly retried.
+      // Re-read recent posts once and reconcile only an exact body match.
+      const after = await xRequest('GET', '/2/users/' + encodeURIComponent(me.data.id) + '/tweets?max_results=20', creds, {fetchImpl});
+      if (after.data != null && !Array.isArray(after.data)) throw error;
+      const recovered = (after.data || []).find(row => row?.text === post.text);
+      if (!recovered?.id) throw error;
+      id = recovered.id;
+      status = 'reconciled';
     }
-    id = result.data.id;
-    status = 'posted';
   }
 
   const url = 'https://x.com/' + HANDLE + '/status/' + id;

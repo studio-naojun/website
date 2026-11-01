@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {makePost, selectCandidate} from './x_markets_publish.mjs';
+import {makePost, run, selectCandidate} from './x_markets_publish.mjs';
 
 const feed = {
   entries: [
@@ -29,4 +29,41 @@ test('post copy uses canonical investment URL and stays compact', () => {
   assert.equal(post.url, 'https://naojun.jp/investment/weekly/2026-10-31/');
   assert.match(post.text, /^【NAOJUN Markets】/);
   assert.ok([...post.text].length < 180);
+});
+
+test('publish accepts successful X response with id but without echoed text', async () => {
+  const calls = [];
+  const fetchImpl = async (url, init) => {
+    calls.push([url, init.method]);
+    const payload = url.endsWith('/2/users/me')
+      ? {data:{id:'u1',username:'naojun_markets'}}
+      : url.includes('/tweets?')
+        ? {data:[]}
+        : {data:{id:'p1'}};
+    return new Response(JSON.stringify(payload), {status: init.method === 'POST' ? 201 : 200});
+  };
+  const files = new Map([
+    ['investment/feed.json', JSON.stringify(feed)],
+    ['content/x-markets-state.json', JSON.stringify({schema_version:1,launch_cutoff:'2026-10-31',published:[]})],
+  ]);
+  const {mkdtemp, mkdir, writeFile, readFile} = await import('node:fs/promises');
+  const {tmpdir} = await import('node:os');
+  const {join} = await import('node:path');
+  const root = await mkdtemp(join(tmpdir(), 'markets-publish-'));
+  await mkdir(join(root, 'investment'), {recursive:true});
+  await mkdir(join(root, 'content'), {recursive:true});
+  for (const [path, body] of files) await writeFile(join(root, path), body);
+  const result = await run({
+    mode:'publish-one',
+    root,
+    now:new Date('2026-11-01T00:00:00Z'),
+    fetchImpl,
+    env:{NAOJUN_X_API_KEY:'k',NAOJUN_X_API_SECRET:'s',NAOJUN_X_ACCESS_TOKEN:'t',NAOJUN_X_ACCESS_TOKEN_SECRET:'ts'},
+    log:()=>{},
+  });
+  assert.equal(result.status, 'posted');
+  assert.equal(result.id, 'p1');
+  const state = JSON.parse(await readFile(join(root, 'content/x-markets-state.json'), 'utf8'));
+  assert.equal(state.published[0].x_id, 'p1');
+  assert.equal(calls.filter(([,method]) => method === 'POST').length, 1);
 });
