@@ -1,5 +1,20 @@
 {
   "schemaVersion": 1,
-  "published": [],
-  "uncertain": []
+  "published": [
+    {
+      "id": "social_eb9e5e48424d746ebdc78361b1f1",
+      "selectionId": "gpt_20261101_1608",
+      "account": "security",
+      "topicId": "gitlab-cve-2026-97229-kev-deadline-20261101",
+      "campaignId": "sg_eb9e5e48424d746e",
+      "textSha256": "15142c6116f7ed00f875ef133fb91b14d07c92abcd9a971d248205d7ac8e6eed",
+      "canonicalUrl": "https://naojun.jp/ai-dev/daily/2026-10-30/",
+      "xId": "2116793370160804271",
+      "xUrl": "https://x.com/naojun_security/status/2116793370160804271",
+      "publishedAt": "2026-11-01T07:24:01.784Z",
+      "status": "posted"
+    }
+  ],
+  "uncertain": [],
+  "updatedAt": "2026-11-01T07:24:01.784Z"
 }
