@@ -14,16 +14,12 @@ on:
         description: X handle without @
         required: true
         type: string
-      state:
-        description: Encrypted request state from request step
+      request_run_id:
+        description: Request-step run ID that stores the encrypted OAuth state artifact
         required: false
         type: string
       verifier:
         description: One-time verifier/PIN shown by X
-        required: false
-        type: string
-      public_key_b64:
-        description: One-time RSA public key for encrypting final user tokens
         required: false
         type: string
 
@@ -52,18 +48,44 @@ jobs:
           result="$(node scripts/x_account_oauth.mjs request)"
           echo "AUTH_TARGET=$(jq -r .target <<<"$result")"
           echo "AUTH_URL=$(jq -r .authorizationUrl <<<"$result")"
-          echo "OAUTH_STATE=$(jq -r .state <<<"$result")"
+          printf '%s' "$(jq -r .state <<<"$result")" > "$RUNNER_TEMP/oauth-state.txt"
+      - name: Store encrypted request state
+        if: inputs.mode == 'request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: oauth-state-${{ inputs.target_handle }}
+          path: ${{ runner.temp }}/oauth-state.txt
+          retention-days: 1
+          if-no-files-found: error
+      - name: Download encrypted request state
+        if: inputs.mode == 'exchange'
+        uses: actions/download-artifact@v4
+        with:
+          name: oauth-state-${{ inputs.target_handle }}
+          path: ${{ runner.temp }}/oauth-state
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.request_run_id }}
+          github-token: ${{ github.token }}
       - name: Exchange approved authorization
         if: inputs.mode == 'exchange'
         env:
           TARGET_HANDLE: ${{ inputs.target_handle }}
-          OAUTH_STATE: ${{ inputs.state }}
+          OAUTH_STATE_FILE: ${{ runner.temp }}/oauth-state/oauth-state.txt
           OAUTH_VERIFIER: ${{ inputs.verifier }}
-          PUBLIC_KEY_B64: ${{ inputs.public_key_b64 }}
+          OUTPUT_MODE: artifact
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
           NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
         shell: bash
         run: |
+          export OAUTH_STATE="$(cat "$OAUTH_STATE_FILE")"
           result="$(node scripts/x_account_oauth.mjs exchange)"
           echo "AUTHORIZED_USER=$(jq -r .username <<<"$result")"
-          echo "TOKEN_CIPHERTEXT=$(jq -r .ciphertext <<<"$result")"
+          printf '%s' "$result" > "$RUNNER_TEMP/oauth-token.json"
+      - name: Store final user token for immediate secret import
+        if: inputs.mode == 'exchange'
+        uses: actions/upload-artifact@v4
+        with:
+          name: oauth-token-${{ inputs.target_handle }}
+          path: ${{ runner.temp }}/oauth-token.json
+          retention-days: 1
+          if-no-files-found: error

@@ -44,3 +44,23 @@ test('request state expires after the bounded authorization window', () => {
     /expired/,
   );
 });
+
+test('authorization URL relies on the active X account and never forces a password login', async () => {
+  const {requestAuthorization} = await import('./x_account_oauth.mjs');
+  const fetchImpl = async () =>
+    new Response(
+      'oauth_token=request-token&oauth_token_secret=request-secret&oauth_callback_confirmed=true',
+      {status:200},
+    );
+  const result = await requestAuthorization({
+    env:{
+      NAOJUN_X_API_KEY:'key',
+      NAOJUN_X_API_SECRET:'secret',
+      TARGET_HANDLE:'naojun_juken',
+    },
+    fetchImpl,
+    now:new Date('2026-11-01T03:00:00.000Z'),
+  });
+  assert.equal(result.authorizationUrl, 'https://api.x.com/oauth/authorize?oauth_token=request-token');
+  assert.doesNotMatch(result.authorizationUrl, /force_login|screen_name/);
+});

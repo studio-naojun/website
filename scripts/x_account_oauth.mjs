@@ -170,12 +170,7 @@ export async function requestAuthorization({
   );
   return {
     target,
-    authorizationUrl:
-      AUTHORIZE_URL +
-      '?oauth_token=' +
-      enc(requestToken) +
-      '&force_login=true&screen_name=' +
-      enc(target),
+    authorizationUrl: AUTHORIZE_URL + '?oauth_token=' + enc(requestToken),
     state,
   };
 }
@@ -208,6 +203,14 @@ export async function exchangeAuthorization({
   const user = await verifyUser({consumerKey, consumerSecret, token, tokenSecret}, fetchImpl);
   if (user.username.toLowerCase() !== target) {
     throw new Error('Wrong X account authorized; expected @' + target + ', got @' + user.username + '.');
+  }
+  if (env.OUTPUT_MODE === 'artifact') {
+    return {
+      username: user.username,
+      userId: user.id,
+      accessToken: token,
+      accessTokenSecret: tokenSecret,
+    };
   }
   const publicKeyPem = Buffer.from(String(env.PUBLIC_KEY_B64 || ''), 'base64').toString('utf8');
   if (!publicKeyPem.includes('BEGIN PUBLIC KEY')) throw new Error('Missing one-time public key.');
