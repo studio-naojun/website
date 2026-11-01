@@ -35,3 +35,22 @@ test('campaign attribution stays on the daily beacon; no visitor ID',()=>{
  const event=daily(out)[0];assert.equal(event.data.source,'bluesky');assert.equal(event.data.campaign,'ametsuta-play-20261030');
  assert.deepEqual(Object.keys(event.data).sort(),['action','campaign','landing','medium','path','source']);
 });
+
+test('rejected Web Lock falls back to the existing date-only deduplication', async () => {
+ const local=storage();
+ const navigator={locks:{request:()=>Promise.reject(new Error('Web Lock unavailable'))}};
+ const first=visit({local,navigator});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(daily(first).length,1);
+ const repeat=visit({local,navigator});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(daily(repeat).length,0);
+ assert.equal(local.getItem('naojun-daily-visit-v1'),'2026-10-30');
+ assert.equal(local.map.size,1);
+});
+test('synchronous Web Lock error cannot suppress daily and campaign landing', () => {
+ const navigator={locks:{request(){throw new Error('Lock API blocked');}}};
+ const out=visit({navigator,search:'?utm_source=bluesky&utm_medium=organic_social&utm_campaign=demo'});
+ assert.equal(daily(out).length,1);
+ assert.equal(out.requests.filter(x=>x.data.action==='landing').length,1);
+});
