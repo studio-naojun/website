@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "naojun_markets": {
+      "name": "NAOJUN MARKETS",
+      "description": "世界の経済・金融・マーケットを、事実とデータでわかりやすく。日々の動きから中長期の潮流まで、投資・ビジネスに役立つ視点をお届けします。",
+      "avatar": "assets/x-profiles/naojun_markets/avatar.png",
+      "banner": "assets/x-profiles/naojun_markets/banner.png"
+    },
+    "naojun_juken": {
+      "name": "NAOJUN JUKEN",
+      "description": "中学受験に役立つ情報を、最新の入試動向・学校選び・対策・学習法まで整理して発信。志望校合格に向けて、受験生とご家族をサポートします。",
+      "avatar": "assets/x-profiles/naojun_juken/avatar.png",
+      "banner": "assets/x-profiles/naojun_juken/banner.png"
+    },
+    "naojun_security": {
+      "name": "NAOJUN SECURITY",
+      "description": "AIの活用とリスク、セキュリティの最新動向をわかりやすく解説。安全に、そして前向きにテクノロジーと向き合うための実践的な情報をお届けします。",
+      "avatar": "assets/x-profiles/naojun_security/avatar.png",
+      "banner": "assets/x-profiles/naojun_security/banner.png"
+    }
+  }
+}

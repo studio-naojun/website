@@ -40,6 +40,7 @@ test('loads per-account OAuth1 token using only shared app secrets',async()=>{
     secret:'shared-secret',
     token:'markets-token',
     tokenSecret:'markets-token-secret',
+    userId:'m1',
   });
 });
 

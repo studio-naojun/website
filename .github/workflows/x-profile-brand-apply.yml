@@ -1,0 +1,46 @@
+name: NAOJUN X Profile Brand Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Verify identity only, or apply selected profile assets and copy
+        required: true
+        type: choice
+        default: verify
+        options:
+          - verify
+          - apply
+
+permissions:
+  contents: read
+
+concurrency:
+  group: naojun-x-profile-brand-apply
+  cancel-in-progress: false
+
+jobs:
+  profile:
+    if: inputs.mode != 'apply' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test profile brand package
+        run: node --test scripts/x_profile_brand_apply.test.mjs scripts/x_account_credentials.test.mjs scripts/x_account_runtime.test.mjs
+      - name: Verify selected image assets
+        shell: bash
+        run: |
+          test "$(find assets/x-profiles -type f -name '*.png' | wc -l)" -eq 6
+          test "$(stat -c%s assets/x-profiles/naojun_markets/avatar.png)" -lt 716800
+          test "$(stat -c%s assets/x-profiles/naojun_juken/avatar.png)" -lt 716800
+          test "$(stat -c%s assets/x-profiles/naojun_security/avatar.png)" -lt 716800
+      - name: Verify or apply X profiles
+        env:
+          X_PROFILE_MODE: ${{ inputs.mode }}
+          NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
+          NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
+        run: node scripts/x_profile_brand_apply.mjs
