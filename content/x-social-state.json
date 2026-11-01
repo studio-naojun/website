@@ -13,8 +13,21 @@
       "xUrl": "https://x.com/naojun_security/status/2116793370160804271",
       "publishedAt": "2026-11-01T07:24:01.784Z",
       "status": "posted"
+    },
+    {
+      "id": "social_9144b1b1dd6d0b9733411b9f5e6d",
+      "selectionId": "gpt_20261101_1702",
+      "account": "security",
+      "topicId": "ivanti-connect-secure-new-kev-20261030",
+      "campaignId": "sg_9144b1b1dd6d0b97",
+      "textSha256": "6d76116c5483ff5c3c6c2914d47b62e1726c794b2bc5e44427a4da676fecc2df",
+      "canonicalUrl": "https://naojun.jp/ai-dev/daily/2026-10-31/",
+      "xId": "2116809752491720725",
+      "xUrl": "https://x.com/naojun_security/status/2116809752491720725",
+      "publishedAt": "2026-11-01T08:29:07.526Z",
+      "status": "posted"
     }
   ],
   "uncertain": [],
-  "updatedAt": "2026-11-01T07:24:01.784Z"
+  "updatedAt": "2026-11-01T08:29:07.526Z"
 }
