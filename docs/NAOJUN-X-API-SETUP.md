@@ -12,16 +12,18 @@ Account: https://x.com/naojun_markets
 ## Owner action once — Developer Console
 1. While signed into @naojun_markets, open https://console.x.com/.
 2. Complete Developer onboarding. Review and personally accept the X Developer Agreement and policy. The assistant has not accepted any legal agreements.
-3. Create the app NAOJUN Markets Publisher with Read and Write permission and OAuth 1.0a User Context. Generate API Key, API Key Secret, Access Token and Access Token Secret for the SAME @naojun_markets account. If you change write permissions, regenerate tokens as needed.
+3. Create the app NAOJUN Markets Publisher with Read and Write permission and OAuth 1.0a User Context. Keep the shared API Key / API Key Secret in GitHub Secrets. Per-account Access Tokens are authorized through the repository OAuth workflow and stored only as authenticated ciphertext.
 4. Verify credit balance and set a conservative spending cap yourself. Published 2026-10-31 pricing: text-only Post Create $0.015, Post Create with URL $0.200; identity verification and own-timeline reads may be billed separately. Charges may change.
 
 ## Repository configuration
-In studio-naojun/website, visit Settings / Secrets and variables / Actions and add four repository secrets:
+In studio-naojun/website, repository Actions secrets contain only the two shared app credentials:
 
 - NAOJUN_X_API_KEY
 - NAOJUN_X_API_SECRET
-- NAOJUN_X_ACCESS_TOKEN
-- NAOJUN_X_ACCESS_TOKEN_SECRET
+
+Per-account OAuth1 Access Token / Access Token Secret values for @naojun_markets, @naojun_juken, and @naojun_security are stored in content/x-account-credentials.enc.json as AES-256-GCM ciphertext. The ciphertext is account-bound and derives its decryption key from NAOJUN_X_API_SECRET; plaintext user tokens are never committed.
+
+If NAOJUN_X_API_SECRET is rotated, re-authorize all three accounts through NAOJUN X Account OAuth so their sealed credentials are re-encrypted under the new shared secret.
 
 Never paste actual secret values into a chat, issue, workflow definition or public commit.
 

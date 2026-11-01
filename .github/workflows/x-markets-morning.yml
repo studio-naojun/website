@@ -40,14 +40,12 @@ jobs:
         with:
           node-version: '22'
       - name: Test Markets morning publisher
-        run: node --test scripts/x_markets_daily_publish.test.mjs scripts/x_markets_post.test.mjs
+        run: node --test scripts/x_account_runtime.test.mjs scripts/x_markets_daily_publish.test.mjs scripts/x_markets_post.test.mjs
       - name: Publish today's morning pulse at most once
         env:
           X_MARKETS_DAILY_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'publish-one' }}
           NAOJUN_X_API_KEY: ${{ secrets.NAOJUN_X_API_KEY }}
           NAOJUN_X_API_SECRET: ${{ secrets.NAOJUN_X_API_SECRET }}
-          NAOJUN_X_ACCESS_TOKEN: ${{ secrets.NAOJUN_X_ACCESS_TOKEN }}
-          NAOJUN_X_ACCESS_TOKEN_SECRET: ${{ secrets.NAOJUN_X_ACCESS_TOKEN_SECRET }}
         run: node scripts/x_markets_daily_publish.mjs
       - name: Persist morning publication receipt
         if: github.event_name != 'workflow_dispatch' || inputs.mode == 'publish-one'

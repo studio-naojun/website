@@ -1,10 +1,26 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {enc,jstDay,testText,auth,run} from './x_markets_post.mjs';
+import {sealCredential} from './x_account_credentials.mjs';
+import {mkdtemp,writeFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 const time=new Date('2026-10-30T16:00:00Z');
 const c={key:'a',secret:'b',token:'c',tokenSecret:'d'};
-const env={NAOJUN_X_API_KEY:'a',NAOJUN_X_API_SECRET:'b',NAOJUN_X_ACCESS_TOKEN:'c',NAOJUN_X_ACCESS_TOKEN_SECRET:'d'};
+const env={NAOJUN_X_API_KEY:'a',NAOJUN_X_API_SECRET:'b'};
 const response=(data,status=200)=>({ok:status<400,status,text:async()=>JSON.stringify(data)});
+const storeRoot=await mkdtemp(join(tmpdir(),'x-markets-post-store-'));
+const storePath=join(storeRoot,'credentials.json');
+await writeFile(storePath,JSON.stringify({
+ schema_version:1,
+ encryption:'aes-256-gcm-hkdf-sha256',
+ accounts:{
+  naojun_markets:{
+   username:'naojun_markets',user_id:'9',updated_at:'2026-11-01T00:00:00Z',
+   sealed:sealCredential({accessToken:'c',accessTokenSecret:'d'},'b','naojun_markets'),
+  },
+ },
+}));
 test('encoding and JST date boundary',()=>{
  assert.equal(enc("!'()*"),'%21%27%28%29%2A');
  assert.equal(jstDay(new Date('2026-10-30T14:59:59Z')),'2026-10-30');
@@ -24,31 +40,22 @@ test('dry run never calls API',async()=>{
  assert.equal(r.status,'dry-run');
 });
 test('missing secrets fail before API call',async()=>{
- await assert.rejects(()=>run({mode:'publish-test',env:{},now:time,log:()=>{},fetchImpl:()=>{throw Error('network');}}),/credentials/);
+ await assert.rejects(()=>run({mode:'publish-test',env:{},storePath,now:time,log:()=>{},fetchImpl:()=>{throw Error('network');}}),/credentials/);
 });
 test('multiline secrets are rejected before API calls',async()=>{
  let calls=0;
  const bad={...env,NAOJUN_X_API_SECRET:'first\nsecond'};
- await assert.rejects(()=>run({mode:'verify-only',env:bad,log:()=>{},fetchImpl:()=>{calls++;throw Error('called');}}),/Malformed X API secrets.*NAOJUN_X_API_SECRET/);
+ await assert.rejects(()=>run({mode:'verify-only',env:bad,storePath,log:()=>{},fetchImpl:()=>{calls++;throw Error('called');}}),/Malformed shared X app credentials.*NAOJUN_X_API_SECRET/);
  assert.equal(calls,0);
-});
-test('duplicate consumer and user credentials are rejected before network requests',async()=>{
- for(const field of ['NAOJUN_X_ACCESS_TOKEN','NAOJUN_X_ACCESS_TOKEN_SECRET']){
-   const replacement=field==='NAOJUN_X_ACCESS_TOKEN' ? 'NAOJUN_X_API_KEY' : 'NAOJUN_X_API_SECRET';
-   const bad={...env,[field]:env[replacement]};
-   let calls=0;
-   await assert.rejects(()=>run({mode:'verify-only',env:bad,log:()=>{},fetchImpl:()=>{calls++;throw new Error('network called');}}),/GitHub Secrets mismatch/);
-   assert.equal(calls,0);
- }
 });
 test('wrong account blocked',async()=>{
  let n=0;
- await assert.rejects(()=>run({mode:'publish-test',env,now:time,log:()=>{},fetchImpl:()=>{n++;return response({data:{id:'9',username:'naojunjp'}});}}),/Wrong X account/);
+ await assert.rejects(()=>run({mode:'publish-test',env,storePath,now:time,log:()=>{},fetchImpl:()=>{n++;return response({data:{id:'9',username:'naojunjp'}});}}),/Wrong X account/);
  assert.equal(n,1);
 });
 test('duplicate text on verified account skips POST',async()=>{
  let methods=[];
- const r=await run({mode:'publish-test',env,now:time,log:()=>{},fetchImpl:(url,opt)=>{
+ const r=await run({mode:'publish-test',env,storePath,now:time,log:()=>{},fetchImpl:(url,opt)=>{
    methods.push(opt.method);
    return response(url.endsWith('/users/me')?{data:{id:'9',username:'naojun_markets'}}:{data:[{id:'42',text:testText(time)}]});
  }});
@@ -56,7 +63,7 @@ test('duplicate text on verified account skips POST',async()=>{
 });
 test('only one POST after preflight',async()=>{
  let methods=[];
- const r=await run({mode:'publish-test',env,now:time,log:()=>{},fetchImpl:(url,opt)=>{
+ const r=await run({mode:'publish-test',env,storePath,now:time,log:()=>{},fetchImpl:(url,opt)=>{
    methods.push(opt.method);
    if (url.endsWith('/users/me')) return response({data:{id:'9',username:'naojun_markets'}});
    if (url.includes('/users/9/tweets')) return response({data:[]});
@@ -65,7 +72,7 @@ test('only one POST after preflight',async()=>{
  assert.equal(r.url,'https://x.com/naojun_markets/status/99');assert.deepEqual(methods,['GET','GET','POST']);
 });
 test('read failures prevent POST',async()=>{
- await assert.rejects(()=>run({mode:'publish-test',env,now:time,log:()=>{},fetchImpl:url=>url.endsWith('/users/me')?response({data:{id:'9',username:'naojun_markets'}}):response({title:'Rate limited'},429)}),/HTTP 429/);
+ await assert.rejects(()=>run({mode:'publish-test',env,storePath,now:time,log:()=>{},fetchImpl:url=>url.endsWith('/users/me')?response({data:{id:'9',username:'naojun_markets'}}):response({title:'Rate limited'},429)}),/HTTP 429/);
 });
 test('unknown mode rejected',async()=>{
  await assert.rejects(()=>run({mode:'publish',env,log:()=>{}}),/Unsupported mode/);

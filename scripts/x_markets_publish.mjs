@@ -2,6 +2,7 @@ import {readFile, writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {dirname, resolve} from 'node:path';
 import {xRequest} from './x_markets_post.mjs';
+import {loadAccountCredentials} from './x_account_runtime.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const HOST = 'https://api.x.com';
@@ -72,17 +73,6 @@ async function loadJson(path, fallback) {
   }
 }
 
-function credentials(env) {
-  const creds = {
-    key: env.NAOJUN_X_API_KEY,
-    secret: env.NAOJUN_X_API_SECRET,
-    token: env.NAOJUN_X_ACCESS_TOKEN,
-    tokenSecret: env.NAOJUN_X_ACCESS_TOKEN_SECRET,
-  };
-  if (Object.values(creds).some(value => !value)) throw new Error('Missing X API credentials.');
-  return creds;
-}
-
 export async function run({
   mode = process.env.X_MARKETS_PUBLISH_MODE || 'dry-run',
   env = process.env,
@@ -108,7 +98,11 @@ export async function run({
     return {status: 'dry-run', candidate: candidate.id, text: post.text};
   }
 
-  const creds = credentials(env);
+  const creds = await loadAccountCredentials({
+    target: HANDLE,
+    env,
+    storePath: resolve(root, 'content/x-account-credentials.enc.json'),
+  });
   const me = await xRequest('GET', '/2/users/me', creds, {fetchImpl});
   if (!me.data?.id || me.data.username?.toLowerCase() !== HANDLE) {
     throw new Error('Wrong X account; expected @' + HANDLE + '. Aborting.');
