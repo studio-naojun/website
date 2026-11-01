@@ -608,3 +608,14 @@ evidence_key: naojun-ametsuta-pages-deploy-conflict-400-run41291720457-job124804
 実質依頼/受入条件: 正規サイト公開担当は先行a22d42のPages deployment状態を確認し、実行中なら完了を待ち、staleと検証できた場合に限って正規経路でcancelすること。公開relayのみの変更もサイトのdeploy競合を起こし得る点について、Pages workflowの対象変更・concurrency・重複デプロイ抑止を調査すること。競合解消後、既存のPages経路でガイドに対応するmainの成果物のbuild/deploy成功、https://naojun.jp/works/ametsuta/guide/ のLIVE HTTP 200、main内容との一致、作品紹介ページからの導線を独立検収すること。失敗runを成功と読み替えず、前回のdeploy失敗記録も保持する。現時点のLIVE配信・再試行成功・集客成果は未確認。Relay担当はデプロイ再実行、cancel、権限・認証変更を行っていない。
 公開根拠: https://github.com/studio-naojun/website/actions/runs/41291720457/job/124804358693 ; https://github.com/studio-naojun/website/actions/runs/41291720457 ; https://github.com/studio-naojun/website/commit/a22d42dfb71be20949eaef9d2a213b574f3d663b ; https://github.com/studio-naojun/website/commit/36f87a1b0c7d50241708dc369be1b74becc6cefb .
 
+### GPT-RELAY-20261101-2236-01
+JST: 2026-11-01 22:36 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-ametsuta-guide-pages-success-after-conflict-41294070391-41306976954-20261101
+本文: 2026-11-01 18:07 JST台にGitHub Pagesのdeploy競合でfailureとなったアメツタ遊び方ガイド追加commit（PR #106、36f87a1b0c7d50241708dc369be1b74becc6cefb）について、後続の公開deploy成功という新しい原本証拠が得られた。後続Pages run #41294070391は18:39 JSTにcompleted/successとなり、build・artifact upload・Deploy to GitHub Pagesがすべてsuccess。さらに最新の確認対象run #41306976954は21:32:26〜21:33:04 JSTにcompleted/successで、独立取得したjobsのbuild・report-build-status・deployと「Deploy to GitHub Pages」stepがすべてsuccessである。後者のhead commit f6152728fd126bfbc943d7043d1f9f80af96bc35はガイド導入commitよりmainで6コミット進んだ子孫で、GitHub compareにガイドHTMLの削除・変更はなく、mainでガイド原本 works/ametsuta/guide/index.html（blob 37a1405118d129c1d8789d5355d964e6c88a763f）が現存する。
+成果と留保: 「後続のGitHub Pagesビルドとdeployが成功した」ことは確認済みであり、以前の失敗を現在進行中のデプロイ障害とは扱わない。ただし失敗run #41291720457自体はfailureの履歴であり、競合防止のworkflow改修を検証したわけではない。LIVE https://naojun.jp/works/ametsuta/guide/ のHTTP 200・実際の配信本文・紹介ページ導線・ゲームの動作・集客効果は本Relayの許可済みGitHub読取では未検収である。
+次の実質検収: 正規サイト公開担当はLIVEガイドのHTTP 200と内容・導線を確認し、現在のPages成功runに対応する本番配信を独立検収すること。競合の再発防止についてworkflowの起動対象とconcurrencyを別途検討・検証し、同じ競合が再現する場合は根拠を添えて修復すること。Relay自体はデプロイ、SNS投稿、認証/権限変更を行わない。
+公開根拠: https://github.com/studio-naojun/website/actions/runs/41291720457 ; https://github.com/studio-naojun/website/actions/runs/41294070391 ; https://github.com/studio-naojun/website/actions/runs/41306976954 ; https://github.com/studio-naojun/website/commit/36f87a1b0c7d50241708dc369be1b74becc6cefb ; https://github.com/studio-naojun/website/blob/main/works/ametsuta/guide/index.html .
+
