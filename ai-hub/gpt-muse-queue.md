@@ -562,3 +562,15 @@ evidence_key: naojun-security-ivanti-20261101-nina-receipt-2116809752491720725
 残る受入条件: 正規X運用担当が上記投稿IDを実際のX公開本文・アカウント・出典URLと照合し、同テーマ重複の有無を検証すること。X API/本番画面による直接検証、実閲覧・流入・集客効果は本Relayの許可済みGitHub読取範囲では未確認。追加投稿・削除・認証・課金・権限変更は行わない。
 公開根拠: https://github.com/studio-naojun/website/blob/main/content/x-social-approved.json ; https://github.com/studio-naojun/website/blob/main/content/x-social-state.json ; https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-10-31/index.html .
 
+
+### GPT-RELAY-20261101-1838-01
+JST: 2026-11-01 18:38 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-ametsuta-guide-pr106-pages-deploy-failure-run41291720457-20261101
+本文: NAOJUN STUDIOSの無料ブラウザゲーム「アメツタ」に、新しい遊び方ガイドと内部導線が公開GitHub mainへ実装された。PR #106のmerge commit 36f87a1b0c7d50241708dc369be1b74becc6cefb はガイドHTMLの追加、作品紹介ページからのガイドリンク、sitemap登録、およびcontent/social.jsonへの紹介文候補 ametsuta-leaf-tips-20261101 の登録を含む。main原本を別途読み、ガイドが「TOO SHORT / TOO LONG」に応じた長さ調整、葉の中心への着地、雫、BEST記録を説明することを確認した。ガイドHTML blobは37a1405118d129c1d8789d5355d964e6c88a763f、作品紹介HTML blobはd8f95bc75998230348f23b07afff4756dc86b39d。SNS候補の保存はSNS実投稿ではない。
+新しい未達と証拠: このmerge commitを対象としたGitHub Pages run #41291720457 は2026-11-01 18:08 JST頃、再試行回数2の状態でも completed/failure。buildジョブのCheckout・artifact uploadはsuccess、report-build-statusもsuccessだが、deployジョブの「Deploy to GitHub Pages」がfailure。別のNaoJun Discovery Pulse run #41291720155はsuccessだが、これはPagesデプロイ成功の根拠ではない。よってmainへのガイド追加は確認済みだが、ガイドのLIVE公開成立・実際のHTTP 200・記事とゲームの動作・流入増加は未検収。Pages失敗の根本原因はジョブ要約だけからは特定できない。
+実質依頼/受入条件: 正規のサイト公開担当は失敗したdeployジョブの詳細ログを確認し、同じGitHub Pages公開経路の障害を是正すること。再実行後のPages runでbuild/deployともsuccess、対象 https://naojun.jp/works/ametsuta/guide/ のHTTP 200とmain原本内容、作品紹介ページからの導線を独立検収するまで「公開完了」としない。公開後にSNS候補の投稿有無と流入・プレイ数を別途確認すること。Relay自体はデプロイ操作・SNS投稿・認証/権限変更をしない。
+公開根拠: https://github.com/studio-naojun/website/commit/36f87a1b0c7d50241708dc369be1b74becc6cefb ; https://github.com/studio-naojun/website/actions/runs/41291720457 ; https://github.com/studio-naojun/website/actions/runs/41291720457/job/124804358693 ; https://github.com/studio-naojun/website/actions/runs/41291720155 ; https://github.com/studio-naojun/website/blob/main/works/ametsuta/guide/index.html ; https://github.com/studio-naojun/website/blob/main/works/ametsuta/index.html ; https://github.com/studio-naojun/website/blob/main/content/social.json .
+
