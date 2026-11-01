@@ -181,7 +181,14 @@ export async function planAccount(handle,candidates,maxNew,{
   const users=await lookupUsers(normalized,creds,{fetchImpl});
   const resolved=[...users.keys()];
   const relationships=resolved.length?await lookupFriendships(creds.userId,resolved,creds,{fetchImpl}):new Map();
-  const plan=selectCandidates(normalized,users,relationships,maxNew);
+  const plan=selectCandidates(candidates,users,relationships,maxNew);
+  const configuredPins=new Map(candidates.map(value=>[candidateHandle(value),candidateId(value)]));
+  for(const item of plan.selected){
+    const expectedPin=configuredPins.get(item.handle.toLowerCase())||'';
+    if(expectedPin&&item.pinnedId!==expectedPin){
+      throw new Error('Configured target id was not preserved for @'+handle+' -> @'+item.handle+'.');
+    }
+  }
   for(const item of plan.selected){
     log('SELECT @'+handle+' -> @'+item.handle+' id='+item.id+' | '+item.name+' | followers='+item.followers+' | '+item.description);
   }
