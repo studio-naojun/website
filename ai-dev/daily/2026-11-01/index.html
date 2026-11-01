@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。">
+  <meta name="description" content="Linux IPv4 TCP（CVE-2026-98432）とJava Kinesis Producer Libraryの認証情報露出、偽AI配布ZIPの条件付き安全対処。">
   <title>AI開発・セキュリティ日報｜2026年11月1日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261004b">
@@ -14,10 +14,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月1日号">
-  <meta property="og:description" content="偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。">
+  <meta property="og:description" content="Linux IPv4 TCP（CVE-2026-98432）とJava Kinesis Producer Libraryの認証情報露出、偽AI配布ZIPの条件付き安全対処。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-01/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月1日号","description":"偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。","datePublished":"2026-11-01","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-01/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-01T13:02:47.404+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月1日号","description":"Linux IPv4 TCP（CVE-2026-98432）とJava Kinesis Producer Libraryの認証情報露出、偽AI配布ZIPの条件付き安全対処。","datePublished":"2026-11-01","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-01/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-01T19:03:08.816+09:00"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior studio-article">
@@ -31,17 +31,19 @@
   <header class="ai-dev-article-hero">
     <div class="container">
       <div class="eyebrow">K.A.N.A.D.E. / AI DEVELOPER WATCH</div>
-      <div class="eyebrow">DAILY / 初回公開 2026-11-01 / 更新 2026-11-01 13:02 JST</div>
+      <div class="eyebrow">DAILY / 初回公開 2026-11-01 / 更新 2026-11-01 19:03 JST</div>
       <h1>AI開発・セキュリティ日報｜2026年11月1日号</h1>
-      <p class="ai-dev-lead">偽ChatGPT・Claude配布ZIPのDLL悪用、GitHub Webhook送信元IP追加、Dependabot到達可能性分析とOpenAI検索障害の解消確認。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　初回確認：2026-11-01 朝JST・記事データ更新：13:02 JST</p>
+      <p class="ai-dev-lead">Linux IPv4 TCP（CVE-2026-98432）とJava Kinesis Producer Libraryの認証情報露出、偽AI配布ZIPの条件付き安全対処。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　初回確認：2026-11-01 朝JST・記事データ更新：19:03 JST</p>
     </div>
   </header>
   <article class="ai-dev-article">
-    <p><strong>調査時点：2026年11月1日朝JST。</strong> 10月27〜30日の一次資料に基づき、見落とすと影響する条件と今日できる確認を整理した。<strong>11月1日に新たな大規模侵害が発生したという記事ではない。</strong> 最新の一次情報を必要に応じて確認する。</p>
+    <p><strong>初回調査：2026年11月1日朝JST。最終追補確認：同日19時枠。</strong> 10月27〜30日の既刊一次資料に加え、10月31日〜11月1日に公開・更新されたAWS公式の2件を追補した。<strong>新たな実悪用やJunの実機侵害を確認したという意味ではない。</strong> 影響条件と今日できる確認を整理する。</p>
 <h2>本日の優先対応</h2>
 <p><strong>優先度の意味。</strong> P0は悪用や重大被害が確認され、該当環境で即時封じ込めが必要な事象。P1は条件に当てはまると重大な影響があり早期の対応が必要な事象。P2は重要な運用・仕様の変更。偽ZIPを実行した端末は実被害未確認でも直ちに隔離・調査を始める（該当端末の対応はP0相当）。閲覧のみ・未実行の端末は同じ侵害が起きたとは扱わない。</p>
 <p><strong>P1（該当者限定）：</strong> 「ChatGPT / Claudeの新しいデスクトップ版」を名乗るGitHubの非公式ZIPをWindowsで実行した場合、正規署名付きexeだけでなく同梱DLLや永続化を確認する。公式提供物全体が侵害されたという話ではない。</p>
+<p><strong>P1（19時追加：Linuxサーバー）：</strong> CVE-2026-98432は修正前Linux kernel上で特定のIPv4 TCPリスナー条件が成立すると遠隔のコード実行につながり得る。自主管理EC2/EKS/ECSなどの実起動kernelと更新・再起動計画を優先確認。<strong>攻撃実行済みとの確認ではない</strong>。</p>
+<p><strong>P1（19時追加：Java Kinesis利用者）：</strong> CVE-2026-119117は旧Kinesis Producer Library（KPL）の認証情報がDEBUGログやnative process argumentsに出得る問題。1.0.8以降への更新と必要なkey/session失効を確認。Kinesisサービス全般の漏えいではない。</p>
 <p><strong>P2（Webhook運用者）：</strong> GitHubからのWebhookを固定の着信IP許可リストで制御している場合、GitHub公式Meta APIに追加された3範囲を確認する。自動同期済みなら原則作業不要。</p>
 <p><strong>P2（開発者向け）：</strong> GitHub Dependabotの「到達可能性分析」は一部のEnterprise Cloud JavaScript/TypeScript向けプレビュー。警告が「Unreachable」でも無条件に放置しない。</p>
 <h2>1. 偽AIデスクトップ配布と署名済み実行ファイルの悪用（P1：該当ZIP実行者のみ）</h2>
@@ -65,14 +67,25 @@
 <p><strong>何が起きたか。</strong> OpenAI Statusは2026年10月30日19:38 UTC頃からDots、ChatGPT Workと一部ChatGPT thinking体験に検索エラーが発生したと記録。<strong>同日21:14 UTC頃（10月31日06:14 JST）に解消済み</strong>。これは11月1日に発生した障害ではなく、通常のLLM APIが一律に停止したとの意味でもない。</p>
 <p><strong>対処・確認。</strong> 対象時間帯に失敗した検索処理は、重複した書込み・送信が成立していないことを確認したうえで必要なものだけ再実行する。後続が依存する場合はデータ取得成功・既存結果との一致を確認。現在新たな異常があるときは別インシデントとして公式statusを確認する。</p>
 <p><strong>一次出典。</strong> <a href="https://status.openai.com/incidents/01M6754SR14HCQ3E9FX426E2N7" target="_blank" rel="noopener noreferrer">OpenAI公式Incident</a>（解消報告2026-10-30 UTC）。</p>
+<h2>5. Linux IPv4 TCP処理のuse-after-free（CVE-2026-98432、P1：対象Linuxホストのみ）</h2>
+<p><strong>事象・公表日。</strong> AWS Security Bulletin 2026-160（2026-10-30 22:15 PDT公表＝10月31日14:15 JST、10月31日17:15 PDT更新＝11月1日09:15 JST）によると、Linux kernelのIPv4 TCPハンドシェイク経路にuse-after-freeがあり、特定の条件では認証されていない遠隔の送信者がIPv4 TCPパケットで到達可能なリスナーに干渉し、遠隔コード実行の可能性がある。AWSのAmazon Linux CVE台帳では主な影響としてクラッシュ/DoSまたはメモリ破損を説明している。<strong>実悪用を確認したという意味ではない</strong>。kernel 4.4以降という大まかな対象記載を、すべての4.4以降のビルドが脆弱という意味に読み替えず、配布元の修正済みパッケージと実起動kernelを照合する。</p>
+<p><strong>該当する条件。</strong> 修正前の影響kernelを起動し、攻撃者が到達し得るIPv4 TCPリスナーがある自主管理Linuxホスト・EC2・Lightsail、EKS/ECSの自主管理node等。AWSはAmazon Linux 2/2023の修正版kernelを提供済み。EKS-optimized AL2023 AMIはv20261031以降、ECS-EC2 AMIは20261031以降を示す。AWS Lambdaは外部から到達するIPv4 TCPリスナーがないためこの経路では影響しないとAWSが明記。Fargateの新規taskは2026-11-01 13:00 UTC（22:00 JST）以降のpatched platform予定で、19時JST時点で完了したとは扱わない。他Linuxディストリビューションは各配布元の修正公告で確認する。</p>
+<p><strong>安全な確認と対策。</strong> OS/AMI、現在起動中のkernel、インターネットからのIPv4 TCP着信有無、配布元security advisoryのfixed package、EKS/ECS node AMIを読み取りで確認。Amazon Linuxでは正式更新経路でkernelパッケージを更新し、停止時間を調整したreboot/rolling node交換後に実起動kernelとアプリ疎通・TCPヘルスチェックを再確認する。kernelパッケージをダウンロードしただけでは修正反映とは言えない。変更前にイメージ/復旧手順を確保し、失敗時は<strong>修正済み</strong>のknown-goodイメージ・node poolへ切り戻す（無条件に脆弱kernelへ戻さない）。更新不能時のMPTCP無効化やIPv4 options制御はAWSが限定的緩和として説明するが完全修正ではなく、通信断を生む可能性があるため検証なしの全環境一括適用はしない。</p>
+<p><strong>根拠・次回確認。</strong> AWS <a href="https://aws.amazon.com/security/security-bulletins/2026-160-aws/" target="_blank" rel="noopener noreferrer">https://aws.amazon.com/security/security-bulletins/2026-160-aws/</a> 、Amazon Linux <a href="https://explore.alas.aws.amazon.com/CVE-2026-98432.html" target="_blank" rel="noopener noreferrer">https://explore.alas.aws.amazon.com/CVE-2026-98432.html</a> 。2026-11-01 19時枠JST確認。次回はAWS bulletinのEKS/Fargate/Bottlerocket等の提供完了、配布元security updateとKEV新規追加の有無を再確認する。</p>
+<h2>6. Amazon Kinesis Producer Library for Javaの認証情報露出（CVE-2026-119117、P1：KPL利用者のみ）</h2>
+<p><strong>事象・公表日。</strong> AWS Security Bulletin 2026-159は2026-10-30 23:00 PDT（11月1日15:00 JST）に公開。Kinesis Data Streams自体の一律漏えいではなく、JavaのKinesis Producer Library（KPL）の旧版でAWS認証情報がdaemon DEBUGログとnative子プロセスのコマンドライン引数に出る問題。対象は旧com.amazonaws:amazon-kinesis-producerの0.x系0.15.12以下、およびsoftware.amazon.kinesis:amazon-kinesis-producerの1.0.8未満。<strong>1.0.8以降が公式修正版</strong>。</p>
+<p><strong>影響条件。</strong> 旧版KPLをアプリケーションに組み込み、ログのローカル閲覧者またはホスト/コンテナのプロセス引数閲覧者がいる環境。daemon DEBUGログ無効化はログ経路を減らすだけで、<strong>旧版の引数経路を除去しない</strong>。ログ/引数が閲覧できたことだけで認証情報が悪用されたと断定しない。</p>
+<p><strong>安全な確認・修正。</strong> Maven/Gradle依存一覧とlockfileで実装座標/実際のjar版を確認し、KPL 1.0.8以降へ移行してproducerのput成功率・リトライ・遅延を測る。修正前にログ閲覧権限を制限し、daemon loggerをINFO以上にし、"Starting Native Process"行を安全に除外/マスクする。過去DEBUGログやprocess監査記録に秘密が残っていないか<strong>内容を公開・複写せず</strong>権限ある環境で確認し、露出可能性があれば長期IAMキーをローテートし必要に応じactive role sessionsを失効する。秘密が残る古いログの保存・削除は組織の証拠保全と保存方針に従う。更新失敗は設定・デプロイを復旧し、影響する旧jarを再び公衆/不可信プロセスと同居させない。</p>
+<p><strong>根拠・次回確認。</strong> AWS <a href="https://aws.amazon.com/security/security-bulletins/2026-159-aws/" target="_blank" rel="noopener noreferrer">https://aws.amazon.com/security/security-bulletins/2026-159-aws/</a> 、公式release <a href="https://github.com/awslabs/amazon-kinesis-producer/releases/tag/v1.0.8" target="_blank" rel="noopener noreferrer">https://github.com/awslabs/amazon-kinesis-producer/releases/tag/v1.0.8</a> 。2026-11-01 19時枠JST確認。次回は公式bulletinの追補、KPL release/依存更新、認証情報露出の確認結果を評価。Jun端末/サイトでのKPL・脆弱Linux利用は検証しておらず該当とは言えない。</p>
 <h2>確認範囲と更新履歴</h2>
 <p>2026-11-01朝JSTに初回調査し、13時枠でGitHub Statusのsummary.json（更新2026-11-01 08:54 JST、Operational/進行中incident 0件）、CISA管理KEV JSON（catalogVersion 2026.10.30、dateReleased 2026-10-31 02:02 JST）、Check Point公式調査とGitHub Changelogを再照合した。OpenAIの個別障害解消はincidentページで確認し、API summary.jsonの更新日時は古いため新規無障害の証明には使わない。10月31日公表のCursor/Ivanti等は10月31日号ですでに扱っている。新規の大規模P0を作為的に設定しない。上記の重要情報は10月27〜30日に原典公表されたもので、11月1日に新規発生したと断定しない。</p>
 <p>- <strong>2026-11-01 朝JST：</strong> 初稿を作成。公開原本は同日07:01 JSTに更新され、07:03:40 JSTの独立LIVE検査で記事・feedを含む8 URLのHTTPS 200とバイト一致を確認。初回公開の正確な瞬間はこの検査では証明できないため、07:03を初回公開時刻とは呼ばない。</p>
 <p>- <strong>2026-11-01 13時枠：</strong> Claude Opus 5.5の独立レビューを一次情報と照合。条件別優先度、偽配布ZIPのIOCと観測日、Windowsパス、WebhookとDependabot条件を訂正。最新の公開検収はPrivate provenanceへ保存する。</p>
+<p>- <strong>2026-11-01 19時枠（新規追補）：</strong> AWS Security Bulletin 2026-160（Linux kernel IPv4 TCPの条件付き到達リスク）および2026-159（Java KPLの認証情報露出）を公式原典で確認し、既存URLを維持して追記。いずれも悪用や個別端末被害の確認ではない。訂正元の初回公開日2026-11-01は維持する。</p>
     <aside class="source-note">
       <h2>出典・更新履歴</h2>
-      <p>調査：2026年11月1日朝・13時枠JST。記事データ初回更新：2026-11-01 07:01 JST、訂正データ更新：2026-11-01 13:02 JST。原典は2026年10月27〜30日に公開されたもので、11月1日に新規発生した事件として扱っていません。</p>
-      <p>一次資料：<a href="https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/" target="_blank" rel="noopener noreferrer">Check Point Research</a>、<a href="https://github.blog/changelog/2026-10-29-webhook-ip-ranges-added-to-the-meta-api/" target="_blank" rel="noopener noreferrer">GitHub Webhook</a>、<a href="https://github.blog/changelog/2026-10-28-prioritize-dependabot-alerts-with-reachability-analysis/" target="_blank" rel="noopener noreferrer">Dependabot Reachability</a>、<a href="https://status.openai.com/incidents/01M6754SR14HCQ3E9FX426E2N7" target="_blank" rel="noopener noreferrer">OpenAI Status</a>。</p>
+      <p>調査：2026年11月1日朝・13時・19時枠JST。記事データ初回更新：2026-11-01 07:01 JST、13時訂正データ更新：13:02 JST、19時追補データ更新：19:03 JST。初稿の原典は10月27〜30日、19時追補のAWS公告は10月31日〜11月1日JST。実悪用・個別環境の侵害を断定しません。</p>
+      <p>一次資料：<a href="https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/" target="_blank" rel="noopener noreferrer">Check Point Research</a>、<a href="https://github.blog/changelog/2026-10-29-webhook-ip-ranges-added-to-the-meta-api/" target="_blank" rel="noopener noreferrer">GitHub Webhook</a>、<a href="https://github.blog/changelog/2026-10-28-prioritize-dependabot-alerts-with-reachability-analysis/" target="_blank" rel="noopener noreferrer">Dependabot Reachability</a>、<a href="https://status.openai.com/incidents/01M6754SR14HCQ3E9FX426E2N7" target="_blank" rel="noopener noreferrer">OpenAI Status</a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-160-aws/" target="_blank" rel="noopener noreferrer">AWS 2026-160</a>、<a href="https://aws.amazon.com/security/security-bulletins/2026-159-aws/" target="_blank" rel="noopener noreferrer">AWS 2026-159</a>。</p>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
   </article>
