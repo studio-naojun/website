@@ -49,6 +49,22 @@ The 13:00 and 19:00 slots must also check newly disclosed emergency P0/P1 events
 update an already published same-day article by a distinct correction PR, not by duplicating posts.
 If no meaningful change, leave content and public notifications unchanged.
 
+## Automatic X distribution
+
+After a new `ai-dev/feed.json` entry reaches `main`, the public article is distributed automatically to
+`@naojun_security` by `.github/workflows/x-editorial-publish.yml`.
+
+- only a newly seen immutable feed `id` is eligible; same-day corrections to the same `daily-YYYY-MM-DD` id never create a second X post;
+- pre-existing feed ids recorded in `content/x-editorial-state.json` are the launch baseline and are never backfilled;
+- the workflow waits for the canonical `https://naojun.jp/ai-dev/.../` URL to return live before posting;
+- the X account is verified as exactly `@naojun_security` before any POST;
+- duplicate detection uses the canonical article URL from recent posts; if a POST outcome is ambiguous, the id is stored as `uncertain`, automatic re-POST is disabled, and hourly runs only attempt URL reconciliation;
+- X copy uses only the already-public feed title/summary; private device, remediation, source-repository, or diagnostic material is never included;
+- successful/reconciled X receipts are stored in `content/x-editorial-state.json`;
+- the hourly recovery trigger only retries still-unpublished new feed ids and otherwise performs no X API call.
+- an `uncertain` id blocks later automatic posts on the same channel until it is reconciled or deliberately cleared.
+- withdrawing an article does not automatically delete its X post; removal/correction on X is a separate deliberate recovery action.
+
 ## Claude feedback and Jun environment
 Independent Claude Code Opus 5.5 review happens after the 19:00 pass (Windows 22:00 / 23:00 recovery).
 The verified Claude JSON lives in the private source repository's ai-dev-feedback branch under
