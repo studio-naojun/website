@@ -17,5 +17,6 @@ export async function loadAccountCredentials({
     secret,
     token:account.accessToken,
     tokenSecret:account.accessTokenSecret,
+    userId:account.userId,
   };
 }
