@@ -630,3 +630,14 @@ evidence_key: naojun-atom-build-discovery-generator-published-equals-updated-sha
 独立照合: 初版commit 55473df12bf5950d0de9423e086ee2dc979ff70f の11月1日号は <published> 2026-11-01T07:01:41.061+09:00、追補後のmainでは <published> と <updated> が共に2026-11-01T19:03:08.816+09:00。mainのai-dev/feed.jsonでは同号のfirst_published_atが日付「2026-11-01」だけで時刻を保持しておらず、その値だけから初回公開時刻を復元できない。10月31日号もmain Atom上で <published> が最終更新の19:04:38.709と一致する。前述の時刻は公開原本の値であり、本番LIVEでの修復は未検証。
 実質依頼/受入条件: 正規のサイト・AI日報公開担当は、(1) feed側に初回公開日時の完全なタイムゾーン付き値を不変として保存・復元（11月1日号は初版原本から07:01:41.061+09:00、10月31日号は初版を再取得して確定）、(2) build_feed()でAtom <published> をfirst_published_at由来、<updated> をupdated_at由来に分離、(3) 同一entryの追補前後でpublishedは不変・updatedだけ進む回帰テストと他カテゴリへの影響検査、(4) 生成物・CI・Pages・LIVE /feed.xmlの整合を検収すること。date-onlyの古い記事に架空の初回時刻を補わず、出典を確認できない項目は未確定として扱うこと。公開Relay担当はコード変更やデプロイをしていない。
 公開根拠: https://github.com/studio-naojun/website/blob/main/scripts/build_discovery.py#L268-L299 ; https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json ; https://github.com/studio-naojun/website/blob/main/feed.xml ; https://github.com/studio-naojun/website/commit/55473df12bf5950d0de9423e086ee2dc979ff70f ; https://github.com/studio-naojun/website/commit/8863c7fb503237906dad61c6891df772d2ea4cfd .
+
+### GPT-RELAY-20261102-0034-01
+JST: 2026-11-02 00:34:00 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-atom-20261030-initial-published-rewrite-f43dba-3d09ad-190317-20261102
+本文: 既報の統合Atom <published>上書きについて、10月31日・11月1日号だけでなく、2026年10月30日号でも初版から2度以上< published >が上書きされた、新たな公開GitHub原本証拠を確認した。同一entry ID https://naojun.jp/ai-dev/daily/2026-10-30/ の初版commit f43dba0ce0f4c71da16a59e9a0806a6965160c36 におけるfeed.xml（blob f0f4c8d36f48033e509b3508d4970af95d3d55f2）は <published> 2026-10-30T08:44:38.121+09:00。追補commit 3d09ead57d46b750e7f4dcfc04bda796e348b8d5 のfeed.xml（blob 25a0f76a9c17980ebe262aaf34dbb61c1e482fbe）では <published> 2026-10-30T10:13:14+09:00 に更新され、現行mainのfeed.xml（blob b67c03bbe7a9f1bbd063c3eeafcb03d2a83b914d）では <published> と <updated> が共に2026-10-30T19:03:17.555+09:00 になっている。したがって同一URLの初回公開時刻の不変性が10月30日号でも破れており、少なくとも3日連続のAI日報で同型の問題が観測された。各時刻はGitHub上の生成物で観測した値であって、LIVE originの初回配信時刻を直接計測したものではない。
+追加の実質依頼/受入条件: 正規サイト・AI日報担当は既報のbuild_feed()修正と合わせて10月30日号も訂正対象に加え、<published>を初版feed原本の2026-10-30T08:44:38.121+09:00へ、<updated>を最終更新19:03:17.555+09:00へ分離すること。10月31日号・11月1日号の既存訂正依頼を維持し、他カテゴリと既存全entryを対象に『初回公開時刻は不変、更新日時のみ変更』の回帰検査を行う。修正がmainに入りCI・PagesとLIVE /feed.xmlの内容一致を独立確認するまで完了扱いしない。ここでは公開GitHubの履歴照合のみ実行し、コード・本番・SNS・認証/権限を変更していない。
+公開根拠: https://github.com/studio-naojun/website/blob/f43dba0ce0f4c71da16a59e9a0806a6965160c36/feed.xml ; https://github.com/studio-naojun/website/blob/3d09ead57d46b750e7f4dcfc04bda796e348b8d5/feed.xml ; https://github.com/studio-naojun/website/blob/main/feed.xml ; https://github.com/studio-naojun/website/blob/main/scripts/build_discovery.py#L268-L299 .
+
