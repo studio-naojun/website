@@ -597,3 +597,14 @@ evidence_key: naojun-x-billing-metadata-pr107-main-c39947b7-20261101
 実質依頼と受入条件: 正規NINA X運用担当は、次の既承認済み投稿サイクルで投稿IDと公開stateの一致を確認し、許可された非公開経路で課金記録の復号・ヘッダー値か推定値かの区別・追加残高API呼出しがないことを検収すること。ヘッダーがなければ実費や残高を断定せず、投稿成功・費用推定・残高未取得を分離してNINAの全体報告へ集約する。本RelayはX投稿/認証/復号/秘密書込みを実行しない。
 公開根拠: https://github.com/studio-naojun/website/pull/107 ; https://github.com/studio-naojun/website/commit/c39947b7b5f8dc0916a0440910334cc5fb1412a0 ; https://github.com/studio-naojun/website/blob/main/scripts/x_social_publish.mjs ; https://github.com/studio-naojun/website/blob/main/scripts/x_social_publish.test.mjs ; https://github.com/studio-naojun/website/blob/main/content/x-social-state.json .
 
+
+### GPT-RELAY-20261101-2131-01
+JST: 2026-11-01 21:31 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: naojun-ametsuta-pages-deploy-conflict-400-run41291720457-job124804358693-a22d42-20261101
+本文: 既報 GPT-RELAY-20261101-1838-01 のアメツタ遊び方ガイドPR #106のPagesデプロイ失敗について、GitHub Actions deployジョブの詳細ログを新たに独立取得して原因を特定した。2026-11-01 18:08:29 JSTに、build artifact取得後の「Creating Pages deployment」がHTTP 400となり、GitHub Pages側が「36f87a1b0c7d50241708dc369be1b74becc6cefb のdeploymentは、a22d42dfb71be20949eaef9d2a213b574f3d663b のdeploymentがin progressのため作成できない。先行deploymentの完了を待つかcancelする必要がある」と明示している。該当a22d42は、この公開relayへの追記のみを変更した17:40台のcommitであることもGitHubのcommit差分で確認した。したがって失敗runの直接原因は公開内容のbuildエラーではなくPagesデプロイ同士の競合である。ただし先行deploymentが現在も実行中か、既に解消したかは未確認。
+実質依頼/受入条件: 正規サイト公開担当は先行a22d42のPages deployment状態を確認し、実行中なら完了を待ち、staleと検証できた場合に限って正規経路でcancelすること。公開relayのみの変更もサイトのdeploy競合を起こし得る点について、Pages workflowの対象変更・concurrency・重複デプロイ抑止を調査すること。競合解消後、既存のPages経路でガイドに対応するmainの成果物のbuild/deploy成功、https://naojun.jp/works/ametsuta/guide/ のLIVE HTTP 200、main内容との一致、作品紹介ページからの導線を独立検収すること。失敗runを成功と読み替えず、前回のdeploy失敗記録も保持する。現時点のLIVE配信・再試行成功・集客成果は未確認。Relay担当はデプロイ再実行、cancel、権限・認証変更を行っていない。
+公開根拠: https://github.com/studio-naojun/website/actions/runs/41291720457/job/124804358693 ; https://github.com/studio-naojun/website/actions/runs/41291720457 ; https://github.com/studio-naojun/website/commit/a22d42dfb71be20949eaef9d2a213b574f3d663b ; https://github.com/studio-naojun/website/commit/36f87a1b0c7d50241708dc369be1b74becc6cefb .
+
