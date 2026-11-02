@@ -754,3 +754,14 @@ evidence_key: wavlink-wn536ax6-a-six-cves-cveproject-version-scope-cvss-20261102
 実務結論・受入条件: @naojun_securityで扱う場合は6件を型番・影響版・脆弱性種別・CVSSの違いを示す一本の防御的注意喚起に統合し、小刻みな「第5件」「第6件」の重複連投を避ける。利用者は機種と実ファームウェア版を確認し、WAN側管理・不要なリモート機能の公開を制限し、メーカーの正規更新・告知を確認する。正規公開担当が既存投稿IDとの重複とメーカー発表を確認し、実投稿した場合に限り投稿URL・本文を別途検収する。本RelayではSNS投稿・機器変更・修正版確認を実施していない。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120277.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120278.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120279.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120280.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120281.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120282.json .
 
+
+### GPT-RELAY-20261102-1331-01
+JST: 2026-11-02 13:31:57 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1000-01
+evidence_key: rust-zip-cve-2026-115905-ghsa-optin-header-consistency-v905-v921-20261102
+本文: MuseのRust製zipクレート「Zip Cloaking」（CVE-2026-115905、候補SNS-20261102-1000-SEC-01）を、GitHub Security Advisoryの原本とCVEProject公式PUBLISHEDレコード、およびzip-rs/zip2の修正済みリリースタグのソースで独立検証した。GitHub Advisory GHSA-m665-v7pm-7grjは影響版を9.0.4以前、修正版を9.0.5と記載し、CVSS v4.0を10.0（Critical）と評価する。原因はZIPのCentral Directory側のファイル名を検査する処理と、Local File Header側のファイル名で展開する処理の解釈が食い違うこと。安全と判断されたZIPが別の名前のファイルを展開・上書きする可能性がある。ただし、これだけであらゆるZIP受信・解凍が即時RCEになるわけではなく、検査と展開の分離、書込み先の権限、上書き対象が後で実行される等の追加条件が必要である。
+今回の独立した重要検証: zip-rs/zip2の公式タグv9.0.5のsrc/read/stream.rs（blob e95feb2a46d1f62aee7cd8b3ac4e72d36793caed）でも、v9.2.1（blob bc940c609ac6a75f4e4fd34cd8a86ffd3b731dcb）でも、ZipStreamReader::newは互換性のためenforce_header_consistency: falseを既定値としている。両タグにenforce_header_consistency(true)の選択APIが存在する。v9.2.1では有効化したextractが検証完了まで一時ステージング領域を利用する。一方、visitへ渡す利用者側の処理は整合性検証が終了する前にエントリへアクセスするため、戻り値Okの確認前に取り消せない副作用を発生させないこと。公式Advisoryの「9.0.5で修正」と「旧来のZipStreamReader::newで整合性検証が既定で有効」は同義ではない。更新だけで全運用経路が保護されたと案内しない。
+担当依頼・受入条件: @naojun_securityの正規公開担当は既存受領記録で重複を照合したうえで、「zipの影響版を9.0.5以降へ更新」かつ「未信頼ZIPをZipStreamReaderで扱う経路ではenforce_header_consistency(true)を明示」「visitの副作用は検証完了後」「展開先を実行ファイル・設定から分離し、不要な上書き権限を禁止」を防御中心に案内すること。依存バージョンと呼出し箇所の確認を推奨し、公開前に下流ライブラリ側の使用有無も検証する。実際の悪用、個別製品の該当、修正版に関する実機テスト結果、SNS投稿・公開効果はこのRelayでは確認していない。
+公開一次根拠: https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/10/GHSA-m665-v7pm-7grj/GHSA-m665-v7pm-7grj.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/115xxx/CVE-2026-115905.json ; https://github.com/zip-rs/zip2/blob/v9.0.5/src/read/stream.rs ; https://github.com/zip-rs/zip2/blob/v9.2.1/src/read/stream.rs ; https://github.com/zip-rs/zip2/commit/8068ab480ccf8daa7411424e365fcdbe6d09443e .
