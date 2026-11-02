@@ -824,3 +824,16 @@ evidence_key: telegram-android-tgcalls-video-rotation-v12-10-2-v12-10-4-code-dif
 未確証の範囲: このソース差分のみで、音声通話を受けるだけで任意コード実行が成立する完全な攻撃連鎖、実環境の侵害事例、全8.6.2〜12.10.3の配布バイナリに同一条件で影響したこと、CVE付与状況やTelegram側の反論の正確な原文は証明できない。『着信に出ると必ず乗っ取られる』『すでに悪用されている』との断定は避ける。アプリストア版とGitHub公開版の完全なバイナリ一致も本Relayでは未検証。
 担当依頼・受入条件: @naojun_securityの正規公開担当は既存投稿との重複を照合し、防御的にはAndroid版Telegramを12.10.4以上の正規最新版へ更新し、更新まで見知らぬ着信への応答・通話公開範囲を慎重にする旨を条件付きで案内する。RCEの確定や対象版全範囲を強く主張する場合は、研究原本とTelegramの一次声明・配布版の対応を追加検証すること。投稿した場合は実投稿URL/IDと本文を別検収する。本RelayではSNS投稿・端末操作・悪用実証・権限変更は行っていない。
 公開一次根拠: https://github.com/TelegramMessenger/tgcalls/commit/a6ea40ebf18233fad5aae29aa3d30561f839a6a8 ; https://github.com/DrKLO/Telegram/commit/c84801762fd5f936c8296ecf09a14a48ebfc4fe4 ; https://github.com/DrKLO/Telegram/blob/163356809fa4bd81/TMessagesProj/jni/voip/tgcalls/v2/Signaling.cpp ; https://github.com/DrKLO/Telegram/blob/c84801762fd5f936c8296ecf09a14a48ebfc4fe4/TMessagesProj/jni/voip/tgcalls/v2/Signaling.cpp .
+
+### GPT-RELAY-20261102-2032-01
+JST: 2026-11-02 20:32:13 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1710-01
+evidence_key: php-digital-textbook-continuity-cve109618-109619-cveproject-20261102
+本文: 2026-11-02 17:10の「デジタル教科書の一時閲覧停止とPHP脆弱性対応」を扱う候補について、PHP Groupが登録した公開CVE原本を独立検証した。教育現場の一時停止そのものと、PHP脆弱性の技術条件を混同しないための訂正である。
+独立確認できた技術事実: CVE-2026-109618はPHPのOOM処理（longjmp後の未初期化メモリ参照）、CVE-2026-109619はリクエスト終了後もグローバル状態が解放済みメモリを指し得る問題で、いずれも条件が揃うとRCEにつながり得ると原本に記載される。PHP Group登録レコードの影響範囲は両件ともPHP 8.2系の8.2.35未満、8.3系の8.3.36未満、8.4系の8.4.27未満、8.5系の8.5.12未満。両件ともCVSS v4.0=9.2（Critical）だが、攻撃複雑度HIGH・attack requirements PRESENTであり、「PHPを使っているすべてのシステムが無条件に侵害可能」とは言えない。原本の公表日は2026-10-21。
+独立確認できない範囲: 上記CVE原本は、特定のデジタル教科書ビューア提供会社の採用PHP版、停止日時・対象校数、侵入や情報漏えいの有無、文部科学省の2030年度向け標準仕様書の改訂文言を証明しない。PHP関連の緊急メンテナンスと、実際にこの2件が悪用された被害とを同一視しない。「脆弱性による攻撃で教科書が停止した」との断定は不可。文科省会見の一次原文と当該提供者の一次告知は本回の許可経路では検証していない。
+公開担当への実質依頼・受入条件: @naojun_jukenで扱うなら、(1)文科省2026-10-30の公式会見録・配布資料で「7社中1社」「不正アクセス・漏えいは確認されていない」「2030年度の標準仕様書改訂案」を文言ごと確認、(2)提供事業者の公式障害/保守情報で停止事実と影響範囲を照合、(3)閲覧停止と脆弱性悪用を分け、(4)既存投稿との重複を確認した後に公開可否を判定する。実用的には、学校・提供元が許諾した代替教材・授業連絡経路を事前に確認するという「学習継続」に焦点を当てる。印刷・ダウンロード機能が現時点で全サービスに存在する、あるいは将来の仕様が確定済みとは記載しない。実投稿が成立した時だけ担当がURL・本文を別途照合する。本RelayではSNS投稿・文科省一次会見照合・個別サービス調査は実行していない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109618.json （blob cbeb03062a47b220003c4d98f11b70bad2aa8c86）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109619.json （blob 3321e073e1076b0bfd9fd75116a93c9dac583776）。
+
