@@ -1,0 +1,60 @@
+name: FUTURECAST Monthly Evidence Review
+
+on:
+  schedule:
+    # 23:00 UTC on day 1 = 08:00 JST on day 2.
+    - cron: '0 23 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: futurecast-monthly-evidence
+  cancel-in-progress: false
+
+jobs:
+  evidence-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate research candidate and approved source list
+        run: |
+          python3 tools/futurecast/build_data_disagrees.py --check
+          python3 tools/futurecast/monthly_evidence.py --check
+      - name: Check source availability; no probability estimates
+        run: |
+          python3 tools/futurecast/monthly_evidence.py --scan \
+            --output "$RUNNER_TEMP/futurecast-evidence.json" \
+            --markdown "$RUNNER_TEMP/futurecast-review.md"
+          cat "$RUNNER_TEMP/futurecast-review.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep evidence-check receipt as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: futurecast-evidence-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/futurecast-evidence.json
+            ${{ runner.temp }}/futurecast-review.md
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Create one review issue per JST month
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          month="$(TZ=Asia/Tokyo date +%Y-%m)"
+          title="FUTURECAST 50+ 根拠調査 — ${month}"
+          previous="$(gh issue list --state all --limit 200 --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)"
+          if [[ -n "$previous" ]]; then
+            echo "Already opened for this month: #$previous"
+          else
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/futurecast-review.md"
+          fi

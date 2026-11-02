@@ -30,6 +30,11 @@ jobs:
         run: node --test tools/futurecast/tests/*.test.mjs
       - name: Verify Astra ERA SHIFTS static editorial atlas
         run: python3 tools/futurecast/build_era_shifts.py --check
+      - name: Verify DATA DISAGREES and offline update contracts
+        run: |
+          python3 tools/futurecast/build_data_disagrees.py --check
+          python3 tools/futurecast/monthly_evidence.py --check
+          python3 -m unittest discover -s tools/futurecast/tests -p 'test_data_disagrees.py' -v
       - name: Verify public forecast history
         shell: bash
         run: |
