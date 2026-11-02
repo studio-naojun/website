@@ -1,5 +1,6 @@
 import {Game, clamp, CONTACT_MS, PLATFORM_WIDTH_SCALE} from './core.mjs?v=20261024-resultcopy-r3';
 import {createWorld, resizeWorld, drawWorld} from './world.mjs?v=20261024-resultcopy-r3';
+import {shareGameResult} from './share-result.mjs?v=20261102-resultshare-a';
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -10,6 +11,9 @@ const runResultEl = document.querySelector('#run-result'), recordStatusEl = docu
 const recordGapEl = document.querySelector('#record-gap');
 const endingTitleEl = document.querySelector('#ending-title'), endingCopyEl = document.querySelector('#ending-copy');
 const retryButton = document.querySelector('#retry-button');
+const shareButton = document.querySelector('#share-button');
+const shareStatusEl = document.querySelector('#share-status');
+const shareFallback = document.querySelector('#share-fallback');
 const params = new URLSearchParams(location.search);
 const seed = Number(params.get('seed') ?? crypto.getRandomValues(new Uint32Array(1))[0]) >>> 0;
 let pb = 0;
@@ -956,7 +960,8 @@ function resultVisible() {
   return game.missVisibleAt !== null && !gameoverEl.hidden;
 }
 function blockResultBackgroundInput(e) {
-  if (!resultVisible() || e.target === retryButton || retryButton.contains(e.target)) return;
+  const allowed = [retryButton, shareButton, shareFallback].some((el) => e.target === el || el.contains(e.target));
+  if (!resultVisible() || allowed) return;
   e.preventDefault();
   e.stopImmediatePropagation();
 }
@@ -990,12 +995,35 @@ retryButton.addEventListener('click', e => {
   pointer = null;
   if (game.retry(stamp(e), 'result-button')) {
     gameoverEl.hidden = true;
+    shareStatusEl.hidden = true;
+    shareFallback.hidden = true;
     canvas.focus({preventScroll: true});
+  }
+});
+shareButton.addEventListener('click', async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!resultVisible() || shareButton.disabled) return;
+  shareButton.disabled = true;
+  shareStatusEl.hidden = true;
+  shareFallback.hidden = true;
+  try {
+    const outcome = await shareGameResult({
+      height: game.height, best: game.pb, platform: navigator
+    });
+    if (outcome === 'cancelled') return;
+    shareStatusEl.textContent = outcome === 'shared' ? '共有しました。' :
+      outcome === 'copied' ? '結果とゲームのURLをコピーしました。' :
+      '共有が使えません。下のリンクからゲームを開けます。';
+    shareStatusEl.hidden = false;
+    shareFallback.hidden = outcome !== 'unavailable';
+  } finally {
+    shareButton.disabled = false;
   }
 });
 window.addEventListener('keydown', e => {
   if (resultVisible()) {
-    if (e.target === retryButton && (e.code === 'Space' || e.code === 'Enter')) return;
+    if (e.code === 'Tab' || ((e.target === retryButton || e.target === shareButton) && (e.code === 'Space' || e.code === 'Enter')) || (e.target === shareFallback && e.code === 'Enter')) return;
     e.preventDefault();
     return;
   }
@@ -1003,7 +1031,7 @@ window.addEventListener('keydown', e => {
 });
 window.addEventListener('keyup', e => {
   if (resultVisible()) {
-    if (e.target === retryButton && (e.code === 'Space' || e.code === 'Enter')) return;
+    if (e.code === 'Tab' || ((e.target === retryButton || e.target === shareButton) && (e.code === 'Space' || e.code === 'Enter')) || (e.target === shareFallback && e.code === 'Enter')) return;
     e.preventDefault();
     return;
   }
