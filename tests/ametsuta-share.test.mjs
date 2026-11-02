@@ -44,3 +44,15 @@ test('unavailable native share falls back to local clipboard only', async () => 
 test('unsupported browsers do not auto-send or throw', async () => {
   assert.equal(await shareGameResult({height: 0, best: 0, platform: {}}), 'unavailable');
 });
+
+test('the published iframe and result controls keep the share action user initiated', async () => {
+  const {readFileSync} = await import('node:fs');
+  const html = readFileSync(new URL('../works/ametsuta/play/index.html', import.meta.url), 'utf8');
+  const outer = readFileSync(new URL('../works/ametsuta/index.html', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../works/ametsuta/play/main.mjs', import.meta.url), 'utf8');
+  assert.match(html, /id="share-button"/);
+  assert.match(html, /share-status/);
+  assert.match(outer, /web-share; clipboard-write/);
+  assert.match(source, /shareGameResult\(/);
+  assert.match(source, /e\.code === 'Tab'/);
+});
