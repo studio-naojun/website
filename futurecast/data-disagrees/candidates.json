@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-03",
+  "qualified_count": 0,
+  "kind": "research_only",
+  "data_probability_status": "unestimated",
+  "opinion_status": "same_question_survey_missing",
+  "criteria": [
+    "12か月以内に起こる、事前にYes/Noを判定できる社会・産業の構造変化",
+    "同じ事象・期限を問う代表性のある調査で、回答者の過半数が発生確率50%未満と判断",
+    "基準率と誤差分布を明示したデータ分析から発生確率が厳密に50%超。中心見通しだけでは不可"
+  ],
+  "candidates": [
+    {
+      "id": "solar-nuclear",
+      "number": "01",
+      "domain": "ENERGY / CIVILIZATION",
+      "title": "世界の太陽光発電量が、原子力を超える。",
+      "question": "2026暦年の世界の太陽光PV発電量（TWh）が、同年の原子力発電量を上回るか",
+      "deadline": "2026年12月31日",
+      "resolution": "2027年公開の同一統計系列の暦年比較で判定",
+      "signal": "Emberの2025年実績では太陽光2,778 TWh、原子力2,812 TWh。差は34 TWh。IEAは2026年の逆転を予測しています。",
+      "metric": [
+        {
+          "label": "2025 太陽光",
+          "value": "2,778 TWh"
+        },
+        {
+          "label": "2025 原子力",
+          "value": "2,812 TWh"
+        }
+      ],
+      "support": "原子力が2026年に10%増えても、太陽光が約11.4%伸びれば逆転します（同一系列で計算した感度分析）。",
+      "falsifier": "太陽光の拡大が予想を大幅に下回るか、原子力の増加が想定以上になる。",
+      "missing": "数値確率に変換する予測誤差分布と、同じ発電量比較を尋ねる代表性ある世論調査。",
+      "probability": null,
+      "human_forecast": null,
+      "status": "人々の予想を未検証",
+      "sources": [
+        {
+          "label": "Ember 世界の電力2026・2025年実績",
+          "url": "https://ember-energy.org/latest-insights/global-electricity-review-2026/2025-in-review/"
+        },
+        {
+          "label": "IEA Electricity 2026 — Supply",
+          "url": "https://www.iea.org/reports/electricity-2026/supply"
+        }
+      ]
+    },
+    {
+      "id": "china-ev",
+      "number": "02",
+      "domain": "MOBILITY / INDUSTRY",
+      "title": "中国の新車販売で、EVが55%を超える。",
+      "question": "2026暦年の中国の新車販売に占めるBEV＋PHEVの割合が55%を超えるか",
+      "deadline": "2026年12月31日",
+      "resolution": "2027年公表の2026暦年販売実績と対象車種定義を照合",
+      "signal": "IEAによれば2025年の販売比率は約55%。2026年前半の動向を反映した追加見通しは、年間60%超を予測しています。",
+      "metric": [
+        {
+          "label": "2025年比率",
+          "value": "約55%"
+        },
+        {
+          "label": "2026年見通し",
+          "value": "60%超"
+        }
+      ],
+      "support": "世界最大級の自動車市場で、電動化が新車販売の多数派として定着しつつあります。",
+      "falsifier": "年末の販売鈍化、車種分類の変更、集計母数の不一致。",
+      "missing": "55%超となる確率の推定分布と、中国EV比率の将来値を直接問う代表性ある調査。",
+      "probability": null,
+      "human_forecast": null,
+      "status": "人々の予想を未検証",
+      "sources": [
+        {
+          "label": "IEA Global EV Outlook 2026",
+          "url": "https://www.iea.org/reports/global-ev-outlook-2026/executive-summary"
+        },
+        {
+          "label": "IEA Electric Car Markets — 2026年更新",
+          "url": "https://www.iea.org/reports/electric-car-markets-in-a-time-of-uncertainty/executive-summary"
+        }
+      ]
+    },
+    {
+      "id": "waymo-tokyo",
+      "number": "03",
+      "domain": "AUTONOMY / CITY",
+      "title": "東京の一般客が、無人の自動運転車に乗る。",
+      "question": "2027年11月3日までに、車内安全運転者なしの完全自動運転配車サービスが東京で一般客向けに営業開始するか",
+      "deadline": "2027年11月3日",
+      "resolution": "Waymo／GOの一般向け営業開始報告と、車内の安全運転者がいないことを確認",
+      "signal": "Waymo・日本交通・GOは、2027年中の東京都内での完全無人の商用サービス開始を目指すと発表しています。",
+      "metric": [
+        {
+          "label": "事業者発表",
+          "value": "2027年開始目標"
+        },
+        {
+          "label": "期限の適合",
+          "value": "未確定"
+        }
+      ],
+      "support": "米国ですでに商用運行の実績があり、日本のパートナー企業との準備が進んでいます。",
+      "falsifier": "許認可の遅れ、2027年11月4日以降の開始、社員・関係者限定の試験運行にとどまる。",
+      "missing": "11月3日までの開始確率と、同一条件で一般の人々がどう予想するかの直接調査。",
+      "probability": null,
+      "human_forecast": null,
+      "status": "期限内の実現性も未検証",
+      "sources": [
+        {
+          "label": "Waymo公式 — Tokyo 2027",
+          "url": "https://waymo.com/blog/2026/09/opening-tokyo-in-2027-with-nihon-kotsu-go/"
+        },
+        {
+          "label": "Waymo日本 — 実際のサービス提供状況",
+          "url": "https://waymo.com/intl/jp/waymo-in-japan/"
+        }
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "title": "AI大手の2027年通年設備投資1兆ドル超",
+      "reason": "2027年通年の実績が判定できるのは、2027年11月3日の予測期限後。別の対象期間を定義しなければ対象外です。"
+    },
+    {
+      "title": "2027年の世界平均気温が記録更新",
+      "reason": "WMOの「2026～2030年のどこか1年で86%」は、2027年単年の発生確率ではありません。しかも2027年暦年は期限より後に終了します。"
+    }
+  ]
+}
