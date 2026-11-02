@@ -61,6 +61,28 @@ if (feed) {
       fail(`possible replacement-character corruption in article social metadata: ${entry.id}`);
     }
 
+    // Do not accidentally render the first body paragraph inside a section heading.
+    for (const heading of html.matchAll(/<h[2-6]\b[^>]*>([\s\S]*?)<\/h[2-6]>/g)) {
+      if (/\S\s*\r?\n\s*\S/.test(heading[1])) {
+        fail(`heading contains following paragraph: ${entry.id}`);
+      }
+    }
+
+    // Weekly reference and actual first-release dates must agree with canonical feed.
+    const weeklyDate = entry.id.match(/^weekly-(\d{4})-(\d{2})-(\d{2})$/);
+    if (weeklyDate) {
+      const metadata = html.match(/<div class="article-metadata">([\s\S]*?)<\/div>/)?.[1] ?? '';
+      const basis = metadata.match(/基準日：(\d{1,2})月(\d{1,2})日/);
+      if (basis && (Number(basis[1]) !== Number(weeklyDate[2]) || Number(basis[2]) !== Number(weeklyDate[3]))) {
+        fail(`reference date disagrees with report ID: ${entry.id}`);
+      }
+      const first = metadata.match(/初回公開：(\d{4})年(\d{1,2})月(\d{1,2})日/);
+      if (first) {
+        const displayDate = `${first[1]}-${first[2].padStart(2, '0')}-${first[3].padStart(2, '0')}`;
+        if (displayDate !== entry.published_at) fail(`first release date disagrees with feed: ${entry.id}`);
+      }
+    }
+
     if (/kanade-report-library/i.test(html)) {
       fail(`private source repository exposed in public report: ${entry.id}`);
     }
