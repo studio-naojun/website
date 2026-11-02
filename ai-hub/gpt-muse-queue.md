@@ -888,3 +888,15 @@ evidence_key: fastify-http-proxy-cve-2026-120213-openjs-v11.6.6-source-20261103
 ソース差分: v11.6.5 index.jsのfromParametersWithRewritePrefixはrequest.paramsのvalueをそのまま置換。v11.6.6 index.jsでは通常パラメータをencodeURIComponent(value)で再エンコードし、wildcard(*)ではパス区切りを保ちつつクエリ/フラグメント区切りをエンコードする分岐に変更。v11.6.6タグのpackage.jsonもversion 11.6.6を示す。単なる数値訂正ではなく、危険な設定条件と修正内容を実ソースまで具体化した。
 正規公開担当への実務依頼・受入条件: @naojun_securityの既存候補/投稿との重複を確認し、対象を『Fastify全般』ではなく@fastify/http-proxyの該当版・該当prefix設定に限定する。依存ツリーだけでなく稼働中のlockfile/デプロイ版とprefix+rewritePrefix設定を点検し、11.6.6以上への更新と機能回帰テストを行った証跡で完了判定する。原本は『更新以外の回避策なし』と明記しているため、暫定的な外部公開制限を恒久対処と呼ばない。攻撃観測・被害・KEV登録・国内利用件数は今回の公式原本では確認していない。SNS投稿そのものは本Relayでは行わず、実行された場合に正規担当の投稿URL/IDと本文で別検収する。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120213.json (blob ef0ab0e8a8274460a8fd18a38c4150af3bf6f024); https://github.com/fastify/fastify-http-proxy/blob/v11.6.5/index.js (blob 413e819a4eda435bf79186d7b5f56b9390b9d122); https://github.com/fastify/fastify-http-proxy/blob/v11.6.6/index.js (blob a9dfa3baec3f2279d7f5e1d1750d5bb6eb39d4ff); https://github.com/fastify/fastify-http-proxy/blob/v11.6.6/package.json (blob 1f42424dd5162053d71bc51eefd460c7e7600001).
+
+### GPT-RELAY-20261103-0143-01
+JST: 2026-11-03 01:43:20 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-0140-01
+evidence_key: us-midterm-2026-market-combination-probability-total-102-percent-20261103
+本文: Museの2026年11月3日01:40 JSTの米中間選挙プレビュー案について、候補に記載された数値の算術整合性を独立点検した。ニュース原本や予測市場の現在値を閲覧して検証したという意味ではない。
+実質的な訂正: 候補にある『両院民主68%／下院民主・上院共和27%／両院共和7%』は、68+27+7=102%。3区分だけで100%を超えるうえ、下院共和・上院民主という第4の組合せが省かれている。相互排他的な4結果の同一時点の確率分布として掲載できない。また、この3区分から下院民主の合計は95%になるが、候補には下院民主93%との別値も併記される。予測市場・取得時刻・契約条件の異なる数字を一つの確率表として混ぜた可能性があり、出所と時刻の再照合が必要。
+掲載用の安全な構成: 投票は米現地11月3日で、開票は日本時間11月4日に州ごとに進むという日程の説明を主眼にし、各州の投票締切は公式州選管の一次時刻と夏時間・タイムゾーン換算で確認する。上下院の選挙情勢は別々に、予測値を使う場合は市場名・観測日時・予測市場の取引価格由来であることを明記し、結果を保証する確率として扱わない。4象限の分布と集計基準が揃うまで『両院民主68%』『ねじれ27%』等のセット表示を保留する。
+受入条件と現状: 公開担当は(1)州選管による実際の締切時刻、(2)上下院の各議席数・欠員と過半数、(3)予測市場の同一時点の排他的4結果と市場出典を独立確認し、(4)既存の中間選挙投稿と重複照合し、必要な場合だけ事前案内を公開する。現Relayで独立検証できた新しい証拠は候補内3比率の和が102%という再現可能な算術矛盾であり、外部サイトの数値・実際の開票・SNS投稿は確認・実行していない。
+候補側の公開出典（未独立照合）: https://www.oanda.jp/lab-education/market_news/us_midterm_2026/ ; https://www.binance.com/ja/square/post/10-29-2026-countdown-to-the-us-midterms-what-you-need-to-know-before-the-november-3-vote-382529141360966 .
