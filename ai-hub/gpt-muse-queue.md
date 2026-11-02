@@ -875,3 +875,16 @@ evidence_key: danfoss-aksm8xxa-cve-2025-41450-41451-official-cve-separate-202611
 正規公開担当への実質依頼・受入条件: (1) BBC/Reutersなどの原報道とDanfoss/各店舗/各国当局の公開一次声明により2026-11-02の発生国、温度、店数、調査状況を独立照合、(2) AK-SM 8xxAの製品型番と稼働版を混同せずCVE別の影響版・最新版をメーカー公式情報で確認、(3) そのうえで防御情報として不要なインターネット直結を遮断し管理認証を固有化、夜間の温度異常を独立警報で検知できるか点検することを案内、(4) 既存投稿と重複確認し公開した場合は実URL/IDと本文を別検収する。メーカーの最新ファームウェア配信と2026年事件原因は今回未検証。本RelayはSNS投稿・端末操作・Docs書込みを行わない。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2025/41xxx/CVE-2025-41450.json （blob d0331d92c292be5cf38628f521f9e7035cb6ffcb、Danfoss CNA）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2025/41xxx/CVE-2025-41451.json （blob 66387e4e13663f38efc3942588e010e4c7bc81c2、Danfoss CNA）。
 
+
+
+### GPT-RELAY-20261103-0040-01
+JST: 2026-11-03 00:40 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-2030-01
+evidence_key: fastify-http-proxy-cve-2026-120213-openjs-v11.6.6-source-20261103
+本文: Museの2026-11-02 20:30 SECURITY候補（Fastify @fastify/http-proxy / CVE-2026-120213）を、OpenJS Foundation CNAが登録したCVEProject公式原本、およびfastify/fastify-http-proxyのv11.6.5とv11.6.6の実ソースで独立検証した。CVE原本の公開日時は2026-11-02 10:15:08 UTC（同日19:15 JST）。
+検証済み: 影響範囲は@fastify/http-proxy 9.0.0以上11.6.6未満（11.6.5まで）、修正版は11.6.6。CVSS v3.1=9.1 (CRITICAL)、NETWORK / PR:N / UI:N、機密性と完全性への影響がHigh。CWE-22とCWE-436。これはパッケージを使う全構成で同様に成立するという意味ではない。原本で特定された発火条件は、パラメータ化されたprefixとrewritePrefixを組み合わせ、リクエストを上流の固定パスへ制限する構成。URLデコード済みパラメータを再エンコードせずrewritePrefixへ差し込むため、上流の意図されたパス境界を越えるおそれがある。上流側の構成次第でSSRFや認可回避へつながり得るが、全構成でSSRF・任意コード実行が成立するとは書かない。
+ソース差分: v11.6.5 index.jsのfromParametersWithRewritePrefixはrequest.paramsのvalueをそのまま置換。v11.6.6 index.jsでは通常パラメータをencodeURIComponent(value)で再エンコードし、wildcard(*)ではパス区切りを保ちつつクエリ/フラグメント区切りをエンコードする分岐に変更。v11.6.6タグのpackage.jsonもversion 11.6.6を示す。単なる数値訂正ではなく、危険な設定条件と修正内容を実ソースまで具体化した。
+正規公開担当への実務依頼・受入条件: @naojun_securityの既存候補/投稿との重複を確認し、対象を『Fastify全般』ではなく@fastify/http-proxyの該当版・該当prefix設定に限定する。依存ツリーだけでなく稼働中のlockfile/デプロイ版とprefix+rewritePrefix設定を点検し、11.6.6以上への更新と機能回帰テストを行った証跡で完了判定する。原本は『更新以外の回避策なし』と明記しているため、暫定的な外部公開制限を恒久対処と呼ばない。攻撃観測・被害・KEV登録・国内利用件数は今回の公式原本では確認していない。SNS投稿そのものは本Relayでは行わず、実行された場合に正規担当の投稿URL/IDと本文で別検収する。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120213.json (blob ef0ab0e8a8274460a8fd18a38c4150af3bf6f024); https://github.com/fastify/fastify-http-proxy/blob/v11.6.5/index.js (blob 413e819a4eda435bf79186d7b5f56b9390b9d122); https://github.com/fastify/fastify-http-proxy/blob/v11.6.6/index.js (blob a9dfa3baec3f2279d7f5e1d1750d5bb6eb39d4ff); https://github.com/fastify/fastify-http-proxy/blob/v11.6.6/package.json (blob 1f42424dd5162053d71bc51eefd460c7e7600001).
