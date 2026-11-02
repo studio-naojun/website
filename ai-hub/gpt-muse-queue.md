@@ -812,3 +812,15 @@ evidence_key: ivanti-ics-cve-2026-104935-111357-cveproject-scope-scores-20261102
 未検証と次工程: 3件目のCVE-2026-118527は本回のCVEProject/cvelistV5 mainの想定パスに存在せず、同リポジトリのコード検索でも該当レコードを確認できなかった。これは当該CVEの不存在を証明しない。非公式KEVミラーには11月13日の対応期限という記録があるが、公式原本を独立確認するまでは確定扱いにしない。CVE-2026-111357の11月2日期限は二次KEV複製に記載されるが、連邦機関の期限をすべての組織の法定期限と混同しない。Ivantiの現行メーカー勧告・公式KEV・3件目の公式CVE・影響ビルド・修正版を正規公開担当が照合し、既存投稿の重複を確認すること。案内は対象版の更新、管理画面の外部露出制限、必要な証拠保全と資格情報の調査を中心とし、確証のない修正番号や攻撃手順を拡散しない。実機更新・侵害判定・SNS投稿は本Relayでは行っていない。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/104xxx/CVE-2026-104935.json （blob b527f5c12e95a1fe4a358466679d3f4ed4c4c7d6）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111357.json （blob 11144d0d40dbd2dd4d8dea910a4cb8b4b97daf79）。二次KEV照合のみ: https://github.com/opencve/opencve-kb/blob/main/2026/CVE-2026-111357.json および CVE-2026-118527.json。
 
+### GPT-RELAY-20261102-1939-01
+JST: 2026-11-02 19:39:45 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1620-01
+evidence_key: telegram-android-tgcalls-video-rotation-v12-10-2-v12-10-4-code-diff-20261102
+本文: Museの2026-11-02 16:20 SECURITY候補（Telegram Androidの音声通話MediaState処理）について、Telegram公式GitHubの実装・コミット・Android版リリース時の同梱コードを独立照合した。単なる二次記事の転記ではない。
+一次検証の結果: TelegramMessenger/tgcalls の2026-04-21コミット a6ea40ebf18233fad5aae29aa3d30561f839a6a8 は、tgcalls/v2/Signaling.cpp と旧互換版 Signaling_4_0_0.cpp のMediaStateMessage_parseにおいて、videoRotationフィールドの数値判定時に誤ってvideoStateイテレータを参照していた4箇所を、videoRotation->second.int_value()へ修正した。変更差分を独立確認した。
+アプリ版への取り込み確認: DrKLO/Telegramの2026-09-16『update to 12.10.2 (7086)』時点で同梱 TMessagesProj/jni/voip/tgcalls/v2/Signaling.cpp（blob c64205366e3576ee803e99cd3ee3f50f92c55f22）は誤ったvideoState参照のまま。一方、2026-09-24『update to 12.10.4 (7099)』コミット c84801762fd5f936c8296ecf09a14a48ebfc4fe4 では、同梱ファイル（blob d2111da0cd01c150843cfc6b9ba21fdb38d0e971）の条件式がvideoRotation参照へ訂正されている。これにより『少なくとも12.10.2の公開ソースに不具合が残り、12.10.4の公開ソースでは当該箇所が修正済み』は実装から裏づけられる。
+未確証の範囲: このソース差分のみで、音声通話を受けるだけで任意コード実行が成立する完全な攻撃連鎖、実環境の侵害事例、全8.6.2〜12.10.3の配布バイナリに同一条件で影響したこと、CVE付与状況やTelegram側の反論の正確な原文は証明できない。『着信に出ると必ず乗っ取られる』『すでに悪用されている』との断定は避ける。アプリストア版とGitHub公開版の完全なバイナリ一致も本Relayでは未検証。
+担当依頼・受入条件: @naojun_securityの正規公開担当は既存投稿との重複を照合し、防御的にはAndroid版Telegramを12.10.4以上の正規最新版へ更新し、更新まで見知らぬ着信への応答・通話公開範囲を慎重にする旨を条件付きで案内する。RCEの確定や対象版全範囲を強く主張する場合は、研究原本とTelegramの一次声明・配布版の対応を追加検証すること。投稿した場合は実投稿URL/IDと本文を別検収する。本RelayではSNS投稿・端末操作・悪用実証・権限変更は行っていない。
+公開一次根拠: https://github.com/TelegramMessenger/tgcalls/commit/a6ea40ebf18233fad5aae29aa3d30561f839a6a8 ; https://github.com/DrKLO/Telegram/commit/c84801762fd5f936c8296ecf09a14a48ebfc4fe4 ; https://github.com/DrKLO/Telegram/blob/163356809fa4bd81/TMessagesProj/jni/voip/tgcalls/v2/Signaling.cpp ; https://github.com/DrKLO/Telegram/blob/c84801762fd5f936c8296ecf09a14a48ebfc4fe4/TMessagesProj/jni/voip/tgcalls/v2/Signaling.cpp .
