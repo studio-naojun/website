@@ -926,3 +926,15 @@ evidence_key: revolve-incident-count-minimum-scope-notification-check-20261103
 実務上の重要な境界: 通知対象人数≠実際の不正利用人数≠カード情報の流出が個別に確定した人数。候補の本文は『アクセス・持ち出しの可能性』を含むため、『全通知者のカード番号が実際に流出』『日本の顧客も対象』『不正利用が確認された』『セキュリティコードも流出』とは書かない。無料監視サービスを提供しないとの文言も、通知原文を未照合のまま会社の確定的な意思表明として引用しない。
 正規公開担当への依頼と受入条件: (1)RevolveのSEC提出原文・該当する州当局の届出と本人通知書を一次確認、(2)事故日・アクセスした可能性のある情報の種類と確定性・通知対象の定義・179,259という数字の集計方法・監視サービス提供方針を原文ベースで一致させる、(3)既存投稿との重複を確認する。その時点までは固有の人数・カード流出確定・日本への影響を断定する投稿を保留。実用的な一般案内なら『利用明細を確認し、不審請求はカード会社の正規窓口で相談。カード交換は発行会社と判断』に限定する。SNS投稿・本人通知・原本照合の完了は本回答によって成立していない。
 Muse候補に含まれる二次報道URL（未独立照合）: https://privacyneedle.com/cybersecurity/revolve-data-breach-customers/ .
+
+### GPT-RELAY-202611030431-01
+JST: 2026-11-03 04:31 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1605-01
+evidence_key: tianocore-edk2-cve-2026-97631-official-cve-conditional-impact-20261103
+本文: Museの2026-11-02 16:05 JSTの未回答候補「UEFI/EDK II CVE-2026-97631」を、TianoCoreがCNAとなっている公式CVEレコード（2026-10-22公開）で独立照合した。公式記録では製品はTianoCore EDK2 の NetworkPkg、影響範囲は edk2-stable202608 まで、CVSS v4.0は9.5（Critical）。問題は範囲外書込み・バッファオーバーフロー等で、悪用時にコード実行および機密性・完全性・可用性への影響があり得る。
+重要な適用条件: CVSSベクトルは AV:N/AC:L/AT:P/PR:N/UI:N。特に AT:P（追加の攻撃成立条件あり）を落として「全UEFI搭載PCが常時ネット越しに乗っ取られる」と広げない。候補が説明するPXEネットワーク起動時の到達性・機種別ファームウェアの実装と設定を個別に確認する。一般利用者についても、ディスク起動だけを理由に機器の脆弱性自体が不存在とは断定しない。
+未検証の線引き: 『16年間潜在』『2026-10-15に開発ブランチ修正』『全ベンダーで安定版修正なし』『Supermicroの提供機種』『KEV未登録・実攻撃なし』は本回答で一次確認できていない。公開原本だけではメーカーごとのBIOS/UEFI修正版提供可否を確定できず、一律「今すぐ入れられる修正がない」とは案内しない。CISA ADPの2026-10-30時点のSSVCは Exploitation:none と記録するが、現在の悪用不存在を証明するものではない。
+正規公開担当への依頼・受入条件: (1)実機のEDK II採用と当該NetworkPkgの組込み、ネットワークブート/PXEの有効状態と到達性を照合、(2)TianoCoreの公式advisoryと各OEMの提供するBIOS/UEFI更新履歴を確認、(3)不要なPXE/ネットワークブートの無効化は構成・運用影響を点検してから実施、(4)既出投稿との重複を確認してから防御中心に案内する。SNS投稿・機器設定変更・OEM更新の適用は本Relayでは実施していない。
+独立根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/97xxx/CVE-2026-97631.json （公式CVE blob SHA da8909b69e38d63fc9de13180039e54ad0569e76）。TianoCore Advisory: https://github.com/tianocore/edk2/security/advisories/GHSA-99cj-7hg9-mp4m （CVEの参照先。本文は本経路で未取得）。
