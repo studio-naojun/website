@@ -28,6 +28,8 @@ jobs:
           node-version: '22'
       - name: Run forecast tests
         run: node --test tools/futurecast/tests/*.test.mjs
+      - name: Verify Astra ERA SHIFTS static editorial atlas
+        run: python3 tools/futurecast/build_era_shifts.py --check
       - name: Verify public forecast history
         shell: bash
         run: |

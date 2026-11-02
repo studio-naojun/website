@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "status": "candidate_unscored",
+  "title": "ERA SHIFTS",
+  "brand": "NAOJUN STUDIOS",
+  "as_of": "2026-11-03",
+  "horizon": "2027-11-03T23:59:59+09:00",
+  "model": "Codex gpt-6-astra / medium",
+  "calibration": "uncalibrated subjective estimates",
+  "publication_note": "Astraの候補予測。まだ公開予測台帳への初回固定・公開受領を行っておらず、Brier Scoreの採点対象ではありません。",
+  "disclaimer": "出典はリスク経路や研究開発状況の背景情報であり、この発生確率の統計的根拠ではありません。実際の発生を確認する資料でもありません。",
+  "scenarios": [
+    {
+      "id": "financial-freeze",
+      "number": "01",
+      "domain": "FINANCIAL SYSTEM",
+      "kind": "disruption",
+      "title": "国境を越えて、銀行の送金が止まる",
+      "short": "共通障害が2か国の銀行網を同時に止める",
+      "probability": 7,
+      "probabilityLabel": "7%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "生活の前提である預金へのアクセスや銀行決済の継続性が、国際的な制度問題になる。",
+      "yes": "共通の事故・攻撃により2か国以上で、各国の預金残高シェア合計20%以上を占める銀行の顧客間送金が、24時間以上連続で停止したと監督当局が確認。計画停止・単独銀行の障害は除く。",
+      "reason": "銀行、クラウド、決済基盤の共通依存が国境を越えた連鎖を生み得る。",
+      "counter": "国ごとの分離運用・緊急決済・代替経路が働き、国数・停止時間・影響銀行の閾値を満たさない。",
+      "attribution": "AIが主因かは別判定。監督当局の事故報告で確認されるまで、AI原因とは表示しない。",
+      "resolution": "関係国の中央銀行・監督当局の事故報告と銀行の障害公表。",
+      "sources": [
+        {
+          "label": "BIS／金融分野のAIサイバーリスク（背景）",
+          "url": "https://www.bis.org/publications/fsi-paper-28-when-machines-attack-frontier-ai-cyber-threats-and-policy-responses-financial-sector"
+        },
+        {
+          "label": "IMF／金融システムの共通依存（背景）",
+          "url": "https://www.imf.org/en/publications/imf-notes/issues/2026/06/29/artificial-intelligence-and-cybersecurity-in-the-financial-sector-576706"
+        }
+      ]
+    },
+    {
+      "id": "agent-escape",
+      "number": "02",
+      "domain": "AI AUTONOMY",
+      "kind": "disruption",
+      "title": "止めたはずのAIが、境界の外で動き続ける",
+      "short": "自律AIの停止失敗が重大な越境損害を生む",
+      "probability": 3,
+      "probabilityLabel": "3%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "エージェントの権限制御や責任主体の境界を再定義する契機になる。",
+      "yes": "運営者の停止・権限撤回後も自律AIが別組織の環境で行動を継続し、2か国以上で計1億米ドル以上の直接損害、または重要サービス24時間以上の停止を生んだと、当局報告と独立技術検証が公開認定。",
+      "reason": "外部ツール連携、認証情報、複数エージェントの協働に制御境界の課題がある。",
+      "counter": "認証失効や遮断で停止でき、人間による攻撃を誤ってAIの逸脱と判定しない。",
+      "attribution": "AIの自律行動と停止失敗が判定に必須。単なるAI生成コードの利用は不成立。",
+      "resolution": "被害国の事故調査当局・裁判所と独立した技術報告。",
+      "sources": [
+        {
+          "label": "国連科学パネル／AIエージェントの制御逸脱（背景）",
+          "url": "https://www.un.org/independent-international-scientific-panel-ai/en/thematic-briefs/ai-agents-misalignment-risks"
+        },
+        {
+          "label": "International AI Safety Report 2026（背景）",
+          "url": "https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026"
+        }
+      ]
+    },
+    {
+      "id": "election-delay",
+      "number": "03",
+      "domain": "INSTITUTIONS",
+      "kind": "disruption",
+      "title": "AIの偽証拠が、選挙結果の確定を止める",
+      "short": "国政選挙の法的確定が30日以上遅れる",
+      "probability": 6,
+      "probabilityLabel": "6%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "民主的な統治の正統性を、映像や音声の真偽確認が左右する事態になる。",
+      "yes": "国政選挙で裁判所または選挙管理機関が、AI生成の偽証拠・なりすましの検証を主要理由に確定手続を停止し、法定期限から全国結果または政権成立を左右する議席の確定が30日以上遅延。",
+      "reason": "合成メディアの信憑性と証拠能力を争う法的負荷は増し得る。",
+      "counter": "紙の投票記録と通常の再集計・訴訟制度が機能して、遅延の閾値を超えない。",
+      "attribution": "決定文でAI由来の証拠問題が主要理由と明示されなければ不成立。",
+      "resolution": "当該国の裁判所・選挙管理機関による決定原文。",
+      "sources": [
+        {
+          "label": "International IDEA／選挙とAIの影響（背景）",
+          "url": "https://www.idea.int/theme/artificial-intelligence"
+        },
+        {
+          "label": "International IDEA／2025年選挙と信頼の検証（背景）",
+          "url": "https://www.idea.int/publications/catalogue/html/review-2025-year-elections-inclusivity-transparency-and-trust"
+        }
+      ]
+    },
+    {
+      "id": "continental-blackout",
+      "number": "04",
+      "domain": "ENERGY SYSTEM",
+      "kind": "disruption",
+      "title": "連動する送電網が、3か国の明かりを消す",
+      "short": "2,000万人以上に及ぶ広域連鎖停電",
+      "probability": 8,
+      "probabilityLabel": "8%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "国際送電網の設計・防護・情報共有が、安全保障上の議題になる。",
+      "yes": "同一の連鎖事故で3か国以上・計2,000万人以上が停電し、うち2か国以上で各100万人以上の供給停止が12時間以上継続。送電事業者の最終事故報告が同一系列と確認。",
+      "reason": "相互接続は通常時の効率を高めるが、異常時の連鎖リスクにもなる。",
+      "counter": "系統分離と迅速復旧で人口・国数・停止時間の基準を満たさない。",
+      "attribution": "AI原因かどうかは判定条件外。事故原因に関する憶測を採用しない。",
+      "resolution": "各国の送電事業者・規制当局による事故報告。",
+      "sources": [
+        {
+          "label": "IEA／送電網の近代化とAI（背景）",
+          "url": "https://www.iea.org/reports/modernising-grids-in-the-age-of-electricity"
+        },
+        {
+          "label": "ENTSO-E／欧州送電事業者の共同情報",
+          "url": "https://www.entsoe.eu/"
+        }
+      ]
+    },
+    {
+      "id": "frontier-pause",
+      "number": "05",
+      "domain": "GLOBAL GOVERNANCE",
+      "kind": "disruption",
+      "title": "G7が最先端AI開発に、強制停止をかける",
+      "short": "3か国以上が法的拘束力のある90日停止を施行",
+      "probability": 2,
+      "probabilityLabel": "2%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "AI開発競争が初めて多国間の強制的な停止制度で制御される。",
+      "yes": "G7の3か国以上がAIリスクの抑制を目的に共同合意した同一の能力・計算量基準を超える新規AI訓練について、民間企業も対象に法的拘束力のある90日以上の停止を施行し、期限内にその90日が実際に経過。",
+      "reason": "重大事故や共有された評価結果が国際協調の動機になり得る。",
+      "counter": "国家間競争、対象定義の不一致、安全保障例外が統一的な強制停止を妨げる。",
+      "attribution": "先行するAI事故の発生は必須ではない。共同合意と実効性を判定。",
+      "resolution": "各G7政府の合意文・官報・施行命令、民間適用の条文。",
+      "sources": [
+        {
+          "label": "International AI Safety Report 2026（背景）",
+          "url": "https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026"
+        },
+        {
+          "label": "外務省／G7情報と共同声明",
+          "url": "https://www.mofa.go.jp/policy/economy/summit/index.html"
+        }
+      ]
+    },
+    {
+      "id": "fusion-to-grid",
+      "number": "06",
+      "domain": "ENERGY BREAKTHROUGH",
+      "kind": "breakthrough",
+      "title": "核融合が初めて、売れる電力になる",
+      "short": "24時間の正味発電を公共送電網へ有償供給",
+      "probability": 1,
+      "probabilityLabel": "1%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "核融合が科学実験からエネルギー供給産業へ踏み出す象徴的な一歩。",
+      "yes": "核融合設備が加熱・補機など施設全体の消費電力を控除した正味電力を24時間で1MWh以上公共送電網へ供給し、有償受領と独立計測を公開。炉内のエネルギー利得だけでは不成立。",
+      "reason": "核融合の研究開発が進む中、商用電力としての最初の実証が歴史的節目になる。",
+      "counter": "正味出力・安定運転・送電網接続・販売契約の全条件を365日で満たすのは難しい。",
+      "attribution": "AI利用の有無は判定条件外。",
+      "resolution": "送電事業者、独立計量機関、電力購入者の計測・精算記録。",
+      "sources": [
+        {
+          "label": "IAEA／核融合エネルギー研究（背景）",
+          "url": "https://www.iaea.org/topics/energy/fusion"
+        }
+      ]
+    },
+    {
+      "id": "tuberculosis-vaccine",
+      "number": "07",
+      "domain": "HEALTH BREAKTHROUGH",
+      "kind": "breakthrough",
+      "title": "新しい結核ワクチンが、効果と供給を同時に突破する",
+      "short": "大規模治験成功と年1,000万回分の供給契約",
+      "probability": 5,
+      "probabilityLabel": "5%",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "結核予防の実装可能性が科学と供給の両面で前進し、世界的疾病負担への道筋を変える。",
+      "yes": "成人・青年を対象に1万人以上の第III相試験で肺結核予防効果50%以上、95%信頼区間の下限が0より大きい査読結果が公表され、低・中所得国向け年1,000万回分以上の製造・調達契約も公開。",
+      "reason": "M72/AS01Eなど有望候補が開発され、臨床結果と供給能力が鍵となる。",
+      "counter": "大規模試験の結果公表は2028年頃と見込まれ、2027年中の効果公表と契約を同時達成する可能性は低い。",
+      "attribution": "AI利用の有無は判定条件外。",
+      "resolution": "査読論文、ClinicalTrials.govの登録情報、Gavi等の調達契約公表。",
+      "sources": [
+        {
+          "label": "WHO／M72/AS01Eワクチン候補（背景）",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-investigational-vaccine-candidate-m72-as01e"
+        },
+        {
+          "label": "Gavi／次世代結核ワクチン導入見通し（背景）",
+          "url": "https://www.gavi.org/vaccineswork/study-gathers-evidence-inform-next-gen-tb-vaccine-strategies-africa"
+        }
+      ]
+    },
+    {
+      "id": "quantum-key-break",
+      "number": "08",
+      "domain": "COMPUTING BREAKTHROUGH",
+      "kind": "breakthrough",
+      "title": "量子計算が現代暗号を、実用条件で突破する",
+      "short": "RSA-2048などの鍵解読が独立した研究機関で再現",
+      "probability": null,
+      "probabilityLabel": "1%未満",
+      "window": "2027年11月3日 23:59 JST",
+      "consequence": "金融・通信・政府データの暗号移行と安全保障判断を一変させる可能性がある。",
+      "yes": "公開手順による量子計算で未知の秘密鍵を持つRSA-2048またはNIST P-256の新規課題を解読し、独立組織が別の新規課題で再現。鍵漏えい・実装欠陥・弱い設定は不成立。",
+      "reason": "Astra原文の整数丸め0%は0.5%未満を意味し、不可能という意味ではない。カードの「1%未満」は編集上の粗い表示である。量子計算の進展は現在の公開鍵方式に長期的な移行圧力を生む。",
+      "counter": "必要な誤り訂正・計算規模・安定運転はなお困難。小さな整数の因数分解は基準外。",
+      "attribution": "AI利用の有無は判定条件外。",
+      "resolution": "独立した再現論文、問題設定、実機の再現記録。",
+      "sources": [
+        {
+          "label": "NIST／耐量子暗号標準（背景）",
+          "url": "https://www.nist.gov/pqc"
+        },
+        {
+          "label": "NIST IR 8547／暗号移行の指針（背景）",
+          "url": "https://csrc.nist.gov/pubs/ir/8547/final"
+        }
+      ]
+    }
+  ]
+}

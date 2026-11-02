@@ -1,0 +1,74 @@
+/* ERA SHIFTS — editorial scenario atlas. Static, accessible and no JavaScript. */
+.era-main{max-width:none;overflow-wrap:break-word}
+.era-overline{font:700 .73rem/1.5 system-ui,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:#92573f}
+.era-hero{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.68fr);gap:clamp(24px,5vw,72px);align-items:stretch;padding:clamp(45px,7vw,110px) 0 65px}
+.era-hero-main{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.era-hero h1{font-size:clamp(2.9rem,7.8vw,6.7rem);letter-spacing:-.075em;line-height:1.25;margin:clamp(24px,4vw,55px) 0 25px}
+.era-hero h1 em{font-style:normal;color:#a04a31}
+.era-subtitle{max-width:35em;font-size:clamp(1rem,1.9vw,1.35rem);line-height:2;margin:0;color:#334741}
+.era-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:18px;margin-top:34px}
+.era-primary,.era-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:48px;gap:18px;font-weight:700;text-decoration:none}
+.era-primary{background:#163c36;color:#fff;padding:11px 24px}
+.era-secondary{border-bottom:1px solid currentColor;padding:10px 4px}
+.era-hero-aside{background:#163b36;color:#f8f5e9;min-height:430px;padding:28px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:12px;justify-content:space-between}
+.era-hero-aside>p{font:700 .74rem/1.6 system-ui;letter-spacing:.12em;position:relative;z-index:2}
+.era-big-number{font:600 clamp(7.2rem,15vw,12rem)/.93 Georgia,serif;letter-spacing:-.08em;position:relative;z-index:2}
+.era-small{font-size:.86rem;position:relative;z-index:2}
+.era-grid-art{position:absolute;right:-70px;bottom:-100px;width:350px;height:350px;border:1px solid #a1b5a8;border-radius:50%;opacity:.36;box-shadow:0 0 0 34px #163b36,0 0 0 35px #a1b5a8,0 0 0 65px #163b36,0 0 0 66px #a1b5a8,0 0 0 97px #163b36,0 0 0 98px #a1b5a8;pointer-events:none}
+.era-manifesto{padding:65px 0 75px;border-top:1px solid #a2b1a8;border-bottom:1px solid #a2b1a8}
+.era-manifesto h2{max-width:840px;font-size:clamp(2rem,5vw,4.3rem);letter-spacing:-.055em;line-height:1.3;margin:20px 0 35px}
+.era-manifesto-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(25px,7vw,96px);max-width:1020px}
+.era-manifesto-cols p{font-size:1rem;line-height:2.15;margin:0;color:#35443d}
+.era-index-section{padding:80px 0 92px}
+.era-section-heading{max-width:960px;margin-bottom:40px}
+.era-section-heading h2{font-size:clamp(2rem,5vw,4.4rem);letter-spacing:-.05em;line-height:1.28;margin:12px 0}
+.era-section-heading p{font-size:1rem;max-width:48em;line-height:2}
+.era-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #b9c4b8;border-left:1px solid #b9c4b8}
+.era-card{display:flex;flex-direction:column;min-width:0;min-height:330px;padding:26px clamp(20px,3.5vw,40px) 25px;border-right:1px solid #b9c4b8;border-bottom:1px solid #b9c4b8;text-decoration:none;gap:12px;transition:background .18s ease}
+.era-card:hover,.era-card:focus-visible{background:#e6eae2}
+.era-card.breakthrough{background:#e7ece0}
+.era-card.breakthrough:hover,.era-card.breakthrough:focus-visible{background:#dbe8d7}
+.era-card-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 15px;font-size:.7rem;font-weight:800;letter-spacing:.12em;color:#74695c}
+.era-card-title{display:block;font-size:clamp(1.3rem,2.4vw,2rem);line-height:1.5;letter-spacing:-.045em;max-width:25em}
+.era-card-detail{font-size:.88rem;color:#536358;margin-bottom:12px}
+.era-card-bottom{margin-top:auto;display:flex;align-items:end;justify-content:space-between;gap:12px;font-size:.73rem;line-height:1.55;color:#536358}
+.era-prob{display:inline-block;font:700 clamp(2.6rem,4.7vw,4rem)/1.08 system-ui;letter-spacing:-.08em;color:#163b36;font-variant-numeric:tabular-nums;white-space:nowrap}
+.era-card-arrow{font-size:1.4rem;color:#a04a31}
+.era-questions-section{padding-bottom:95px}
+.era-detail{border-top:2px solid #173d36;padding:32px 0 60px;scroll-margin-top:35px}
+.era-detail-head{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:start;gap:25px}
+.era-number{font:400 2.5rem/1 Georgia,serif;color:#a04a31}
+.era-category{font-size:.73rem;font-weight:800;letter-spacing:.13em;color:#6c554c}
+.era-detail-head h3{font-size:clamp(1.5rem,3.4vw,2.6rem);line-height:1.35;letter-spacing:-.05em;margin:8px 0}
+.era-detail-prob{text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.era-detail-prob>span{font-size:.63rem;letter-spacing:.1em;font-weight:800;color:#74695c}
+.era-detail-prob strong{font:700 clamp(2.5rem,4.5vw,3.6rem)/1.1 system-ui;letter-spacing:-.08em;color:#173d36;white-space:nowrap}
+.era-impact{font-size:1.02rem;max-width:760px;margin:0 0 30px 85px;font-weight:600}
+.era-detail-grid{margin-left:85px;display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(25px,4vw,70px);row-gap:20px}
+.era-detail-grid section{border-top:1px solid #bbc7bb;padding:14px 0 18px;min-width:0}
+.era-detail-grid h4{font-size:.8rem;letter-spacing:.04em;margin:4px 0 12px;color:#9a4c36}
+.era-detail-grid h4:not(:first-child){margin-top:25px}
+.era-detail-grid p{margin:0;font-size:.94rem;line-height:2}
+.era-due{margin-top:20px!important;font-size:.81rem!important;color:#42574e}
+.era-links{margin:0;padding:0;list-style:none}
+.era-links li{border-bottom:1px solid #d1d9cd;padding:7px 0;font-size:.86rem;overflow-wrap:anywhere}
+.era-links li a{display:inline-block;min-height:42px}
+.era-context{font-size:.78rem!important;color:#6e746b;margin-top:16px!important}
+.era-operation{margin:25px 0 90px;padding:clamp(32px,6vw,72px);background:#183f38;color:#f5f3e7;display:grid;grid-template-columns:1fr 1fr;gap:clamp(25px,6vw,80px)}
+.era-operation h2{font-size:clamp(2rem,4.5vw,3.8rem);line-height:1.25;letter-spacing:-.06em;margin:25px 0}
+.era-operation .era-overline{color:#bad3bc}
+.era-operation-list p{border-top:1px solid #668079;padding:16px 0;margin:0;line-height:2}
+.era-operation-list strong{display:block;color:#e1f3ba}
+.era-operation-list .era-notice{font-size:.82rem;color:#bdccc6}
+.era-legacy{border-top:2px solid #173d36;padding:35px 0 100px}
+.era-legacy h2{font-size:clamp(1.9rem,4.5vw,3.6rem);letter-spacing:-.05em;margin:12px 0}
+.era-legacy>p{max-width:760px}
+.era-legacy ul{padding:0;list-style:none;border-top:1px solid #bbc7bb;margin:35px 0 25px}
+.era-legacy li a{display:block;border-bottom:1px solid #bbc7bb;padding:19px 0;min-height:50px;text-decoration:none;font-weight:600}
+.era-legacy li a:hover{text-decoration:underline}
+.era-legacy-actions{display:flex;gap:22px;flex-wrap:wrap}
+.era-legacy-actions a{display:inline-flex;min-height:44px;align-items:center;font-size:.9rem}
+@media(max-width:980px){.era-hero{grid-template-columns:1.7fr 1fr}.era-hero-aside{min-height:360px}.era-detail-head{grid-template-columns:42px minmax(0,1fr) auto;gap:16px}.era-impact,.era-detail-grid{margin-left:58px}}
+@media(max-width:700px){.era-hero{grid-template-columns:1fr;padding-top:45px}.era-hero h1{font-size:clamp(2.7rem,10vw,4.6rem);margin:25px 0}.era-hero-aside{min-height:220px;display:grid;grid-template-columns:1fr 1fr;align-content:center}.era-big-number{font-size:7rem;grid-row:span 2}.era-small{align-self:end}.era-manifesto{padding:50px 0}.era-manifesto-cols{grid-template-columns:1fr;gap:16px}.era-index-section{padding:55px 0}.era-card-grid{grid-template-columns:1fr}.era-card{min-height:290px;padding:22px}.era-card-title{font-size:1.45rem}.era-detail-head{grid-template-columns:36px minmax(0,1fr);gap:12px}.era-number{font-size:1.8rem}.era-detail-prob{grid-column:2;align-items:flex-start;text-align:left;margin-top:3px}.era-impact,.era-detail-grid{margin-left:0}.era-impact{margin-top:14px}.era-detail-grid{grid-template-columns:1fr;row-gap:0}.era-detail{padding:30px 0 44px}.era-operation{grid-template-columns:1fr;padding:28px;margin:15px 0 70px}}
+@media(max-width:390px){.era-hero-aside{min-height:200px}.era-card-top{font-size:.62rem}.era-card-title{font-size:1.28rem}.era-card-bottom{gap:5px}.era-detail-head h3{font-size:1.45rem}.era-operation h2{font-size:2rem}}
+@media(prefers-reduced-motion:reduce){.era-card{transition:none}}
