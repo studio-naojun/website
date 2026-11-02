@@ -765,3 +765,14 @@ evidence_key: rust-zip-cve-2026-115905-ghsa-optin-header-consistency-v905-v921-2
 今回の独立した重要検証: zip-rs/zip2の公式タグv9.0.5のsrc/read/stream.rs（blob e95feb2a46d1f62aee7cd8b3ac4e72d36793caed）でも、v9.2.1（blob bc940c609ac6a75f4e4fd34cd8a86ffd3b731dcb）でも、ZipStreamReader::newは互換性のためenforce_header_consistency: falseを既定値としている。両タグにenforce_header_consistency(true)の選択APIが存在する。v9.2.1では有効化したextractが検証完了まで一時ステージング領域を利用する。一方、visitへ渡す利用者側の処理は整合性検証が終了する前にエントリへアクセスするため、戻り値Okの確認前に取り消せない副作用を発生させないこと。公式Advisoryの「9.0.5で修正」と「旧来のZipStreamReader::newで整合性検証が既定で有効」は同義ではない。更新だけで全運用経路が保護されたと案内しない。
 担当依頼・受入条件: @naojun_securityの正規公開担当は既存受領記録で重複を照合したうえで、「zipの影響版を9.0.5以降へ更新」かつ「未信頼ZIPをZipStreamReaderで扱う経路ではenforce_header_consistency(true)を明示」「visitの副作用は検証完了後」「展開先を実行ファイル・設定から分離し、不要な上書き権限を禁止」を防御中心に案内すること。依存バージョンと呼出し箇所の確認を推奨し、公開前に下流ライブラリ側の使用有無も検証する。実際の悪用、個別製品の該当、修正版に関する実機テスト結果、SNS投稿・公開効果はこのRelayでは確認していない。
 公開一次根拠: https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/10/GHSA-m665-v7pm-7grj/GHSA-m665-v7pm-7grj.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/115xxx/CVE-2026-115905.json ; https://github.com/zip-rs/zip2/blob/v9.0.5/src/read/stream.rs ; https://github.com/zip-rs/zip2/blob/v9.2.1/src/read/stream.rs ; https://github.com/zip-rs/zip2/commit/8068ab480ccf8daa7411424e365fcdbe6d09443e .
+
+### GPT-RELAY-20261102-1436-01
+JST: 2026-11-02 14:36:19 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1135-01
+evidence_key: mikrotik-routeros-cve-2026-84411-cisa-icsa-26-272-06-patch-scope-20261102
+本文: Museの11:35 SECURITY候補「MikroTik RouterOS / CVE-2026-84411」を、CVEProject公式CVEレコード（CNA=icscert、PUBLISHED、公開2026-10-02 UTC、blob 7b3e257c0613c1dc515601d2818a68d795e94502）と米CISA公式CSAF勧告ICSA-26-272-06（initial 2026-09-29 UTC、更新2026-09-30 UTC、blob 5be3699c7e6f51a0b68dd8e1f60a224e528b1bae）で独立照合した。両原本はRouterOSのWeb管理サービスでHTTPリクエストボディの整数アンダーフローが認証前に到達可能となり、外部ネットワーク経由で任意コードのroot権限実行またはサービス停止に至り得ると記載する。CVSSはv3.1が9.8（CRITICAL）、v4.0が9.3（CRITICAL）で、数値を単一の評価体系と誤記しない。個別の機器がインターネットから到達可能かどうかは設置構成次第である。
+修正版の検証差分: CISA CSAFとCVEProjectのaffectedは『RouterOS 7.24未満』、CISAのvendor_fixは『7.24以降へ更新』とする。一方、Muse候補にある別保守系列の『7.23.8（v7 long-term）』『6.49.23（v6）』は今回取得した2つの一次原本には明記されていない。これらを未修正と断定するのではなく、系列別のベンダー公式勧告・配信一覧で追加確認するまで『検証済みの修正版』として一律掲載しない。CISA勧告は9月末、CVEレコードは10月2日に公表されており、『11月2日に発見・公開された新規CVE』との表現も避ける。
+対応と受入条件: @naojun_securityの正規担当は投稿受領記録で既出を確認し、Web管理（WebFig）の外部到達を最小化・不要な管理公開を無効化、導入中RouterOSの系統と実版を確認したうえで、その系統のメーカー正規更新を適用するよう防御中心に整理する。公開する修正番号は保守系列別の正式告知に照合できたものだけ採用し、『全機器が外部から侵害可能』『被害確認済み』とは断定しない。CISAの2026-09-30版は『同CVEを狙った公知の悪用報告は当時ない』と記すが、2026-11-02現在の悪用なしの証明には使わない。本RelayではX投稿、実機調査、ベンダー配信状況の現時点照合は実施していない。実投稿は担当側で投稿URL/本文を別検収する。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/84xxx/CVE-2026-84411.json ; https://github.com/cisagov/CSAF/blob/develop/csaf_files/OT/white/2026/icsa-26-272-06.json .
