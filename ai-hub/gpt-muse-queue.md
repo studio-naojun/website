@@ -787,3 +787,15 @@ evidence_key: php2shell-fragnesia-cve-46300-incorrect-attribution-cveproject-202
 同時に、CVE-2026-109618とCVE-2026-109619はPHP Group自身が2026-10-21に公開したPHPランタイムのメモリ状態不整合による条件付きRCEのCVEで、影響版はPHP 8.2系8.2.35未満、8.3系8.3.36未満、8.4系8.4.27未満、8.5系8.5.12未満。いずれもCVSS v4.0 9.2、attackComplexity HIGHかつattackRequirements PRESENTであり、登録原本はPAN-OS固有の攻撃チェーンや機器25台の侵害を立証しない。
 実質結論/修正依頼: 「CVE-2026-46300＝Fragnesia」「3件のCVEの連鎖でPAN-OSの25台root侵害が一次確認済み」というCVE対応づけを撤回・保留する。25台、22台のWeb shell、4カ国、鍵取得、Unit42独立検証などの報道由来の数値・帰属は、本回では研究原本・メーカーPSIRT/Unit42原本で独立確認していないため確定事実として転載しない。正規公開担当がメーカー公式勧告と研究原本により製品・正しい脆弱性ID・適用条件・侵害確認・修正版を照合し、既存投稿との重複を確認できるまで、当該CVE付き投稿案は公開保留。管理画面の露出制限、正規更新、侵害が疑われる場合の証跡調査と必要な鍵のローテーションは一般的な防御策として条件付きで案内可能。SNS投稿・実環境診断・メーカー側の現時点修正状況の検証は本Relayでは実施していない。
 一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/46xxx/CVE-2026-46300.json (blob ea58a3f353320cb11a7e08afd2f077b1d5329ab3) ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109618.json (blob cbeb03062a47b220003c4d98f11b70bad2aa8c86) ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109619.json (blob 3321e073e1076b0bfd9fd75116a93c9dac583776) .
+
+### GPT-RELAY-20261102-1743-01
+JST: 2026-11-02 17:43:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1615-01
+evidence_key: wavlink-wn551x3-a-cve-2026-120344-120345-cveproject-20261102
+本文: Museの16:15 SECURITY候補「WAVLINK WN551X3-Aの2件のコマンドインジェクション」を、CVEProject/cvelistV5の公開一次レコードで個別に独立照合した。CVE-2026-120344（2026-11-02 05:00:18 UTC公開、blob 9a60ace15f84256bf3723f8e670f0ecd351ef50e）はWireGuard CLI Group Handlerのgroup_name処理、CVE-2026-120345（同日05:15:16 UTC公開、blob 1254ea310fb92f10aadc187501627aba53b99cf0）はDNS Resolution Handlerのdata処理で、いずれも/bin/ioosに関するOS command injection（CWE-78）と記録される。両件のaffectedにはWAVLINK WN551X3-A、ファームウェアM51X3_V251020-WO-182e965が明記される。別機種WN536AX6-Aの既報と混同しない。
+重要な数値訂正: 原本に記録されたCVSS v4.0は両件とも10.0（CRITICAL）、CVSS v3.1も両件とも10.0。候補の二次資料にある120344=9.3という評価を公式原本の値として転載しない。評価ベクトルは両件ともAV:N/PR:N/UI:Nで、ネットワーク経由・権限なしの攻撃条件が記録されるが、個々の設置先で該当機能がWANから直接到達可能かどうかは未確認であり「全設置先がインターネットから直ちに侵害可能」とは書かない。
+確度と未確認: 両公式レコードは公表されたexploitへのリンクがあり、攻撃手法の公開を示すが、実際の悪用・被害・CISA KEV登録を証明しない。affectedに明記されるのは上記の1版で、全ファームウェア版への一般化はしない。CVEレコードに修正版の番号は示されていないが、これはメーカーが修正版を用意していないとの証明ではない。WAVLINK公式の現時点の配信・回避策は本Relayでは独立検証していない。
+担当依頼と受入条件: @naojun_securityの正規公開担当が既存投稿IDを照合し重複を避け、WN551X3-Aの機種名・実ファームウェア版・公開管理面の有無を確認したうえで、防御中心の一投稿に統合する。不要なWAN側管理公開を無効化し、未使用のWireGuard機能は停止・アクセス制限を検討、DNS全体を一律に停止するのではなく当該管理/処理経路の露出とメーカーの正規更新情報を点検するよう案内する。「修正版なし」「被害確認済み」とは断定しない。実投稿が成立した場合に限り担当者が投稿URL/IDと本文を検収する。本RelayはSNS投稿、実機調査、メーカー告知の追加取得を行っていない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120344.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120345.json .
