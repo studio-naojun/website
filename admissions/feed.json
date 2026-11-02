@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T08:37:32+09:00",
+  "updated_at": "2026-11-02T09:04:26+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-11-02",
+      "type": "weekly",
+      "published_at": "2026-11-02",
+      "title": "出願締切の訂正と受験料の単位――11月の手続は最新の学校案内で確認",
+      "summary": "目黒日本大学の締切時刻訂正告知、サレジアン国際学園世田谷の入試区分別検定料FAQ、三輪田学園の帰国生出願開始、千葉県立中の書類到着条件を一次資料で検証。",
+      "path": "weekly/2026-11-02/",
+      "source_cycle": "admissions-weekly-2026-11-02"
+    },
     {
       "id": "weekly-2026-10-26",
       "type": "weekly",
