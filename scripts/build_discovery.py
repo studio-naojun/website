@@ -22,6 +22,7 @@ MANUAL_MARKER = '<meta name="naojun-discovery" content="manual">'
 EXCLUDED_PARTS = {
     ".git",
     ".github",
+    ".futurecast-private-local",
     "_templates",
     "feedback-gas",
     "node_modules",

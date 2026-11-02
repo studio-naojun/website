@@ -1,0 +1,75 @@
+name: FUTURECAST Preview Integrity
+
+on:
+  pull_request:
+    paths:
+      - 'futurecast/**'
+      - 'tools/futurecast/**'
+      - '.github/workflows/futurecast-smoke.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'futurecast/**'
+      - 'tools/futurecast/**'
+      - '.github/workflows/futurecast-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  forecast-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run forecast tests
+        run: node --test tools/futurecast/tests/*.test.mjs
+      - name: Verify public forecast history
+        shell: bash
+        run: |
+          if [[ -s futurecast/data/receipts.ndjson ]]; then
+            node tools/futurecast/fc.mjs verify-public futurecast/data --production --require-committed
+          else
+            node tools/futurecast/fc.mjs verify-public futurecast/data --production --prepublish
+          fi
+      - name: Enforce append-only public history
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="origin/${{ github.base_ref }}"
+          else
+            base="HEAD^"
+          fi
+          node tools/futurecast/fc.mjs check-append --base "$base" --dir futurecast/data
+      - name: Rebuild and compare published static pages
+        shell: bash
+        run: |
+          mode=()
+          if [[ ! -s futurecast/data/receipts.ndjson ]]; then mode=(--prepublish); fi
+          node tools/futurecast/fc.mjs build futurecast/data "$RUNNER_TEMP/futurecast" "${mode[@]}"
+          for f in index.html archive/index.html scoreboard/index.html methodology/index.html data/index.json data/scoreboard.json assets/css/futurecast.css; do
+            cmp "$RUNNER_TEMP/futurecast/$f" "futurecast/$f"
+          done
+          for f in futurecast/data/ledger/*.ndjson; do
+            q="$(basename "$f" .ndjson)"
+            cmp "$RUNNER_TEMP/futurecast/p/$q/index.html" "futurecast/p/$q/index.html"
+          done
+      - name: Ensure no private source fields are published
+        shell: bash
+        run: |
+          if grep -REn 'private_hash|private_prev_hash|snapshot_sha256|route_receipt|observation_snapshot|candidate_sha256' futurecast/data futurecast/*.html futurecast/p futurecast/scoreboard futurecast/methodology futurecast/archive; then
+            echo 'Private metadata exposed in public forecast projection.'
+            exit 1
+          fi
+          if grep -REn 'demo-000|合成データ・非公開' futurecast/index.html futurecast/p; then
+            echo 'Synthetic sample appeared on the real site.'
+            exit 1
+          fi
+          if grep -REn 'sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----' futurecast tools/futurecast; then
+            echo 'Potential credential in source or public output.'
+            exit 1
+          fi

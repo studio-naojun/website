@@ -34,3 +34,11 @@ PRでは `Studio Design Contract` が反映漏れを検査します。
 週次・月次の投資レポートはいずれも、K.A.N.A.D.E.の編集・公開前チェック完了後、Static PublisherがWebsite PRを作成し、required CIと差分・provenance確認が成功すれば自動で`main`へmergeします。GitHub Pagesの公開成功を確認した後、Junへlive公開URLを送り、Junは公開ページを確認して必要なら修正を指示します。
 
 通常の投資レポート公開では記事ごとのJun事前承認を要求しません。hard blockerがある場合だけ公開を停止します。
+
+## FUTURECAST｜未来予測台帳
+
+`futurecast/` contains an initial set of three real-source, binary forecasts covering Artemis III, PLATO, and U.S. monetary policy. Each includes an uncalibrated, subjective probability, a resolution deadline, supporting and challenging evidence, and an append-only public forecast record. Actual outcomes are not yet known, so the Brier scoreboard has no scored forecasts. `tools/futurecast/` holds the reproducible validator, authoring, real HTTP readback receipt, and static page builder. The private source-of-truth and raw source observations are **not stored in this public repository**.
+
+GitHub Pages receipt times are recorded only after authentic readback of the published bytes. The initial build explicitly says publication is unconfirmed; it does not fabricate publication receipts. Automatic ongoing LLM inference and live news collection are not yet connected. See [the methodology](https://naojun.jp/futurecast/methodology/) for the limits of the forecast.
+
+Methodology references: [ForecastBench](https://github.com/forecastingresearch/forecastbench) (MIT), for forecasting evaluation concepts, and [Metaculus forecasting-tools](https://github.com/Metaculus/forecasting-tools) (MIT), for forecasting workflow ideas. Neither package is installed or invoked by this prototype.
