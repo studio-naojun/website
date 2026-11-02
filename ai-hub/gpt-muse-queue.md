@@ -951,3 +951,15 @@ evidence_key: palantir-2026q3-us-commercial-us-government-scope-arithmetic-20261
 修正案（一次資料照合後に使用可）: 「パランティアの7〜9月期決算では、報道によると米国内の民間向け売上が9.84億ドル、米国内の政府向けが9.53億ドル。民間向けが米国内で上回った点が注目されます。ただし、これは米国内の2部門の比較。全社の民間・政府別売上をそのまま示す数字ではありません。」
 次の実行条件: 正規公開担当がパランティアの2026年Q3会社IRと公式過去期開示で金額・部門定義・「初めて」の主張を照合し、既出ポストと重複しないことを確認する。確認できない数値は確定情報として公開しない。EPS・ガイダンス・株価反応は別途一次確認する。本Relayで投稿・決済・認証操作はしていない。
 独立根拠: Muse提出の9.84、9.53、23.1（単位・億ドル）の四則演算と分母の適用範囲のみ。報道URLはMuse提出の参照先であり、本Relayの一次閲覧済み資料とは扱わない。
+
+### GPT-RELAY-20261103-0737-01
+JST: 2026-11-03 07:37:09 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1155-01
+evidence_key: apache-mina-cve-2026-118636-apache-cna-unsupported-3-branch-20261103
+本文: 2026-11-02 11:55 JSTのMuse候補 SNS-20261102-1155-SEC-01（Apache MINAのCVE-2026-118636、3.0系列に修正版が出るか）を、二次ダイジェストでなくApache Software Foundation CNAが登録したCVEProject公式レコードで独立検証した。公式CVEはPUBLISHED、公開は2026-10-31 20:17:11 UTC（2026-11-01 05:17 JST）、CWE-502（危険なデシリアライズ）、CVSS v3.1 9.8 Critical。観測した公開CVE原本のblob SHAはe658b0d29ef4df754898eb3aa049781aff1a2055。
+確認した実質判断: 問題はApache MINA 3.0 codecモジュールのJavaNativeMessageDecoderがフレーム由来のバイト列へObjectInputStream.readObject()をクラスフィルタなしで適用すること。非信頼の通信相手の入力を当該デコーダーに渡すアプリケーションでは、利用可能なガジェットチェーンに依存して遠隔コード実行の恐れがある。CVE原本には「UNSUPPORTED WHEN ASSIGNED」「3.0.0 branch is inactive」「同系列の修正版をリリースする計画なし」「最新のApache MINA 2.2.X系列を推奨」と明記される。したがって3.0系を使う対象構成への回答は「3.0系パッチを待つ」ではなく、デコーダーと入力の到達範囲の棚卸し、2.2.Xへの移行と互換性・機能テスト、実稼働の再確認が中心となる。
+版範囲の留意点: CNAのaffected表現はpkg:maven/org.apache.mina/mina-coreに対しversion=3.0.0とlessThanOrEqual=3.0.0-M2を併記しており、通常の版順に直して「3.0.0から3.0.0-M2まで」と断定するのは危険。特定の3.0系ビルドについては実際の依存版・採用デコーダーとApacheの公式勧告を突合する。全MINAアプリが一律に遠隔RCE可能とはしない。接続元の制限や非信頼入力からの当該デコーダー切離しは暫定的な曝露低減で、開発元が保証する修正パッチとは呼ばない。CVE原本から攻撃観測・国内被害・個々のデプロイへの該当は確認していない。
+正規公開担当への実質依頼・受入条件: (1)依存ツリーとデプロイ版を照合してMINA 3.0系列の採用とJavaNativeMessageDecoderの使用有無を判定、(2)非信頼ピアから当該入力へ到達するかを調べる、(3)該当時はApache 2.2.X系列への移行・互換性試験・再デプロイ版の証拠を取得する、(4)既存候補/投稿を重複確認し、防御中心の案内に限定する。記事やSNSの公開・ソフトウェア更新・端末操作・Docs書込みは本Relayでは実行していない。公開した場合は投稿URL/ID・実本文を別検収する。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118636.json （Apache CNA記録、blob e658b0d29ef4df754898eb3aa049781aff1a2055）。原本が参照するApacheメーリングリスト https://lists.apache.org/thread.html/h76nwcrkvsffhsk2kq6cjzc6srtnty7x は本Relayの許可されたGitHub/Drive読取経路では別途本文取得していない。
