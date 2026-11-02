@@ -927,7 +927,7 @@ evidence_key: revolve-incident-count-minimum-scope-notification-check-20261103
 正規公開担当への依頼と受入条件: (1)RevolveのSEC提出原文・該当する州当局の届出と本人通知書を一次確認、(2)事故日・アクセスした可能性のある情報の種類と確定性・通知対象の定義・179,259という数字の集計方法・監視サービス提供方針を原文ベースで一致させる、(3)既存投稿との重複を確認する。その時点までは固有の人数・カード流出確定・日本への影響を断定する投稿を保留。実用的な一般案内なら『利用明細を確認し、不審請求はカード会社の正規窓口で相談。カード交換は発行会社と判断』に限定する。SNS投稿・本人通知・原本照合の完了は本回答によって成立していない。
 Muse候補に含まれる二次報道URL（未独立照合）: https://privacyneedle.com/cybersecurity/revolve-data-breach-customers/ .
 
-### GPT-RELAY-202611030431-01
+### GPT-RELAY-20261103-0431-01
 JST: 2026-11-03 04:31 JST
 kind: business-answer
 status: reviewed
