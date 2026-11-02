@@ -900,3 +900,17 @@ evidence_key: us-midterm-2026-market-combination-probability-total-102-percent-2
 掲載用の安全な構成: 投票は米現地11月3日で、開票は日本時間11月4日に州ごとに進むという日程の説明を主眼にし、各州の投票締切は公式州選管の一次時刻と夏時間・タイムゾーン換算で確認する。上下院の選挙情勢は別々に、予測値を使う場合は市場名・観測日時・予測市場の取引価格由来であることを明記し、結果を保証する確率として扱わない。4象限の分布と集計基準が揃うまで『両院民主68%』『ねじれ27%』等のセット表示を保留する。
 受入条件と現状: 公開担当は(1)州選管による実際の締切時刻、(2)上下院の各議席数・欠員と過半数、(3)予測市場の同一時点の排他的4結果と市場出典を独立確認し、(4)既存の中間選挙投稿と重複照合し、必要な場合だけ事前案内を公開する。現Relayで独立検証できた新しい証拠は候補内3比率の和が102%という再現可能な算術矛盾であり、外部サイトの数値・実際の開票・SNS投稿は確認・実行していない。
 候補側の公開出典（未独立照合）: https://www.oanda.jp/lab-education/market_news/us_midterm_2026/ ; https://www.binance.com/ja/square/post/10-29-2026-countdown-to-the-us-midterms-what-you-need-to-know-before-the-november-3-vote-382529141360966 .
+
+### GPT-RELAY-20261103-0240-01
+JST: 2026-11-03 02:40:03 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1850-01
+evidence_key: wordpress-core-cve-2026-119977-upgrade-staging-7-1-3-7-1-4-code-cveproject-20261103
+本文: Museの2026-11-02 18:50 SECURITY候補「WordPress Coreの更新時に生じる一時展開ディレクトリからのRCE」（SNS-20261102-1850-SEC-01）を、Wordfenceが登録した公開CVE原本とWordPress公式のv7.1.3/v7.1.4ソースで独立照合した。新規の実質回答は、候補の『CVEが存在するか不明』の解決と、修正がどの処理で実現したかの原本確認である。
+確定した識別子・評価: CVE-2026-119977はWordfence CNAが2026-10-31 05:33 UTCにPUBLISHEDとして登録済み（CVE原本blob 47c18ea75aa6590a67cc4667b6d4d23645fe721a）。CVSS v3.1は8.1 HIGH、ベクトルAV:N/AC:H/PR:N/UI:N。影響はWordPress Core 4.7.0以降の複数保守系列にまたがるが、原本は系列ごとに上限を列記し、7.0系は7.0.7まで、7.1系は7.1.3までをaffectedとする。『すべてのWordPress』『7.1.4も影響』とは記載しない。旧系列を使う運用者には、その系列に対応するベンダー正規の修正リリースを照合するよう案内し、無条件に7.1.4へ移行済みとみなさない。
+修正の実コード確認: WordPress/wordpress-developのタグ7.1.3、src/wp-admin/includes/class-wp-upgrader.php（blob ba27113ff73de361ca5054c3b8d347709c3149ed）では展開先がwp-content/upgrade/配下のアーカイブ由来の予測可能な名前だった。タグ7.1.4の同ファイル（blob 154178f1c64e2816d4cabee46125b113bce8d968）ではget_working_dir_name()が元の名前にwp_generate_password(16, false)による16文字を追加し、upgradeディレクトリのindex.phpを保持・配置する。コード自体も『upgrade directory is web-served』と説明する。これは予測困難化とディレクトリ一覧の抑制であり、サイトの全構成でWeb公開やPHP実行が全面的に禁止される実装ではない。
+実際の成立条件と対策: CVE原本が対象とするのはフルパッケージCore更新中に予測可能な展開先へWeb経由で到達できる短い競合窓。攻撃の成立は外部からの到達・サーバー側実行設定・タイミングに依存し、全更新・全設置で即時RCEとは言えない。更新自体を取りやめない。正規修正版へ更新した事実を確認し、管理可能なWebサーバーではwp-content/upgrade配下の外部実行/直アクセスを制限する防御を検討し、更新作業が妨げられないか検証する。旧版から更新する場合、更新開始時に旧upgraderの処理が使われ得る点はコード差分からの推論であり、更新前からの防御を推奨する根拠だが実機の攻撃成立を検証したものではない。マネージドホスティング利用者に共通の手作業を一律強制しない。
+未検証: Wordfenceが24時間で62,969試行を遮断したという候補の数値、発信元2件の14.5時間継続探査、無料版WAFの11月27日配信予定、実侵害件数、実ホスト上の攻撃成否は今回の許可されたGitHub原本では独立確認していない。『62,969サイト侵害』『すべての更新に攻撃窓が残存』と断定しない。GitHub Advisoryの旧時点にCVE欄が空だったという二次説明より、2026-10-31公開の公式CVE記録を優先する。
+公開担当への依頼・受入条件: @naojun_securityの正規公開担当は既存投稿・候補の重複を確認し、正式なCVE、系列別affected範囲、条件付きの攻撃成立、修正版と追加防御の関係を混同せずに表現する。Wordfenceの試行数やWAF配布予定を採用するなら、その時点のWordfence一次発表で再照合する。実際のSNS投稿、サイト適用、実機検査はこのRelayでは行っていない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119977.json ; https://github.com/WordPress/wordpress-develop/blob/7.1.3/src/wp-admin/includes/class-wp-upgrader.php ; https://github.com/WordPress/wordpress-develop/blob/7.1.4/src/wp-admin/includes/class-wp-upgrader.php
