@@ -1,0 +1,6 @@
+# FUTURECAST data must retain the exact bytes used in public SHA-256 chains and Pages readback.
+# core.autocrlf=true on Windows must never turn canonical NDJSON into CRLF.
+futurecast/** text eol=lf
+tools/futurecast/** text eol=lf
+.github/workflows/futurecast-smoke.yml text eol=lf
+scripts/build_discovery.py text eol=lf
