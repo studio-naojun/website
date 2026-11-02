@@ -799,3 +799,16 @@ evidence_key: wavlink-wn551x3-a-cve-2026-120344-120345-cveproject-20261102
 確度と未確認: 両公式レコードは公表されたexploitへのリンクがあり、攻撃手法の公開を示すが、実際の悪用・被害・CISA KEV登録を証明しない。affectedに明記されるのは上記の1版で、全ファームウェア版への一般化はしない。CVEレコードに修正版の番号は示されていないが、これはメーカーが修正版を用意していないとの証明ではない。WAVLINK公式の現時点の配信・回避策は本Relayでは独立検証していない。
 担当依頼と受入条件: @naojun_securityの正規公開担当が既存投稿IDを照合し重複を避け、WN551X3-Aの機種名・実ファームウェア版・公開管理面の有無を確認したうえで、防御中心の一投稿に統合する。不要なWAN側管理公開を無効化し、未使用のWireGuard機能は停止・アクセス制限を検討、DNS全体を一律に停止するのではなく当該管理/処理経路の露出とメーカーの正規更新情報を点検するよう案内する。「修正版なし」「被害確認済み」とは断定しない。実投稿が成立した場合に限り担当者が投稿URL/IDと本文を検収する。本RelayはSNS投稿、実機調査、メーカー告知の追加取得を行っていない。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120344.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120345.json .
+
+### GPT-RELAY-20261102-1837-01
+JST: 2026-11-02 18:37:52 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1630-01
+evidence_key: ivanti-ics-cve-2026-104935-111357-cveproject-scope-scores-20261102
+本文: Ivanti Connect Secureの脆弱性連鎖と11月2日の対応期限に関する候補を、公開されたCVEProject公式CVE原本から独立照合した。重要な修正が必要であり、現状のバージョン・点数・攻撃条件をそのまま確定情報として投稿しない。
+一次原本で確定した内容: CVE-2026-104935（Ivanti CNA、2026-10-13公開）はConnect Secureの認証回避による未認証リモートコマンド実行で、CVSS v3.1=8.6。公式記述は25.1.3.0より前に影響し、22.7R2.14以前には影響しないとしており、affected欄では25.1.3.0/25.1.3.1および22.8R2.5/22.7R2.14をunaffectedと明記する。よって候補中の『修正ビルド25.1.1.3』を、このCVEについて一次原本に裏づけられた安全版として一律案内できない。25.1.3.0と25.1.1.3の取り違えに注意し、保守系統別の正規メーカー勧告を再照合する。
+重大な数値・攻撃条件の訂正: CVE-2026-111357（CVEProject公式、2026-10-15公開、10-31更新）はConnect Secure 22.8R2.4でのdsinvoked/DSCache処理に関係するrootへの権限昇格で、公式CVSS v3.1は7.0（AV:L/AC:H/PR:L）。候補の『8.8』はこの公式レコードと一致しない。このCVE単独を『認証不要の遠隔RCE』と記述するのは誤り。公式レコードは2026年10月の実悪用を記し、CISA ADPは10月30日のKEV追加を記録するが、これだけで全バージョンの攻撃連鎖の成立を保証しない。
+未検証と次工程: 3件目のCVE-2026-118527は本回のCVEProject/cvelistV5 mainの想定パスに存在せず、同リポジトリのコード検索でも該当レコードを確認できなかった。これは当該CVEの不存在を証明しない。非公式KEVミラーには11月13日の対応期限という記録があるが、公式原本を独立確認するまでは確定扱いにしない。CVE-2026-111357の11月2日期限は二次KEV複製に記載されるが、連邦機関の期限をすべての組織の法定期限と混同しない。Ivantiの現行メーカー勧告・公式KEV・3件目の公式CVE・影響ビルド・修正版を正規公開担当が照合し、既存投稿の重複を確認すること。案内は対象版の更新、管理画面の外部露出制限、必要な証拠保全と資格情報の調査を中心とし、確証のない修正番号や攻撃手順を拡散しない。実機更新・侵害判定・SNS投稿は本Relayでは行っていない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/104xxx/CVE-2026-104935.json （blob b527f5c12e95a1fe4a358466679d3f4ed4c4c7d6）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111357.json （blob 11144d0d40dbd2dd4d8dea910a4cb8b4b97daf79）。二次KEV照合のみ: https://github.com/opencve/opencve-kb/blob/main/2026/CVE-2026-111357.json および CVE-2026-118527.json。
+
