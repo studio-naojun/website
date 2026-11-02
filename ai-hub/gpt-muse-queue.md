@@ -776,3 +776,14 @@ evidence_key: mikrotik-routeros-cve-2026-84411-cisa-icsa-26-272-06-patch-scope-2
 修正版の検証差分: CISA CSAFとCVEProjectのaffectedは『RouterOS 7.24未満』、CISAのvendor_fixは『7.24以降へ更新』とする。一方、Muse候補にある別保守系列の『7.23.8（v7 long-term）』『6.49.23（v6）』は今回取得した2つの一次原本には明記されていない。これらを未修正と断定するのではなく、系列別のベンダー公式勧告・配信一覧で追加確認するまで『検証済みの修正版』として一律掲載しない。CISA勧告は9月末、CVEレコードは10月2日に公表されており、『11月2日に発見・公開された新規CVE』との表現も避ける。
 対応と受入条件: @naojun_securityの正規担当は投稿受領記録で既出を確認し、Web管理（WebFig）の外部到達を最小化・不要な管理公開を無効化、導入中RouterOSの系統と実版を確認したうえで、その系統のメーカー正規更新を適用するよう防御中心に整理する。公開する修正番号は保守系列別の正式告知に照合できたものだけ採用し、『全機器が外部から侵害可能』『被害確認済み』とは断定しない。CISAの2026-09-30版は『同CVEを狙った公知の悪用報告は当時ない』と記すが、2026-11-02現在の悪用なしの証明には使わない。本RelayではX投稿、実機調査、ベンダー配信状況の現時点照合は実施していない。実投稿は担当側で投稿URL/本文を別検収する。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/84xxx/CVE-2026-84411.json ; https://github.com/cisagov/CSAF/blob/develop/csaf_files/OT/white/2026/icsa-26-272-06.json .
+
+### GPT-RELAY-20261102-1531-01
+JST: 2026-11-02 15:31:24 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1520-01
+evidence_key: php2shell-fragnesia-cve-46300-incorrect-attribution-cveproject-20261102
+本文: Museの2026-11-02 15:20 SECURITY候補「PHP2Shell×FragnesiaによるPAN-OS機器25台のroot侵害」について、引用CVEの一次原本をCVEProject/cvelistV5 mainで独立照合し、公開前に訂正が必要な重大な帰属不整合を検出した。CVE-2026-46300（Linux CNA、2026-05-23公開）はLinuxカーネルnet/core/skbuff.cのskb_try_coalesce()でshared-fragマーカーが失われ、ローカル条件でページキャッシュ破壊／権限昇格に至り得る問題を記載する。PAN-OSの「Fragnesia」脆弱性としては登録されていない。CVSS v3.1は7.8（AV:L/PR:L）で、PAN-OSの外部認証不要RCEとして扱うのは不正確。
+同時に、CVE-2026-109618とCVE-2026-109619はPHP Group自身が2026-10-21に公開したPHPランタイムのメモリ状態不整合による条件付きRCEのCVEで、影響版はPHP 8.2系8.2.35未満、8.3系8.3.36未満、8.4系8.4.27未満、8.5系8.5.12未満。いずれもCVSS v4.0 9.2、attackComplexity HIGHかつattackRequirements PRESENTであり、登録原本はPAN-OS固有の攻撃チェーンや機器25台の侵害を立証しない。
+実質結論/修正依頼: 「CVE-2026-46300＝Fragnesia」「3件のCVEの連鎖でPAN-OSの25台root侵害が一次確認済み」というCVE対応づけを撤回・保留する。25台、22台のWeb shell、4カ国、鍵取得、Unit42独立検証などの報道由来の数値・帰属は、本回では研究原本・メーカーPSIRT/Unit42原本で独立確認していないため確定事実として転載しない。正規公開担当がメーカー公式勧告と研究原本により製品・正しい脆弱性ID・適用条件・侵害確認・修正版を照合し、既存投稿との重複を確認できるまで、当該CVE付き投稿案は公開保留。管理画面の露出制限、正規更新、侵害が疑われる場合の証跡調査と必要な鍵のローテーションは一般的な防御策として条件付きで案内可能。SNS投稿・実環境診断・メーカー側の現時点修正状況の検証は本Relayでは実施していない。
+一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/46xxx/CVE-2026-46300.json (blob ea58a3f353320cb11a7e08afd2f077b1d5329ab3) ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109618.json (blob cbeb03062a47b220003c4d98f11b70bad2aa8c86) ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109619.json (blob 3321e073e1076b0bfd9fd75116a93c9dac583776) .
