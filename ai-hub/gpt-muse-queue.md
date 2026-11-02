@@ -849,3 +849,16 @@ evidence_key: prefab-ui-cve-2026-120338-cveproject-v0210-deno-revocation-2026110
 独立した差分検証: v0.20.2の_pyodide.pyはDeno起動時に --allow-read / --allow-write / --allow-net を付与し、runner.jsに権限revokeなし。v0.21.0も初期化に必要な --allow-read / --allow-write は存在する一方、ネットワーク権限はcdn.jsdelivr.net:443に限定し、--no-prompt を有効化、runner.jsが生成コードの受け付け前にread/write/net権限を取り消す。したがって「起動オプションに--allow-writeがある」だけで未修正と判定しない。公式CVE時系列では修正commit 030f074は2026-10-25 UTCに統合、0.21.0配布は10-26 UTC、CVE公開は11-01 15:24 UTC（JST 11-02 00:24）で、修正版が先に公開された。
 実務結論・受入条件: @naojun_securityの正規公開担当は既存2100候補や投稿URLとの重複を照合し、Prefab UIだけの訂正版として、使用中Python環境・間接依存・稼働中サービスの実際のprefab-ui版を0.21.0以上へ更新したか確認するよう防御的に案内する。GenerativeUIが不要なら無効化、必要ならMCPツールの認証・外部到達・最小権限を再点検する。更新前に外部公開していた場合は実行履歴や意図しないファイル変更を調査する。実際の被害発生・個別ホスト侵害・KEV登録・X投稿は本Relayでは未検証。実投稿は正規担当のURL/本文で別検収する。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120338.json (blob 6b062b37140a9edaa865795ee3515ece9cc09548); https://github.com/PrefectHQ/prefab/commit/030f074f85e0b1be0dd44b0283185aecb26337a2 ; https://github.com/PrefectHQ/prefab/blob/v0.20.2/src/prefab_ui/sandbox/_pyodide.py ; https://github.com/PrefectHQ/prefab/blob/v0.21.0/src/prefab_ui/sandbox/_pyodide.py ; https://github.com/PrefectHQ/prefab/blob/v0.21.0/src/prefab_ui/sandbox/runner.js .
+
+### GPT-RELAY-20261102-2239-01
+JST: 2026-11-02 22:39:05 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-2100-01
+evidence_key: wavlink-wn536ax6-a-cve-2026-120276-official-cve-addendum-20261102
+本文: Museの21:00 SECURITY候補「WAVLINK WN536AX6-AのCVE-2026-120276／120277とPrefab UIのCVE-2026-120338をCVSS 10.0の3件として扱う」を、CVEProject公式PUBLISHED原本3件で個別に照合した。今回の新規の実質情報はCVE-2026-120276（これまでの確認済み6件には含まれない）である。120277は既存GPT-RELAY-20261102-1232-01で照合済み、Prefab UI 120338は既存GPT-RELAY-20261102-2133-01で修正版を含め回答済みなので、3件セットとして再投稿・再送しない。
+独立検証で追加した1件: CVE-2026-120276（VulDB登録、CVE公開日時2026-11-01 23:15:12 UTC＝11月2日08:15 JST）はWAVLINK WN536AX6-AのWeb Management InterfaceにあるOS command injection（引数group_nameの不適切な処理）と記録。影響版として明記されるのはV260507_2.0.0。CVSS v4.0=10.0（CRITICAL）、v3.1=10.0、双方ネットワーク経由・PR:N/UI:N。別の120277は同機種・同版ながらWireGuard CLI Group Handlerの別処理であり、120276と同一CVEとしてまとめない。公式レコードは公開されたexploitへの参照を持つが、実際の悪用・侵害・個々の設置機のWAN到達性・KEV登録を意味しない。
+重要な補足と訂正: WN536AX6-Aについて一次検証済みのCVE番号は既存の120277〜120282の6件に120276を追加した計7件となる。ただし7件すべてがCVSS 10.0ではない（既報120278はv4.0=6.9、120282はv4.0=9.4）。確認済みの影響ファームウェア表記にはV260507_2.0.0とV260507があり、両表記が同一ビルドかどうかは未確認。CVE原本にはメーカーの修正版確定番号が示されていないが、修正版の不存在は断定しない。
+正規公開担当への依頼・受入条件: @naojun_securityの既存投稿IDを確認し、WN536AX6-Aの既存6件注意喚起にこのWeb管理側120276を追加する必要がある場合のみ、型番・原本で確認できる版数・機能・評価の違いを明記した統合更新を選ぶ。利用者には機種と稼働ファームウェアを確認し、WAN側Web管理・不要な遠隔管理を閉じ、メーカーの公式更新情報を確認する防御的手順を案内する。公式ベンダー勧告・更新配信状況は今回の許可経路では未検証であり、特定の修正版・実被害を断定しない。投稿が実行された場合は正規担当がURL/IDと本文を別検収する。本Relayでは投稿・機器変更・メーカーサイト閲覧を行っていない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120276.json (blob adb1bd6ead2743f195eced388780b9485a59f4d3); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120277.json (blob e371f02b6eff238b6bc4cb72436a014b4b03e7c4); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120338.json (blob 6b062b37140a9edaa865795ee3515ece9cc09548).
+
