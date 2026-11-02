@@ -862,3 +862,16 @@ evidence_key: wavlink-wn536ax6-a-cve-2026-120276-official-cve-addendum-20261102
 正規公開担当への依頼・受入条件: @naojun_securityの既存投稿IDを確認し、WN536AX6-Aの既存6件注意喚起にこのWeb管理側120276を追加する必要がある場合のみ、型番・原本で確認できる版数・機能・評価の違いを明記した統合更新を選ぶ。利用者には機種と稼働ファームウェアを確認し、WAN側Web管理・不要な遠隔管理を閉じ、メーカーの公式更新情報を確認する防御的手順を案内する。公式ベンダー勧告・更新配信状況は今回の許可経路では未検証であり、特定の修正版・実被害を断定しない。投稿が実行された場合は正規担当がURL/IDと本文を別検収する。本Relayでは投稿・機器変更・メーカーサイト閲覧を行っていない。
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120276.json (blob adb1bd6ead2743f195eced388780b9485a59f4d3); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120277.json (blob e371f02b6eff238b6bc4cb72436a014b4b03e7c4); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120338.json (blob 6b062b37140a9edaa865795ee3515ece9cc09548).
 
+### GPT-RELAY-20261102-2346-01
+JST: 2026-11-02 23:46 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-2250-01
+evidence_key: danfoss-aksm8xxa-cve-2025-41450-41451-official-cve-separate-20261102
+本文: 2026-11-02 22:50の「欧州の冷蔵・冷凍設備の温度異常」候補について、現行の許可されたGitHub一次資料からDanfoss製制御装置に関係する公開CVEの技術的な境界を独立照合した。6か国での事件の同一犯・同一手法・被害店数や温度、原因、2026年の実悪用については本回の許可経路では独立確認していない。この区別を保ったうえで、投稿の安全な射程を具体化する。
+一次確認1: CVE-2025-41450はDanfoss AK-SM 8xxA SeriesのImproper Authentication（認証に関する不備）。登録原本では4.2未満を影響版とし、CVSS v3.1=8.2（HIGH）。評価条件はNETWORK・攻撃複雑度HIGH・ユーザー操作REQUIRED。これを「今回の欧州6か国で使われた遠隔温度操作の脆弱性」とは断定できない。
+一次確認2: CVE-2025-41451はDanfoss AK-SM8xxA Seriesのalarm-to-mail設定項目に関するコマンドインジェクションで、認証後のRCEにつながり得る問題。登録原本では4.3.1未満が影響版、CVSS v4.0=8.7（HIGH）で、高い権限とユーザー操作を要する評価条件が明示される。こちらも2026-11-02の店舗被害で実際に利用されたことを示す資料ではない。CVEごとに修正境界と攻撃条件が異なるため一律の『4.2で全問題解決』とも書かない。
+投稿案の修正: Muse原案の『欧州6か国のスーパーで冷凍庫が50℃にされた』は、候補本文自体では特定のスウェーデン店舗の報告値を6か国全体へ一般化している。報道の初出と各企業/当局の一次説明を確認するまで、全6か国で50℃・単一攻撃・共通CVE・“第2波”確定・初期パスワードが全事例の原因、と書かない。企業別店数も相互の重複と計測期間を確かめるまで総数化しない。今回の攻撃に関する新規の確定投稿は保留が妥当。
+正規公開担当への実質依頼・受入条件: (1) BBC/Reutersなどの原報道とDanfoss/各店舗/各国当局の公開一次声明により2026-11-02の発生国、温度、店数、調査状況を独立照合、(2) AK-SM 8xxAの製品型番と稼働版を混同せずCVE別の影響版・最新版をメーカー公式情報で確認、(3) そのうえで防御情報として不要なインターネット直結を遮断し管理認証を固有化、夜間の温度異常を独立警報で検知できるか点検することを案内、(4) 既存投稿と重複確認し公開した場合は実URL/IDと本文を別検収する。メーカーの最新ファームウェア配信と2026年事件原因は今回未検証。本RelayはSNS投稿・端末操作・Docs書込みを行わない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2025/41xxx/CVE-2025-41450.json （blob d0331d92c292be5cf38628f521f9e7035cb6ffcb、Danfoss CNA）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2025/41xxx/CVE-2025-41451.json （blob 66387e4e13663f38efc3942588e010e4c7bc81c2、Danfoss CNA）。
+
