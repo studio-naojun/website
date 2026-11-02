@@ -741,3 +741,16 @@ evidence_key: linksys-e8450-cve-2026-120283-cveproject-8e5eb583-20261102
 重要な訂正と未確認: Muse候補の「修正版なし」は訂正する。CVE原本に修正版番号が記されていないことは確認できるが、メーカーが修正版を提供していないことの証明ではない。OffSeq要約の「PoC公開済み」、KEV非登録、実被害・攻撃観測なし、ベンダーへの無回答、現在のサポート期限も今回は独立検証していない（CVE原本は開示前にベンダーへ連絡したが回答がなかった旨を記載するだけ）。影響を受けるファームウェア全版や全Linksys製品への一般化もしない。CVE原本のCVSS E:Pだけで外部公開PoCの所在・再現成功を認定しない。
 次アクション・受入条件: @naojun_securityの正規公開担当は投稿IDと既存受領記録で重複を確認し、Linksys公式の当該機種向けセキュリティ告知と最新ファームウェアの有無を別途照合する。投稿する場合は「E8450の該当版を確認し、不要なWAN側管理を無効化・外部到達を制限し、メーカーの更新を確認する」と防御中心に限定し、「修正版なし」「既に悪用」「全ユーザーが無条件に遠隔侵害」等は断定しない。CVEの一次検証・候補精査は成立したが、X投稿・公開承認・到達・当該ネットワークの影響診断は未実行・未検証。
 公開根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120283.json .
+
+### GPT-RELAY-20261102-1232-01
+JST: 2026-11-02 12:32:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261102-1115-01
+evidence_key: wavlink-wn536ax6-a-six-cves-cveproject-version-scope-cvss-20261102
+本文: Museが2026年11月2日10:50〜11:15 JSTに報告したWAVLINK WN536AX6-Aの連続候補を、CVEProject/cvelistV5の公式PUBLISHED原本6件（CVE-2026-120277〜120282）で個別に独立照合した。6件とも2026年11月2日午前JSTに公開され、同一製品に関するが、原因・影響・評価を一律化しない。
+独立確認した内訳（CVSS v4.0）: 120277＝WireGuard CLI処理のOSコマンドインジェクション、10.0、影響版V260507_2.0.0。120278＝VPNクライアント一覧処理の認証欠落、6.9（MEDIUM）、影響版V260507_2.0.0。120279＝OpenVPN処理のOSコマンドインジェクション、10.0、影響版V260507。120280＝WireGuard処理のOSコマンドインジェクション、10.0、影響版V260507。120281＝OpenVPN処理のスタックベースのバッファオーバーフロー、10.0、影響版V260507。120282＝ブラックリスト機能のOSコマンドインジェクション、9.4、影響版V260507。120282のCVSS v4.0ではPR:Lであり、6件すべてを「認証不要のCVSS 10.0」としてはならない。120278もCriticalではない。V260507とV260507_2.0.0の表記差は原本に存在するが、両者が同一ファームウェアかどうかは未検証。
+公開時の注意点: 6件のCVE原本には修正版の確定番号が明示されていないが、これは「メーカーの修正版が存在しない」という証明ではない。原本には公開済みexploitへの言及があるものの、実機での悪用・被害、設置環境での外部到達、メーカーの現在の修正配信状態は独立確認していない。ネットワーク経由というCVSS評価のみで、すべての機器がインターネットから到達可能と断言しない。
+実務結論・受入条件: @naojun_securityで扱う場合は6件を型番・影響版・脆弱性種別・CVSSの違いを示す一本の防御的注意喚起に統合し、小刻みな「第5件」「第6件」の重複連投を避ける。利用者は機種と実ファームウェア版を確認し、WAN側管理・不要なリモート機能の公開を制限し、メーカーの正規更新・告知を確認する。正規公開担当が既存投稿IDとの重複とメーカー発表を確認し、実投稿した場合に限り投稿URL・本文を別途検収する。本RelayではSNS投稿・機器変更・修正版確認を実施していない。
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120277.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120278.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120279.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120280.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120281.json ; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120282.json .
+
