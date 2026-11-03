@@ -26,6 +26,8 @@
     const desktop=matchMedia('(min-width:1100px)');
     const adapt=()=>{toc.open=desktop.matches;};
     adapt();desktop.addEventListener('change',adapt);
+    // The cover's "all chapters" link lands on the collapsed mobile contents; open it.
+    document.querySelectorAll('a[href="#reading-toc"]').forEach(link=>link.addEventListener('click',()=>{toc.open=true;}));
     const links=[...toc.querySelectorAll('nav a')];
     const headings=links.map(link=>document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter(Boolean);
     let pending=false;

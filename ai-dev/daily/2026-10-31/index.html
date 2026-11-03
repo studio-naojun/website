@@ -18,9 +18,9 @@
   <meta name="twitter:card" content="summary">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月31日号","description":"Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。","datePublished":"2026-10-31","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-31/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-31T19:04:38.709+09:00"}</script>
 <!-- naojun-discovery:end -->
-  <link rel="stylesheet" href="/assets/css/studio.css?v=20261103a">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
-<body class="studio-site studio-interior studio-article">
+<body class="studio-site studio-interior studio-article edition-ai-dev">
 <a class="skip-link" href="#main">本文へスキップ</a>
 <header class="site-header"><div class="container header-inner">
 <a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
@@ -29,15 +29,17 @@
 <main id="main">
   <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
   <header class="ai-dev-article-hero">
+<!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[10.31]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
       <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 初回公開 2026-10-31 / 更新 2026-10-31 19:04 JST</span></div>
-<h1>AI開発・セキュリティ日報｜2026年10月31日号</h1>
+<h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年10月31日号</h1>
       <p class="ai-dev-lead">Cursor経由Claude Code拡張の悪性2版、Ivanti Connect Secure悪用連鎖、GitHub Dependabotアラート表示障害の影響と対策。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　初回確認：06:59 JST・追補確認：19:04 JST</p>
     </div>
-  </header>
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全7章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">本日の優先対応</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">Claude Code拡張の悪意ある配布版：Cursor Marketplace経由だけを対象に確認（P0）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">Ivanti Connect Secure：悪用確認された脆弱性連鎖を点検（P0／対象機器のみ）</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">GitHub Dependabotアラート閲覧障害：10月31日08:29 JSTに解消（P2）</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全7章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+</header>
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" open><summary>このページの内容<span class="toc-count">7項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">本日の優先対応</a></li><li><a href="#reading-section-2">1. Claude Code拡張の悪意ある配布版：Cursor Marketplace経由だけを対象に確認（P0）</a></li><li><a href="#reading-section-3">2. Ivanti Connect Secure：悪用確認された脆弱性連鎖を点検（P0／対象機器のみ）</a></li><li><a href="#reading-section-4">3. GitHub Dependabotアラート閲覧障害：10月31日08:29 JSTに解消（P2）</a></li><li><a href="#reading-section-5">4. Kubeflow Pipelines API server：ログ認可不足・圧縮アーカイブ展開（P1・該当構成のみ）</a></li><li><a href="#reading-section-6">この日報の確認範囲と更新履歴</a></li><li><a href="#reading-section-7">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">7項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">本日の優先対応</a></li><li><a href="#reading-section-2">1. Claude Code拡張の悪意ある配布版：Cursor Marketplace経由だけを対象に確認（P0）</a></li><li><a href="#reading-section-3">2. Ivanti Connect Secure：悪用確認された脆弱性連鎖を点検（P0／対象機器のみ）</a></li><li><a href="#reading-section-4">3. GitHub Dependabotアラート閲覧障害：10月31日08:29 JSTに解消（P2）</a></li><li><a href="#reading-section-5">4. Kubeflow Pipelines API server：ログ認可不足・圧縮アーカイブ展開（P1・該当構成のみ）</a></li><li><a href="#reading-section-6">この日報の確認範囲と更新履歴</a></li><li><a href="#reading-section-7">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
     <p><strong>確認時点：2026年10月31日06:59 JST。初回公開：2026年10月31日。</strong> 昨日以前に発生した事件と本日判明した追補を分けて掲載する。</p>
@@ -97,6 +99,6 @@
 <div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
 </div></footer>
 <script src="/assets/js/main.js?v=20261025a"></script>
-<script src="/assets/js/studio.js?v=20261103a" defer></script>
+<script src="/assets/js/studio.js?v=20261103r" defer></script>
 </body>
 </html>

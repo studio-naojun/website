@@ -18,9 +18,9 @@
   <meta name="twitter:card" content="summary">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月28日号","description":"Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-28/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T10:14:59.671+09:00"}</script>
 <!-- naojun-discovery:end -->
-  <link rel="stylesheet" href="/assets/css/studio.css?v=20261103a">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
-<body class="studio-site studio-interior studio-article">
+<body class="studio-site studio-interior studio-article edition-ai-dev">
 <a class="skip-link" href="#main">本文へスキップ</a>
 <header class="site-header"><div class="container header-inner">
 <a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
@@ -30,15 +30,17 @@
 <main id="main">
   <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
   <header class="ai-dev-article-hero">
+<!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[10.28]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
       <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 初回公開 2026-10-30 / 更新 2026-10-30</span></div>
-<h1>AI開発・セキュリティ日報｜2026年10月28日号</h1>
+<h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年10月28日号</h1>
       <p class="ai-dev-lead">Brotliの悪用確認、Tailscale 1.104.4の修正、GitHub Actionsの依存固定とNode.js 26 LTS移行。対象条件と確認・復旧方法を整理。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 08:30 JST</p>
     </div>
-  </header>
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全8章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">本日の優先対応</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">Brotliデコーダーの悪用確認（P0：到達可能な該当実装）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">Tailscale SSH・Serve：4件の修正を含む1.104.4（P1）</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">GitHub Actions lockfilesが正式公開（P2）</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全8章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+</header>
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" open><summary>このページの内容<span class="toc-count">8項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">本日の優先対応</a></li><li><a href="#reading-section-2">1. Brotliデコーダーの悪用確認（P0：到達可能な該当実装）</a></li><li><a href="#reading-section-3">2. Tailscale SSH・Serve：4件の修正を含む1.104.4（P1）</a></li><li><a href="#reading-section-4">3. GitHub Actions lockfilesが正式公開（P2）</a></li><li><a href="#reading-section-5">4. Node.js 26 LTS移行と24系の更新（P2）</a></li><li><a href="#reading-section-6">5. GitHub Agentic WorkflowsがGA（P2）</a></li><li><a href="#reading-section-7">この日報の更新履歴</a></li><li><a href="#reading-section-8">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">8項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">本日の優先対応</a></li><li><a href="#reading-section-2">1. Brotliデコーダーの悪用確認（P0：到達可能な該当実装）</a></li><li><a href="#reading-section-3">2. Tailscale SSH・Serve：4件の修正を含む1.104.4（P1）</a></li><li><a href="#reading-section-4">3. GitHub Actions lockfilesが正式公開（P2）</a></li><li><a href="#reading-section-5">4. Node.js 26 LTS移行と24系の更新（P2）</a></li><li><a href="#reading-section-6">5. GitHub Agentic WorkflowsがGA（P2）</a></li><li><a href="#reading-section-7">この日報の更新履歴</a></li><li><a href="#reading-section-8">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
     <p>対象日：2026年10月28日（主に各社の現地発表日）。遡及調査：2026年10月30日08:30 JST。<strong>初回公開日は2026年10月30日（JST）です。2026年10月28日への遡及発行ではありません。</strong> 公開後の訂正確認：2026年10月30日10:14 JST。</p>
@@ -100,6 +102,6 @@
 </div></footer>
 
 <script src="/assets/js/main.js?v=20261025a"></script>
-<script src="/assets/js/studio.js?v=20261103a" defer></script>
+<script src="/assets/js/studio.js?v=20261103r" defer></script>
 </body>
 </html>

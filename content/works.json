@@ -19,6 +19,12 @@
     "status": "無料 / ブラウザ",
     "summary": "押してツタを伸ばし、離して倒す。葉から葉へ登って自己ベストを目指す、無料のワンタッチゲーム。",
     "cover": "_partials/covers/ametsuta.html",
+    "specimen": {
+      "src": "/works/ametsuta/assets/ametsuta-play-2026-11.webp",
+      "width": 640,
+      "height": 1131,
+      "alt": "アメツタの実際のプレイ画面。雨の森で、葉の上に立つ少女と、次の葉へ伸びたツタ。高度2.5m。"
+    },
     "featured": true
   },
   {
