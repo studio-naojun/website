@@ -7,6 +7,9 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import studio_chrome as chrome  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "futurecast/data-disagrees/candidates.json"
 OUTPUT = ROOT / "futurecast/data-disagrees/index.html"
@@ -88,13 +91,10 @@ def render(data):
 <meta property="og:title" content="DATA DISAGREES — 逆転する未来を、証拠で探す | NAOJUN STUDIOS">
 <meta property="og:description" content="数値を盛らず、人々の予想とデータの見通しが本当に逆転する未来だけを選ぶ。">
 <meta property="og:url" content="https://naojun.jp/futurecast/data-disagrees/">
-<link rel="stylesheet" href="/futurecast/assets/css/futurecast.css">
-<link rel="stylesheet" href="/futurecast/data-disagrees/data-disagrees.css">
+{chrome.styles("/futurecast/data-disagrees/data-disagrees.css")}
 <title>DATA DISAGREES｜逆転する未来を、証拠で探す｜NAOJUN STUDIOS</title></head>
-<body>
-<a class="skip" href="#main">本文へ移動</a>
-<header class="site"><a class="brand" href="/">NAOJUN STUDIOS <span aria-hidden="true">↗</span></a><nav aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="https://naojun-studios.stores.jp/" rel="noopener noreferrer">Store</a></nav></header>
-<div class="mast"><a href="/futurecast/">FUTURECAST <small>未来予想台帳</small></a><nav aria-label="FUTURECAST"><a href="/futurecast/data-disagrees/" aria-current="page">DATA DISAGREES</a><a href="/futurecast/">予測台帳</a><a href="/futurecast/era-shifts/">低確率研究</a><a href="/futurecast/scoreboard/">成績</a><a href="/futurecast/methodology/">方法論</a></nav></div>
+<body class="studio-site fc-site">
+{chrome.header("/futurecast/data-disagrees/")}
 <main id="main" class="d-main">
 <section class="d-hero" aria-labelledby="d-title">
 <div class="d-hero-content"><p class="d-overline">FUTURECAST / DATA DISAGREES / 2026—2027</p>
@@ -111,7 +111,9 @@ def render(data):
 <section class="d-method" aria-labelledby="d-updates"><p class="d-overline">SLOW FORECAST / 予測の更新</p><h2 id="d-updates">毎日ではなく、<br>証拠が変わったときに。</h2><p>月に一度、一次資料の更新有無を確認します。新しい数値推定と人々の予想が厳密に揃ったときだけ新規採択を検討します。採択済みの予測を変更する場合も、過去の数字は消さず履歴に追記します。</p>
 <div class="d-method-links"><a href="/futurecast/methodology/">選定・採点方法 ↗</a><a href="/futurecast/">公開済みの予測台帳 ↗</a><a href="/futurecast/era-shifts/">旧・低確率シナリオ研究 ↗</a></div>
 <p class="d-disclaimer">現在の3件は調査候補であり、未校正のAI確率を新たに公表していません。人々の予想を測定する代表性ある調査も未取得です。サイト読者の自己選択アンケートは社会全体の世論とは見なしません。</p></section>
-</main><footer><a href="/">NAOJUN STUDIOS</a><p>日々に、小さな発明を。</p><a href="/futurecast/methodology/">この台帳について</a></footer></body></html>
+</main>
+{chrome.footer()}
+</body></html>
 """
 
 

@@ -1,75 +1,223 @@
 import { INSTRUMENTS, filterRange, normalizedEquityCompare, verifyHistory } from './history.mjs';
 
-const widgetSymbols = Object.freeze({
-  SPX: 'SP:SPX',
-  NDX: 'NASDAQ:NDX',
-  DJI: 'DJ:DJI',
-  BTC: 'BITSTAMP:BTCUSD',
+// Verified 2026-11-03 in Chromium from both a local and the naojun.jp origin: TradingView's embed
+// answers SP:SPX, NASDAQ:NDX and DJ:DJI (and TVC:*) with "This symbol is only available on TradingView".
+// Those indices therefore open on TradingView itself; a tracking ETF chart is offered only as an
+// explicitly labelled, separately clicked alternative and is never presented as the index.
+const CHARTS = Object.freeze({
+  SPX: { name: 'S&P 500', symbol: 'SP:SPX', page: 'https://www.tradingview.com/symbols/SPX/', etf: { symbol: 'AMEX:SPY', code: 'SPY', name: 'SPDR S&P 500 ETF Trust' } },
+  NDX: { name: 'NASDAQ 100', symbol: 'NASDAQ:NDX', page: 'https://www.tradingview.com/symbols/NASDAQ-NDX/', etf: { symbol: 'NASDAQ:QQQ', code: 'QQQ', name: 'Invesco QQQ Trust' } },
+  DJI: { name: 'ダウ平均', symbol: 'DJ:DJI', page: 'https://www.tradingview.com/symbols/DJ-DJI/', etf: { symbol: 'AMEX:DIA', code: 'DIA', name: 'SPDR Dow Jones Industrial Average ETF Trust' } },
+  BTC: { name: 'Bitcoin / USD', symbol: 'BITSTAMP:BTCUSD', page: 'https://www.tradingview.com/symbols/BTCUSD/?exchange=BITSTAMP', embeddable: true },
 });
+const WIDGET_SCRIPT = 'https://widgets.tradingview-widget.com/w/ja/tv-advanced-chart.js';
+const WIDGET_TIMEOUT_MS = 15000;
 
 const $ = (id) => document.getElementById(id);
 const safeNumber = (value, digits = 2) => new Intl.NumberFormat('ja-JP', { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
 const jpTime = (iso) => `${new Date(iso).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} JST`;
 
-function setupExternalChart() {
-  let selected = 'SPX';
-  let widget = null;
-  let requestedScript = false;
-  const root = $('tradingview-chart');
-  const message = () => {
-    const p = document.createElement('p');
-    p.id = 'widget-message';
-    p.textContent = 'チャートは閉じています。再表示する場合は読み込みボタンを押してください。';
-    root.replaceChildren(p);
-  };
+const el = (tag, className, text) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
 
-  for (const button of document.querySelectorAll('[data-widget-symbol]')) {
-    button.addEventListener('click', () => {
-      selected = button.dataset.widgetSymbol;
-      for (const other of document.querySelectorAll('[data-widget-symbol]')) {
-        other.setAttribute('aria-pressed', String(other === button));
-      }
-      if (widget) widget.setAttribute('symbol', widgetSymbols[selected]);
+const officialLink = (chart, className) => {
+  const a = el('a', className);
+  a.href = chart.page;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.append(`TradingViewで ${chart.name} を開く `);
+  const arrow = el('span', '', '↗');
+  arrow.setAttribute('aria-hidden', 'true');
+  a.append(arrow, el('span', 'sr-only', '（新しいタブ）'));
+  return a;
+};
+
+function setupExternalChart() {
+  const stage = $('tradingview-chart');
+  const status = $('widget-status');
+  const close = $('close-widget');
+  const keys = [...document.querySelectorAll('[data-widget-symbol]')];
+  // consent: the visitor pressed a load button (the sole path to a third-party request).
+  // etfAccepted: the visitor explicitly asked for tracking-ETF charts in place of unembeddable indices.
+  const state = { selected: 'SPX', consent: false, etfAccepted: false, script: 'idle' };
+  let widget = null;
+  let timer = 0;
+
+  const announce = (text) => { status.textContent = text; };
+
+  function requestScript() {
+    if (state.script === 'loading' || state.script === 'ready') return;
+    state.script = 'loading';
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = WIDGET_SCRIPT;
+    script.dataset.tradingview = '';
+    script.onerror = () => fail();
+    document.querySelector('script[data-tradingview]')?.remove();
+    document.head.append(script);
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (!customElements.get('tv-advanced-chart')) fail(); }, WIDGET_TIMEOUT_MS);
+    customElements.whenDefined('tv-advanced-chart').then(() => {
+      clearTimeout(timer);
+      if (state.script === 'failed') return;
+      state.script = 'ready';
+      render();
     });
   }
 
-  $('load-widget').addEventListener('click', () => {
-    // This click is the sole path that creates a third-party resource request.
+  function fail() {
+    clearTimeout(timer);
+    if (state.script === 'ready') return;
+    state.script = 'failed';
+    // The Close control becomes hidden in the error view; restore focus to
+    // the visible Retry button after an async load failure.
+    render(true);
+  }
+
+  function idleView(chart) {
+    const view = el('div', 'mk-idle');
+    const mark = el('span', 'mk-idle-mark', state.selected);
+    mark.setAttribute('aria-hidden', 'true');
+    view.append(mark);
+    const actions = el('div', 'mk-idle-actions');
+    const load = el('button', 'mk-action mk-action-primary');
+    load.type = 'button';
+    load.id = 'load-widget';
+    load.setAttribute('aria-controls', 'tradingview-chart');
+    if (chart.embeddable) {
+      view.append(el('h2', 'mk-idle-title', `${chart.name}（Bitstamp現物）の公式チャートを、この枠に表示します。`));
+      const copy = el('p', 'mk-idle-copy', 'ボタンを押すとTradingViewへ接続し、日足チャートを読み込みます。押すまで外部への通信は行いません。');
+      copy.id = 'widget-message';
+      view.append(copy);
+      load.textContent = 'チャートを読み込む（TradingViewに接続）';
+      load.addEventListener('click', () => { state.consent = true; requestScript(); render(true); });
+      actions.append(load, officialLink(chart, 'mk-action'));
+    } else {
+      view.append(el('h2', 'mk-idle-title', `${chart.name} 指数は、他サイトへの埋め込み対象外です。`));
+      const copy = el('p', 'mk-idle-copy', `TradingViewは ${chart.name}（${chart.symbol}）指数を外部サイト用チャートで提供していません（2026年11月3日確認）。指数そのものはTradingViewで開けます。値動きの形は、連動ETF「${chart.etf.code}」のチャートでも確認できます。ETFの価格は指数の値と一致しません。`);
+      copy.id = 'widget-message';
+      view.append(copy);
+      load.textContent = `連動ETF「${chart.etf.code}」のチャートを表示（TradingViewに接続）`;
+      load.addEventListener('click', () => { state.consent = true; state.etfAccepted = true; requestScript(); render(true); });
+      actions.append(officialLink(chart, 'mk-action mk-action-primary'), load);
+      load.className = 'mk-action';
+    }
+    view.append(actions);
+    return view;
+  }
+
+  function errorView(chart) {
+    const view = el('div', 'mk-idle mk-error');
+    view.append(el('h2', 'mk-idle-title', 'TradingViewのチャートを読み込めませんでした。'));
+    const copy = el('p', 'mk-idle-copy', '通信が遮断されたか、提供元に接続できません。TradingViewの公式ページなら、同じ銘柄をそのまま閲覧できます。');
+    copy.id = 'widget-message';
+    view.append(copy);
+    const actions = el('div', 'mk-idle-actions');
+    const retry = el('button', 'mk-action', 'もう一度読み込む');
+    retry.type = 'button';
+    retry.id = 'load-widget';
+    retry.addEventListener('click', () => { state.script = 'idle'; requestScript(); render(true); });
+    actions.append(officialLink(chart, 'mk-action mk-action-primary'), retry);
+    view.append(actions);
+    return view;
+  }
+
+  function liveLabel(chart) {
+    const label = el('p', 'mk-live-label');
+    if (chart.embeddable) {
+      label.append(el('strong', '', 'BTC/USD'), ` Bitstamp現物（${chart.symbol}）。価格・更新間隔はTradingViewの表示に従います。`, officialLink(chart, ''));
+    } else {
+      label.classList.add('is-proxy');
+      label.append(el('strong', '', chart.etf.code), ` ${chart.name}連動ETF（${chart.etf.name}）のチャートをTradingViewに依頼しています。指数そのものではありません。`, officialLink(chart, ''));
+    }
+    return label;
+  }
+
+  function configure(chart, symbol) {
+    widget.setAttribute('symbol', symbol);
+    widget.setAttribute('aria-label', `${chart.embeddable ? chart.name : chart.etf.code + '（' + chart.name + '連動ETF）'} のTradingViewチャート`);
+  }
+
+  function liveView(chart, symbol) {
     widget = document.createElement('tv-advanced-chart');
-    widget.setAttribute('symbol', widgetSymbols[selected]);
     widget.setAttribute('interval', '1D');
-    widget.setAttribute('timezone', 'Etc/UTC');
+    widget.setAttribute('timezone', 'Asia/Tokyo');
     widget.setAttribute('theme', 'light');
     widget.setAttribute('locale', 'ja');
-    widget.setAttribute('aria-label', `${INSTRUMENTS[selected].name} のTradingViewチャート`);
-    root.replaceChildren(widget);
-    $('load-widget').hidden = true;
-    $('close-widget').hidden = false;
+    configure(chart, symbol);
+    const view = el('div', 'mk-live');
+    view.append(liveLabel(chart), widget);
+    return view;
+  }
 
-    if (!requestedScript) {
-      requestedScript = true;
-      const script = document.createElement('script');
-      script.type = 'module';
-      script.src = 'https://widgets.tradingview-widget.com/w/en/tv-advanced-chart.js';
-      script.onerror = () => {
-        requestedScript = false;
+  function render(moveFocus = false) {
+    const chart = CHARTS[state.selected];
+    for (const key of keys) key.setAttribute('aria-pressed', String(key.dataset.widgetSymbol === state.selected));
+    const symbol = chart.embeddable ? chart.symbol : state.etfAccepted ? chart.etf.symbol : null;
+    $('chart-selected').textContent = symbol && !chart.embeddable ? `${chart.etf.code}（${chart.name}連動ETF）` : chart.name;
+    $('chart-symbol').textContent = symbol || chart.symbol;
+
+    let view;
+    if (!state.consent || !symbol) {
+      widget = null;
+      stage.dataset.state = state.consent ? 'blocked' : 'idle';
+      stage.setAttribute('aria-busy', 'false');
+      view = idleView(chart);
+      announce(state.consent ? `${chart.name} 指数は埋め込み対象外です。公式ページか連動ETFを選べます。` : '外部チャートはまだ読み込んでいません。');
+    } else if (state.script === 'failed') {
+      widget = null;
+      stage.dataset.state = 'error';
+      stage.setAttribute('aria-busy', 'false');
+      view = errorView(chart);
+      announce('チャートを読み込めませんでした。TradingViewの公式ページから閲覧できます。');
+    } else {
+      // "whenDefined" only confirms the web component module loaded; it is NOT
+      // proof that TradingView's cross-origin chart data has rendered.
+      stage.dataset.state = state.script === 'ready' ? 'connected' : 'loading';
+      stage.setAttribute('aria-busy', String(state.script !== 'ready'));
+      announce(state.script === 'ready'
+        ? `TradingViewのチャート枠を開きました（${symbol}）。価格やチャートが表示されない場合は、下の公式銘柄リンクで確認してください。`
+        : 'TradingViewに接続しています…');
+      if (widget?.isConnected) {
+        if (widget.getAttribute('symbol') === symbol) {
+          stage.querySelector('.mk-live-label')?.replaceWith(liveLabel(chart));
+          close.hidden = false;
+          return;
+        }
+        // TradingView's component does not consistently reload when only its
+        // symbol attribute changes. Reattach a fresh instance on selection.
         widget = null;
-        message();
-        $('widget-message').textContent = 'チャートを読み込めませんでした。下のTradingView公式ページから閲覧できます。';
-        $('close-widget').hidden = true;
-        $('load-widget').hidden = false;
-      };
-      document.head.append(script);
+      }
+      view = liveView(chart, symbol);
     }
+    stage.replaceChildren(view);
+    close.hidden = !state.consent || state.script === 'failed';
+    // The triggering load button belongs to a replaced subtree. Move keyboard
+    // focus to a persistent action instead of leaving it on a detached button.
+    if (moveFocus) (close.hidden ? $('load-widget') : close)?.focus();
+  }
+
+  for (const key of keys) {
+    key.addEventListener('click', () => {
+      state.selected = key.dataset.widgetSymbol;
+      render();
+    });
+  }
+
+  close.addEventListener('click', () => {
+    state.consent = false;
+    state.etfAccepted = false;
+    widget = null;
+    render();
+    announce('チャートを閉じました。');
+    $('load-widget')?.focus();
   });
 
-  $('close-widget').addEventListener('click', () => {
-    widget = null;
-    message();
-    $('close-widget').hidden = true;
-    $('load-widget').hidden = false;
-    $('load-widget').focus();
-  });
+  render();
 }
 
 const svgNode = (tag, attributes = {}) => {
@@ -263,28 +411,8 @@ async function refreshPublishedArticles() {
     if (!Array.isArray(feed.entries)) return;
     const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
     const today=p.year+'-'+p.month+'-'+p.day;
-    const safePath=new RegExp('^(weekly/[0-9]{4}-[0-9]{2}-[0-9]{2}/|monthly/[0-9]{4}-[0-9]{2}/)
-fetch('/investment/markets/history.json', { cache: 'no-store' })
-  .then((response) => response.ok ? response.json() : null)
-  .then((payload) => {
-    const verified = verifyHistory(payload);
-    if (verified.ok) setupLicensedHistory(verified);
-  })
-  .catch(() => {
-    // The static no-data copy and official chart links remain usable offline.
-  });
-);
-    const safeDate=new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}
-fetch('/investment/markets/history.json', { cache: 'no-store' })
-  .then((response) => response.ok ? response.json() : null)
-  .then((payload) => {
-    const verified = verifyHistory(payload);
-    if (verified.ok) setupLicensedHistory(verified);
-  })
-  .catch(() => {
-    // The static no-data copy and official chart links remain usable offline.
-  });
-);
+    const safePath=/^(weekly\/[0-9]{4}-[0-9]{2}-[0-9]{2}\/|monthly\/[0-9]{4}-[0-9]{2}\/)$/;
+    const safeDate=/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
     const recent=feed.entries.filter(x=>x && ['weekly','monthly'].includes(x.type)
       && typeof x.published_at==='string' && safeDate.test(x.published_at) && x.published_at<=today
       && typeof x.title==='string' && x.title.length>0 && x.title.length<240

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -139,6 +141,36 @@ test('static page has accessible no-JS path, links, and opt-in third-party loadi
   assert.match(html, /markets:related:start/);
   assert.match(html, /\/investment\/weekly\/\d{4}-\d{2}-\d{2}\//);
   assert.match(html, /noopener noreferrer/);
+});
+
+test('markets.js parses as an ES module (a .js-named node --check let the 2026-11 corruption through)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'markets-parse-'));
+  const copy = path.join(dir, 'markets.mjs');
+  fs.copyFileSync(path.join(here, 'markets.js'), copy);
+  try {
+    assert.doesNotThrow(() => execFileSync(process.execPath, ['--check', copy], { stdio: 'pipe' }));
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+  const script = fs.readFileSync(path.join(here, 'markets.js'), 'utf8');
+  assert.equal(script.match(/fetch\('\/investment\/markets\/history\.json'/g)?.length, 1, 'history is fetched exactly once');
+});
+
+test('chart reader: provider-blocked indices are never embedded as the index; own data sits below the chart', () => {
+  const html = fs.readFileSync(path.join(here, 'index.html'), 'utf8');
+  const script = fs.readFileSync(path.join(here, 'markets.js'), 'utf8');
+  for (const symbol of ['SP:SPX', 'NASDAQ:NDX', 'DJ:DJI', 'BITSTAMP:BTCUSD']) assert.match(script, new RegExp(symbol));
+  // Verified 2026-11-03: TradingView embeds only BTC of the four; indices open on TradingView or as a labelled ETF.
+  assert.match(script, /BTC: \{[^}]*embeddable: true/);
+  for (const id of ['SPX', 'NDX', 'DJI']) assert.doesNotMatch(script, new RegExp(`${id}: \\{[^\\n]*embeddable: true`));
+  assert.match(script, /指数そのものではありません/);
+  assert.match(script, /stage\.dataset\.state = state\.script === 'ready' \? 'connected' : 'loading'/);
+  assert.match(script, /aria-busy/);
+  assert.doesNotMatch(script, /表示中：/);
+  assert.match(script, /https:\/\/widgets\.tradingview-widget\.com\/w\/ja\/tv-advanced-chart\.js/);
+  assert.match(html, /id="widget-status"[^>]*role="status"/);
+  assert.ok(html.indexOf('id="tradingview-chart"') < html.indexOf('data-quote="SPX"'), 'own-data notice follows the chart');
+  assert.equal((html.match(/data-widget-symbol="(SPX|NDX|DJI|BTC)"/g) || []).length, 4);
 });
 
 test('BTC 06:30 JST carries next day vs UTC previous day', () => {
