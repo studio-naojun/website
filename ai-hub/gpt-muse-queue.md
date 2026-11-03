@@ -1070,3 +1070,16 @@ evidence_key: velocloud-richdocumentscode-cna-cisa-adp-kev-20261103
 受入条件: (1)CISA KEV公式カタログ原本で10月23日追加と当該期限・対処欄を再照合、(2)Arista Advisory 0199とCollabora/Nextcloud公式勧告で稼働構成と修正配布版を照合、(3)重複SNS投稿と対象外製品への過度な一般化を防ぐ、(4)投稿時はURL・実本文・投稿時刻を別検収する。本RelayではSNS投稿、対象環境へのアクセス、Google Doc05への書込みは行っていない。
 
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/114xxx/CVE-2026-114625.json （Arista CNA、取得blob SHA 4a39fa378852f43c88602e78f7096be0415b6765）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/110xxx/CVE-2026-110447.json （MITRE CNA、取得blob SHA c0379bfe4ac0f06eff49ff4be84ac3cae39cc92b）。いずれも2026-11-03 JST、正規GitHub readでCNA/affected/metrics/CISA-ADPを確認。
+
+### GPT-RELAY-20261103-1636-01
+JST: 2026-11-03 16:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1615-01
+evidence_key: cryptopayment-gateway-cve-2026-81648-wpscan-cna-20261103
+本文: Museの2026-11-03 16:15 JST候補（WordPressのCryptoPayment Gateway、SNS-20261103-1615-SEC-01）を、WPScan CNA登録の公式CVE原本で独立照合した。CVE-2026-81648はPUBLISHED（CNA公開日時2026-09-13 20:06 UTC）。対象はCryptoPayment Gatewayの1.2.1～1.2.2で、CVSS v3.1は10.0/Critical（AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H）、CWE-862（認可の欠落）。公式説明ではAJAXエンドポイントの認可チェック不足により、認証なしで管理操作が実行可能になり、サーバー上の任意ファイル削除、決済ゲートウェイ設定の上書き、保存されたウォレット認証情報の平文取得につながり得る。これはWordPress本体全体や暗号資産決済プラグイン一般の脆弱性ではなく、指定されたプラグインと版に関する記録である。
+確認できた範囲の重要な留保: CNAのaffected欄は1.2.1～1.2.2を列挙し、それ以外はunknown扱い。CNA原本だけでは2026-11-03時点で「修正版が存在しない」「最新版が1.2.2」「公式ディレクトリから削除済み」「今日実攻撃が発生した」は独立立証できない。Muse提示の2026-11-03付The Hacker News記事は二次報道であり、Defused Cyberの観測した悪用試行、公開停止日、ダウンロード数、修正版なしとの説明は報道由来と明記する。公式CVE中のCISA-ADPは2026-09-14時点でExploitation:noneとしているが、これは当時の評価であり11月3日の新たな観測を否定する根拠にはならない。悪用試行と被害成立・鍵流出確認も区別する。
+読者向けの防御的な修正案: 「WordPressの『CryptoPayment Gateway』1.2.1～1.2.2に重大な認可不備（CVE-2026-81648、CVSS 10.0）。管理者はプラグインの導入有無・使用版を確認してください。公式の修正版が確認できない場合は、決済の影響を評価したうえで該当機能を停止・除去し、設定改ざんや不審なファイル操作を調査。保存済みのウォレット認証情報が露出した可能性があれば、鍵や認証情報の更新と関連資産の保護を優先してください。」鍵の更新は新しい秘密をSNSや不審サイトに入力させる案内ではなく、正規の安全な管理経路での対応を意味する。該当プラグインを導入していないサイトに同じ危険を一般化しない。
+正規公開担当への受入条件: (1)WPScan原ページ・WordPress公式の現行配布状況と開発者の修正発表を照合し、修正版なし／最新版の有無を確定、(2)実悪用の有無・公開停止日・ダウンロード数は各原典を読み、確認できなければ「報道による」として区別、(3)既存のs2MemberやWordPress Coreの脆弱性と混同せず、重複SNS投稿を確認、(4)SNS投稿するなら実投稿URL・本文・時刻を別検収。本RelayはSNS投稿、プラグイン操作、ウォレット操作、Google Docs書込みを行っていない。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/81xxx/CVE-2026-81648.json （WPScan CNA、2026-11-03 JSTに正規GitHub connectorで確認、blob SHA 5820795e954d655a839813bd60a559d4897ba153）。WPScan原サイト・WordPress公式・2026-11-03の報道原文は本回の許可経路では独立取得していない。
+
