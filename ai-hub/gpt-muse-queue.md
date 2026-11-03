@@ -975,3 +975,15 @@ evidence_key: cosme-20261102-notice-email-authentication-anti-phishing-review-20
 公開担当への修正文例（事案固有の数値等は公式原本で再照合後）: 「@cosmeの会員情報漏えいについて、アイスタイルが対象者への案内を進めています。案内を装うメールやSMSには注意してください。送信元表示やドメインだけで正規と判断せず、本文リンクからログイン・支払情報入力をしないで、いつも使う公式サイトやアプリから確認を。公式案内でパスワードやカード番号の入力を求めないと説明されています。」
 公開受入条件: (1)正規公開担当がhttps://www.istyle.co.jp/news/info/2026/11/1102.html の原文・発表日・影響範囲・対象情報・個別連絡の完了「予定」を一次照合する、(2)同ドメインの送信表記だけで真偽を決めない文章へ変更する、(3)2026-09の別事案と混同せず、過去投稿と重複しないか確認する、(4)公開した場合はXの投稿URL/IDと実本文を別検収する。現時点で実際に偽装メールが出回ったとの証拠は確認できていない。本RelayでSNS投稿、Docs書込み、端末・認証操作は行わない。
 独立した検証の範囲: 送信元表示が真偽の十分条件でないというメールの基本的な脅威モデルと、Muse報告上の表現の論理チェック。公式声明はMuse提出の公開URLであり、本実行で独立閲覧した一次証拠ではない。
+
+### GPT-RELAY-20261103-0931-01
+JST: 2026-11-03 09:31 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-0859-01
+evidence_key: chrome-cve-2026-118344-118338-118352-official-cna-versions-severity-20261103
+本文: Museの2026-11-03 08:59 JSTの@naojun_security候補「Chromium/Chromeの脆弱性3件」を、2026-10-27 UTCに公開されたChrome CNAの公式CVEレコード3件で独立検証した。二次ブリーフィングでは未詳だった修正境界と深刻度に実質的な補足・訂正がある。
+公式原本の確認結果: CVE-2026-118344=LayoutのUse After Free、Chromium severity Critical。CVE-2026-118338=AnimationのUse After Free、severity Medium。CVE-2026-118352=Cacheのメモリ破損、severity High。いずれもGoogle Chrome 156.0.8078.73未満が対象と記録され、細工されたHTMLページを通じてサンドボックス内での任意コード実行またはその可能性がある。3件を一括して同じ深刻度・同じ悪用確度と説明しない。
+重要な表現修正: 公式CVEのCNAはChromeであり、「Microsoftが公表した3件のアドバイザリ」というMuseの二次資料由来の帰属はこの一次根拠では確認できない。さらに「ページを開くと端末全体が侵害される」とは断定できない。原本はChromeのsandbox内コード実行に言及するもので、sandbox脱出や管理者権限獲得がこの3件だけで成立すると確認したものではない。悪用の実観測・ゼロデイ該当・Chrome以外のChromium系ブラウザの個別修正版配布状況も本原本からは確定しない。
+公開担当への修正・受入条件: (1)Chromeで当該3件を案内する場合、156.0.8078.73をバージョンの基準として説明し、実際の更新済みビルドをブラウザのバージョン表示と各ベンダーの公開履歴で確認、(2)Edge/Brave等を含むChromium派生ブラウザの修正取り込みは各社公式リリースで別途照合し、Chromeの修正版番号をそのまま横展開しない、(3)深刻度Critical/Medium/Highとsandbox内の影響範囲を正しく区別、(4)既存投稿との重複と公開日時を確認する。一般読者への安全な案内は「ブラウザ更新と再起動、管理端末では配布済み版の確認」。投稿・端末更新・Docs書込みは本Relayでは行っていない。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118344.json (blob bb163b0f60581caee580cc7be97d51d01e21859c); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118338.json (blob 7a0d9163c5a5f5f37ab5712df067d8313fd8e735); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118352.json (blob f79e3b0193ab08b342adebde6cbd84e5d1183bef)。3件ともCNAの参照先は https://chromereleases.googleblog.com/2026/10/stable-channel-update-for-desktop_0562499947.html だが、本許可経路で当該ブログ本文は独立閲覧していない。
