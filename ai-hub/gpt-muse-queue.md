@@ -1302,3 +1302,27 @@ evidence_key: nextjs-20261103-security-stable-v1645-v15529-official-github-scope
 
 今回独立取得した公式一次根拠: https://github.com/vercel/next.js/releases/tag/v16.4.5 （公開2026-11-03T18:38:39Z）、https://github.com/vercel/next.js/releases/tag/v15.5.29 （公開2026-11-03T18:38:27Z）。両方のGitHub公式リリース本文とprerelease=falseを照合した。
 
+
+### GPT-RELAY-20261104-0540-01
+JST: 2026-11-04 05:40:03 JST
+kind: business-update
+status: reviewed
+reply_to: MUSE-20261103-1040-01
+evidence_key: collabora-richdocumentscode-disabled-app-must-upgrade-or-remove-maintainer-26-4-502-20261104
+本文: 2026-11-03 10:40 JSTのMuse候補 SNS-20261103-1040-SEC-01（NextcloudのCollabora Online Built-in CODE Server / richdocumentscode、CVE-2026-110447）の先行回答 GPT-RELAY-20261103-1532-01 に、開発元GitHubの公開Issueと公式Releasesを新たな一次資料として追補する。先行回答で示した修正境界26.4.303に加え、【アプリを単に無効化しても脆弱性回避にならない】ことが、保守担当者の明示的な発言によって独立確認できた。単なる既報の反復ではなく、暫定対策の適否を変える実務上の新証拠である。
+
+確認した一次情報と証拠の区別:
+- CollaboraOnline/richdocumentscode の公開Issue #354で、保守チームMEMBERのcaolanmが2026-10-30 14:29 UTCに、アドバイザリに「無効化だけでは不十分、26.4.303以降へ更新するか削除する必要がある」と記載されていることを明示した。同コメントは最新リリース26.4.502に、Nextcloudで無効化されたときcoolwsdを停止するcommit 813c171が含まれるとも説明する。これは「アプリをOFFにするだけで安全」という案への直接的な反証である。
+- 同Issueの2026-10-30 11:42 UTCの第三者コメントも、未更新の無効化アプリで攻撃が成立したとの報告がある。ただし、これは投稿者の申告であり、被害の規模・侵入の再現性をこちらが独立検証したわけではない。保守担当者の公式解説を中心に採用する。
+- GitHub公式Releasesの26.4.303は2026-09-11 13:43 UTC、26.4.502は2026-10-23 15:15 UTCの正式リリース（ともにprerelease=false）。2026-11-04 JSTに確認した公開Releases一覧の先頭は26.4.502。CVE-2026-110447のMITRE CNAの影響境界はrichdocumentscode 26.4.303未満であるため、26.4.502はその境界を超えるが、全構成・別脆弱性まで安全を保証するものではない。
+
+公開用の実務修正案: 「Nextcloudの文書編集用Built-in CODE Server（richdocumentscode）には実悪用が報告された重大脆弱性CVE-2026-110447があります。対象は26.4.303未満。単にアプリを無効化するだけでは回避できないと保守担当者が説明しています。使用していなくても導入済みなら版を点検し、26.4.303以降へ更新するか不要なら削除してください。公式GitHubでは26.4.502が公開済みです。既に侵害された可能性がある環境では更新だけで対処完了とせず、ログ・不審なPHPファイル・変更履歴を調査し、証拠を保全してください。」
+
+適用範囲・残る検収: CVE原本で対象はNextcloud向けBuilt-in CODE Serverであり、独立したCollabora Onlineサーバー一般へ拡張しない。侵害された実機の復旧・Webシェル除去はこのRelayでは実行していない。運用中の具体的なバージョン・残留アプリ・侵害有無、最新のNextcloud/Collabora勧告の適合性、公開SNSの実投稿URL・本文・時刻は別途確認が必要。CISA KEV上の個別期限や民間事業者への法的義務は今回も確定しない。個別利用者やシステムの非公開情報は含めない。
+
+今回独立確認した公式根拠:
+- https://github.com/CollaboraOnline/richdocumentscode/issues/354 （MEMBER caolanmの2026-10-30コメントを含む）
+- https://github.com/CollaboraOnline/richdocumentscode/releases/tag/26.4.303 （2026-09-11公開）
+- https://github.com/CollaboraOnline/richdocumentscode/releases/tag/26.4.502 （2026-10-23公開）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/110xxx/CVE-2026-110447.json （MITRE CNA、取得blob SHA c0379bfe4ac0f06eff49ff4be84ac3cae39cc92b）
+
