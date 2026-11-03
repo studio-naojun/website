@@ -1223,3 +1223,21 @@ Better Auth: 公式GitHub Releases一覧の最新安定版は v1.7.15（2026-11-
 実務上の修正: 「11月3日にNext.jsとBetter Authの修正版が配布された」「v16.4.4またはv1.7.15へ上げれば予告された新規脆弱性が対策済み」などの断定は不可。公開候補化する前に、それぞれ公式security advisory／対象バージョン／修正済みバージョン／CVEと適用条件を独立照合する。既知の別修正と未公開・未確認の新規security releaseを混同しない。リリース一覧の未掲載は「将来も出ない」「脆弱性が存在しない」の証明ではない。
 
 公式根拠: https://github.com/vercel/next.js/releases/tag/v16.4.4 ; https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.38 ; https://github.com/better-auth/better-auth/releases/tag/v1.7.15 ; https://github.com/better-auth/better-auth/releases/tag/v1.8.0-beta.4 . GitHub公式リリースの作成・公開時刻および本文を照合。SNS投稿、アプリ更新、Google Doc05書込みはしていない。
+
+
+### GPT-RELAY-20261104-0139-01
+JST: 2026-11-04 01:39:41 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261101-2300-01
+evidence_key: canonical-lxd-cna-cve2026-112816-affected-versions-remote-cert-validation-20261104
+本文: Museの2026-11-01 23:00 JST候補「LXD/MicroCloudの証明書検証不備CVE-2026-112816」を、開発元Canonical自身がCNAとして登録した公式CVE JSONで独立検証した。今回の新しい一次根拠によって、LXDの修正系列、攻撃条件、他製品への証拠の適用限界を具体化した。CVE原本の題名は「Improper certificate validation in the HTTPS listener in LXD」であり、外部から到達できるHTTPS listenerで不適切なクライアント証明書検証により、認証されていない攻撃者が信頼済みクライアントになりすまし、クラスターや管理対象VMへのフルアクセスにつながる可能性を明記する。
+
+Canon​ical CNAのaffectedはLXDの4系列を記載: 4.0.14以上4.0.15未満→4.0.15、5.0.10以上5.0.11未満→5.0.11、5.21.8以上5.21.9未満→5.21.9、6.9.0以上6.10.1未満→6.10.1が、それぞれ修正境界である（CNAのdefaultStatusはunaffected）。対象外の系統を版番号の大小だけで判定しない。CVSS v4.0は10.0 Critical、AV:N/AC:L/AT:N/PR:N/UI:Nで、到達可能なHTTPS APIという条件下ではネットワークから無認証で悪用され得る。閉じたAPIまで無条件で「インターネット上から侵害可能」とするのは誤り。
+
+CISA-ADPの2026-10-30のSSVCではExploitation:none、Automatable:yes、Technical Impact:total。「その観測時点で実悪用の確認なし」と「今後も悪用されない」は異なる。PoCや公開エクスプロイトの存在・不存在、個別導入環境での悪用、スナップチャネルの配布状況は今回未検証。さらに、このCVEのCNA affected欄はLXDのみを列挙する。Museが提示したMicroCloud 3.4.1/2.1.5およびIncus 7.6.0を、このCVE原本だけを根拠に「同じ製品範囲の確定修正版」として広報しない。各開発元の別アドバイザリ/リリースノートで照合する。
+
+公開担当向け修正案: 「LXDのHTTPS APIに証明書検証不備CVE-2026-112816（CVSS v4.0 10.0）。外部からAPIに到達できる環境では、認証されていない攻撃者が信頼済みクライアントになりすます可能性があります。LXDの公式修正境界は6.10.1／5.21.9／5.0.11／4.0.15。まず稼働系列とHTTPS APIの到達範囲を確認し、該当系列の修正版を適用・適用後の版を検証してください。」攻撃の具体的な手順は掲載しない。
+
+残る工程/受入条件: (1)CanonicalのLXDセキュリティアドバイザリ原文と配布チャネルで、自分の稼働版に対する更新を再確認、(2)MicroCloud/Incusの影響条件・修正版は各製品の原本で別途検証、(3)投稿候補と実投稿は区別してURL・本文・投稿時刻を別途検収する。本Relayでは実システム更新、SNS投稿、Google Docs書込みを実施していない。
+公式一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/112xxx/CVE-2026-112816.json （Canonical CNA 2026-10-30公表 + CISA-ADP、取得blob SHA d54d4e948236586e2a8fd6c743b6eb7dd6d51965、2026-11-04 JST）。CNA referenceには https://github.com/canonical/lxd/security/advisories/GHSA-99jp-jwmc-65p4 が掲載されるが、アドバイザリ本文の独立取得は未実施。
