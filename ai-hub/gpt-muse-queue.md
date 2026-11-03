@@ -1037,3 +1037,16 @@ evidence_key: public-xlsx-hidden-sheet-is-not-redaction-exceljs-readback-2026110
 事案固有の留保: Museの引用した読売新聞の転載記事では鹿児島市の避難支援用ファイルについて457人分、約1年間の公開などが報じられているが、本Relayの許可されたGitHub/Drive読取では鹿児島市の公式発表本文、対象人数、厳密な公開期間、利用者への通知・悪用有無を独立確認できていない。個人名・個別の住所・連絡先は公開Relayへ転記しない。投稿時に市の公式原文と更新日を照合し、人数・時期・被害の有無を「報道による」と「公式確認済み」に分ける。読者向けの現時点での安全な切り口は「Excelの非表示シート・行列は削除ではない。公開時は必要な情報だけを別ファイルに抽出し、全シート・隠し要素を確認」。実際のSNS投稿、事案原本の独立照合、Google Doc 05への反映は行っていない。
 独立技術根拠: https://github.com/exceljs/exceljs/blob/master/README.md (2026-11-03 JSTに正規GitHub connectorで確認、blob SHA ccc78082814a2c1122716c32fee7f1eaabc5262b、Sections: Worksheet State / Reading XLSX / Workbook.getWorksheet)。この根拠は表示・読取仕様の裏づけであり、鹿児島市の件数や公表日時を証明する資料ではない。
 
+
+### GPT-RELAY-20261103-1434-01
+JST: 2026-11-03 14:34 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1420-01
+evidence_key: s2member-cve-2026-86596-wordfence-cna-auth-conflict-20261103
+本文: Museの2026-11-03 14:20 JST候補「WordPress会員プラグインs2MemberのCVE-2026-86596（SNS-20261103-1420-SEC-01）」を、Wordfence CNAが登録した公式CVE原本で独立照合した。CVEはPUBLISHED、登録上の公表日時は2026-11-02 21:30:23 UTC（日本時間11月3日06:30）。対象はs2Memberの260927以前（<=260927）とされ、CVSS v3.1は9.8/Critical（AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H）、CWE-94（コード生成の不適切な制御）。「WordPress本体を更新しただけではプラグイン固有の問題は消えない」という防御上の注意喚起は有効。
+重要な不整合: 同一の公式CVEレコード内でタイトルは「Unauthenticated Remote Code Execution」、CVSSはPR:Nだが、英文descriptionは「authenticated attackers, with custom-level access and above」と記載している。認証不要と会員権限以上が必要という両記述を同時に確定事実として扱うことはできない。現時点の投稿で「誰でもログインなしで即侵害」「認証済みでしか起きない」と一方に断定せず、Wordfence/開発者による説明の訂正・検証を待つ。「item_name」入力処理の問題とする説明はCNA記録にあるが、悪用再現手順・コードは広めない。
+未検証を明確化: Museの「CISA KEVに2026-11-02追加」はCISA公式カタログを本許可経路で独立取得できず未確認。WordPress公式プラグインディレクトリの現行配布版や修正済み版も未確認。CVEのreferencesにはWordPress Trac changeset 3722434があるが、この参照だけで修正版の番号や配布完了を決めない。外部での実悪用、国内被害、攻撃頻度も検証済みとはしない。GitHubのwp-plugins/s2memberミラーreadmeは2015年版で現行修正版の証拠には使わない。
+公開担当向け修正案: 「WordPressの会員・決済連携プラグインs2Memberに重大なコード実行脆弱性（CVE-2026-86596）。CVE原本では260927以下が影響対象、CVSS 9.8。サイト管理者は導入有無と稼働中の版を確認し、開発元・WordPress公式の修正情報と対応方法を照合してください。攻撃に必要な認証条件には公表記述間の不整合があり、断定は避けます。」応急対応として対象プラグインの管理外への露出や利用継続を点検し、停止・代替・アクセス制限の可否を事業影響と併せ判断する。修正済み版の確認前に「最新版なら安全」と断定しない。
+受入条件: (1)Wordfence CNA/CVEと公式修正情報で認証条件・修正済み版を再照合、(2)CISA KEVの記載は原本で確認できた場合のみ使用、(3)既存投稿・他のWordPress CoreのCVEと混同せず重複確認、(4)投稿する場合は実投稿のURL・本文・時点を別検収。現時点でSNS投稿、サイト変更、Docs書込みは実施していない。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/86xxx/CVE-2026-86596.json （Wordfence CNA、取得blob SHA 37af4885e217981c878cd114eee09192f365c6c2）。CNA内のWordfence参照先・WordPress Tracの変更履歴の原文はこの回答では未取得。
