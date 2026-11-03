@@ -1000,3 +1000,16 @@ CISA ADPが付けたCVSS v3.1は7.8（High）、ベクトルはAV:L/AC:L/PR:L/UI
 公開担当への修正案: 「AppleがmacOSの権限昇格の問題CVE-2026-112487を修正。アプリがroot権限を取得する可能性があり、Sequoia 15.8.2／Tahoe 26.7.2／Golden Gate 27.2で修正されています。お使いのMacのOS系列とバージョンを確認し、該当するApple公式アップデートを適用してください。これはローカルでの権限昇格であり、インターネット経由の無条件の遠隔侵入とは異なります。」PoC公開を見出しに採用する場合は、正規公開担当が公開リポジトリの来歴・更新日時とApple公式通知を別途照合し、二次情報に依存する内容を区別して明記する。
 受入条件: (1)Appleの各系列向け公式セキュリティ通知とCVE番号・修正版を一致させる、(2)当該OS系列の現在版と配布済み更新を確認、(3)既出投稿との重複を確認し防御中心の表現にする、(4)実際に投稿した場合は投稿URL/IDと実本文を別検収する。本回答はSNS投稿・Macの更新・Google Doc 05への反映を実施していない。
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/112xxx/CVE-2026-112487.json （Apple CNA＋CISA ADP、取得時blob SHA ae52d933b0e78d4095b09b3221d17591c23322a2）。CVE原本が参照するApple通知 https://support.apple.com/en-us/149521 ; https://support.apple.com/en-us/149522 ; https://support.apple.com/en-us/149523 は原文未取得。
+
+### GPT-RELAY-20261103-1133-01
+JST: 2026-11-03 11:33:43 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1000-01
+evidence_key: siemens-cve-2026-58115-cna-product-scope-node-red-adminauth-20261103
+本文: Museの10:00 SECURITY候補「Node-REDのCVE-2026-58115について攻撃観測・運用者向け注意喚起」を、Siemens CNAの公式CVE記録とNode-RED公式セキュリティ文書で独立検証した。公式CVEはPUBLISHED（2026-08-11公開）、CVSS v3.1・v4.0とも10.0、CWE-306（重要機能の認証欠如）。確認した公式CVEのGitHub blob SHAは a0a42496bc329f55c8545aa1f815e5d3ce2d2945、Node-RED公式セキュリティ文書のblob SHAは 609ca3a6b8fdf16561f4ff6dccd58c6b6d1fca6f。
+実質的な対象範囲の訂正: このCVEのCNAが特定する影響製品はSiemens「SIMATIC IoT2050 Advanced」（注文番号6ES7647-0BA00-1YA2）で、Industrial OS V4.3.4.1未満かつNode-REDがインストールされた構成。認証を強制しないNode-RED HTTPインターフェースに到達できる場合、非認証の遠隔攻撃者がシステムコマンド実行可能なフローを作成し、サーバー上の任意コード実行につながり得る。したがって候補の「Node-RED全般にCVE-2026-58115が適用」「すべてのRaspberry Pi等のNode-REDがこのCVEの影響製品」と読める表現は誤解を招く。一般のNode-REDにも認証なし公開の構成リスクは存在するが、Siemens製品を対象にしたこのCVEの製品判定と混同しない。
+独立確認できた一般防御: Node-RED公式文書は、初期状態のエディタが保護されずIPアドレスにアクセスできれば変更を配置できると警告し、信頼済みネットワーク以外には適さないと記載。Editor/Admin API保護の正規手段は設定のadminAuth、有効な権限管理、アクセス経路制限、必要に応じたHTTPSである。優先確認は(1)IoT2050対象機種・Industrial OS版・Node-RED導入有無、(2)管理HTTPインターフェースの外部到達性と認証、(3)意図しないフロー変更やexec/HTTP入力ノードとログ、(4)Siemens公式advisoryでの更新先・適用条件。疑わしい変更があれば、既存構成の証拠保全と隔離を優先し、更新・認証追加だけで過去の不正フローが消えたとはみなさない。
+一次検証と未検証の分離: Museが二次記事経由で報告したVulnCheckハニーポットの2026-10-30〜11-01攻撃16件・125件の探索、永続的Webシェルの観測、CISA KEV掲載状況、個別ペイロード機能は、本回答の許可されたGitHub/Drive読取のみでは原本を独立確認できない。公式CVE内の2026-08-12のCISA ADP「Exploitation:none」は当時の評価であり、後日の攻撃観測が不存在だと証明しない。「実攻撃が確認済み」という見出しと細部はVulnCheck原文・Siemens公告を正規公開担当が照合するまで留保する。CNAのaffectedではV4.3.4.1未満を挙げるが、更新による実際の保護状況は製品構成とSiemens勧告の確認が必要。
+一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58115.json ; https://github.com/node-red/node-red.github.io/blob/main/docs/user-guide/runtime/securing-node-red.md . 公式CVEの参照先: https://cert-portal.siemens.com/productcert/html/ssa-834709.html （リンク先原文は本回未読）。
+投稿用の安全な修正方向: 「Siemens SIMATIC IoT2050 Advancedの一部構成に、認証なしでNode-RED管理機能が操作され得る重大な問題（CVE-2026-58115、CVSS 10.0）。対象はIndustrial OS V4.3.4.1未満でNode-REDを導入した構成。機器とOS版、管理APIの到達性・adminAuth、不審なフローを確認し、メーカーの勧告に沿って対処を。」実際の攻撃観測を追加する場合は別途一次確認し出典と時点を明示。SNS投稿・機器変更・原報道全文照合は本Relayでは未実施。
