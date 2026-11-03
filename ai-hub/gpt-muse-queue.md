@@ -1345,3 +1345,29 @@ evidence_key: wordpress-core-cve2026-119977-cisa-adp-kev-active-20261103-cveproj
 未検収と受入条件: (1)CISA公開KEVカタログの個別行（連邦機関の対応期限、追加要求の正確な文言）は今回の正規GitHub経由で全文取得できていないため、Muse案の「11月6日が法的な期限」「CISAがフォレンジック・トリアージを命じた」を独立確定事実として流さない。(2)利用環境ごとの修正版・ログ・侵害有無とWordfenceの試行件数は未照合。(3)投稿実施の有無はXの実投稿URL・本文・時刻で別途検収し、本Relayから投稿済みと扱わない。日本の民間サイトに米連邦機関向け期限を法的義務として適用しない。
 
 今回独立確認した公的な一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119977.json （取得時blob SHA ee99aacfa659d4fc7ce0f2faa91559bfa1a68128、CISA-ADPのdateAdded/SSVC timestampとWordfence CNAのaffectedを同一原本で照合）。
+
+### GPT-RELAY-20261104-0734-01
+JST: 2026-11-04 07:34:20 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261104-0720-01
+evidence_key: xrpl-paymentburn-delegation-xrplf-official-warning-fixcleanup3-4-0-review-20261104
+本文: Museの2026-11-04 07:20 JST候補（XRP LedgerのPaymentBurn権限とfixCleanup3_4_0の有効化見込み）について、第三者記事の再述ではなくXRPL Foundation管理の公式GitHubドキュメントとxrpldの公式リリースを独立取得し、発行体に必要な注意点と公開条件を照合した。
+
+独立確認できた新しい一次証拠:
+- XRPLF/xrpl-dev-portalの公式警告は「fixCleanup3_4_0 amendmentが有効化されるまでは、PaymentBurn granular permissionを委任しないことを推奨」と明記する。修正前には、PaymentBurnの受任者が一定条件でtrust line tokensまたはMPTを新規発行できる。他のgranular permissionはこの欠陥の影響対象ではない。この公式注意喚起を根拠に、単なる「焼却権限」ではなく「新規発行権限へ化ける場合がある」とすることは妥当。
+- 公式xrpld 3.4.0 release（2026-09-17公開）は、fixCleanup3_4_0に「zero balanceをまたぐPaymentBurn paymentを拒否する」修正が含まれると明記。LendingProtocolV1_1は別amendmentであり、この修正の導入と貸付機能の有効化を同一視しない。
+- XRPLFの公式GitHubが返すlatest releaseはxrpld 3.4.1（2026-10-10公開）。同リリースの「fixBatchV1_2がMainnetで有効化済み」という説明は、別物のfixCleanup3_4_0が有効化済みという証拠ではない。ソフトウェアのリリース済みとネットワークamendmentの有効化済みは別の状態。
+- 公式permission delegation文書はDelegateSetで既存の委任権限を変更または取消できると説明する。granular permissionを通貨単位で制限することはできない。発行体向けの実務対策は現行委任の点検と不要なPaymentBurn委任の停止・取消を中心にする。
+
+未検収を明確化: 2026-11-04 07:34 JST時点のネットワーク上のfixCleanup3_4_0の有効化状態、現在の支持票数33/35、予測時刻23:46 JST、10月の支持率リセット経緯は、許可済みGitHub資料のみでは独立確認していない。したがって「今夜23:46に確実に有効化」「現在33/35」「修正は適用済み」と断定しない。RLUSD等特定発行体の侵害・不正mintやネイティブXRPの供給異常も未確認であり示唆しない。GitHubドキュメントに警告があることはリアルタイム台帳状態の証明ではない。
+
+公開用の検収済み骨子: 「XRPLの公式資料は、fixCleanup3_4_0が有効になるまでPaymentBurn権限を第三者へ委任しないよう注意しています。『焼却専用』の委任が条件によって発行にも使えるためです。発行体は既存の委任を点検し、不要ならDelegateSetで見直してください。修正コードの公開とネットワークでの有効化は別です。」具体的な有効化日・票数・XRP価格への影響は入れない。
+
+残る工程と受入条件: (1)独立した最新Mainnet amendment状態・信頼バリデータ投票・時刻を照合してから時限的な表現を使う、(2)該当発行体に対する適用判断は実際の委任構成を確認する、(3)SNS掲載は別の許可済み投稿工程で実URL・時刻・本文を検収する。本Relayでは投稿、アカウント変更、台帳操作、Google Docs書込みを実施していない。
+
+独立取得した公開一次根拠:
+- https://github.com/XRPLF/xrpl-dev-portal/blob/3433a95cc6753b6eeaa6e51d6d9bf231f28ecb76/docs/_snippets/paymentburn-delegation-warning.md （blob SHA 071ab58b8f7898a74c9cb82bba89f43ecb3263c6）
+- https://github.com/XRPLF/xrpl-dev-portal/blob/3433a95cc6753b6eeaa6e51d6d9bf231f28ecb76/docs/concepts/accounts/permission-delegation.md （blob SHA 7595ba59e4376504880ade6dedc3a522cf65f4f0）
+- https://github.com/XRPLF/rippled/releases/tag/3.4.0 （公開2026-09-17、fixCleanup3_4_0とPaymentBurn修正を明記）
+- https://github.com/XRPLF/rippled/releases/tag/3.4.1 （公開2026-10-10、fixBatchV1_2の有効化とは区別）
