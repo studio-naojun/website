@@ -1371,3 +1371,26 @@ evidence_key: xrpl-paymentburn-delegation-xrplf-official-warning-fixcleanup3-4-0
 - https://github.com/XRPLF/xrpl-dev-portal/blob/3433a95cc6753b6eeaa6e51d6d9bf231f28ecb76/docs/concepts/accounts/permission-delegation.md （blob SHA 7595ba59e4376504880ade6dedc3a522cf65f4f0）
 - https://github.com/XRPLF/rippled/releases/tag/3.4.0 （公開2026-09-17、fixCleanup3_4_0とPaymentBurn修正を明記）
 - https://github.com/XRPLF/rippled/releases/tag/3.4.1 （公開2026-10-10、fixBatchV1_2の有効化とは区別）
+
+
+### GPT-RELAY-20261104-0835-01
+JST: 2026-11-04 08:35:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261104-0735-01
+evidence_key: amazon-redshift-jdbc-cve2026-119084-aws-cna-cvss-classpath-precondition-20261104
+本文: Museの2026-11-04 07:35 JST候補（Amazon Redshift JDBC DriverのCVE-2026-119084）を、AWS自身がCNAとして発行したCVEProject公式JSONとAWS公式GitHubリリースタグv2.3.0のpom.xmlで独立照合した。対象・修正境界だけでなく、コード実行が成立するための【アプリケーションのclasspathに悪用可能なクラスが存在すること】という必須条件を追加した。接続文字列を外部入力から組み立てる構成は重点点検対象だが、すべてのRedshift利用者に無条件でRCEが成立するという意味ではない。
+
+確認済みの一次事実:
+- AWS CNAのCVE-2026-119084（PUBLISHED、公開時刻2026-11-03 21:05:30 UTC）は、AWS製amazon-redshift-jdbc-driverの2.3.0未満をaffectedとする。分類はCWE-470（外部入力を使った危険な反射的クラス選択）。RedshiftサービスそのものではなくJavaアプリ側のJDBCドライバが対象。
+- 攻撃条件は、攻撃者がJDBC接続URLまたはAWS credentials profileへ影響できること、かつアプリのclasspath上に適切なクラスが存在すること。この条件下でアプリケーションの実行コンテキストで任意コードが実行され得る。認証不要・ユーザー操作不要というスコア上の設定を、任意の公開Redshiftインスタンスへの無条件攻撃と読み替えない。
+- AWS CNAのCVSS v3.1は8.1（High、AV:N/AC:H/PR:N/UI:N）、CVSS v4.0は9.2（Critical、AV:N/AC:L/AT:P/PR:N/UI:N）。異なるCVSS世代・攻撃要件の表現による差であり、片方を誤記扱いしない。
+- AWS公式GitHubのv2.3.0タグのpom.xmlはgroupId=com.amazon.redshift、artifactId=redshift-jdbc42、version=2.3.0と記録。AWS CNAは2.3.0以降への更新を明記。リリース済みのソースと各アプリでの実際の依存バージョン適用は別途照合する。
+
+公開向け実務修正案: 「Amazon Redshift用JDBCドライバ2.3.0未満には、接続パラメータの危険なクラス読み込みに関するCVE-2026-119084があります。AWS公式CVEの評価はCVSS v3.1で8.1、v4.0で9.2。接続URLや認証情報プロファイルを攻撃者が操作でき、実行可能なクラスがアプリのclasspathにある場合にコード実行の恐れがあります。Javaアプリの依存関係を確認してドライバを2.3.0以降へ更新し、外部入力で接続設定を組み立てる処理も点検してください。」
+
+残る検収: AWS bulletinの更新不能時の代替策やGHSA原文は本回の許可済みGitHub経路では直接再取得していないため、原文一致を独立確認した体裁で断定しない。実悪用・CISA KEV登録・影響インスタンス数は未確認。アプリ別の依存関係、classpath、接続設定の入力経路、更新後のテスト、実投稿URL/時刻/本文は未検収。本Relayでは投稿、端末操作、Google Docs書込みを実施していない。
+
+独立確認した公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119084.json （AWS CNA、取得blob SHA 2a508516a64c5dda96adcb2d2fbc3e8a8f664b89）
+- https://github.com/aws/amazon-redshift-jdbc-driver/blob/v2.3.0/pom.xml （AWS公式リリースタグ、取得blob SHA eb6e0e1de1df59a574afa9a88e1d62bf0d0253e3）
