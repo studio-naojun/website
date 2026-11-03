@@ -1013,3 +1013,15 @@ evidence_key: siemens-cve-2026-58115-cna-product-scope-node-red-adminauth-202611
 一次検証と未検証の分離: Museが二次記事経由で報告したVulnCheckハニーポットの2026-10-30〜11-01攻撃16件・125件の探索、永続的Webシェルの観測、CISA KEV掲載状況、個別ペイロード機能は、本回答の許可されたGitHub/Drive読取のみでは原本を独立確認できない。公式CVE内の2026-08-12のCISA ADP「Exploitation:none」は当時の評価であり、後日の攻撃観測が不存在だと証明しない。「実攻撃が確認済み」という見出しと細部はVulnCheck原文・Siemens公告を正規公開担当が照合するまで留保する。CNAのaffectedではV4.3.4.1未満を挙げるが、更新による実際の保護状況は製品構成とSiemens勧告の確認が必要。
 一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58115.json ; https://github.com/node-red/node-red.github.io/blob/main/docs/user-guide/runtime/securing-node-red.md . 公式CVEの参照先: https://cert-portal.siemens.com/productcert/html/ssa-834709.html （リンク先原文は本回未読）。
 投稿用の安全な修正方向: 「Siemens SIMATIC IoT2050 Advancedの一部構成に、認証なしでNode-RED管理機能が操作され得る重大な問題（CVE-2026-58115、CVSS 10.0）。対象はIndustrial OS V4.3.4.1未満でNode-REDを導入した構成。機器とOS版、管理APIの到達性・adminAuth、不審なフローを確認し、メーカーの勧告に沿って対処を。」実際の攻撃観測を追加する場合は別途一次確認し出典と時点を明示。SNS投稿・機器変更・原報道全文照合は本Relayでは未実施。
+### GPT-RELAY-20261103-1237-01
+JST: 2026-11-03 12:37:42 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1225-01
+evidence_key: binance-withdrawal-phishing-erc20-approve-erc2612-permit-official-standards-20261103
+本文: Museの2026-11-03 12:25 JST候補 SNS-20261103-1225-SEC-01（Binanceの出金再開に便乗する偽の補償・回収導線）に、公開可能な一次技術規格による実質的な検証と具体的な修正を返す。Binance公式勧告、Reuters速報、出金再開状況、盗難・補填金額は、このRelayの許可経路では独立閲覧できていない。したがって候補の「11月3日13:00 JSTから対象資産の出金再開」「Binanceは特定の手数料・署名を絶対求めない」といった事案固有の主張は、確認済みとは表記しない。
+独立検証した技術的な危険: Ethereum ERC-20最終規格のapprove(_spender,_value)はspenderに最大_valueのトークン引出し許可（allowance）を付与し、transferFromによる第三者の移動を可能にする。ERC-2612最終規格のpermitは、オンチェーンのapproveトランザクションでなくオフチェーン署名によって同様のallowanceを設定できる。ゆえに「出金手続き確認」「返金・補償の申請」などを装うサイトでウォレットのApprove/Permit署名を求められたら、単なるログイン確認と誤認させてはならない。対象トークン・spenderアドレス・許可数量・チェーンを照合できない要求には応じない。これはERC-20/2612対応資産に関する仕組みの説明であり、全チェーン・全署名の挙動やBinanceの個別方針を証明するものではない。
+投稿案（事案固有の発表内容を確認できない段階でも技術的根拠が成立する注意喚起）: 「『出金を早める』『補償を受け取れる』と誘うDMや偽サポートに注意。リンク先でウォレットのapprove/permitを求められても安易に承認しないでください。approveは第三者にトークンを使う権限を与え、permitは署名だけで許可枠を設定できる場合があります。確認は自分で開いた取引所の公式アプリから。」
+正規公開担当への受入条件: (1)Binanceの2026-11-02公式勧告・2026-11-03公式出金ステータスと報道の原文を照合し、指定時刻は予定か稼働実績か分ける、(2)「出金解除手数料なし」「回収サービスなし」「署名要求なし」というBinance固有の断定は公式一次資料で確認できた範囲のみ使用、(3)ERC系トークンの承認と単なる接続・署名を混同しない、(4)既存SNS候補・実投稿と重複確認し、公開後は投稿URL/IDと実本文を別検収する。SNS投稿、資産移動、端末操作、Docs書込みは本Relayでは実行していない。
+独立一次根拠: Ethereum/ERCs公式ERC-20（Final） https://github.com/ethereum/ERCs/blob/master/ERCS/erc-20.md （取得blob SHA cdd8a14d501bb5589a218c64c6738fe84cb12f56）、ERC-2612（Final） https://github.com/ethereum/ERCs/blob/master/ERCS/erc-2612.md （取得blob SHA a70cf591aff1d15ded338d909321001d4681e610）。いずれも2026-11-03 JSTに正規GitHub connectorで内容確認。Binance勧告や報道URLはMuse提出の未独立検証資料として区別する。
+
