@@ -1050,3 +1050,23 @@ evidence_key: s2member-cve-2026-86596-wordfence-cna-auth-conflict-20261103
 公開担当向け修正案: 「WordPressの会員・決済連携プラグインs2Memberに重大なコード実行脆弱性（CVE-2026-86596）。CVE原本では260927以下が影響対象、CVSS 9.8。サイト管理者は導入有無と稼働中の版を確認し、開発元・WordPress公式の修正情報と対応方法を照合してください。攻撃に必要な認証条件には公表記述間の不整合があり、断定は避けます。」応急対応として対象プラグインの管理外への露出や利用継続を点検し、停止・代替・アクセス制限の可否を事業影響と併せ判断する。修正済み版の確認前に「最新版なら安全」と断定しない。
 受入条件: (1)Wordfence CNA/CVEと公式修正情報で認証条件・修正済み版を再照合、(2)CISA KEVの記載は原本で確認できた場合のみ使用、(3)既存投稿・他のWordPress CoreのCVEと混同せず重複確認、(4)投稿する場合は実投稿のURL・本文・時点を別検収。現時点でSNS投稿、サイト変更、Docs書込みは実施していない。
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/86xxx/CVE-2026-86596.json （Wordfence CNA、取得blob SHA 37af4885e217981c878cd114eee09192f365c6c2）。CNA内のWordfence参照先・WordPress Tracの変更履歴の原文はこの回答では未取得。
+
+### GPT-RELAY-20261103-1532-01
+JST: 2026-11-03 15:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1040-01
+evidence_key: velocloud-richdocumentscode-cna-cisa-adp-kev-20261103
+本文: Museの2026-11-03 10:40 JST候補 SNS-20261103-1040-SEC-01（Arista VeloCloud Orchestrator と Nextcloud用Collabora Online Built-in CODE Server の2件を対比する防御情報）を、両CVEの公式登録原本で独立検証した。実質的な結論は「どちらもCISAのKEV登録が確認できるが、影響製品と必要な攻撃条件は異なる。製品名だけで一律に判定せず、対象構成と版を分けて確認し、更新後も過去の侵害兆候を点検する」である。
+
+【CVE-2026-114625／VeloCloud Orchestrator】Arista CNA公式CVEはPUBLISHED（2026-10-22 UTC公開）。対象はオンプレミスVeloCloud Orchestrator（VCO）で、affected欄は5.2.0以上5.2.3.18未満、6.1.0以上6.1.3.10未満、6.4.0以上6.4.2.12未満の各系列を列挙する。認証済み利用者がoperator権限を得て、内部向けの高権限機能に到達し得る問題であり、無認証侵入と断定しない。CVSS v3.1は9.9、v4.0は9.4。CNA本文はHosted（Dedicatedを含む）も影響を受けたがすでに修正済みと説明するため、「すべてのVeloCloud製品・構成が一律に未修正」とは書かない。VeloCloud Edge/GatewayをこのCVEの影響製品に拡張しない。
+
+【CVE-2026-110447／Built-in CODE Server】MITRE CNA公式CVEはPUBLISHED（2026-10-14 UTC公開）。対象はNextcloudアプリ richdocumentscode のCollabora Online Built-in CODE Server 26.4.303未満で、CODEサーバーが稼働していない状況（再起動直後など）にproxy.phpでOSコマンド注入によるRCEが可能になると説明する。単独で設置したCollabora Onlineサーバーはこの脆弱性の対象ではない。CVSS v4.0は9.2。CNA本文は2026年9〜10月の実悪用を明記するが、国内の感染件数や全環境への普遍的到達性を意味しない。
+
+【独立確認したKEV根拠と留保】両CVEの公式JSON内にCISA-ADPのkev属性 dateAdded=2026-10-23 と登録タイムラインがあり、CISAによるKEV追加の事実を確認できる。Arista側のCISA-ADPはExploitation:active、Collabora側もExploitation:activeとしている。ただしCVE JSONにはBOD 22-01の連邦機関向け対応期限（Museは10月26日と主張）の原表記や個別のforensic triage指示は含まれない。CISA KEVカタログ原本の完全な該当行やメーカー勧告本文は本許可経路で独立照合していないため、「期限超過」「CISAが全組織にforensic triageを義務付けた」といった表現は原本を読むまで留保する。CISAの連邦機関向け期限と民間組織に適用される法的義務も区別する。
+
+公開担当への実務的な修正案: 「悪用報告のある2件の重要な脆弱性は、どちらもKEV追加済み。ただし対象は異なります。VeloCloudはオンプレミスのOrchestratorの特定版と認証済み利用者の権限昇格、Nextcloud側は文書編集用Built-in CODE Serverの特定版とサーバー停止時のコマンド注入。製品・構成・版を確認し、修正対応に加えてアクセスログ・管理操作・不審な変更を点検してください。」修正バージョンはCNAのaffected境界とメーカー最新公告を突き合わせてから確定し、証拠保全が必要な場合はログやファイルを先に保全する。
+
+受入条件: (1)CISA KEV公式カタログ原本で10月23日追加と当該期限・対処欄を再照合、(2)Arista Advisory 0199とCollabora/Nextcloud公式勧告で稼働構成と修正配布版を照合、(3)重複SNS投稿と対象外製品への過度な一般化を防ぐ、(4)投稿時はURL・実本文・投稿時刻を別検収する。本RelayではSNS投稿、対象環境へのアクセス、Google Doc05への書込みは行っていない。
+
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/114xxx/CVE-2026-114625.json （Arista CNA、取得blob SHA 4a39fa378852f43c88602e78f7096be0415b6765）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/110xxx/CVE-2026-110447.json （MITRE CNA、取得blob SHA c0379bfe4ac0f06eff49ff4be84ac3cae39cc92b）。いずれも2026-11-03 JST、正規GitHub readでCNA/affected/metrics/CISA-ADPを確認。
