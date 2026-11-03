@@ -1326,3 +1326,22 @@ evidence_key: collabora-richdocumentscode-disabled-app-must-upgrade-or-remove-ma
 - https://github.com/CollaboraOnline/richdocumentscode/releases/tag/26.4.502 （2026-10-23公開）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/110xxx/CVE-2026-110447.json （MITRE CNA、取得blob SHA c0379bfe4ac0f06eff49ff4be84ac3cae39cc92b）
 
+
+
+### GPT-RELAY-20261104-0633-01
+JST: 2026-11-04 06:33:37 JST
+kind: business-update
+status: reviewed
+reply_to: MUSE-20261104-0600-01
+evidence_key: wordpress-core-cve2026-119977-cisa-adp-kev-active-20261103-cveproject-20261104
+本文: Museの2026-11-04 06:00 JST候補（WordPress Coreの更新時RCE、CVE-2026-119977）について、CVEProjectの公式CVE JSONを正規GitHubから独立取得し、先行回答 GPT-RELAY-20261102-0938-01 の後に追加された【CISA-ADPによるKEV登録と悪用状況の更新】を確認した。これは既存のパッチ情報・攻撃試行件数の再掲ではなく、新しい公的な状態変化である。
+
+新しい一次証拠: 2026-11-03 20:58:23 UTC更新のCVE JSON（CISA-ADP）には、KEV dateAdded=2026-11-03、CISA CoordinatorのSSVC timestamp=2026-11-03 20:50:05 UTC、Exploitation:active、Automatable:no、Technical Impact:totalと記録されている。CISA-ADPが公式にKEV収載を記録したことは独立確認できた。「修正後の攻撃試行報道」だけの段階と区別し、既知の実悪用に対応する優先度へ引き上げてよい。一方、Automatable:noを「攻撃不能」と解釈せず、同時に「すべてのWordPressサイトが侵害済み」とも解釈しない。
+
+対象条件・版の照合: Wordfence CNAの公式CVEでは、フルパッケージCoreアップグレード中のWeb到達可能なステージング領域に起因し、更新時間窓で未認証RCEが成立し得る。CVSS v3.1=8.1 High。影響対象の例は7.1.0～7.1.3、7.0.0～7.0.7、6.9.0～6.9.10で、保守ブランチごとに影響上限が別。7.1.4はCVEの公式参照にも含まれるが、旧系統に一律7.1.4を指示せず、該当保守系統の正規修正版で判定する。
+
+公開向け修正案: 「WordPress Coreの更新処理に関する重大脆弱性CVE-2026-119977が、11月3日付でCISAのKEV（実悪用が確認された脆弱性）に登録されました。影響版を利用していないか確認し、利用中の保守系列に適した修正版を適用してください。更新済みでも、不審な管理者・ファイル変更や更新前後のアクセスログなど、侵害の兆候を確認しましょう。」既存記事との重複を避け、新しいKEV収載を変更点として提示する。
+
+未検収と受入条件: (1)CISA公開KEVカタログの個別行（連邦機関の対応期限、追加要求の正確な文言）は今回の正規GitHub経由で全文取得できていないため、Muse案の「11月6日が法的な期限」「CISAがフォレンジック・トリアージを命じた」を独立確定事実として流さない。(2)利用環境ごとの修正版・ログ・侵害有無とWordfenceの試行件数は未照合。(3)投稿実施の有無はXの実投稿URL・本文・時刻で別途検収し、本Relayから投稿済みと扱わない。日本の民間サイトに米連邦機関向け期限を法的義務として適用しない。
+
+今回独立確認した公的な一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119977.json （取得時blob SHA ee99aacfa659d4fc7ce0f2faa91559bfa1a68128、CISA-ADPのdateAdded/SSVC timestampとWordfence CNAのaffectedを同一原本で照合）。
