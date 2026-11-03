@@ -1149,3 +1149,22 @@ evidence_key: msrc-cvrf-and-cisa-kev-patch-triage-official-gh-20261103
 
 受入条件: (1)MSRC SUG/CVRFの2026年10月の対象範囲と件数の計算条件を一次データで照合するまで1,400件という見出し・前年比較は使わない、(2)KEVの該当IDは公式CSV/JSONの更新日を付して照合する、(3)追加の定量効果・実際の更新適用完了を主張するなら対象環境の検収が必要、(4)重複SNS投稿を確認し、投稿する場合は実投稿URL・本文・時刻を別検収する。本RelayではSNS投稿・システム更新・Google Docs書込みは行っていない。
 独立一次根拠: https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API/blob/main/README.md （Microsoft MSRC公式README、blob SHA f2fb0b6b80166c6bcdba8feb3b561c5f3bdf3ab7）; https://github.com/cisagov/kev-data/blob/develop/README.md （CISA公式kev-data README、blob SHA bd28b8984b27cdce130412234de7ebec46deaabe）。いずれも2026-11-03 JST、正規GitHub経路で実読。実際の2026年10月集計・KEV個別行・ベンダー通知は未取得。
+
+
+### GPT-RELAY-20261103-2136-01
+JST: 2026-11-03 21:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1130-01
+evidence_key: nojima-password-crypto-vs-hash-owasp-risk-boundary-20261103
+本文: Museの2026-11-03 11:30 JST候補「ノジマオンライン等の会員情報漏えい報道と、ログイン情報が含まれた場合の利用者向け対処」を、OWASP公式のPassword Storage Cheat SheetおよびCredential Stuffing Prevention Cheat Sheetで技術検証した。今回は漏えい事件の一次公表本文自体は許可されたGitHub/Drive読取範囲から直接照合できていない。従って「約700万人」「対象サイト」「クレジットカード情報は対象外」「停止・再開状況」、漏えいの確定範囲を私が独立確認した事実として公開しない。公開担当は企業の最新公式発表と対象者通知で、件数の単位・対象期間・情報項目・現在の対応を照合する。
+
+重要な技術的訂正: 二次報道での「暗号化されたパスワード」は、暗号化（復号可能な処理）と一方向ハッシュ化を区別できるだけの仕様情報を示していない。OWASPは適切な保存方式としてArgon2id、bcrypt、PBKDF2等の強い低速ハッシュと個別saltを推奨し、通常のパスワード保存では復号可能な暗号化を避けると明記している。「暗号化済み＝元のパスワードが絶対に判明しない」も「平文パスワードが漏えいした」も、保存方式・鍵管理・salt・コスト・被害対象が不明な段階では断定できない。また「漏えいしたハッシュがそのまま他サービスへのログインに使用できる」という説明も不正確。推測や復元、同一ID/パスワードの使い回しなど複数の段階を分ける。
+
+OWASPのCredential Stuffing Prevention Cheat Sheetでは、別のサービスから得たID/パスワードの組を他サービスで試すcredential stuffingと、多数のアカウントに共通の弱いパスワードを試すpassword sprayingを区別し、MFAを重要な防御策としている。利用者向けには、該当サービスで利用したものと同じパスワードを他で使っていた場合、まずその使い回し先を固有のパスワードへ変更し、利用可能ならMFAを有効化することを提案する。対象サービス側は公式に案内された手順と再開状況を直接確認し、SMS/メール本文のリンクからログインしない。使い回しがなくてもフィッシング等への注意は必要。
+
+公開担当へ渡す修正短文案: 「会員情報流出の報道で『パスワードは暗号化済み』とあっても、それだけで安全とは言い切れません。保存方式と影響範囲は公式発表で確認を。対象サービスと同じパスワードを他でも使っていたら、使い回し先を先に変更し、MFAを有効にしてください。確認はメール内のリンクではなく、公式の案内から。」企業名・人数・停止状況を添える場合は、最新の企業一次告知が確認された場合に限定する。
+
+受入条件: (1)企業公式発表・追報で対象数、情報項目、パスワードの保護方式、通知・サイト稼働状況を確認する、(2)暗号化/ハッシュ化、復元の可能性と実際の悪用を混同しない、(3)メールアドレス・住所等の個人情報や未公開の調査情報を転載しない、(4)過去の投稿との重複と実際の投稿URL・本文を公開担当が別検収する。本RelayではSNS投稿、サービスへのログイン、Google Docへの書込みは実施していない。
+
+独立一次根拠: https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Password_Storage_Cheat_Sheet.md （OWASP公式、GitHub blob SHA 598510f4ca1e5b918a44a4bc001ca7a074f237d7）; https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.md （OWASP公式、GitHub blob SHA 1f8550482d702ffec810da2f54017790741cb4fe）。両文書は今回正規GitHubで取得。企業個別事案を直接裏づける資料ではない。
