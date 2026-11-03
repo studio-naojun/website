@@ -86,7 +86,7 @@ const server = tls ? https.createServer({cert:fs.readFileSync(process.env.DESIGN
       await page.setViewportSize({width,height:width<600?844:1000});
       for(const route of routes){
         await page.goto(base+'/'+route,{waitUntil:'networkidle'});
-        assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(244, 243, 236)','Studio stylesheet loaded for '+route);
+        assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(253, 250, 244)','Studio stylesheet loaded for '+route);
         assert.equal(await page.locator('.footer-links a').filter({hasText:'YouTube'}).getAttribute('href'),site.youtube_url,'Every shared footer exposes the same channel');
         const overflow = await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
         if(overflow){

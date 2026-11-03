@@ -18,9 +18,9 @@
   <meta name="twitter:card" content="summary">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年10月27日号","description":"Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。","datePublished":"2026-10-30","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-10-27/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-10-30T09:52:02+09:00"}</script>
 <!-- naojun-discovery:end -->
-  <link rel="stylesheet" href="/assets/css/studio.css?v=20261103a">
+  <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
-<body class="studio-site studio-interior studio-article">
+<body class="studio-site studio-interior studio-article edition-ai-dev">
 <a class="skip-link" href="#main">本文へスキップ</a>
 <header class="site-header"><div class="container header-inner">
 <a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
@@ -30,15 +30,17 @@
 <main id="main">
   <nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a> / <a href="/ai-dev/">AI開発・セキュリティ日報</a></nav>
   <header class="ai-dev-article-hero">
+<!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[10.27]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
       <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 初回公開 2026-10-30 / 更新 2026-10-30</span></div>
-<h1>AI開発・セキュリティ日報｜2026年10月27日号</h1>
+<h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年10月27日号</h1>
       <p class="ai-dev-lead">Chrome 156のCritical 4件、Tailscale SSH・Serveの修正、LiteLLM悪性配布版とBrotli/AWS Lambdaの条件別対処。対象日と事後追補を区別。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-10-30 09:52 JST（公開後一次資料再確認）</p>
     </div>
-  </header>
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全11章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">本日の結論</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">AIによる脆弱性発見：Anthropicが5系統の攻撃チェーンを公表</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">10月27日付のAI開発運用トピック</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">優先度P1：Chrome 156のCritical 4件</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全11章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+</header>
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" open><summary>このページの内容<span class="toc-count">11項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">本日の結論</a></li><li><a href="#reading-section-2">AIによる脆弱性発見：Anthropicが5系統の攻撃チェーンを公表</a></li><li><a href="#reading-section-3">10月27日付のAI開発運用トピック</a></li><li><a href="#reading-section-4">優先度P1：Chrome 156のCritical 4件</a></li><li><a href="#reading-section-5">該当環境で優先度P0：BrotliとAdobe CommerceのCISA KEV対象</a></li><li><a href="#reading-section-6">優先度P1：Tailscaleを該当構成で使う開発・運用環境</a></li><li><a href="#reading-section-7">AI推論基盤のP1：旧AWS Multi Model Serverは修正版なし</a></li><li><a href="#reading-section-8">Brotliの事後更新：AWS Lambdaではバージョン名だけで修復を判断しない</a></li><li><a href="#reading-section-9">具体的な確認・修復・検収</a></li><li><a href="#reading-section-10">情報の時系列と未確認事項</a></li><li><a href="#source-note-heading">一次資料・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">11項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">本日の結論</a></li><li><a href="#reading-section-2">AIによる脆弱性発見：Anthropicが5系統の攻撃チェーンを公表</a></li><li><a href="#reading-section-3">10月27日付のAI開発運用トピック</a></li><li><a href="#reading-section-4">優先度P1：Chrome 156のCritical 4件</a></li><li><a href="#reading-section-5">該当環境で優先度P0：BrotliとAdobe CommerceのCISA KEV対象</a></li><li><a href="#reading-section-6">優先度P1：Tailscaleを該当構成で使う開発・運用環境</a></li><li><a href="#reading-section-7">AI推論基盤のP1：旧AWS Multi Model Serverは修正版なし</a></li><li><a href="#reading-section-8">Brotliの事後更新：AWS Lambdaではバージョン名だけで修復を判断しない</a></li><li><a href="#reading-section-9">具体的な確認・修復・検収</a></li><li><a href="#reading-section-10">情報の時系列と未確認事項</a></li><li><a href="#source-note-heading">一次資料・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
 <p><strong>対象日：2026年10月27日。実際の初回公開日：2026年10月30日。</strong> 10月28〜30日に判明した事項は事後追補として区別し、当時の既知情報と混同しません。</p>
@@ -108,6 +110,6 @@
 </div></footer>
 
 <script src="/assets/js/main.js?v=20261025a"></script>
-<script src="/assets/js/studio.js?v=20261103a" defer></script>
+<script src="/assets/js/studio.js?v=20261103r" defer></script>
 </body>
 </html>
