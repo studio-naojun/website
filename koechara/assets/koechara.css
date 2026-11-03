@@ -1013,3 +1013,14 @@ body {
     border-radius: 10px;
   }
 }
+
+/* Feature film: separate truthful 32s desktop and 24s mobile versions. */
+.kc-film-duration-mobile, .kc-trailer-video-mobile { display: none; }
+.kc-film-duration-large { display: inline; }
+.kc-trailer-figure a { color: #d8e8df; text-underline-offset: 3px; }
+@media (max-width: 640px) {
+  .kc-film-duration-large, .kc-trailer-video-original { display: none; }
+  .kc-film-duration-mobile { display: inline; }
+  .kc-trailer-screen { display: grid; place-items: center; }
+  .kc-trailer-video-mobile { display: block; width: min(100%, 400px); aspect-ratio: 9 / 16; margin: 0 auto; }
+}

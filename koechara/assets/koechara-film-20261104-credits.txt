@@ -1,0 +1,5 @@
+KOECHARA / NAOJUN STUDIOS. 2026-11-04.
+Actual Koechara Windows app UI captured on a local development server. Native desktop overlay not shown.
+Kohaku Normal voice via AivisSpeech; model hash 3f5c08b52bb8a64efd361268580c81510f96c927cd6905aa7dbae6851333270a, ACML 1.0.
+CC0 Calm_Piano_1_Vaporware.ogg SHA 3ee36d4dd4fad5944557cd9992b146c2c8dba5718d133b783e0a10fe6d38d2ad.
+Official product page https://naojun.jp/koechara/; advertised sale price 1,280 JPY incl tax 2026-11-04.
