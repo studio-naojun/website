@@ -924,3 +924,92 @@ body {
     scroll-behavior: auto;
   }
 }
+
+
+/* Koechara short film — scoped to the product page, no global theme changes. */
+.kc-trailer {
+  overflow: clip;
+  padding: clamp(72px, 8.5vw, 120px) 0;
+  background: #10181c;
+  color: #f7f2e9;
+  border-top: 2px solid #b6ded3;
+  border-bottom: 1px solid #263c40;
+}
+.kc-trailer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.25fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 96px);
+}
+.kc-trailer-copy {
+  min-width: 0;
+}
+.kc-trailer-copy .kc-eyebrow {
+  margin: 0 0 24px;
+  color: #b8e1d7;
+  letter-spacing: .14em;
+}
+.kc-trailer-copy h2 {
+  margin: 0 0 26px;
+  color: #f7f2e9;
+  font-size: clamp(38px, 4.7vw, 72px);
+  letter-spacing: -.055em;
+  line-height: 1.16;
+}
+.kc-trailer-copy > p:not(.kc-eyebrow) {
+  max-width: 35ch;
+  color: #e4e0d5;
+  font-size: clamp(16px, 1.45vw, 19px);
+  line-height: 1.9;
+}
+.kc-trailer-copy .kc-trailer-small {
+  margin-top: 28px;
+  color: #b5c8c4 !important;
+  font-size: 13px !important;
+  line-height: 1.75 !important;
+}
+.kc-trailer-figure {
+  min-width: 0;
+  margin: 0;
+}
+.kc-trailer-screen {
+  overflow: hidden;
+  border: 1px solid rgba(191,229,218,.22);
+  background: #11161d;
+  border-radius: 18px;
+  box-shadow: 0 28px 82px rgba(0,0,0,.28);
+}
+.kc-trailer-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: contain;
+  background: #10181c;
+}
+.kc-trailer-figure figcaption {
+  padding: 14px 4px 0;
+  color: #b7c9c5;
+  font-size: 12px;
+  line-height: 1.7;
+}
+@media (max-width: 900px) {
+  .kc-trailer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+  }
+  .kc-trailer-copy > p:not(.kc-eyebrow) {
+    max-width: 63ch;
+  }
+}
+@media (max-width: 520px) {
+  .kc-trailer {
+    padding: 56px 0 66px;
+  }
+  .kc-trailer-copy h2 {
+    font-size: clamp(34px, 9vw, 48px);
+  }
+  .kc-trailer-screen {
+    border-radius: 10px;
+  }
+}
