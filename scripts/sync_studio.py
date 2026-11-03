@@ -7,7 +7,59 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT=Path(__file__).resolve().parents[1]
-VERSION='20261004b'
+VERSION='20261103a'
+
+SECTIONS={'investment':'投資レポート','admissions':'中学受験レポート','ai-dev':'AI開発・セキュリティ日報'}
+
+def feed_entries(root,section):
+    return sorted(json.loads((root/section/'feed.json').read_text(encoding='utf-8'))['entries'],key=lambda e:(e['published_at'],e['path']),reverse=True)
+
+def entry_link(section,item,summary=False):
+    e=lambda value:html.escape(str(value),quote=True)
+    return (f'<a class="reading-entry" href="/{section}/{e(item["path"].strip("/"))}/">'
+            f'<time datetime="{e(item["published_at"])}">{e(item["published_at"])}</time>'
+            f'<h3>{e(item["title"])}</h3>'
+            +(f'<p>{e(item["summary"])}</p>' if summary else '')
+            +'<span class="entry-arrow" aria-hidden="true">↗</span></a>')
+
+def editorial_article(root,section,rel,source):
+    # Remove only our generated shell before rebuilding. Published prose stays intact.
+    source=re.sub(r'<!-- studio:reading:start -->.*?<!-- studio:reading:body -->\n?', '',source,flags=re.S)
+    source=re.sub(r'\n?<!-- studio:reading:tail -->.*?<!-- studio:reading:end -->', '',source,flags=re.S)
+    hero_pattern=r'(<header class="(?:investment|admissions|ai-dev)-article-hero">)(.*?)(</header>)'
+    def masthead(match):
+        hero=match[2]
+        eyebrows=re.findall(r'<div class="eyebrow">(.*?)</div>',hero,re.S)
+        if eyebrows:
+            issue=eyebrows[-1]
+            for old,new in [('WEEKLY','週刊'),('MONTHLY','月刊'),('SPECIAL','特集'),('DAILY','日報')]:issue=issue.replace(old,new)
+            line=f'<div class="issue-masthead"><span>{SECTIONS[section]}</span><span>{issue}</span></div>'
+            hero=re.sub(r'(?:<div class="eyebrow">.*?</div>\s*)+',lambda m:line+'\n',hero,count=1,flags=re.S)
+        return match[1]+hero+match[3]
+    source=re.sub(hero_pattern,masthead,source,count=1,flags=re.S)
+    match=re.search(r'<article class="(?:investment|admissions|ai-dev)-article"[^>]*>(.*?)</article>',source,re.S)
+    if not match:return source
+    ids=set(re.findall(r'\bid=["\']([^"\']+)',source));headings=[]
+    def heading(m):
+        attrs,text=m[1],m[2];existing=re.search(r'\bid=["\']([^"\']+)',attrs)
+        if existing:anchor=existing[1]
+        else:
+            n=len(headings)+1;anchor=f'reading-section-{n}'
+            while anchor in ids:n+=1;anchor=f'reading-section-{n}'
+            ids.add(anchor);attrs+=f' id="{anchor}"'
+        headings.append((anchor,html.unescape(re.sub('<[^>]+>','',text)).strip()))
+        return '<h2'+attrs+'>'+text+'</h2>'
+    article=re.sub(r'<h2([^>]*)>(.*?)</h2>',heading,match[0],flags=re.S)
+    links=''.join(f'<li><a href="#{html.escape(a,quote=True)}">{html.escape(t)}</a></li>' for a,t in headings)
+    toc=(f'<aside class="reading-rail"><details class="reading-toc" open><summary>このページの内容<span class="toc-count">{len(headings)}項目</span></summary>'
+         f'<nav aria-label="記事の目次"><ol>{links}</ol></nav></details><a class="rail-back" href="/{section}/">← {SECTIONS[section]}一覧</a></aside>') if headings else ''
+    entries=[e for e in feed_entries(root,section) if f'{section}/{e["path"].strip("/")}/index.html'!=rel]
+    current=next((e for e in feed_entries(root,section) if f'{section}/{e["path"].strip("/")}/index.html'==rel),None)
+    older=[e for e in entries if current and e['published_at']<=current['published_at']]
+    related=(older or entries)[:1]
+    footer=f'<footer class="reading-footer"><p class="reading-end">読み終えたら、もうひとつ。</p>'+''.join(entry_link(section,e) for e in related)+f'<a class="arrow-link" href="/{section}/">{SECTIONS[section]}一覧へ <span aria-hidden="true">↗</span></a></footer>'
+    shell='<!-- studio:reading:start -->\n<div class="reading-layout container">'+toc+'\n<!-- studio:reading:body -->\n'+article+'\n<!-- studio:reading:tail -->\n'+footer+'</div>\n<!-- studio:reading:end -->'
+    return source[:match.start()]+shell+source[match.end():]
 
 def validate_works(items):
     ids=set()
@@ -89,16 +141,44 @@ def sync_page(root,path,source):
         if 'class="article-breadcrumb ' not in source:
             crumb=f'<nav class="article-breadcrumb container" aria-label="パンくず"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/{section}/">{label}</a></nav>'
             source=source.replace('<main>','<main>\n'+crumb,1).replace('<main id="main">','<main id="main">\n'+crumb,1)
+        source=editorial_article(root,section,rel,source)
     source=source.replace('<main>','<main id="main">',1)
     if 'class="skip-link"' not in source:source=re.sub(r'(<body[^>]*>)',r'\1\n<a class="skip-link" href="#main">本文へスキップ</a>',source,count=1)
     if '/assets/css/studio.css' not in source:source=source.replace('</head>','  <link rel="stylesheet" href="/assets/css/studio.css?v='+VERSION+'">\n</head>',1)
     source=re.sub(r'/assets/css/studio\.css\?v=[^"\s]+','/assets/css/studio.css?v='+VERSION,source)
+    # Section sheets may precede this script in older publisher output.
+    # Keep the shared editorial layer last in the cascade, including AI-dev.
+    if article:
+        source=re.sub(r'[ \t]*<link rel="stylesheet" href="/assets/css/studio.css\?v=[^"]+">\n?', '',source)
+        source=source.replace('</head>','  <link rel="stylesheet" href="/assets/css/studio.css?v='+VERSION+'">\n</head>',1)
     # Roll out the new first-party event script atomically across generated pages.
     source=re.sub(r'(assets/js/main\.js)(?:\?v=[^"\s]+)?',r'\g<1>?v=20261025a',source)
     if '/assets/js/studio.js' not in source:source=source.replace('</body>','  <script src="/assets/js/studio.js?v=20261004" defer></script>\n</body>',1)
+    source=re.sub(r'/assets/js/studio\.js\?v=[^"\s]+','/assets/js/studio.js?v='+VERSION,source)
     if rel=='index.html':
         items=load_works(root)
-        source=replace_block(source,'featured',render_cards(root,items,True))
+        source=replace_block(source,'featured',render_cards(root,[item for item in items if item['id']!='koechara'],True))
+        if 'studio:make:start' in source:
+            specimen=next(item for item in items if item['id']=='koechara')
+            e={key:html.escape(str(value),quote=True) for key,value in specimen.items()}
+            cover=(root/specimen['cover']).read_text(encoding='utf-8')
+            art=re.search(r'<img\b[^>]*>',cover)[0].replace(' loading="lazy"','')
+            art=art[:-1]+' fetchpriority="high">'
+            source=replace_block(source,'make',f'<a class="make-specimen" href="{e["href"]}"><div class="specimen-image">{art}</div><div class="specimen-caption"><div><h2 id="make-title">{e["title"]}</h2><p>{e["summary"]}</p></div><span aria-hidden="true">↗</span></div></a><p class="specimen-note">{e["status"]} <a href="/works/">すべての作品を見る →</a></p>')
+        if 'studio:observe:start' in source:
+            latest=[(s,entries[0]) for s in SECTIONS if (entries:=feed_entries(root,s))]
+            observe='<h2 class="lens-label">OBSERVE <span>観測する・読む</span></h2>'
+            if latest:
+                section,item=max(latest,key=lambda pair:pair[1]['published_at'])
+                observe+=f'<p class="observe-category">{SECTIONS[section]}</p>'+entry_link(section,item,True)+f'<a class="observe-all" href="/{section}/">この分野の記事一覧へ →</a>'
+            else:observe+='<p>公開記事を準備しています。</p><a class="observe-all" href="#journal">読みものの分野を見る →</a>'
+            source=replace_block(source,'observe',observe)
+        if 'studio:journal:start' in source:
+            rows=[]
+            for section,label in SECTIONS.items():
+                entries=feed_entries(root,section)
+                if entries:rows.append(f'<section class="journal-lane"><div class="journal-lane-head"><h3>{label}</h3><a href="{section}/">一覧へ ↗</a></div>'+entry_link(section,entries[0])+'</section>')
+            source=replace_block(source,'journal','\n'.join(rows))
         by_url={item['href']:item for item in items}
         def utility(match):
             item=by_url.get('/'+match[1].lstrip('/') if not match[1].startswith('https://') else match[1])

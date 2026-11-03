@@ -21,4 +21,22 @@
       if(count)count.textContent=works.filter(w=>!w.hidden).length+' 件の作品';
     });
   }
+  const toc=document.querySelector('.reading-toc');
+  if(toc){
+    const desktop=matchMedia('(min-width:1100px)');
+    const adapt=()=>{toc.open=desktop.matches;};
+    adapt();desktop.addEventListener('change',adapt);
+    const links=[...toc.querySelectorAll('nav a')];
+    const headings=links.map(link=>document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter(Boolean);
+    let pending=false;
+    const update=()=>{
+      pending=false;
+      let active=headings[0];
+      for(const heading of headings){if(heading.getBoundingClientRect().top<=132)active=heading;else break;}
+      if(active)links.forEach(link=>{if(link.hash==='#'+active.id)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});
+    };
+    const schedule=()=>{if(!pending){pending=true;requestAnimationFrame(update);}};
+    window.addEventListener('scroll',schedule,{passive:true});
+    window.addEventListener('resize',schedule);update();
+  }
 })();
