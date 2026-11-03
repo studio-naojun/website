@@ -1083,3 +1083,18 @@ evidence_key: cryptopayment-gateway-cve-2026-81648-wpscan-cna-20261103
 正規公開担当への受入条件: (1)WPScan原ページ・WordPress公式の現行配布状況と開発者の修正発表を照合し、修正版なし／最新版の有無を確定、(2)実悪用の有無・公開停止日・ダウンロード数は各原典を読み、確認できなければ「報道による」として区別、(3)既存のs2MemberやWordPress Coreの脆弱性と混同せず、重複SNS投稿を確認、(4)SNS投稿するなら実投稿URL・本文・時刻を別検収。本RelayはSNS投稿、プラグイン操作、ウォレット操作、Google Docs書込みを行っていない。
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/81xxx/CVE-2026-81648.json （WPScan CNA、2026-11-03 JSTに正規GitHub connectorで確認、blob SHA 5820795e954d655a839813bd60a559d4897ba153）。WPScan原サイト・WordPress公式・2026-11-03の報道原文は本回の許可経路では独立取得していない。
 
+### GPT-RELAY-20261103-1730-01
+JST: 2026-11-03 17:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1655-01
+evidence_key: android-nov-2026-google-cna-three-zero-interaction-rce-20261103
+本文: Museの2026-11-03 16:55 JST候補 SNS-20261103-1655-SEC-01（Android 2026年11月セキュリティ速報）について、Google Android CNAが登録した公式CVE原本3件を正規GitHub経路で独立確認した。CVE-2026-58868（FrameDecoder.cppのheap buffer overflow / out-of-bounds write）、CVE-2026-58936（libpngのpng_set_tRNSでuse-after-free）、CVE-2026-58876（複数箇所のuse-after-free）は、いずれも2026-11-02 UTCにPUBLISHED、影響製品はGoogle Androidの14、15、16、16-qpr2、17と記載され、説明文は「追加権限不要の遠隔コード実行につながり得る」「ユーザー操作不要」と明記する。したがって「ゼロクリック型の脆弱性を含む」という方向は、二次報道の引用だけでなく、この3件について一次記録に裏づけがある。一方、可能性の記述は全端末で悪用可能・実攻撃が発生済みという意味ではない。具体的な侵入経路、悪用可能な端末構成、公開悪用の実態はCNA本文だけでは確定できない。
+
+独立確認できていない点: Museの「総修正216件・Critical 23件」「2026-11-01向け119件／11-05向け97件」「2026-11-05が全修正を含む」「悪用報告なし」「Google Playシステム更新で一部修正が届く」は、Googleの11月Android Security Bulletin原文をこの許可経路から直接取得できておらず、二次解説記事の記載にとどまる。各公式CVEのreferencesは同Bulletinを指すが、そのリンクがあることは本文を検証したことにはならない。CVE-2026-58868に付くCISA ADPの2026-11-02時点のExploitation:noneも、その時点の評価であり「現在悪用されていない」との包括的証明ではない。メーカー・機種ごとの配信日も確認できていない。別途、CVE-2026-89774の公式登録はLinux kernel CNAのBluetooth SCOソケットに関するもので、Android速報への採録や対象Android機種はこの記録だけでは確定できない。
+
+読者向け修正案: 「Androidの11月分の更新を確認しましょう。Googleの公式CVE記録では、Android 14～17などを対象に、操作なしで遠隔コード実行につながり得るメモリ安全性の問題が複数公表されています。設定のセキュリティ更新欄から、お使いの機種に届いている最新版を確認して適用してください。メーカーによって配信時期は異なります。」『知らない相手のメディアファイルを開かなければ安全』という説明は、ユーザー操作不要の欠陥に対して不十分なので単独の回避策として扱わない。パッチレベル「2026-11-05」および216件・23件を投稿に入れる場合はGoogle公式Bulletinの該当行を独立照合した後に限定する。
+
+受入条件: (1)公式Android Security Bulletin 2026-11-01原文で件数・対象レベル・各CVE掲載・悪用状況を再照合、(2)メーカー別適用の可否と配信状況を一般化しない、(3)前回のAndroid WAP Push/DoSの別テーマと混同せず重複確認、(4)公開時は実際の投稿URLと本文・時刻を別途検収する。SNS投稿、端末更新、Google Docsへの書込みは本Relayでは実施していない。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58868.json （Google Android CNA、blob f06a5d3a1921e0856d83658023edb47045b1729a）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58936.json （Google Android CNA、blob 2bac91e11990853f30e07afa803b78b66d46951a）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58876.json （Google Android CNA、blob 045aaa8c60d56528921947010e69bfb8a8dd8834）。三原本とも2026-11-03 JSTに正規GitHubで取得。2026-11-05パッチレベル等は未独立確認。
+
