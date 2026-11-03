@@ -1098,3 +1098,19 @@ evidence_key: android-nov-2026-google-cna-three-zero-interaction-rce-20261103
 受入条件: (1)公式Android Security Bulletin 2026-11-01原文で件数・対象レベル・各CVE掲載・悪用状況を再照合、(2)メーカー別適用の可否と配信状況を一般化しない、(3)前回のAndroid WAP Push/DoSの別テーマと混同せず重複確認、(4)公開時は実際の投稿URLと本文・時刻を別途検収する。SNS投稿、端末更新、Google Docsへの書込みは本Relayでは実施していない。
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58868.json （Google Android CNA、blob f06a5d3a1921e0856d83658023edb47045b1729a）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58936.json （Google Android CNA、blob 2bac91e11990853f30e07afa803b78b66d46951a）; https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58876.json （Google Android CNA、blob 045aaa8c60d56528921947010e69bfb8a8dd8834）。三原本とも2026-11-03 JSTに正規GitHubで取得。2026-11-05パッチレベル等は未独立確認。
 
+
+
+### GPT-RELAY-20261103-1831-01
+JST: 2026-11-03 18:31 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1605-01
+evidence_key: malware-scan-upload-vs-hash-only-first-party-check-20261103
+本文: 2026-11-03 16:05 JSTのSNS候補「外部マルウェア検査サービスへのファイルアップロードから機密情報が閲覧可能になったとする報道」を、公開用の安全な技術説明へ修正する。重要な訂正は「外部検査サイトにアップロードした瞬間、必ず誰でもダウンロードできる公開状態になる」という一律の表現を採用しないこと。外部事業者へのファイル送信、同サービス利用者・契約先への共有、一般公開、第三者による取得は異なる段階であり、機能・利用規約・共有設定・アクセス権・保存方針を確認しなければ同一視できない。一方、機密・個人データを未承認の外部サービスへ送信する時点で情報管理上のリスクは成立する。公開されていないから安全とも言えない。
+
+今回の独立した新しい技術根拠: Hugging FaceとVirusTotalの公式共同執筆文書は、ファイル本体を送らず、ファイルハッシュを脅威情報データベースへ照会し、既存の検出結果を取得する方式を明記する。「No raw file contents are shared with VirusTotal」と説明され、ファイルアップロードによらず既知の脅威情報を参照できる実例である。ただし、これはHugging Faceの特定の連携方式の記述であり、VirusTotal一般のアップロード仕様や他社検査サイトの公開範囲の保証ではない。ハッシュに該当がない・検出がないことは安全性の証明ではなく、ハッシュ自体もファイルの識別子となり得るため機密管理規程に従う。別の例として、Cisco TalosのClamAV公式READMEはオープンソースのアンチウイルスエンジンであることを確認できる。既承認のローカル解析環境でのスキャンは、未承認の外部サイトへ検体本体を送る方法を避ける選択肢である。ただしローカルスキャン単独で完全な検出が保証されるわけではない。
+
+公開担当への修正案: 「『ウイルスを調べたい』という理由でも、社外のスキャンサイトに名簿や業務ファイルをそのままアップロードしてはいけません。送信後の共有先や保存条件はサービスごとに異なり、第三者に見える場合もあります。機密ファイルはまず承認済みのローカルスキャンを利用し、外部照会が必要なら本体を送らないハッシュ照会等の許可された方法を確認してください。未検出は無害の証明ではありません。」報道上の具体的な事件に結びつける場合、実際に利用されたサービスの名称・共有条件・閲覧範囲・被害件数・捜査段階を一次原本で確認するまで断定しない。
+
+受入条件: (1)調査中の事件について警察・関係機関の原発表、報道の取材日時と捜査段階、実際に閲覧・取得された事実を別途照合する、(2)本人や第三者の氏名・生年月日・旅券番号等の原データを転載しない、(3)「アップロード＝常に全世界公開」という誤った同一視を避け、外部送信禁止と公開範囲の検証を分ける、(4)既存のSNS候補と重複確認し、公開時は投稿URLと実本文を検収する。今回、事件の原発表・外部ニュース本文の独立閲覧、実際の投稿、Docsへの書込みは行っていない。
+独立根拠: https://github.com/huggingface/blog/blob/main/virustotal.md （共同執筆の公開説明、正規GitHub取得blob SHA 1fb974d0120c5a7c88f9749a657d1539b42a35fe）; https://github.com/Cisco-Talos/clamav/blob/main/README.md （ClamAV公式README、正規GitHub取得blob SHA 68dec8c2430042a97a6ab07936c3f60abe06ed9d）。
