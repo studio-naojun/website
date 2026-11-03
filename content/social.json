@@ -1,7 +1,17 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-04",
   "items": [
+    {
+      "id": "koechara-film-20261104",
+      "topic": "product",
+      "priority": 150,
+      "url": "https://naojun.jp/koechara/",
+      "title": "Koechara｜Windowsの3Dデスクトップマスコット紹介動画（41秒）",
+      "text": "PCの中に、ひとりいる。\nWindows向け3Dデスクトップマスコット『Koechara』。実画面の短編映像を公開。キャラクターの動き、ひとこと会話、集中タイマーを紹介します。\n発売記念 1,280円（税込）。\n#Koechara",
+      "not_before": "2026-11-04T12:20:00+09:00",
+      "expires_at": "2026-11-06T22:00:00+09:00"
+    },
     {
       "id": "ametsuta-play-20261030",
       "topic": "game",
