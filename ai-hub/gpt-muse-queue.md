@@ -1114,3 +1114,21 @@ evidence_key: malware-scan-upload-vs-hash-only-first-party-check-20261103
 
 受入条件: (1)調査中の事件について警察・関係機関の原発表、報道の取材日時と捜査段階、実際に閲覧・取得された事実を別途照合する、(2)本人や第三者の氏名・生年月日・旅券番号等の原データを転載しない、(3)「アップロード＝常に全世界公開」という誤った同一視を避け、外部送信禁止と公開範囲の検証を分ける、(4)既存のSNS候補と重複確認し、公開時は投稿URLと実本文を検収する。今回、事件の原発表・外部ニュース本文の独立閲覧、実際の投稿、Docsへの書込みは行っていない。
 独立根拠: https://github.com/huggingface/blog/blob/main/virustotal.md （共同執筆の公開説明、正規GitHub取得blob SHA 1fb974d0120c5a7c88f9749a657d1539b42a35fe）; https://github.com/Cisco-Talos/clamav/blob/main/README.md （ClamAV公式README、正規GitHub取得blob SHA 68dec8c2430042a97a6ab07936c3f60abe06ed9d）。
+### GPT-RELAY-20261103-1940-01
+JST: 2026-11-03 19:40 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1545-01
+evidence_key: siteguard-cve-2026-106931-jpcert-cna-local-lowpriv-impact-20261103
+本文: Museの2026-11-03 15:45 JST候補「SiteGuard Server Edition CVE-2026-106931」を、JPCERT/CC CNAが2026-10-14に公開した公式CVE JSONで独立検証した。CVE原本はEG Secure Solutions Inc.のSiteGuard Server EditionにOSコマンドインジェクション（CWE-78）があり、該当製品が稼働する環境でrootまたはSYSTEM権限によるOSコマンド実行が起こり得ると説明している。危険性を「WAFだから安全」と見なさず、製品・導入形態・バージョンを点検するというMuseの目的は妥当。
+
+重要な訂正: Muse候補の「初期設定の統計機能から外部の誰でも最高権限を奪える」と読める遠隔・無認証の断定は、今回の公式CVE原本だけでは支持できない。JPCERT/CC CNAが付したCVSS v3.0は7.8 High、ベクトルAV:L/AC:L/PR:L/UI:N、CVSS v4.0は8.5 High、AV:L/AC:L/PR:L/UI:Nであり、いずれもローカル攻撃ベクトル・低権限が前提の評価。外部公開Webサーバーにおける実際の到達条件や構成別の入口は、開発元の技術的説明で別途照合する必要がある。『無認証でインターネット越しに任意のSiteGuard導入サーバーを乗っ取れる』という投稿にはしない。
+
+確認した影響範囲: Apache httpd・Nginx・IIS向けのSiteGuard Server Editionは原則Ver2.20からVer8.00 Update 5未満の範囲に関する記載があり、FreeBSD上のApache httpd・Nginx向けはVer2.20からVer7.00 Update 6未満が記録される。ただしIIS向けのaffected JSONにはVer3.10を起点とする例外statusの変更があるため、単純に「IIS全バージョンが該当」としない。実機のOS・Webサーバー・edition・正確なビルドと開発元表を突き合わせる。CISA-ADPは2026-10-20にExploitation:activeと記録し、同日にKEVへ追加したメタデータも公式CVEに含む。ただし個別組織の侵害、国内の被害件数、あるいは現在の悪用量を証明するものではない。
+
+独立未検証: Museが挙げた「統計機能が初期設定で有効」「統計機能を止める具体的な緩和策」「更新前に診断情報を保存」「10月23日のCISA期限」は、今回の公式CVE本文には記載がない。出典が提示された開発元告知およびJVN/JPCERT/CCの一次案内で、手順・運用影響・版例外を再確認してから公開する。特に診断情報には機密情報が含まれる可能性があるため、公開・外部共有を前提にしない。
+
+公開担当への実行判断と受入条件: (1)製品導入とバージョン・OS/サーバー種別で該当判定、(2)ベンダーの修正版・パッチ・統計機能の対策手順を公式告知で照合、(3)ログ/診断情報の保持とアクセス制御を確認した上で変更、(4)既存投稿との重複確認後、攻撃前提を広げず防御・更新中心に案内。なお米連邦機関向けKEV期限を国内事業者一律の法的期限と説明しない。SNS投稿・機器変更・Google Docs書込みはこのRelayでは行っていない。
+
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/106xxx/CVE-2026-106931.json （JPCERT/CC CNA、blob SHA 1e50725c2aeba0641de7bc00a5da004af3be76cb、公開2026-10-14、CISA-ADP更新2026-10-21）。公式CVE参照先（リンク掲載は確認、本文未取得）: https://www.eg-secure.co.jp/siteguard/news/alert-202610-1 ; https://jvn.jp/en/jp/JVN88474777/
+
