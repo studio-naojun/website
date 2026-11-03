@@ -22,7 +22,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"米国主要指数とビットコインの過去チャート | Market Memo — NAOJUN STUDIOS","description":"S&P 500、NASDAQ 100、ダウ平均、ビットコインの推移を参照。TradingView公式チャートは必要なときだけ読み込み、独自の価格履歴は利用許諾の確認後に掲載します。","url":"https://naojun.jp/investment/markets/","isPartOf":{"@type":"WebSite","name":"NAOJUN STUDIOS","url":"https://naojun.jp/"},"publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"inLanguage":"ja"}</script>
 <!-- naojun-discovery:end -->
 </head>
-<body class="studio-site studio-interior markets-page">
+<body class="studio-site studio-interior markets-page edition-investment">
   <a class="skip-link" href="#main">本文へスキップ</a>
   <header class="site-header"><div class="container header-inner">
 <a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
@@ -30,55 +30,65 @@
 <nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
 
   <main id="main">
-    <div class="container markets-breadcrumb"><nav aria-label="パンくず"><a href="/">Home</a><span aria-hidden="true"> / </span><a href="/investment/">Investment Observatory</a><span aria-hidden="true"> / </span><span aria-current="page">Market Memo</span></nav></div>
-    <section class="markets-hero container" aria-labelledby="market-title">
-      <div class="markets-hero-copy">
-        <div class="eyebrow">INVESTMENT / MARKET MEMO</div>
-        <h1 id="market-title">市場の動きを、<br>同じ画面でたどる。</h1>
-        <p class="markets-lead">S&amp;P 500、NASDAQ 100、ダウ平均、Bitcoin。公式チャートで推移を確認し、<a href="/investment/">週次・月次の市場分析</a>と一緒に振り返れます。</p>
+    <section class="mk-cover" aria-labelledby="market-title">
+      <div class="container mk-cover-inner">
+        <nav class="mk-breadcrumb" aria-label="パンくず"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/investment/">Investment Observatory</a><span aria-hidden="true">/</span><span aria-current="page">Market Memo</span></nav>
+        <p class="mk-masthead"><span>INVESTMENT OBSERVATORY — MARKET MEMO</span><span>4 INSTRUMENTS / CHART BY TRADINGVIEW</span></p>
+        <div class="mk-title-row">
+          <h1 id="market-title">市場の動きを、<br class="mk-br">同じ画面でたどる。</h1>
+          <p class="mk-lead">S&amp;P 500、NASDAQ 100、ダウ平均、Bitcoin。TradingViewの公式チャートで値動きを確かめ、<a href="/investment/">週次・月次の市場分析</a>と一緒に振り返れます。</p>
+        </div>
+
+        <div class="mk-keys" role="group" aria-label="表示する銘柄">
+          <button type="button" class="mk-key" data-widget-symbol="SPX" aria-pressed="true"><span class="mk-key-code" aria-hidden="true">SPX</span><span class="mk-key-name">S&amp;P 500</span><span class="mk-key-feed">指数は公式ページ／連動ETF</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="NDX" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">NDX</span><span class="mk-key-name">NASDAQ 100</span><span class="mk-key-feed">指数は公式ページ／連動ETF</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="DJI" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">DJI</span><span class="mk-key-name">ダウ平均</span><span class="mk-key-feed">指数は公式ページ／連動ETF</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="BTC" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">BTC</span><span class="mk-key-name">Bitcoin / USD</span><span class="mk-key-feed">この枠にチャートを表示</span></button>
+        </div>
+
+        <div class="mk-reader">
+          <div class="mk-reader-head">
+            <p class="mk-reader-title"><span class="mk-reader-kicker">VIEWING</span><strong id="chart-selected">S&amp;P 500</strong><code id="chart-symbol">SP:SPX</code></p>
+            <button id="close-widget" class="mk-close" type="button" aria-controls="tradingview-chart" hidden>チャートを閉じる <span aria-hidden="true">×</span></button>
+          </div>
+          <p id="widget-status" class="mk-status" role="status" aria-live="polite">外部チャートはまだ読み込んでいません。</p>
+          <div id="tradingview-chart" class="mk-stage" data-state="idle" role="region" aria-label="TradingView外部チャート">
+            <div class="mk-idle">
+              <span class="mk-idle-mark" aria-hidden="true">SPX</span>
+              <h2 class="mk-idle-title">S&amp;P 500 指数は、他サイトへの埋め込み対象外です。</h2>
+              <p id="widget-message" class="mk-idle-copy">TradingViewは S&amp;P 500（SP:SPX）指数を外部サイト用チャートで提供していません（2026年11月3日確認）。指数そのものはTradingViewで開けます。</p>
+              <div class="mk-idle-actions">
+                <a class="mk-action mk-action-primary" href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener noreferrer">TradingViewで S&amp;P 500 を開く <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
+              </div>
+              <noscript><p class="mk-idle-note">JavaScriptが無効のため、この枠にチャートは表示できません。下のTradingView公式ページから閲覧できます。</p></noscript>
+            </div>
+          </div>
+          <div class="mk-reader-foot">
+            <p class="mk-consent">チャートは<strong>ボタンを押したときだけ</strong>TradingViewへ接続します。表示がリアルタイムか遅延かは銘柄・取引所ごとに異なるため、チャート内の取引所名と時刻を確認してください。TradingViewの表示値は当サイトの価格欄・履歴には転用しません。</p>
+            <nav class="mk-official" aria-label="TradingView公式銘柄ページ">
+              <span class="mk-official-label" aria-hidden="true">公式ページ</span>
+              <a href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener noreferrer">S&amp;P 500 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
+              <a href="https://www.tradingview.com/symbols/NASDAQ-NDX/" target="_blank" rel="noopener noreferrer">NASDAQ 100 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
+              <a href="https://www.tradingview.com/symbols/DJ-DJI/" target="_blank" rel="noopener noreferrer">Dow 30 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
+              <a href="https://www.tradingview.com/symbols/BTCUSD/?exchange=BITSTAMP" target="_blank" rel="noopener noreferrer">BTC / USD (Bitstamp) <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
+            </nav>
+            <p class="mk-attribution">チャート提供：<a href="https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/" target="_blank" rel="noopener noreferrer">TradingView<span class="sr-only">（新しいタブ）</span></a>。BTCはBitstampの現物BTC/USDで、米国株指数の終値や株価指数CFDとは異なる時系列です。</p>
+          </div>
+        </div>
       </div>
-      <div class="markets-hero-index" aria-hidden="true"><span>SPX</span><span>NDX</span><span>DJI</span><span>BTC</span></div>
     </section>
 
-    <section class="markets-section markets-prices" aria-labelledby="prices-title">
+    <section class="markets-section mk-owndata" aria-labelledby="history-title">
       <div class="container">
-        <div class="markets-section-head"><div><p class="eyebrow">01 / DATA STATUS</p><h2 id="prices-title">主要4指標</h2></div><p>独自表示の価格は再配布権利を確認したデータのみ掲載します。</p></div>
-        <div class="markets-price-grid">
-          <article class="markets-price-card" data-quote="SPX"><div class="markets-card-head"><h3>S&amp;P 500</h3><span>SPX</span></div><div class="markets-card-price" data-price>価格データ未接続</div><p class="markets-card-note">現物指数・米国市場の公式終値</p><p class="markets-card-time" data-observed>最終観測時刻：未提供</p></article>
-          <article class="markets-price-card" data-quote="NDX"><div class="markets-card-head"><h3>NASDAQ 100</h3><span>NDX</span></div><div class="markets-card-price" data-price>価格データ未接続</div><p class="markets-card-note">現物指数・米国市場の公式終値</p><p class="markets-card-time" data-observed>最終観測時刻：未提供</p></article>
-          <article class="markets-price-card" data-quote="DJI"><div class="markets-card-head"><h3>ダウ平均</h3><span>DJI</span></div><div class="markets-card-price" data-price>価格データ未接続</div><p class="markets-card-note">現物指数・米国市場の公式終値</p><p class="markets-card-time" data-observed>最終観測時刻：未提供</p></article>
-          <article class="markets-price-card" data-quote="BTC"><div class="markets-card-head"><h3>Bitcoin / USD</h3><span>BTC</span></div><div class="markets-card-price" data-price>価格データ未接続</div><p class="markets-card-note">BTC/USD現物・日本時間06:30の日次観測値</p><p class="markets-card-time" data-observed>最終観測時刻：未提供</p></article>
+        <div class="markets-section-head"><div><p class="eyebrow">02 / OWN DATA</p><h2 id="history-title">当サイト独自の価格・履歴</h2></div><p>独自に掲載する価格は、再配布の利用許諾を確認したデータだけです。現在は未接続のため、数値は表示していません。</p></div>
+        <p id="history-status" class="markets-unavailable" role="status">公開可能な独自履歴データは現在ありません。利用許諾の確認後に表示します。上のTradingViewチャートと公式ページは今すぐ閲覧できます。</p>
+        <div class="mk-ledger">
+          <article class="mk-ledger-row" data-quote="SPX"><h3><span class="mk-ledger-code">SPX</span>S&amp;P 500</h3><p class="mk-ledger-price" data-price>価格データ未接続</p><p class="mk-ledger-note">現物指数・米国市場の公式終値</p><p class="mk-ledger-time" data-observed>最終観測時刻：未提供</p></article>
+          <article class="mk-ledger-row" data-quote="NDX"><h3><span class="mk-ledger-code">NDX</span>NASDAQ 100</h3><p class="mk-ledger-price" data-price>価格データ未接続</p><p class="mk-ledger-note">現物指数・米国市場の公式終値</p><p class="mk-ledger-time" data-observed>最終観測時刻：未提供</p></article>
+          <article class="mk-ledger-row" data-quote="DJI"><h3><span class="mk-ledger-code">DJI</span>ダウ平均</h3><p class="mk-ledger-price" data-price>価格データ未接続</p><p class="mk-ledger-note">現物指数・米国市場の公式終値</p><p class="mk-ledger-time" data-observed>最終観測時刻：未提供</p></article>
+          <article class="mk-ledger-row" data-quote="BTC"><h3><span class="mk-ledger-code">BTC</span>Bitcoin / USD</h3><p class="mk-ledger-price" data-price>価格データ未接続</p><p class="mk-ledger-note">BTC/USD現物・日本時間06:30の日次観測値</p><p class="mk-ledger-time" data-observed>最終観測時刻：未提供</p></article>
         </div>
         <p class="markets-smallnote">現時点ではリアルタイム価格、前日比、騰落率を提供していません。将来の掲載時も対象市場・採用価格・観測時刻を併記します。</p>
-      </div>
-    </section>
-
-    <section class="markets-section markets-widget" aria-labelledby="widget-title">
-      <div class="container">
-        <div class="markets-section-head"><div><p class="eyebrow">02 / OFFICIAL CHART</p><h2 id="widget-title">過去の値動きを見る</h2></div><p>TradingView提供のチャートを選んで閲覧できます。</p></div>
-        <div class="markets-widget-controls" role="group" aria-label="表示するチャートの銘柄">
-          <button type="button" data-widget-symbol="SPX" aria-pressed="true">S&amp;P 500</button>
-          <button type="button" data-widget-symbol="NDX" aria-pressed="false">NASDAQ 100</button>
-          <button type="button" data-widget-symbol="DJI" aria-pressed="false">Dow 30</button>
-          <button type="button" data-widget-symbol="BTC" aria-pressed="false">BTC / USD</button>
-        </div>
-        <div class="markets-widget-actions"><button id="load-widget" class="markets-load-button" type="button" aria-controls="tradingview-chart">選んだチャートを読み込む</button><button id="close-widget" class="markets-close-button" type="button" hidden>チャートを閉じる</button></div>
-        <div id="tradingview-chart" class="markets-widget-stage" role="region" aria-label="TradingView外部チャート"><p id="widget-message">まだ外部チャートは読み込んでいません。ボタンを押すとTradingViewに接続します。</p></div>
-        <p class="markets-smallnote">チャート表示時のみTradingViewへ通信します。指数は市場規則に応じて遅延・終値表示となる場合があります。各銘柄の配信可否・更新頻度・過去表示範囲はTradingView側に従います。BTCはBitstampの現物BTC/USDであり、米国株指数の終値や株価指数CFDとは異なる時系列です。TradingViewの表示データは当サイトの価格欄・履歴データには転用しません。</p>
-        <div class="markets-external-links" aria-label="TradingView公式銘柄ページを開く">
-          <a href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener noreferrer">S&amp;P 500 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
-          <a href="https://www.tradingview.com/symbols/NASDAQ-NDX/" target="_blank" rel="noopener noreferrer">NASDAQ 100 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
-          <a href="https://www.tradingview.com/symbols/DJ-DJI/" target="_blank" rel="noopener noreferrer">Dow 30 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
-          <a href="https://www.tradingview.com/symbols/BTCUSD/?exchange=BITSTAMP" target="_blank" rel="noopener noreferrer">BTC / USD (Bitstamp) <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
-        </div>
-        <p class="markets-attribution">チャート提供：<a href="https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/" target="_blank" rel="noopener noreferrer">TradingView <span class="sr-only">（新しいタブ）</span></a>。埋め込みが表示されない場合も上記の各公式ページから閲覧できます。</p>
-      </div>
-    </section>
-
-    <section class="markets-section markets-history" aria-labelledby="history-title">
-      <div class="container">
-        <div class="markets-section-head"><div><p class="eyebrow">03 / OWN HISTORY</p><h2 id="history-title">同条件で比較する履歴</h2></div><p>1M・3M・年初来・1Y・5Y。将来の許諾済みデータに対応する閲覧機能です。</p></div>
-        <p id="history-status" class="markets-unavailable" role="status">公開可能な独自履歴データは現在ありません。利用許諾の確認後に表示します。上の公式チャートは今すぐ閲覧できます。</p>
         <div id="history-licensed" hidden>
           <div class="markets-history-tools"><div class="markets-history-switch" role="group" aria-label="履歴対象">
             <button type="button" data-history-symbol="SPX" aria-pressed="true">S&amp;P 500</button>
@@ -94,13 +104,13 @@
           <div class="markets-history-table-scroll" tabindex="0" aria-label="価格履歴の表。左右にスクロールできます。"><table id="history-table" tabindex="0" aria-label="日付ごとの価格履歴"><caption>期間別価格履歴（公開許諾済みデータ）</caption><thead><tr><th scope="col">日付</th><th scope="col">終値</th></tr></thead><tbody><tr><td colspan="2">表示できるデータはありません。</td></tr></tbody></table></div>
           <p id="history-source" class="markets-smallnote"></p>
         </div>
-        <p class="markets-smallnote">比較は米国株価指数の同じ取引日・公式終値だけを対象にし、共通初日を100として正規化します。BTCのUTC日次価格は指数比較に混ぜません。期間は現在時刻ではなく、選択対象の最終観測日を基準に計算します。</p>
+        <p class="markets-smallnote">許諾済みデータの掲載後は、1M・3M・年初来・1Y・5Yで比較できます。比較は米国株価指数の同じ取引日・公式終値だけを対象にし、共通初日を100として正規化します。BTCのUTC日次価格は指数比較に混ぜません。期間は現在時刻ではなく、選択対象の最終観測日を基準に計算します。</p>
         <noscript><p class="markets-unavailable">JavaScriptが無効です。独自履歴の切替表示は利用できませんが、TradingViewの各公式ページへのリンクと下の公開済み記事は利用できます。</p></noscript>
       </div>
     </section>
 
     <section class="markets-section markets-related" aria-labelledby="related-title"><div class="container">
-      <div class="markets-section-head"><div><p class="eyebrow">04 / FROM THE JOURNAL</p><h2 id="related-title">この動きの背景を読む</h2></div><p>掲載済みの週次・月次レポートから最新の記事を紹介します。</p></div>
+      <div class="markets-section-head"><div><p class="eyebrow">03 / FROM THE JOURNAL</p><h2 id="related-title">この動きの背景を読む</h2></div><p>掲載済みの週次・月次レポートから最新の記事を紹介します。</p></div>
       <div class="markets-related-list" id="markets-related-list">
       <!-- markets:related:start -->
       <a class="markets-related-entry" href="/investment/weekly/2026-10-31/"><span class="markets-related-date">WEEKLY · 2026-10-31</span><strong class="markets-related-title">強い米GDPと粘着インフレ、AI投資の採算懸念――10月末の株・金利を読む</strong></a>

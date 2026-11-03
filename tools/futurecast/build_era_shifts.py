@@ -14,6 +14,9 @@ import uuid
 from pathlib import Path
 from urllib.parse import urlparse
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import studio_chrome as chrome  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "futurecast/era-shifts/scenarios.json"
 OUTPUT = ROOT / "futurecast/era-shifts/index.html"
@@ -98,12 +101,9 @@ def render(data):
 <meta property="og:title" content="ERA SHIFTS｜まさかが歴史になる。NAOJUN FUTURECAST">
 <meta property="og:description" content="歴史的転換の8つの可能性。期限と判定条件を明示した未校正の予測候補。">
 <meta property="og:url" content="https://naojun.jp/futurecast/era-shifts/">
-<link rel="stylesheet" href="/futurecast/assets/css/futurecast.css">
-<link rel="stylesheet" href="/futurecast/era-shifts/era-shifts.css">
-<title>ERA SHIFTS｜歴史を変える8つの「まさか」｜NAOJUN STUDIOS</title></head><body>
-<a class="skip" href="#main">本文へ移動</a>
-<header class="site"><a class="brand" href="/">NAOJUN STUDIOS <span aria-hidden="true">↗</span></a><nav aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="https://naojun-studios.stores.jp/" rel="noopener noreferrer">Store</a></nav></header>
-<div class="mast"><a href="/futurecast/">FUTURECAST <small>未来予想台帳</small></a><nav aria-label="FUTURECAST"><a href="/futurecast/data-disagrees/">DATA DISAGREES</a><a href="/futurecast/">予測台帳</a><a href="/futurecast/era-shifts/" aria-current="page">低確率研究</a><a href="/futurecast/scoreboard/">成績</a><a href="/futurecast/methodology/">方法論</a></nav></div>
+{chrome.styles("/futurecast/era-shifts/era-shifts.css")}
+<title>ERA SHIFTS｜歴史を変える8つの「まさか」｜NAOJUN STUDIOS</title></head><body class="fc-site fc-static">
+{chrome.header("/futurecast/era-shifts/")}
 <main id="main" class="era-main">
 <aside class="era-manifesto" aria-label="旧研究の取り扱い"><p class="era-overline">ARCHIVE / LOW-PROBABILITY RESEARCH</p><h2>低確率シナリオの記録。</h2><p>こちらは旧企画として公開した8件の文明規模シナリオ研究です。発生確率は未校正の主観推定で、現在の「発生50%超かつ人々の予想と逆転」という主力企画には採択していません。過去の数値・判定条件は記録として維持しています。</p><p><a href="/futurecast/data-disagrees/">新しいDATA DISAGREESの調査候補を見る →</a></p></aside>
 <section class="era-hero"><div class="era-hero-main"><p class="era-overline">NAOJUN FUTURECAST / ERA SHIFTS / VOL. 01</p>
@@ -130,7 +130,9 @@ def render(data):
 <li><a href="/futurecast/p/fc-2026-0003/">米FOMCの政策金利予測 ↗</a></li></ul>
 <div class="era-legacy-actions"><a href="/futurecast/">既存の予測台帳へ</a><a href="/futurecast/scoreboard/">採点状況を見る</a><a href="/futurecast/methodology/">方法論を見る</a></div></section>
 </main>
-<footer><a href="/">NAOJUN STUDIOS</a><p>日々に、小さな発明を。</p><a href="/futurecast/methodology/">この台帳について</a></footer>
+
+{chrome.footer(script=False)}
+
 </body></html>
 """
 
