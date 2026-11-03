@@ -1241,3 +1241,27 @@ CISA-ADPの2026-10-30のSSVCではExploitation:none、Automatable:yes、Technica
 
 残る工程/受入条件: (1)CanonicalのLXDセキュリティアドバイザリ原文と配布チャネルで、自分の稼働版に対する更新を再確認、(2)MicroCloud/Incusの影響条件・修正版は各製品の原本で別途検証、(3)投稿候補と実投稿は区別してURL・本文・投稿時刻を別途検収する。本Relayでは実システム更新、SNS投稿、Google Docs書込みを実施していない。
 公式一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/112xxx/CVE-2026-112816.json （Canonical CNA 2026-10-30公表 + CISA-ADP、取得blob SHA d54d4e948236586e2a8fd6c743b6eb7dd6d51965、2026-11-04 JST）。CNA referenceには https://github.com/canonical/lxd/security/advisories/GHSA-99jp-jwmc-65p4 が掲載されるが、アドバイザリ本文の独立取得は未実施。
+
+### GPT-RELAY-20261104-0239-01
+JST: 2026-11-04 02:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-0859-01
+evidence_key: chrome-cna-2026-118344-118338-118352-severity-and-156807873-boundary-20261104
+対象: SNS-20261103-0859-SEC-01（ブラウザ脆弱性3件・Chrome更新案）。Doc05の同一性メモでMUSE-20261103-0859-01との対応を確認した。Museの案について、今回Chrome CNA自身が登録したCVE原本3件のGitHub原本を独立取得した結果、3件とも「同一の影響版境界」だが、重大度と成立後の影響の表現が異なると判明した。
+
+確認した一次事実:
+- CVE-2026-118344: Layoutのuse-after-free。Google Chrome 156.0.8078.73より前に影響。加工されたHTMLページ経由で、ブラウザのsandbox内で任意コード実行につながり得るとChrome CNAが明記。Chromium security severityはCritical。Chrome CNA公開日は2026-10-27 UTC。
+- CVE-2026-118338: Animationのuse-after-free。Google Chrome 156.0.8078.73より前に影響。加工されたHTMLページ経由でsandbox内のコード実行の可能性。Chromium security severityはMedium（3件すべてをCriticalと書かない）。
+- CVE-2026-118352: Cacheのメモリ破損。Google Chrome 156.0.8078.73より前に影響。加工されたHTMLページ経由でsandbox内のコード実行の可能性。Chromium security severityはHigh。
+いずれもCVE CNA登録元はChromeである。Muse案の「Microsoftのアドバイザリが公表した」という紹介だけでChromeの修正境界を説明するより、Chrome CNA公式記録を一次根拠にする。Chromeのsandbox内の実行可能性と、OS全体への権限獲得・端末全面侵害を同一視しない。CNA原本に積極的悪用の発生状況を裏付ける情報は見当たらず、悪用なしとも断定しない。
+
+公開向け訂正案: 「Google Chromeの脆弱性3件が公式CVEに登録されています。Layoutのuse-after-free（CVE-2026-118344、Critical）、Animationのuse-after-free（CVE-2026-118338、Medium）、Cacheのメモリ破損（CVE-2026-118352、High）です。Chrome CNAの影響範囲は156.0.8078.73より前。作業前にChromeのバージョンと更新状況を確認し、更新後は再起動が必要なら完了させてください。」警告だけでなく、確認対象を明確にする。Microsoft Edgeなど他のChromium系ブラウザの修正版番号はChrome CVE原本から推定せず、各社の公式アドバイザリで個別照合する。
+
+実成果と残工程: Chrome CNA原本3件で版境界と重大度の差を確定し、提案の「3件ひと括り」の説明を是正した。Chrome StableのOS別配布ビルド、Edgeの対応ビルド、実悪用・既知攻撃の有無、手元端末への適用状況は今回未検証。投稿本文・公開URL・投稿時刻の検収は別工程。本RelayではSNS投稿・端末操作・Google Docs書込みは行っていない。
+
+公式CVE原本（CVEProject/cvelistV5 main、Chrome CNA、2026-11-04 02:39 JST取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118344.json （blob SHA bb163b0f60581caee580cc7be97d51d01e21859c）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118338.json （blob SHA 7a0d9163c5a5f5f37ab5712df067d8313fd8e735）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118352.json （blob SHA f79e3b0193ab08b342adebde6cbd84e5d1183bef）
+
