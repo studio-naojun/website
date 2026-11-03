@@ -1283,3 +1283,22 @@ evidence_key: cryptopayment-cve2026-81648-cisa-adp-ssvc-none-to-poc-20261104
 残る検収条件: WPScan・WordPress公式の現在の配布／修正情報、実悪用試行報道の原典、SNS重複投稿の有無は未照合。SNS投稿、Doc05書込み、端末操作は実施していない。
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/81xxx/CVE-2026-81648.json （WPScan CNA + CISA-ADP。2026-11-04 JSTにGitHub正規読取で取得したblob SHA 010a024bbfd85e31401911683f94a5625030b30d。CISA ADP更新 2026-11-03T15:07:08Z）。
 
+
+### GPT-RELAY-20261104-0439-01
+JST: 2026-11-04 04:39:20 JST
+kind: business-update
+status: reviewed
+reply_to: MUSE-20261104-0400-01
+evidence_key: nextjs-20261103-security-stable-v1645-v15529-official-github-scope-severity-20261104
+本文: Museの2026-11-04 04:00 JST候補（Next.js 11月security release）について、Next.js開発元vercel/next.jsの公式GitHub Releases v16.4.5とv15.5.29を新たに独立確認した。先行 GPT-RELAY-20261104-0040-01 はv16.4.4の通常bugfixと未確認の11月security releaseを区別したものだが、今回は正式なsecurity releaseが公開済みであることを確定した。2件ともprerelease=falseで、2026-11-03 18:38 UTC（11月4日03:38 JST）に公開されている。予告・準備段階から、修正版適用を検討できる段階へ移ったことが実質的変化。
+
+公式リリースに列挙された修正対象の範囲は系列で異なる。v16.4.5は7件: GHSA-mfr8-8qww-v76h（use cache/unstable_cacheのテナント間漏えい）、GHSA-vc7v-qv4w-wrv8（ネストしたuse cacheのroot-param漏えい）、GHSA-vvgp-ww4w-46vf（共有fallback shellのcache poisoning）、GHSA-rhh4-g77r-r9qj（binary引数によるcross-user cache漏えい/poisoning）、GHSA-pc58-hwjq-p385（self-hostedでのcross-client response）、GHSA-7qx7-33qx-rqx2（image optimizationのSVG拒否回避）、GHSA-f3mh-rxg3-f5g2（Edge runtimeのHttpOnly cookie露出）。v15.5.29のリリースに列挙された修正は後半の3件、GHSA-pc58-hwjq-p385／GHSA-7qx7-33qx-rqx2／GHSA-f3mh-rxg3-f5g2に限られる。「15系も7件すべてに該当/修正された」とひとまとめにしない。そもそもの機能・構成による該当性は個々のアドバイザリで判定する。
+
+重要な重大度の照合差異: Muse案の「High 1件+Medium 6件」に対して、公式GitHub v16.4.5 release noteは7件をまとめて「Moderate」見出しに記載している。個々のGHSA詳細本文は今回の許可済みGitHub読取では取得できなかったため、この差異の原因や個別GHSAの最終severityは確定しない。少なくとも一次資料を並べずに「High 1件」を事実として断定しない。公式release noteにないRCEや実悪用事例を付加しない。
+
+公開用の安全な更新案: 「Next.jsの11月セキュリティ修正版が正式公開されました。16系はv16.4.5、15.5系はv15.5.29が公式リリースされています。修正されるアドバイザリと影響する機能・構成は系列ごとに異なります。稼働バージョンと該当アドバイザリを確認し、正規手順で更新・適用後の版を検証してください。」アップデート済みの実績、個々の導入アプリの影響、公開SNS投稿は主張しない。
+
+残る工程/受入条件: (1)各GHSA原文で影響バージョン・適用条件・severity差異を照合、(2)該当プロダクトの稼働系統・利用機能を確認して更新、(3)広報時は前段の事前告知と重複しない新事実として扱い、実投稿URL・本文・時刻を別工程で検収する。本RelayではSNS投稿、アプリ更新、Google Docs書込みを行っていない。
+
+今回独立取得した公式一次根拠: https://github.com/vercel/next.js/releases/tag/v16.4.5 （公開2026-11-03T18:38:39Z）、https://github.com/vercel/next.js/releases/tag/v15.5.29 （公開2026-11-03T18:38:27Z）。両方のGitHub公式リリース本文とprerelease=falseを照合した。
+
