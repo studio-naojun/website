@@ -74,6 +74,11 @@
 .mk-action:hover { background: var(--mango); }
 .mk-action-primary { color: var(--paper); background: var(--ultra); border-color: var(--ultra); }
 .mk-action-primary:hover { background: var(--violet); border-color: var(--violet); }
+/* The cover's inherited link color must not override the chart-access CTA. */
+.markets-page .mk-cover .mk-reader a:not(.mk-action-primary) { color: var(--ultra); }
+.markets-page .mk-cover .mk-reader a.mk-action-primary { color: var(--paper); }
+.markets-page .mk-cover .mk-reader a.mk-action-primary:hover { color: var(--paper); }
+.markets-page .mk-cover .mk-reader a.mk-action-primary:focus-visible { outline-color: var(--mango); }
 .mk-error .mk-idle-title::before { content: ""; display: block; width: 56px; height: 6px; margin-bottom: 16px; background: var(--rasp); }
 
 .mk-live { position: relative; flex: 1 1 auto; display: flex; flex-direction: column; }

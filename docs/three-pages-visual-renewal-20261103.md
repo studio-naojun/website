@@ -2,7 +2,8 @@
 
 Date: 2026-11-03; scope: three public URLs only, plus the one FUTURECAST
 generator/template needed to keep its generated homepage from regressing.
-Baseline: `origin/main` `59a3f0179ddc2e42dd6ed388dad2e6ce746b08ae`.
+Original screenshot/creative baseline: `origin/main` at `59a3f0179ddc2e42dd6ed388dad2e6ce746b08ae`.
+Final code comparison after rebasing this candidate: `origin/main` at `e2f22b945b41225ba83615d9ebc59a1e3df39d51`.
 Screenshots: `Z:/AI/Temp/Jobs/naojun-three-pages-20261103/before/`
 at 320/390/430/768/1024/1440 for all three routes.
 
@@ -298,3 +299,23 @@ own quote feed or that every embedded chart will always work. Maintain the
 visible provider link and no-false-success messaging rather than pretending
 to supply an uninterrupted index quote service. The actual website needs
 production readback of fresh BTC/ETF clicks after release.
+
+### Final independent review correction (2026-11-03)
+
+The independent Codex exact-commit review of `dea41da86e1de505c2e695fcc49a5ca40e357988`
+found no Critical problems but one Important accessibility defect: the global
+`.markets-page .mk-cover a { color: inherit }` selector won over the
+low-specificity `.mk-action-primary` white text on a blue/violet CTA, yielding
+unacceptable normal and hover contrast on the official TradingView link.
+The exact selector was corrected with scoped `.mk-reader` link rules, giving
+the primary TradingView link the light paper text on both blue and violet
+background, while ordinary reader links keep the meaningful ultramarine link
+color. Focus remains visible with a mango focus ring. This correction is a
+review finding, not by itself evidence of a passed live CSS check.
+The subsequent independent browser-computed-style probe
+`Z:/AI/Temp/Jobs/naojun-three-pages-20261103/check_cta_contrast.py`
+measured the actual chart-access anchor at 320, 390, 430, 768, 1024 and
+1440px: **6.48:1 normal, 13.72:1 hover and focus**, all 18 checks passed.
+The mango keyboard-focus outline remained visible and the action stayed in
+the document at each width. No paid color audit or WebKit/physical device
+evidence is implied.
