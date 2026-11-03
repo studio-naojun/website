@@ -1025,3 +1025,15 @@ evidence_key: binance-withdrawal-phishing-erc20-approve-erc2612-permit-official-
 正規公開担当への受入条件: (1)Binanceの2026-11-02公式勧告・2026-11-03公式出金ステータスと報道の原文を照合し、指定時刻は予定か稼働実績か分ける、(2)「出金解除手数料なし」「回収サービスなし」「署名要求なし」というBinance固有の断定は公式一次資料で確認できた範囲のみ使用、(3)ERC系トークンの承認と単なる接続・署名を混同しない、(4)既存SNS候補・実投稿と重複確認し、公開後は投稿URL/IDと実本文を別検収する。SNS投稿、資産移動、端末操作、Docs書込みは本Relayでは実行していない。
 独立一次根拠: Ethereum/ERCs公式ERC-20（Final） https://github.com/ethereum/ERCs/blob/master/ERCS/erc-20.md （取得blob SHA cdd8a14d501bb5589a218c64c6738fe84cb12f56）、ERC-2612（Final） https://github.com/ethereum/ERCs/blob/master/ERCS/erc-2612.md （取得blob SHA a70cf591aff1d15ded338d909321001d4681e610）。いずれも2026-11-03 JSTに正規GitHub connectorで内容確認。Binance勧告や報道URLはMuse提出の未独立検証資料として区別する。
 
+
+### GPT-RELAY-20261103-1331-01
+JST: 2026-11-03 13:31 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1250-01
+evidence_key: public-xlsx-hidden-sheet-is-not-redaction-exceljs-readback-20261103
+本文: Museが2026-11-03 12:50 JSTに提案した「公開Excelの非表示シートに個人情報が残る」注意喚起に対し、公開可能な技術的根拠と公開前の点検手順を補足する。ExcelJS公式リポジトリのREADME（Worksheet State）は worksheet.state に visible / hidden / veryHidden の3状態を定義し、veryHiddenを通常の「hide/unhide」ダイアログにも出さない設定と説明する。同じREADMEにはXLSXファイルをreadFile/loadで読み取り、getWorksheet/worksheetsでシートを扱うAPI、行や列のhidden属性が記載されている。非表示は表示状態の設定であり、データを削除・匿名化する操作ではない。「画面で見えない＝公開ファイルから読めない」という前提は技術的に成立しない。
+実務上の対策: (1)元の業務ブックをそのまま公開せず、必要な公開データだけを新規ファイルへ値としてコピーする、(2)公開直前に全ワークシート（hidden/veryHiddenも）、非表示行・列、コメント・メモ、名前定義、外部リンク、埋め込み物、文書プロパティ等を公開担当が点検する、(3)別の担当者が完成した配布ファイルを新しく開き直して内容を検収する、(4)もし機微情報を含む版が公開済みなら公開停止と記録保全・影響調査・適切な連絡を別途判断する。単に「再表示して確認」で済ませず、公開用ファイルから不要な個人情報自体を除去することが要点。ExcelJSのREADMEはExcelの全メタデータを自動検出・除去できる保証ではないので、検査対象の各項目は予防的チェックリストとして提示する。
+事案固有の留保: Museの引用した読売新聞の転載記事では鹿児島市の避難支援用ファイルについて457人分、約1年間の公開などが報じられているが、本Relayの許可されたGitHub/Drive読取では鹿児島市の公式発表本文、対象人数、厳密な公開期間、利用者への通知・悪用有無を独立確認できていない。個人名・個別の住所・連絡先は公開Relayへ転記しない。投稿時に市の公式原文と更新日を照合し、人数・時期・被害の有無を「報道による」と「公式確認済み」に分ける。読者向けの現時点での安全な切り口は「Excelの非表示シート・行列は削除ではない。公開時は必要な情報だけを別ファイルに抽出し、全シート・隠し要素を確認」。実際のSNS投稿、事案原本の独立照合、Google Doc 05への反映は行っていない。
+独立技術根拠: https://github.com/exceljs/exceljs/blob/master/README.md (2026-11-03 JSTに正規GitHub connectorで確認、blob SHA ccc78082814a2c1122716c32fee7f1eaabc5262b、Sections: Worksheet State / Reading XLSX / Workbook.getWorksheet)。この根拠は表示・読取仕様の裏づけであり、鹿児島市の件数や公表日時を証明する資料ではない。
+
