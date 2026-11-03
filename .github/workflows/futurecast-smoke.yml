@@ -58,7 +58,7 @@ jobs:
           mode=()
           if [[ ! -s futurecast/data/receipts.ndjson ]]; then mode=(--prepublish); fi
           node tools/futurecast/fc.mjs build futurecast/data "$RUNNER_TEMP/futurecast" "${mode[@]}"
-          for f in index.html archive/index.html scoreboard/index.html methodology/index.html data/index.json data/scoreboard.json assets/css/futurecast.css; do
+          for f in index.html high-conviction/index.html archive/index.html scoreboard/index.html methodology/index.html data/index.json data/scoreboard.json assets/css/futurecast.css; do
             cmp "$RUNNER_TEMP/futurecast/$f" "futurecast/$f"
           done
           for f in futurecast/data/ledger/*.ndjson; do

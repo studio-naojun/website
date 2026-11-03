@@ -11,8 +11,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 NAV = [
+    ("/futurecast/", "トップ"),
+    ("/futurecast/high-conviction/", "HISTORY 50+"),
     ("/futurecast/data-disagrees/", "DATA DISAGREES"),
-    ("/futurecast/", "予測台帳"),
     ("/futurecast/era-shifts/", "低確率研究"),
     ("/futurecast/scoreboard/", "成績"),
     ("/futurecast/methodology/", "方法論"),

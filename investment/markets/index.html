@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="S&P 500、NASDAQ 100、ダウ平均、ビットコインの推移を参照。TradingView公式チャートは必要なときだけ読み込み、独自の価格履歴は利用許諾の確認後に掲載します。">
+  <meta name="description" content="S&P 500・NASDAQ 100・ダウ平均の連動ETF（SPY・QQQ・DIA）とビットコインの値動きを、TradingViewのチャートですぐに確認。指数そのものは公式ページへ。独自の価格履歴は利用許諾の確認後に掲載します。">
   <meta name="theme-color" content="#f4f3ec">
   <title>米国主要指数とビットコインの過去チャート | Market Memo — NAOJUN STUDIOS</title>
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -16,10 +16,10 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="米国主要指数とビットコインの過去チャート | Market Memo — NAOJUN STUDIOS">
-  <meta property="og:description" content="S&amp;P 500、NASDAQ 100、ダウ平均、ビットコインの推移を参照。TradingView公式チャートは必要なときだけ読み込み、独自の価格履歴は利用許諾の確認後に掲載します。">
+  <meta property="og:description" content="S&amp;P 500・NASDAQ 100・ダウ平均の連動ETF（SPY・QQQ・DIA）とビットコインの値動きを、TradingViewのチャートですぐに確認。指数そのものは公式ページへ。独自の価格履歴は利用許諾の確認後に掲載します。">
   <meta property="og:url" content="https://naojun.jp/investment/markets/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"米国主要指数とビットコインの過去チャート | Market Memo — NAOJUN STUDIOS","description":"S&P 500、NASDAQ 100、ダウ平均、ビットコインの推移を参照。TradingView公式チャートは必要なときだけ読み込み、独自の価格履歴は利用許諾の確認後に掲載します。","url":"https://naojun.jp/investment/markets/","isPartOf":{"@type":"WebSite","name":"NAOJUN STUDIOS","url":"https://naojun.jp/"},"publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"inLanguage":"ja"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"米国主要指数とビットコインの過去チャート | Market Memo — NAOJUN STUDIOS","description":"S&P 500・NASDAQ 100・ダウ平均の連動ETF（SPY・QQQ・DIA）とビットコインの値動きを、TradingViewのチャートですぐに確認。指数そのものは公式ページへ。独自の価格履歴は利用許諾の確認後に掲載します。","url":"https://naojun.jp/investment/markets/","isPartOf":{"@type":"WebSite","name":"NAOJUN STUDIOS","url":"https://naojun.jp/"},"publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"inLanguage":"ja"}</script>
 <!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior markets-page edition-investment">
@@ -36,35 +36,33 @@
         <p class="mk-masthead"><span>INVESTMENT OBSERVATORY — MARKET MEMO</span><span>4 INSTRUMENTS / CHART BY TRADINGVIEW</span></p>
         <div class="mk-title-row">
           <h1 id="market-title">市場の動きを、<br class="mk-br">同じ画面でたどる。</h1>
-          <p class="mk-lead">S&amp;P 500、NASDAQ 100、ダウ平均、Bitcoin。TradingViewの公式チャートで値動きを確かめ、<a href="/investment/">週次・月次の市場分析</a>と一緒に振り返れます。</p>
+          <p class="mk-lead">S&amp;P 500、NASDAQ 100、ダウ平均、Bitcoin。開いてすぐ、TradingViewのチャートで値動きを確かめ、<a href="/investment/">週次・月次の市場分析</a>と一緒に振り返れます。米国株3指数は、埋め込みで表示できる<strong>連動ETF</strong>のチャートです。</p>
         </div>
 
         <div class="mk-keys" role="group" aria-label="表示する銘柄">
-          <button type="button" class="mk-key" data-widget-symbol="SPX" aria-pressed="true"><span class="mk-key-code" aria-hidden="true">SPX</span><span class="mk-key-name">S&amp;P 500</span><span class="mk-key-feed">指数は公式ページ／連動ETF</span></button>
-          <button type="button" class="mk-key" data-widget-symbol="NDX" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">NDX</span><span class="mk-key-name">NASDAQ 100</span><span class="mk-key-feed">指数は公式ページ／連動ETF</span></button>
-          <button type="button" class="mk-key" data-widget-symbol="DJI" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">DJI</span><span class="mk-key-name">ダウ平均</span><span class="mk-key-feed">指数は公式ページ／連動ETF</span></button>
-          <button type="button" class="mk-key" data-widget-symbol="BTC" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">BTC</span><span class="mk-key-name">Bitcoin / USD</span><span class="mk-key-feed">この枠にチャートを表示</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="SPX" aria-pressed="true"><span class="mk-key-code" aria-hidden="true">SPY</span><span class="mk-key-name">S&amp;P 500</span><span class="mk-key-feed">連動ETF SPYのチャート</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="NDX" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">QQQ</span><span class="mk-key-name">NASDAQ 100</span><span class="mk-key-feed">連動ETF QQQのチャート</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="DJI" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">DIA</span><span class="mk-key-name">ダウ平均</span><span class="mk-key-feed">連動ETF DIAのチャート</span></button>
+          <button type="button" class="mk-key" data-widget-symbol="BTC" aria-pressed="false"><span class="mk-key-code" aria-hidden="true">BTC</span><span class="mk-key-name">Bitcoin / USD</span><span class="mk-key-feed">Bitstamp現物のチャート</span></button>
         </div>
 
         <div class="mk-reader">
           <div class="mk-reader-head">
-            <p class="mk-reader-title"><span class="mk-reader-kicker">VIEWING</span><strong id="chart-selected">S&amp;P 500</strong><code id="chart-symbol">SP:SPX</code></p>
-            <button id="close-widget" class="mk-close" type="button" aria-controls="tradingview-chart" hidden>チャートを閉じる <span aria-hidden="true">×</span></button>
+            <p class="mk-reader-title"><span class="mk-reader-kicker">VIEWING</span><strong id="chart-selected">SPY（S&amp;P 500連動ETF）</strong><code id="chart-symbol">AMEX:SPY</code></p>
+            <button id="reload-widget" class="mk-reload" type="button" aria-controls="tradingview-chart">チャートを再読み込み ↻</button>
           </div>
-          <p id="widget-status" class="mk-status" role="status" aria-live="polite">外部チャートはまだ読み込んでいません。</p>
-          <div id="tradingview-chart" class="mk-stage" data-state="idle" role="region" aria-label="TradingView外部チャート">
-            <div class="mk-idle">
-              <span class="mk-idle-mark" aria-hidden="true">SPX</span>
-              <h2 class="mk-idle-title">S&amp;P 500 指数は、他サイトへの埋め込み対象外です。</h2>
-              <p id="widget-message" class="mk-idle-copy">TradingViewは S&amp;P 500（SP:SPX）指数を外部サイト用チャートで提供していません（2026年11月3日確認）。指数そのものはTradingViewで開けます。</p>
-              <div class="mk-idle-actions">
-                <a class="mk-action mk-action-primary" href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener noreferrer">TradingViewで S&amp;P 500 を開く <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
-              </div>
+          <p id="widget-status" class="mk-status" role="status" aria-live="polite">TradingViewのチャートを読み込みます…</p>
+          <div id="tradingview-chart" class="mk-stage" data-state="loading" role="region" aria-label="TradingView外部チャート" tabindex="-1">
+            <div class="mk-idle mk-pending">
+              <span class="mk-idle-mark" aria-hidden="true">SPY</span>
+              <h2 class="mk-idle-title">TradingViewのチャートを読み込んでいます。</h2>
+              <p id="widget-message" class="mk-idle-copy">最初に表示するのは S&amp;P 500 連動ETF「SPY」の日足です。ETFの価格は指数（SP:SPX）の値と一致しません。</p>
               <noscript><p class="mk-idle-note">JavaScriptが無効のため、この枠にチャートは表示できません。下のTradingView公式ページから閲覧できます。</p></noscript>
             </div>
           </div>
           <div class="mk-reader-foot">
-            <p class="mk-consent">チャートは<strong>ボタンを押したときだけ</strong>TradingViewへ接続します。表示がリアルタイムか遅延かは銘柄・取引所ごとに異なるため、チャート内の取引所名と時刻を確認してください。TradingViewの表示値は当サイトの価格欄・履歴には転用しません。</p>
+            <p class="mk-consent"><strong>ETFと指数は別物です。</strong>TradingViewは S&amp;P 500（SP:SPX）・NASDAQ 100（NASDAQ:NDX）・ダウ平均（DJ:DJI）の指数を他サイト向けチャートで提供していないため（2026年11月3日確認）、この枠では連動ETFのSPY・QQQ・DIAを表示します。ETFの価格・値幅は指数の値と一致しません。指数そのものは下の公式ページで確認できます。</p>
+            <p class="mk-consent" id="tradingview-privacy"><strong>外部通信について：</strong>このページを開くと、チャートを表示するためにブラウザがTradingViewへ接続します。TradingViewは公式FAQで、ウィジェットはCookieを設定せず、<strong>IPアドレス・埋め込み先ページのURL・ウィジェットの種類・表示銘柄</strong>を受け取ると説明しています（<a href="https://www.tradingview.com/widget-docs/faq/general/" target="_blank" rel="noopener noreferrer">TradingView Widgets FAQ<span class="sr-only">（新しいタブ）</span></a>）。詳しくは<a href="/privacy/#tradingview">プライバシーポリシー</a>をご覧ください。リアルタイムか遅延かは銘柄・取引所ごとに異なるため、チャート内の取引所名と時刻を確認してください。提供元の都合で表示されないことがあり、その場合は公式ページをご利用ください。TradingViewの表示値は当サイトの価格欄・履歴には転用しません。</p>
             <nav class="mk-official" aria-label="TradingView公式銘柄ページ">
               <span class="mk-official-label" aria-hidden="true">公式ページ</span>
               <a href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener noreferrer">S&amp;P 500 <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a>
@@ -81,7 +79,7 @@
     <section class="markets-section mk-owndata" aria-labelledby="history-title">
       <div class="container">
         <div class="markets-section-head"><div><p class="eyebrow">02 / OWN DATA</p><h2 id="history-title">当サイト独自の価格・履歴</h2></div><p>独自に掲載する価格は、再配布の利用許諾を確認したデータだけです。現在は未接続のため、数値は表示していません。</p></div>
-        <p id="history-status" class="markets-unavailable" role="status">公開可能な独自履歴データは現在ありません。利用許諾の確認後に表示します。上のTradingViewチャートと公式ページは今すぐ閲覧できます。</p>
+        <p id="history-status" class="markets-unavailable" role="status">公開可能な独自履歴データは現在ありません。利用許諾の確認後に表示します。上のTradingViewチャート（米国株は連動ETF）と公式ページは今すぐ閲覧できます。</p>
         <div class="mk-ledger">
           <article class="mk-ledger-row" data-quote="SPX"><h3><span class="mk-ledger-code">SPX</span>S&amp;P 500</h3><p class="mk-ledger-price" data-price>価格データ未接続</p><p class="mk-ledger-note">現物指数・米国市場の公式終値</p><p class="mk-ledger-time" data-observed>最終観測時刻：未提供</p></article>
           <article class="mk-ledger-row" data-quote="NDX"><h3><span class="mk-ledger-code">NDX</span>NASDAQ 100</h3><p class="mk-ledger-price" data-price>価格データ未接続</p><p class="mk-ledger-note">現物指数・米国市場の公式終値</p><p class="mk-ledger-time" data-observed>最終観測時刻：未提供</p></article>

@@ -34,6 +34,7 @@ FUTURECASTの新しい主役は「多数の人は起きないと予測してい�
 
 ## 保存と過去データ
 
+- **HISTORY 50+（2026-11-03追加・封印なし・採点対象外の編集号）**: 編集元 `futurecast/high-conviction/forecasts.json`、生成 `tools/futurecast/history50.mjs`（`fc.mjs build` が `futurecast/index.html` と `futurecast/high-conviction/index.html` を出力）。数字は主観的な編集推定で、50%以下になった項目は外す（検証は51〜95の整数のみ許可）。詳細は `docs/futurecast-history-50-20261103.md`。
 - 新ページ: `futurecast/data-disagrees/index.html`
 - 調査候補の唯一の編集元: `futurecast/data-disagrees/candidates.json`
 - 新ページ生成: `tools/futurecast/build_data_disagrees.py`

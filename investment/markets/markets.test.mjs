@@ -118,7 +118,7 @@ test('range boundaries are anchored to observations, with YTD and leap-year hand
   assert.throws(() => filterRange(points, 'all-time', '2024-04-30'));
 });
 
-test('static page has accessible no-JS path, links, and opt-in third-party loading', () => {
+test('static page retains no-JS paths and a sandboxed third-party chart built by first-party JS', () => {
   const html = fs.readFileSync(path.join(here, 'index.html'), 'utf8');
   const script = fs.readFileSync(path.join(here, 'markets.js'), 'utf8');
   const hub = fs.readFileSync(path.join(site, 'investment/index.html'), 'utf8');
@@ -129,13 +129,11 @@ test('static page has accessible no-JS path, links, and opt-in third-party loadi
   assert.match(html, /<noscript>/);
   assert.match(html, /価格データ未接続/);
   assert.match(html, /1M.*3M.*YTD.*1Y.*5Y/s);
-  assert.match(html, /https:\/\/www\.tradingview\.com\/symbols\/SPX\//);
-  assert.match(html, /https:\/\/www\.tradingview\.com\/symbols\/NASDAQ-NDX\//);
-  assert.match(html, /https:\/\/www\.tradingview\.com\/symbols\/DJ-DJI\//);
-  assert.match(html, /https:\/\/www\.tradingview\.com\/symbols\/BTCUSD\//);
+  for (const x of ['SPX/','NASDAQ-NDX/','DJ-DJI/','BTCUSD/']) assert.ok(html.includes(x));
   assert.doesNotMatch(html, /<script[^>]+(?:src|href)="https:\/\//);
-  assert.match(script, /addEventListener\('click'/);
-  assert.match(script, /widgets\.tradingview-widget\.com/);
+  assert.match(script, /https:\/\/www\.tradingview-widget\.com\/embed-widget\/advanced-chart/);
+  assert.match(script, /iframe\.setAttribute\('sandbox',/);
+  assert.doesNotMatch(script, /document\.createElement\('script'\)|customElements\.whenDefined|WIDGET_SCRIPT/);
   assert.match(hub, /href="\/investment\/markets\/"/);
   assert.match(home, /href="\/investment\/markets\/"/);
   assert.match(html, /markets:related:start/);
@@ -156,21 +154,45 @@ test('markets.js parses as an ES module (a .js-named node --check let the 2026-1
   assert.equal(script.match(/fetch\('\/investment\/markets\/history\.json'/g)?.length, 1, 'history is fetched exactly once');
 });
 
-test('chart reader: provider-blocked indices are never embedded as the index; own data sits below the chart', () => {
+test('cash indices are never fed to the embedded chart, ETF fallbacks are distinct from index links', () => {
   const html = fs.readFileSync(path.join(here, 'index.html'), 'utf8');
   const script = fs.readFileSync(path.join(here, 'markets.js'), 'utf8');
   for (const symbol of ['SP:SPX', 'NASDAQ:NDX', 'DJ:DJI', 'BITSTAMP:BTCUSD']) assert.match(script, new RegExp(symbol));
-  // Verified 2026-11-03: TradingView embeds only BTC of the four; indices open on TradingView or as a labelled ETF.
-  assert.match(script, /BTC: \{[^}]*embeddable: true/);
-  for (const id of ['SPX', 'NDX', 'DJI']) assert.doesNotMatch(script, new RegExp(`${id}: \\{[^\\n]*embeddable: true`));
-  assert.match(script, /指数そのものではありません/);
-  assert.match(script, /stage\.dataset\.state = state\.script === 'ready' \? 'connected' : 'loading'/);
+  const embeds = Object.fromEntries([...script.matchAll(/^\s+(SPX|NDX|DJI|BTC): \{[^\n]*embed: '([^']+)'[^\n]*etf: (true|false)/gm)].map((m) => [m[1], [m[2], m[3]]]));
+  assert.deepEqual(embeds, { SPX: ['AMEX:SPY', 'true'], NDX: ['NASDAQ:QQQ', 'true'], DJI: ['AMEX:DIA', 'true'], BTC: ['BITSTAMP:BTCUSD', 'false'] });
+  for (const index of ['SP:SPX', 'NASDAQ:NDX', 'DJ:DJI']) assert.doesNotMatch(script, new RegExp(`embed: '${index}'`));
+  for (const etfURL of ['/AMEX-SPY/', '/NASDAQ-QQQ/', '/AMEX-DIA/']) assert.ok(script.includes(etfURL));
+  assert.match(script, /指数そのもの（\$\{chart\.index\}）ではありません/);
+  assert.match(script, /sourceLinks\(chart, actions\)/);
+  assert.match(html, /ETFと指数は別物です/);
+  assert.match(script, /stage\.dataset\.state = 'connected'/);
   assert.match(script, /aria-busy/);
   assert.doesNotMatch(script, /表示中：/);
-  assert.match(script, /https:\/\/widgets\.tradingview-widget\.com\/w\/ja\/tv-advanced-chart\.js/);
   assert.match(html, /id="widget-status"[^>]*role="status"/);
-  assert.ok(html.indexOf('id="tradingview-chart"') < html.indexOf('data-quote="SPX"'), 'own-data notice follows the chart');
+  assert.ok(html.indexOf('id="tradingview-chart"') < html.indexOf('data-quote="SPX"'));
   assert.equal((html.match(/data-widget-symbol="(SPX|NDX|DJI|BTC)"/g) || []).length, 4);
+});
+
+test('sandboxed iframe autoloads SPY on visit, supports reload and truthful unavailable state', () => {
+  const html = fs.readFileSync(path.join(here, 'index.html'), 'utf8');
+  const script = fs.readFileSync(path.join(here, 'markets.js'), 'utf8');
+  assert.match(script, /const state = \{ selected: 'SPX' \};/);
+  assert.match(script, /reload\.addEventListener\('click', render\);\s*render\(\);/);
+  assert.match(script, /TV_FRAME_BASE \+ encodeURIComponent\(JSON\.stringify\(options\)\)/);
+  assert.doesNotMatch(script, /consent|etfAccepted|["']load-widget["']/);
+  assert.match(html, /id="tradingview-chart"[^>]*data-state="loading"/);
+  assert.match(html, /<code id="chart-symbol">AMEX:SPY<\/code>/);
+  assert.match(html, /id="reload-widget"/);
+  assert.match(html, /data-widget-symbol="SPX" aria-pressed="true"/);
+  assert.doesNotMatch(html, /ボタンを押したときだけ|close-widget/);
+  assert.match(script, /iframe\.addEventListener\('load',/);
+  assert.match(script, /iframe\.addEventListener\('error',/);
+  assert.match(script, /setTimeout\(\(\) => \{/);
+  assert.match(script, /'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms'/);
+  assert.match(script, /'strict-origin-when-cross-origin'/);
+  assert.match(script, /iframe document loaded, NOT proof of a price candle/);
+  assert.match(script, /reload\.focus\(\)/);
+  assert.match(html, /IPアドレス/);
 });
 
 test('BTC 06:30 JST carries next day vs UTC previous day', () => {

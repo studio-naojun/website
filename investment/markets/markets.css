@@ -53,15 +53,15 @@
 .mk-reader-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 0; min-width: 0; }
 .mk-reader-kicker { font: 700 12px/1 var(--condensed); font-stretch: condensed; letter-spacing: .16em; color: var(--ultra); }
 .mk-reader-title strong { font-size: 19px; line-height: 1.4; letter-spacing: -.02em; }
+.mk-reload { min-height: 44px; padding: 9px 13px; border: 1px solid var(--ink); background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; line-height: 1.4; cursor: pointer; }
+.mk-reload:hover { background: var(--mango); }
 .mk-reader-title code { font: 600 13px/1.4 "SFMono-Regular", Consolas, monospace; color: var(--quiet); overflow-wrap: anywhere; }
-.mk-close { min-height: 44px; padding: 8px 16px; color: var(--ink); background: transparent; border: 1px solid var(--ink); cursor: pointer; }
-.mk-close:hover { background: var(--ink); color: var(--paper); }
 .mk-status { margin: 0; padding: 9px 20px; font-size: 13px; line-height: 1.6; color: var(--quiet); background: #f4efe4; border-bottom: 1px solid var(--rule); }
 .mk-stage[data-state="connected"] + .mk-reader-foot,
 .mk-stage[data-state="loading"] + .mk-reader-foot { border-top-color: var(--ink); }
 
 .mk-stage { position: relative; min-height: 520px; display: flex; flex-direction: column; background: #fff; }
-.mk-stage tv-advanced-chart { display: block; flex: none; width: 100%; height: 560px; }
+.mk-stage .mk-tv-frame { display: block; flex: none; width: 100%; height: 560px; }
 .mk-stage[data-state="loading"] .mk-live::after { content: "TradingViewに接続しています…"; position: absolute; inset: auto 0 0; padding: 10px 20px; font-size: 13px; color: var(--quiet); }
 
 .mk-idle { position: relative; isolation: isolate; overflow: hidden; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-start; gap: 0; padding: 44px 40px 48px; background: #fff; }
@@ -187,7 +187,7 @@
   .mk-reader-title strong { font-size: 17px; }
   .mk-status { padding: 8px 14px; }
   .mk-stage { min-height: 440px; }
-  .mk-stage tv-advanced-chart { height: 460px; }
+  .mk-stage .mk-tv-frame { height: 460px; }
   .mk-idle { justify-content: flex-start; padding: 28px 18px 32px; }
   .mk-idle-copy { font-size: 14px; }
   .mk-action { width: 100%; justify-content: center; text-align: center; }
@@ -207,3 +207,11 @@
 @media (prefers-reduced-motion: reduce) {
   .markets-page *, .markets-page *::before, .markets-page *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* Auto-loaded chart (2026-11-03): ETF tag in the live label and the pre-script pending view. */
+.mk-etf-tag { display: inline-block; margin-right: 8px; padding: 1px 7px; font: 700 11px/1.6 var(--condensed); font-stretch: condensed; letter-spacing: .12em; color: var(--paper); background: var(--ink); vertical-align: 1px; }
+.mk-pending .mk-idle-title::before { content: ""; display: block; width: 56px; height: 6px; margin-bottom: 16px; background: var(--ultra); }
+.mk-stage:focus { outline: none; }
+.mk-stage:focus-visible { outline: 3px solid var(--ultra); outline-offset: -3px; }
+.mk-consent + .mk-consent { margin-top: 10px; }
+.mk-consent a { color: var(--ultra); text-decoration: underline; }
