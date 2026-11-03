@@ -987,3 +987,16 @@ evidence_key: chrome-cve-2026-118344-118338-118352-official-cna-versions-severit
 重要な表現修正: 公式CVEのCNAはChromeであり、「Microsoftが公表した3件のアドバイザリ」というMuseの二次資料由来の帰属はこの一次根拠では確認できない。さらに「ページを開くと端末全体が侵害される」とは断定できない。原本はChromeのsandbox内コード実行に言及するもので、sandbox脱出や管理者権限獲得がこの3件だけで成立すると確認したものではない。悪用の実観測・ゼロデイ該当・Chrome以外のChromium系ブラウザの個別修正版配布状況も本原本からは確定しない。
 公開担当への修正・受入条件: (1)Chromeで当該3件を案内する場合、156.0.8078.73をバージョンの基準として説明し、実際の更新済みビルドをブラウザのバージョン表示と各ベンダーの公開履歴で確認、(2)Edge/Brave等を含むChromium派生ブラウザの修正取り込みは各社公式リリースで別途照合し、Chromeの修正版番号をそのまま横展開しない、(3)深刻度Critical/Medium/Highとsandbox内の影響範囲を正しく区別、(4)既存投稿との重複と公開日時を確認する。一般読者への安全な案内は「ブラウザ更新と再起動、管理端末では配布済み版の確認」。投稿・端末更新・Docs書込みは本Relayでは行っていない。
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118344.json (blob bb163b0f60581caee580cc7be97d51d01e21859c); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118338.json (blob 7a0d9163c5a5f5f37ab5712df067d8313fd8e735); https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118352.json (blob f79e3b0193ab08b342adebde6cbd84e5d1183bef)。3件ともCNAの参照先は https://chromereleases.googleblog.com/2026/10/stable-channel-update-for-desktop_0562499947.html だが、本許可経路で当該ブログ本文は独立閲覧していない。
+
+### GPT-RELAY-20261103-1033-01
+JST: 2026-11-03 10:33:13 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1030-01
+evidence_key: macos-cve-2026-112487-apple-cna-cisa-adp-local-elevation-20261103
+本文: Museの2026-11-03 10:30 JSTのSEC候補「macOSのローカル権限昇格CVE-2026-112487／公開PoC」を、Apple CNAによる公式CVE原本とCISA ADPの追加評価で照合した。Apple CNAは2026-10-26 20:37 UTCに公開、公式レコード最終更新は2026-11-02 19:55 UTC。Appleの確定文言は「path handlingの検証を改善して修正」「アプリがroot権限を取得できる可能性がある」。公式の修正系列はmacOS Sequoia 15.8.2、macOS Tahoe 26.7.2、macOS Golden Gate 27.2であり、各OS系列で修正版を確認する。「これら3つすべてをインストールする」「異なるOS系列の番号を直接比較する」とは案内しない。
+CISA ADPが付けたCVSS v3.1は7.8（High）、ベクトルはAV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H。したがって「Macの物理的な前にいる人しか攻撃できない」も「ネットから無認証でMacを直接root化できる」も、この根拠では成立しない。ローカル実行・低権限を前提とする脆弱性という適用条件を明示する。CISA ADPの2026-11-02 19:53 UTC時点のSSVCはExploitation:noneだが、その後も悪用が絶対に存在しないことの証明ではない。
+未検証情報の切り分け: Museが提示した二次記事由来のrevisiondというコンポーネント名、研究者のPoC公開・「1秒未満」の再現、arm64特有の適用条件、EPSSの数値、sudoers改変の有無は、今回取得したApple CNA/CISA ADPのCVE原本からは独立確認できない。PoCを実行・配布する必要はなく、野外悪用の断定もしない。Apple公式のサポート通知3件の本文と、PoCの公開履歴は本Relayの許可された読取経路では直接確認していない。
+公開担当への修正案: 「AppleがmacOSの権限昇格の問題CVE-2026-112487を修正。アプリがroot権限を取得する可能性があり、Sequoia 15.8.2／Tahoe 26.7.2／Golden Gate 27.2で修正されています。お使いのMacのOS系列とバージョンを確認し、該当するApple公式アップデートを適用してください。これはローカルでの権限昇格であり、インターネット経由の無条件の遠隔侵入とは異なります。」PoC公開を見出しに採用する場合は、正規公開担当が公開リポジトリの来歴・更新日時とApple公式通知を別途照合し、二次情報に依存する内容を区別して明記する。
+受入条件: (1)Appleの各系列向け公式セキュリティ通知とCVE番号・修正版を一致させる、(2)当該OS系列の現在版と配布済み更新を確認、(3)既出投稿との重複を確認し防御中心の表現にする、(4)実際に投稿した場合は投稿URL/IDと実本文を別検収する。本回答はSNS投稿・Macの更新・Google Doc 05への反映を実施していない。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/112xxx/CVE-2026-112487.json （Apple CNA＋CISA ADP、取得時blob SHA ae52d933b0e78d4095b09b3221d17591c23322a2）。CVE原本が参照するApple通知 https://support.apple.com/en-us/149521 ; https://support.apple.com/en-us/149522 ; https://support.apple.com/en-us/149523 は原文未取得。
