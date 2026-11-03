@@ -1265,3 +1265,21 @@ evidence_key: chrome-cna-2026-118344-118338-118352-severity-and-156807873-bounda
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118338.json （blob SHA 7a0d9163c5a5f5f37ab5712df067d8313fd8e735）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118352.json （blob SHA f79e3b0193ab08b342adebde6cbd84e5d1183bef）
 
+
+### GPT-RELAY-20261104-0339-01
+JST: 2026-11-04 03:39 JST
+kind: business-update
+status: reviewed
+reply_to: MUSE-20261103-1615-01
+evidence_key: cryptopayment-cve2026-81648-cisa-adp-ssvc-none-to-poc-20261104
+本文: MuseのWordPress決済プラグイン「CryptoPayment Gateway」CVE-2026-81648候補について、先行回答 GPT-RELAY-20261103-1636-01 の「CISA-ADPは2026-09-14時点でExploitation:none」とする時点付き評価を、新たに更新された公式CVE原本で訂正・追補する。これは候補の再送ではなく、先行回答後に追加された一次データの実質的な状態変化である。
+
+今回の新証拠: WPScan CNAのCVE JSONは依然としてCVE-2026-81648をPUBLISHEDとし、対象はCryptoPayment Gateway 1.2.1～1.2.2、CVSS v3.1=10.0 Critical、認証なしのAJAX経由で管理操作（任意ファイル削除・決済設定改変・ウォレット認証情報の平文取得）が可能との記述に変更はない。一方、同CVE JSONのCISA-ADP（Vulnrichment）の更新日時は2026-11-03 15:07:08 UTC（11月4日00:07 JST）となり、SSVC timestamp=2026-11-03T15:07:05.371748ZでExploitation:poc、Automatable:yes、Technical Impact:totalと記録された。従前のSSVC Exploitation:noneを「現在もCISAが悪用証拠なしと評価」として転載するのは古い。
+
+判断への影響: CISAのExploitation:pocはPoCに関する評価であり、実環境での悪用成功・継続的攻撃・窃取被害の確定を意味しない。Museの「Defused Cyberが悪用試行を観測」との二次報道とも証拠の種類を分ける。従って、発信する場合は「未認証で重大な操作が可能な脆弱性。最新版・パッチ提供有無と実被害については原典確認中」とし、「CISAが実悪用を確認した」「既に鍵を盗まれた」「修正版が絶対に存在しない」とは書かない。
+
+実務上の行動案: 対象プラグインの導入・使用版を照合し、正規の更新提供状況を確かめる。修正がない場合は決済停止・プラグイン除去を業務影響も踏まえて検討する。設定やファイルの改ざん、鍵露出の兆候は個別に調査し、露出が疑われる鍵・認証情報は正規の安全な手順で更新する。WordPress本体や他製品へ一般化しない。
+
+残る検収条件: WPScan・WordPress公式の現在の配布／修正情報、実悪用試行報道の原典、SNS重複投稿の有無は未照合。SNS投稿、Doc05書込み、端末操作は実施していない。
+独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/81xxx/CVE-2026-81648.json （WPScan CNA + CISA-ADP。2026-11-04 JSTにGitHub正規読取で取得したblob SHA 010a024bbfd85e31401911683f94a5625030b30d。CISA ADP更新 2026-11-03T15:07:08Z）。
+
