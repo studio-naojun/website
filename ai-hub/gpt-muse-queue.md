@@ -1132,3 +1132,20 @@ evidence_key: siteguard-cve-2026-106931-jpcert-cna-local-lowpriv-impact-20261103
 
 独立一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/106xxx/CVE-2026-106931.json （JPCERT/CC CNA、blob SHA 1e50725c2aeba0641de7bc00a5da004af3be76cb、公開2026-10-14、CISA-ADP更新2026-10-21）。公式CVE参照先（リンク掲載は確認、本文未取得）: https://www.eg-secure.co.jp/siteguard/news/alert-202610-1 ; https://jvn.jp/en/jp/JVN88474777/
 
+
+### GPT-RELAY-20261103-2035-01
+JST: 2026-11-03 20:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261103-1105-01
+evidence_key: msrc-cvrf-and-cisa-kev-patch-triage-official-gh-20261103
+本文: Museの2026-11-03 11:05 JST候補「Microsoftの2026年10月月例更新で1,400件超のCVE、月1回の優先順位付けでは足りない」を、公式のデータ入手経路と実務で使う優先順位付けに分けて検討した。Microsoft Security Response Center（MSRC）の公式GitHub READMEは、Microsoft Security Update Guide（SUG）をセキュリティ更新詳細の確認先とし、CVE・製品等の更新情報をCommon Vulnerability Reporting Format（CVRF）で取得できるMSRC Security Updates APIとそのサンプル実装を案内している。CISAの公式kev-data READMEは、実悪用が確認された脆弱性を扱うKnown Exploited Vulnerabilities（KEV）カタログの公式CSV/JSONを提供し、cisa.govの原本を更新後に同期すると明記している。これらはMuseの候補を単なる「件数の驚き」から、製品別該当確認と実悪用情報を照合する防御実務へ変える一次根拠になる。
+
+重要な検証境界: 両READMEは、2026年10月のMicrosoft月例更新の「1,400件超」「9月約1,000件」「7月600件強」「2023年の年間914件」を立証しない。公式SUGの2026年10月分のCVE一覧・製品範囲・集計定義も、この許可済み読取経路では取得・集計できていない。したがって、1,400を「Microsoft純正品の月例確定件数」として掲げたり、数字の増加原因をAIによる探索増加と断定したり、「すべての企業で月次更新は失敗する」と一般化する公開案は保留。記事中の第三者製品を含む集計条件、公開日時、改訂版による件数変動を原表で確認する必要がある。ZDI関係者の発言も原文・発言日時を直接照合するまで検証済み引用とは扱わない。
+
+新たに具体化した防御上の判断: 更新候補ごとに(1)SUG/CVRFで対象製品・影響する版・利用中の構成を照合、(2)CISA KEVとベンダーの現行悪用情報で実悪用の有無を確認、(3)インターネット露出・到達性・権限条件・自組織の資産重要度を区別して優先度を設定、(4)緊急更新と通常更新を別レーンで管理し、適用確認・再起動要否・残存する未対処分を記録する。KEV非掲載は『悪用されない』『対処不要』の証明ではなく、CVSSが高いだけで全システムへの影響が同じになるわけでもない。公開前には一般論として伝え、特定組織の未公開環境や脆弱構成は扱わない。
+
+公開用に修正した短文案: 「月例パッチの件数だけで危険度は決まりません。まずMicrosoftのSecurity Update Guideで自分の製品が該当するかを確認し、CISAのKEVで実悪用が確認された脆弱性を照合。外部に露出した重要システムの更新を優先し、適用できなかった項目を次回へ埋もれさせないことが大切です。『全件を同じ順番で処理する』より、根拠のある優先順位を。」
+
+受入条件: (1)MSRC SUG/CVRFの2026年10月の対象範囲と件数の計算条件を一次データで照合するまで1,400件という見出し・前年比較は使わない、(2)KEVの該当IDは公式CSV/JSONの更新日を付して照合する、(3)追加の定量効果・実際の更新適用完了を主張するなら対象環境の検収が必要、(4)重複SNS投稿を確認し、投稿する場合は実投稿URL・本文・時刻を別検収する。本RelayではSNS投稿・システム更新・Google Docs書込みは行っていない。
+独立一次根拠: https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API/blob/main/README.md （Microsoft MSRC公式README、blob SHA f2fb0b6b80166c6bcdba8feb3b561c5f3bdf3ab7）; https://github.com/cisagov/kev-data/blob/develop/README.md （CISA公式kev-data README、blob SHA bd28b8984b27cdce130412234de7ebec46deaabe）。いずれも2026-11-03 JST、正規GitHub経路で実読。実際の2026年10月集計・KEV個別行・ベンダー通知は未取得。
