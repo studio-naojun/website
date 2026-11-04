@@ -22,3 +22,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: python ai-dev/smoke.py
+      - run: python ai-dev/test_release_guard.py

@@ -21,11 +21,16 @@ Any material change to source before merge invalidates authorization until reche
 - Article stable URL: /ai-dev/daily/YYYY-MM-DD/
 - On update of the same day, edit the *same* article (no duplicate feed id) and mark updated_at with correction history.
 - Feed: /ai-dev/feed.json; newest first, unique id daily-YYYY-MM-DD. Entry fields:
-  id, type=daily, published_at, updated_at, title, summary, path=daily/YYYY-MM-DD/,
+  id, type=daily, published_at, updated_at, first_published_at, title, summary, path=daily/YYYY-MM-DD/,
   source_cycle=ai-dev-daily-YYYY-MM-DD, priority=P0|P1|P2|P3.
+- `published_at` is the issue date. `first_published_at` is the real first public date and must never
+  be earlier than the issue date. A delayed recovery keeps the original stable URL but records the real
+  first publication date instead of backdating.
 - No unpublished placeholder pages, private diagnostic data, tokens, credentials, personal device identifiers or local paths.
 - Build via the template /ai-dev/_templates/article-template.html and existing studio shared shell.
-- Run scripts/sync_studio.py then scripts/build_discovery.py; generated HTML/sitemap/Atom and feed together.
+- Stabilize generated output in this order: `scripts/sync_studio.py`, `scripts/build_discovery.py`,
+  `scripts/sync_studio.py`; then require both generators' `--check` modes to report no changes.
+  Generated HTML/sitemap/Atom and feed move together.
 
 ## Public article acceptance
 Each material incident should explain: what happened, precise affected product/version/configuration,
@@ -44,6 +49,26 @@ Differentiate first disclosure, latest update, and as-of JST. Correct published 
 7. Merge authorized PR; verify matching GitHub Pages deployment and LIVE HTTP 200 content/links.
 8. Store verified commit, PR, Pages evidence and real URL in private source status, then notify Jun.
 9. If delayed/failed, leave an idempotent checkpoint for 13:00 and 19:00 retry. Never assert live from merge alone.
+
+### Failure isolation and backlog prevention
+
+- A refusal is scoped to the exact repository + operation + cycle + attempt that actually failed. Do not
+  retry the identical refused write in the same run and do not evade a current hard refusal through another
+  model, connector or provider.
+- A prior refusal is not a permanent global publication lock. At the next scheduled 07/13/19 JST slot,
+  reconcile whether the effect already occurred, re-read current permissions/contracts, and re-evaluate the
+  project's normal authorized branch/PR route for the oldest incomplete cycle. If that normal route now
+  succeeds, record the old refusal and the new success; do not pretend the old refusal never happened.
+- Oldest incomplete ready cycle publishes first. Keep preparing later private source cycles, but do not let
+  a stale refusal automatically suppress them. A newer cycle may be blocked by an older one only when a fresh
+  current check shows the same hard block still applies to the release path.
+- The 13:00 and 19:00 runs are recovery slots, not passive status repeats. At 13:00 refresh the exact
+  checkpoint and current-route evidence if the 07:00 article is not LIVE. At 19:00 classify a still-missing
+  article as a release incident and preserve the highest verified stage for the next run.
+- Resume from the highest independently verified stage (source / PR+CI / merged / Pages / LIVE); never
+  recreate an already completed external effect merely because an earlier response was lost.
+- `ai-dev/smoke.py` rejects out-of-order/gapped daily feed sequences and any `first_published_at` earlier
+  than the issue date, so a newer release cannot silently skip an older missing daily cycle.
 
 The 13:00 and 19:00 slots must also check newly disclosed emergency P0/P1 events;
 update an already published same-day article by a distinct correction PR, not by duplicating posts.
@@ -76,4 +101,6 @@ version/configuration before creating unique remediation tasks. Do not publish p
 ## Fail closed
 Never merge on unknown/failing CI, ambiguous repo identity or diff, unsupported claims,
 unverified source, public secret exposure, or platform safety denial. No alternate model/connector
-is an acceptable workaround to a hard safety block.
+is an acceptable workaround to a hard safety block. A later scheduled run may, after external-effect
+reconciliation, re-evaluate the normal authorized route using current evidence; that is a fresh state check,
+not a bypass of the earlier refused operation.

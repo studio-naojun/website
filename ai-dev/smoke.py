@@ -1,7 +1,7 @@
 """Focused, offline, fail-closed checks for AI Developer Watch public artifacts."""
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -23,10 +23,25 @@ class Links(HTMLParser):
             self.links.append(dict(attrs))
 
 
+def validate_daily_sequence(entries: list[dict[str, object]]) -> None:
+    days = [date.fromisoformat(str(entry["published_at"])) for entry in entries]
+    assert days == sorted(days, reverse=True), "ai-dev feed must be newest first"
+    for newer, older in zip(days, days[1:]):
+        assert newer - older == timedelta(days=1), (
+            f"missing daily cycle between {older.isoformat()} and {newer.isoformat()}"
+        )
+    for entry, issue_day in zip(entries, days):
+        first_published = date.fromisoformat(str(entry["first_published_at"]))
+        assert first_published >= issue_day, (
+            f"{entry['id']} first_published_at predates issue date"
+        )
+
+
 def validate() -> None:
     feed = json.loads((AREA / "feed.json").read_text(encoding="utf-8"))
     entries = feed["entries"]
     assert isinstance(entries, list)
+    validate_daily_sequence(entries)
     assert (AREA / "index.html").is_file()
     assert (AREA / "PUBLISHER.md").is_file()
     assert "href=\"ai-dev/\"" in (ROOT / "index.html").read_text(encoding="utf-8")
