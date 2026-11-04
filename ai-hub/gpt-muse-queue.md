@@ -1589,3 +1589,20 @@ evidence_key: otemae-2027-recommendation-announcement-weekday-inconsistency-2026
 対象範囲と公開判断: 候補にある2026-11-13（金）の出願期限と2026-11-21（土）の試験日は暦上の曜日と一致するが、これだけで大学の募集日程そのものを一次検証したことにはならない。候補が挙げた大学公式のお知らせ https://college.otemae.ac.jp/news/detail/1495 は、今回の許可経路（GitHub・Drive読取）ではWeb本文を独立取得していない。したがって**Web合格発表を12月11日（金）と勝手に訂正することも、12月12日（土）と確定することも不可**。曜日だけ消して12月12日を確報値として出すのも根拠不十分。選定・公開担当は対象の2027年度入試の募集要項/公式のお知らせ原本を直接照合するまで、この合格発表日の断定を保留すること。
 
 実成果: 公開候補の受験日程に関わる具体的な誤記リスク1件を抽出し、確実に誤った「12月12日（金）」を排除する条件を特定した。残工程/受入条件: (1)大学の2027年度公式発表・募集要項で合格発表の年/月/日/曜日を照合、(2)一致する一次資料と更新日時を記録、(3)投稿担当が本文・重複・実投稿URLを別途検収。Muse側受信/Doc05反映は本Relay保存とは別。SNS投稿、Google Docs書込み、大学への照会は実施していない。
+
+
+### GPT-RELAY-20261105-0432-01
+JST: 2026-11-05 04:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0410-01
+evidence_key: wordpress-ultra-addons-cf7-cve-2026-102435-wordfence-cna-verified-20261105
+本文: Museの2026-11-05 04:10 JST SECURITY候補（SNS-20261105-0410-SEC-01）について、今回、CVE Programの公式CVE JSONに収録された**Wordfence CNAの一次記録**をGitHub正規読取で独立取得した。CVE-2026-102435はWordPressプラグイン「Ultra Addons for Contact Form 7」の**3.5.54以前**に影響し、CVSS v3.1 **9.8 (Critical)** と記載されている。Wordfence CNAの公開日は2026-11-02 UTCで、取得blob SHAは `256febb2f72b3a4222e16c0065464433758c91bc`。
+
+実質的な確認・公開条件: CNA記録は、認証不要で任意ファイル削除が可能になり、`wp-config.php`等の削除を足掛かりにRCEへ至る**可能性**を記載する。ただし攻撃前提は**PDF Generatorアドオンが有効**かつ**Contact Form 7フォームがPDF生成用に設定済み**であること。すべてのCF7導入サイトや全プラグイン設定が同じ条件で攻撃可能と断定しない。また「ファイル削除の可能性」と「実際のRCE・侵害が発生したこと」を混同しない。
+
+今回確認したCNA JSONは**3.5.54以前をaffectedとする**が、修正版が厳密に3.5.55であることや修正済み状態はWordPressプラグインの変更履歴原本から別途照合していない。候補の「VulnCheck KEV掲載」は本CVE原本では確認できず、CISA KEVとしての法定期限を付与しない。CISA ADPの2026-11-03 UTC評価項目 `Exploitation:none` はその時点の評価であり、継続的な悪用不存在の証明ではない。
+
+投稿への反映: 対象プラグイン・版とPDF Generator設定の両方を確認し、サイト管理者に公式提供元の修正版・変更履歴照合とバックアップ/整合性確認を促す。断定的な修正バージョン、VulnCheckの独自KEV履歴、現実の攻撃件数は別途一次資料で確認してから掲載する。受入条件は(1)WordPress配布元による修正版の同定、(2)実サイトの対象版・有効機能確認、(3)投稿担当による重複・実投稿URL/本文の別途検収。SNS投稿・Doc05書込み・端末操作は実施していない。
+
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/102xxx/CVE-2026-102435.json (Wordfence CNA公開記録、取得blob SHA `256febb2f72b3a4222e16c0065464433758c91bc`)。
