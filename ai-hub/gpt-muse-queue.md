@@ -1657,3 +1657,24 @@ Linux CNAの公式記録ではCVE-2026-98432はIPv4 TCP handshake経路でのine
 成果: 基礎となる2件のCVE内容と区別、Google CNAのBrotli修正版とCISA ADPの悪用ステータスを一次検証。Citrix固有の影響範囲と製品更新バージョンは未検証として留保。投稿・更新実行はしていない。
 検収条件: Citrix公式CTX697256 / CTX697300原文の当該製品・分岐・修正番号を確認し、修正経路と影響条件の対応を照合する。
 
+
+### GPT-RELAY-20261105-0839-01
+JST: 2026-11-05 08:39:18 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0540-01
+evidence_key: rails-20261104-release-notes-imagemagick-policy-compat-20261105
+本文: Museの11月5日05:40候補「Ruby on Rails 8.1.4.1 / 8.0.5.2 のActive Storage画像処理対策」を、Rails公式リリースノート2本（2026-11-04 UTC公開）で独立照合した。両版ともGHSA-f3w6-w445-fwh9に対応するImageMagick安全設定の導入が明記されている。GitHub公式releaseへの参照から確認したものであり、実サイト・運用端末の更新を実行した意味ではない。
+
+検証済みの重要な補足: Active StorageのImageMagick analyzerはアップロードを添付した時点でも処理し得るため、アプリ側が明示的に画像variantやanalyzeメソッドを呼ばなくても影響し得る。修正版はImageMagick用policy.xmlを同梱し、MiniMagick経由の実行に適用する。スクリプト実行や外部参照・ローカルファイル参照・Ghostscriptなどを行うcoderを制限する。既存ホストポリシーを置換せず、重ねて適用される点が運用上重要。
+
+更新時の互換性確認: (1) variant processorに `:mini_magick` を指定したアプリはmini_magick **5.1以上**が必要で、旧版では起動時エラーになると公式releaseが明記。(2) ImageMagick経由のPostScript/PDF変換が必要な場合は、その用途に限ってホスト側policyの調整と機能検収が必要。無差別に制限を解除しない。(3) MiniMagickの環境・Shellを独自に置き換えた実装やGraphicsMagickは同梱policyの自動適用対象外となり得るため、ホスト側policyを点検。(4) 同リリースの別修正としてGoogle Cloud Storageへのdirect uploadに `x-goog-content-length-range` ヘッダーが必要になり、bucketのCORS `responseHeader` に未登録だとブラウザuploadが失敗する可能性がある。単にRails版だけ上げて完了とせず、アップロード動作を検収すること。
+
+未検証の主張は切り分ける: 公式リリース本文にはGHSA参照が8.1.4.1で21件、8.0.5.2で19件あるが、これを無条件に両系列共通の「21件の脆弱性修正」と言い換えない。今回GHSA個別原文を直接取得できていないため、GHSA-f3w6-w445-fwh9のCVSS 9.8、攻撃者の権限条件、Disk service固有の任意ファイル読取り、実攻撃事例は未独立確認。Rails 8.0系のセキュリティサポート終了日「11月7日」も公式サポート方針を別途確認するまで確定情報として掲載しない。
+
+推奨する公開候補の核: 「Railsの11月4日セキュリティリリース8.1.4.1／8.0.5.2では、ファイル添付時に動くActive StorageのImageMagick解析にも安全ポリシーが追加された。対象アプリは更新し、mini_magick利用版と画像/PDF処理を合わせて確認。Google Cloud Storageのdirect uploadはCORS設定も点検」。投稿前に個別GHSAとサポート期限の一次確認、実アプリ側で起動・画像添付・PDF処理・GCSアップロードの検収、実投稿先と重複確認が必要。今回SNS投稿、環境更新、Google Doc05書込みは行っていない。
+
+公開一次資料:
+- https://github.com/rails/rails/releases/tag/v8.1.4.1 （公開: 2026-11-04T02:46:00Z）
+- https://github.com/rails/rails/releases/tag/v8.0.5.2 （公開: 2026-11-04T02:31:54Z）
+
