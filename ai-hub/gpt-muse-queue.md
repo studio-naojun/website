@@ -1642,3 +1642,18 @@ evidence_key: apt-cve-2026-109518-canonical-cna-hardlink-retry-20261105
 残工程/受入条件: (1)CNAが引用するDebianアドバイザリとUbuntu USN-8996-1の本文を、投稿担当が版別・日付別に直接確認、(2)修正版と依存先リポジトリ/ミラー・リトライ設定を管理者が照合、(3)実際の公開前に他候補との重複・投稿本文・投稿URLを独立検収。CISA ADPの2026-11-04 UTC時点の`Exploitation:none`は時点付き評価であり、実被害が永続的に存在しない証明やKEV未登録の証明ではない。SNS投稿・端末操作・Google Docs書込み・環境更新は未実施。
 
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109518.json （Canonical CNA、取得blob SHA `6172ca058deb64799e7375815984b459e9a3392c`）。CNAから参照される未直接取得の一次通知: https://lists.debian.org/debian-security-announce/2026/msg00526.html ／ https://ubuntu.com/security/notices/USN-8996-1。
+### GPT-RELAY-20261105-0737-01
+JST: 2026-11-05 07:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0730-01
+evidence_key: citrix-scout-xenserver-upstream-cve-google-linux-cna-vendor-proof-gap-20261105
+本文: Museの07:30候補（Citrix Scout / XenServerの二つの告知）について、Citrix固有の修正バージョン表を一次確認できる状態と、基礎となるオープンソース脆弱性を一次確認できる状態を切り分けた。Google CNAの公式記録ではCVE-2026-111497はBrotli decoderのout-of-bounds writeで、Brotli 1.0.3〜1.0.9、1.1.0、1.2.0が対象。修正系列は1.0.10 / 1.1.1 / 1.2.1。認証なし・ユーザー操作不要で不正な圧縮ストリームによるメモリ破壊や、条件次第でコード実行の可能性がある。CISA ADPの当該CVEにはExploitation: activeとKEVへの参照が記録されている。ただしこれはBrotli側CVEの評価で、Citrix Scout製品が実際に悪用されたことを示すものではない。
+Linux CNAの公式記録ではCVE-2026-98432はIPv4 TCP handshake経路でのinet_opt/ireq_optのuse-after-free（解放タイミングとRCU grace periodの不備）。Linux CNAのCVSS 3.1は9.8。公式原本のaffected対象はLinuxであり、Citrix XenServerのホスト/管理アプライアンスへの影響範囲・悪用成立条件を直接確定する記録ではない。
+重要な公開前修正: Muse案の「Scout Cloud Gateway 2605.1-3、UniconOS Management 2609.1 / 2508 CU2 LTSR、XenServer Workload Balancing 2026.1.1、Conversion Manager 2026.2.0」の具体的な製品別修正境界、および「認証なしでXenServerホスト侵害」といった製品固有の主張は、今回許可されたGitHub読取経路ではCitrix公式CTX697256/CTX697300原本と照合できていない。CVE原本にその製品が明示されないことは「影響なし」の証拠でもない。更新対象の判定に直結する数字を二次記事のみで確定・SNS投稿しないこと。製品管理者向けの実行指示は、公式Citrix bulletinの影響版/修正版表、各コンポーネント適用条件、公開日/更新日を確認した後に製品別に分けて確定する。一般のBrotliやLinuxの更新済みだけでCitrix組込み部品の修正まで済んだとは判定しない。
+一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111497.json （Google CNA; CVE published 2026-10-22; metadata updated 2026-11-04T17:47:42.136Z）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/98xxx/CVE-2026-98432.json （Linux CNA; CVE published 2026-10-15; metadata updated 2026-11-03T06:08:32.425Z）
+成果: 基礎となる2件のCVE内容と区別、Google CNAのBrotli修正版とCISA ADPの悪用ステータスを一次検証。Citrix固有の影響範囲と製品更新バージョンは未検証として留保。投稿・更新実行はしていない。
+検収条件: Citrix公式CTX697256 / CTX697300原文の当該製品・分岐・修正番号を確認し、修正経路と影響条件の対応を照合する。
+
