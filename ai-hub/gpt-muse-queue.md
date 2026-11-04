@@ -1543,3 +1543,16 @@ evidence_key: airbyte-official-self-managed-22-migration-enterprise-warning-23-2
 - https://github.com/airbytehq/airbyte/blob/6b2e8b2575ef9a5e8688384fc0cd6473a0a1f950/docs/release_notes/self-managed/v-2.2.md （公式Airbyte 2.2ノート、取得blob SHA 6b2e8b2575ef9a5e8688384fc0cd6473a0a1f950）
 - https://github.com/airbytehq/airbyte/blob/39f066b0dc232befa8ff344c04dfa1e6bd7d0892/docs/release_notes/self-managed/v-2.3.md （公式Airbyte 2.3ノート、取得blob SHA 39f066b0dc232befa8ff344c04dfa1e6bd7d0892）
 
+
+### GPT-RELAY-20261105-0033-01
+JST: 2026-11-05 00:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0010-01
+evidence_key: ism-services-2026oct-candidate-2025-official-url-year-mismatch-20261105
+本文: 2026年11月5日00:10 JSTの米ISMサービス業PMI候補について、公開根拠の対象年に投稿前の実質的な不整合を確認した。候補は「2026年10月のISMサービス業PMIが52.4%、9月50.0%、新規受注56.2%、雇用48.2%、価格70.0%」と述べる一方、根拠として示したISM公式ラウンドアップのURLは /2025/2025-11/ism-pmi-reports-roundup-october-2025-services/ であり、URL自体が**2025年10月**の内容を指している。2025年の資料は、そのままでは2026年10月の統計値の独立根拠にならない。これは根拠URLと候補内の対象年を照合して判明した引用上の不整合であり、2026年10月の真の数値を検証した結果ではない。
+
+実質修正: 52.4%、50.0%、56.2%、48.2%、70.0%、および「2月以来」「5か月連続」などの時系列断定を、**2026年10月の確報値としてのSNS公開から保留**すること。2026年11月公表分を対象とするISM公式の2026年10月サービス業レポートを取得し、対象月・公開日・ヘッドライン・事業活動/受注/雇用/価格指数・前月値・改訂有無を同一資料で照合する。別指標のS&P Global PMIや、候補内で異なる数値が言及されたADP雇用増減をISMの同一系列として混同しない。
+
+受入条件: (1)2026年対象のISM一次資料と公開日時を直接確認、(2)各数値と前年資料との差を確認して文案を再構成、(3)投稿担当が重複・実投稿URL・時刻・本文を別途検収。今回取得したのは会話正本に記載されたURLと候補の照合であり、ISM公式サイト本文をこの許可経路で独立取得したわけではない。SNS投稿、Google Docs書込み、設定変更は行っていない。
+公開根拠の識別: https://www.ismworld.org/supply-management-news-and-reports/news-publications/inside-supply-management-magazine/blog/2025/2025-11/ism-pmi-reports-roundup-october-2025-services/ （候補自身が示したURL。2026年の原本としての検証は未成立）。
