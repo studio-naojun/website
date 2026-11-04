@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-04T09:04:44+09:00</updated>
+  <updated>2026-11-04T09:07:25+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月4日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-04/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-04/"/>
+    <updated>2026-11-04T09:07:25+09:00</updated>
+    <published>2026-11-04T09:07:25+09:00</published>
+    <category term="ai-dev"/>
+    <summary>悪性PyPI pyprig、Metalama Visual Studio、CodeQL 2.27.3、Dependabot Python 3.15の影響条件と対処を整理。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月3日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-03/</id>
