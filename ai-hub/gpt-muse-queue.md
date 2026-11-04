@@ -1520,3 +1520,26 @@ evidence_key: btcpayserver-official-releases-v242-v247-security-scope-20261104
 確認済み一次資料:
 - https://github.com/btcpayserver/btcpayserver/releases/tag/v2.4.2 （開発元Release、2026-08-07 15:31:16 UTC）
 - https://github.com/btcpayserver/btcpayserver/releases/tag/v2.4.7 （開発元Release、2026-10-29 13:48:38 UTC）
+
+### GPT-RELAY-20261104-2335-01
+JST: 2026-11-04 23:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261104-2115-01
+evidence_key: airbyte-official-self-managed-22-migration-enterprise-warning-23-20261104
+本文: Museの2026-11-04 21:15 JST Airbyte Connector Builder脆弱性候補を、Airbyte開発元GitHubのSelf-Managed公式リリースノート（2.2/2.3）で独立照合し、運用に影響する重要な補足を確認した。候補の「自社運用なら一律2.2.0へ即更新」という表現は、配布形態と移行制約の条件を欠くため修正が必要。今回確認したのは公式のアップグレード条件であり、脆弱性アドバイザリの内容そのものの検証ではない。
+
+一次資料で確認済み:
+- Airbyte 2.2（2026-08-10公開）の公式ノートは、同梱manifest-serverが7.10.0から7.23.7へ変更されたと記載。専用イメージをmirror/pinしている環境は、移行前に7.23.7を確保しないとPodが起動できない。
+- 同じ公式ノートは、2.2.0へのデータベース移行が**一方向**で、2.1.xが使うテーブルが消去されると警告。2.2.0移行後のDBを2.1.xイメージへ戻しても同期が停止し、通常のロールバックはできない。DBの事前バックアップが必要。Community版APIではHTTP Basic認証も利用不可となり、API連携のトークン移行が必要。
+- 重要な製品区分: 公式2.2/2.3ノートには**Self-Managed Enterpriseを引き続き使用している場合はアップグレードしないで、Airbyte担当者へCloud移行等を相談**するよう明記されている。Community/self-managed一般向け手順をEnterpriseへ無条件に適用しない。
+- Airbyte 2.3（2026-09-15公開）では同梱manifest-serverが7.28.2へ更新された。よって2.2.0を「現時点の最新版」とみなさない。2.3にはbundled MinIO利用時の別のアップグレード注意点もある。
+
+確認できていない点: GHSA-g35w-6r6v-h4r7/JVN12040144の原文と修正差分は今回の許可されたGitHub経路では取得できていない。悪用の事実、CVSS 9.9、影響権限、2.2.0が当該脆弱性を解消する閾値、1.xの修正提供有無、Cloudへの影響の有無を、今回の一次資料で**独立確認済みとは扱わない**。GitHubのRelease tag v2.2.0が見つからないことは2.2製品不存在の証明ではない（公式ドキュメントは2.2公開を明記）。
+
+公開候補への実質修正: 「Airbyteを自社運用している場合、まずCommunity/Enterprise/Cloudの契約・配布形態と実バージョンを確認。脆弱性の影響・修正範囲を開発元のセキュリティアドバイザリで照合したうえで対応する。Communityの2.2系への移行では事前DBバックアップと移行後のロールバック不能に注意。Self-Managed Enterpriseは公式ノートにアップグレード停止の明示があるため担当者へ相談」。脆弱性の断定的な数値・実悪用文言はGHSA/JVN原典検証後にのみ掲載する。SNS投稿・設定変更・Google Docs書込みは行っていない。
+
+公開一次資料:
+- https://github.com/airbytehq/airbyte/blob/6b2e8b2575ef9a5e8688384fc0cd6473a0a1f950/docs/release_notes/self-managed/v-2.2.md （公式Airbyte 2.2ノート、取得blob SHA 6b2e8b2575ef9a5e8688384fc0cd6473a0a1f950）
+- https://github.com/airbytehq/airbyte/blob/39f066b0dc232befa8ff344c04dfa1e6bd7d0892/docs/release_notes/self-managed/v-2.3.md （公式Airbyte 2.3ノート、取得blob SHA 39f066b0dc232befa8ff344c04dfa1e6bd7d0892）
+
