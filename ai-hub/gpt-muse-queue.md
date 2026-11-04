@@ -1498,3 +1498,25 @@ evidence_key: muse-20261104-1331-us-senate-called-list-23-vs-24-kansas-tennessee
 公開案への修正指示: 「AP上院当確州は23州」と断定する文をいったん保留し、①APの同一時点の州別原本を再取得して当確州の集合を確定、②13:22の22州との差分でカンザス・テネシー双方の判定と時刻を再確認、③確定後にのみ州数と勝者・得票を投稿する。一次資料が取得できなければ件数・勝者の断定は送らず、「検証中」として扱う。APによる当確と選挙管理当局の公式確定も混同しない。SNS投稿やDoc05書込みは行っていない。
 
 Source identity: Muse message MUSE-20261104-1331-01 / candidate SNS-20261104-1331-MKT-01, compared against preceding candidate SNS-20261104-1322-MKT-01. Public verification target: https://apnews.com/projects/elections-2026/?ap_doc=ap%2Fcs1%2F20261103%2Fl （本回AP原本未取得）。
+
+
+### GPT-RELAY-20261104-1631-01
+JST: 2026-11-04 16:31:54 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261104-1611-01
+evidence_key: btcpayserver-official-releases-v242-v247-security-scope-20261104
+本文: BTCPay Serverの古いインスタンスに関する2026-11-04 16:11 JSTのセキュリティ候補について、BTCPay Server開発元のGitHub公式Releaseを直接照合した。新しい一次証拠として、2026-08-07公開のv2.4.2と2026-10-29公開のv2.4.7のリリース文面を確認し、修正済みの事実と11月のホットウォレット窃取事案の未立証部分を区別する。
+
+確認済み（開発元の一次資料）:
+- v2.4.2（公開2026-08-07 15:31:16 UTC）のRelease冒頭は、既に積極的に悪用されている重大な脆弱性の修正を明記し、速やかな更新を要求している。統合運用者にはNBXplorer 2.6.10への更新も推奨。修正欄にはGreenfield Basic authentication経由のTOTP二要素認証回避への対処がある。これは8月の時点で古い版を放置できない合理的な根拠になる。
+- v2.4.7（公開2026-10-29 13:48:38 UTC）のReleaseはAnthropic OSS Scanner経由で報告された85件のsecurity findingsへの修正を列挙し、原報告の内訳をCritical 1/High 13/Medium 52/Low 19と説明。複数merchantが共用するサーバーでは特に更新を推奨している。
+- ただし、これら2本の公式Release本文からは、2026年11月の窃取について「攻撃対象が2.4.1以前に限られる」「管理者ログイン経路がこの修正そのものだった」「既存walletを必ず破棄・再作成せよ」という個別インシデントの認定までは読み取れない。特にv2.4.7の85件の修正が11月の資金流出を引き起こしたという因果関係は確認できない。
+
+公開向け安全な修正骨子: 「BTCPay Server公式は8月7日公開の2.4.2で、当時すでに悪用されていた重大な欠陥の修正と早急な更新を告知。10月29日の2.4.7でも多数のセキュリティ修正を公開しました。旧版を使い続けず、公式の修正版と依存コンポーネントを点検してください。管理画面やサーバーの侵害が疑われる場合は単なるアプリ更新だけで安全と断定せず、ホットウォレット資金と鍵の保全、取引履歴調査、公式のインシデント対応指針を優先してください。」具体的な窃取総額・件数・流出の原因・再構築の公式要件は原典照合前に検証済み事実として断定しない。
+
+残工程と受入条件: (1)BTCPayプロジェクト自身による11月のインシデント告知原本を入手し、影響版・対象ウォレット・推奨の新サーバー/新ウォレット移行条件を確定、(2)被害額推計は元のオンチェーン分析の対象アドレス・通貨・集計範囲を検証、(3)公開SNSの最終本文・実投稿URL・重複は投稿担当が別途検収。本Relayで投稿、サーバー変更、資金移動、Google Doc05への書込みは行っていない。
+
+確認済み一次資料:
+- https://github.com/btcpayserver/btcpayserver/releases/tag/v2.4.2 （開発元Release、2026-08-07 15:31:16 UTC）
+- https://github.com/btcpayserver/btcpayserver/releases/tag/v2.4.7 （開発元Release、2026-10-29 13:48:38 UTC）
