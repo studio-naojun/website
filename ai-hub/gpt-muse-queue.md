@@ -1556,3 +1556,25 @@ evidence_key: ism-services-2026oct-candidate-2025-official-url-year-mismatch-202
 
 受入条件: (1)2026年対象のISM一次資料と公開日時を直接確認、(2)各数値と前年資料との差を確認して文案を再構成、(3)投稿担当が重複・実投稿URL・時刻・本文を別途検収。今回取得したのは会話正本に記載されたURLと候補の照合であり、ISM公式サイト本文をこの許可経路で独立取得したわけではない。SNS投稿、Google Docs書込み、設定変更は行っていない。
 公開根拠の識別: https://www.ismworld.org/supply-management-news-and-reports/news-publications/inside-supply-management-magazine/blog/2025/2025-11/ism-pmi-reports-roundup-october-2025-services/ （候補自身が示したURL。2026年の原本としての検証は未成立）。
+
+### GPT-RELAY-20261105-0138-01
+JST: 2026-11-05 01:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0035-01
+evidence_key: android-2026-58882-wap-push-dos-vs-58868-rce-google-cna-20261105
+本文: Museの2026-11-05 00:35 JST SECURITY候補「CVE-2026-58868はSMS of Deathと別件か」に、前回11月3日のAndroid全体回答で未取得だった**Google Android CNAのCVE-2026-58882公式原本**を追加し、2件の違いを独立確認した。単なる別呼称ではなく、脆弱な処理と技術的影響が異なる。
+
+確認済みの新しい一次証拠:
+- CVE-2026-58882: Google Android CNAの2026-11-02 UTC公開原本は、WapPushOverSms.javaのdecodeWapPduでのinteger overflowに伴うout-of-bounds read、結果は**remote denial of service（DoS）**の可能性と明記する。追加実行権限・ユーザー操作は不要。CNAのproblemTypesもDenial of service。これ自体を任意コード実行と呼ばない。
+- CVE-2026-58868: 同CNA原本はFrameDecoder.cppのonOutputReceivedにおけるheap buffer overflowによるout-of-bounds write、結果は**remote code execution（RCE）**の可能性と明記する。こちらも追加権限・ユーザー操作は不要。どちらのaffectedにもAndroid 14・15・16・16-qpr2・17が記載されている。違いは主に欠陥箇所と影響（DoS対RCE）であり、単に「ゼロクリックAndroid脆弱性」として同一事象にまとめない。
+- 58868のCISA ADPには2026-11-02時点のExploitation:noneがあるが、当該時点の評価に限られ、「現在も悪用ゼロ」「全端末で攻撃成立」「SMSを受けるだけで必ずRCE」とは断定しない。58882のSMS/WAP Push経路と58868の実際の到達経路も混同しない。
+
+公開候補への実質修正案: 「Androidの11月セキュリティ情報では、操作不要でコード実行につながり得るCVE-2026-58868と、WAP Push処理で遠隔サービス妨害につながり得るCVE-2026-58882は**別の欠陥**です。14〜17などの対象端末はメーカーが提供するセキュリティ更新を確認してください。」CVEの可能性を現実の侵害や攻撃成功と同一視しないこと。
+
+未検収・受入条件: Google Android CNA両原本が参照する2026年11月Android Security Bulletinの**本文は今回独立取得していない**。したがって候補の「パッチレベル2026-11-01で58868が解消される」という個別対応表、216件・Critical 23件、メーカー別配布日、実被害件数は一次資料照合まで確定的に記載しない。投稿担当は公式BulletinのCVE別パッチレベルを照合してから機種ごとの更新案内に反映し、既存Android全体候補との重複・実際の投稿URLを別に検収する。本RelayでSNS投稿、端末操作、Doc05書込みは行っていない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58882.json （Google Android CNA、取得blob SHA 6e92e239fe4dc06b04d0f7a7348a0c10a4814ded）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58868.json （Google Android CNA、取得blob SHA f06a5d3a1921e0856d83658023edb47045b1729a）
+
