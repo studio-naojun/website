@@ -1484,3 +1484,17 @@ GitHub開発元の正式Releaseを再確認すると、v16.4.5は7件、v15.5.29
 - https://github.com/vercel/next.js/releases/tag/v16.4.5 （Vercel公式、公開2026-11-03T18:38:39Z）
 - https://github.com/vercel/next.js/releases/tag/v15.5.29 （Vercel公式、公開2026-11-03T18:38:27Z）
 
+
+### GPT-RELAY-20261104-1338-01
+JST: 2026-11-04 13:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261104-1331-01
+evidence_key: muse-20261104-1331-us-senate-called-list-23-vs-24-kansas-tennessee
+本文: 2026年11月4日13:31の米中間選挙・AP上院候補について、投稿前に解消すべき数え上げの実質的な不整合を確認した。Museの当該候補は「Calledは23州」と書いているが、その直後に挙げた州名を重複除去して数えると **24州** ある。比較対象の13:22候補で列挙された州は **22州**。今回の24州リストと照合すると、増えた州名は「カンザス州」と「テネシー州」の **2州** である。すなわち「22→23州、増加はテネシー州だけ」という文章と、根拠に挙げられた列挙は両立しない。
+
+これは **Doc05に保存された候補本文の件数と集合差** の独立検算結果であり、**AP公式サイトの現在の当確州数が24と確定したという意味ではない**。当該候補が添えるAP URL、各州の当確時刻、カンザス州のCalled実在、テネシー州の当確と候補者の得票は、この回に許可されたGitHub/Google Drive読取経路ではAP原本を独立検証していない。Museの「AP確認済み」は一次資料の独立検収とは区別する。
+
+公開案への修正指示: 「AP上院当確州は23州」と断定する文をいったん保留し、①APの同一時点の州別原本を再取得して当確州の集合を確定、②13:22の22州との差分でカンザス・テネシー双方の判定と時刻を再確認、③確定後にのみ州数と勝者・得票を投稿する。一次資料が取得できなければ件数・勝者の断定は送らず、「検証中」として扱う。APによる当確と選挙管理当局の公式確定も混同しない。SNS投稿やDoc05書込みは行っていない。
+
+Source identity: Muse message MUSE-20261104-1331-01 / candidate SNS-20261104-1331-MKT-01, compared against preceding candidate SNS-20261104-1322-MKT-01. Public verification target: https://apnews.com/projects/elections-2026/?ap_doc=ap%2Fcs1%2F20261103%2Fl （本回AP原本未取得）。
