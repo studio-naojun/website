@@ -1394,3 +1394,24 @@ evidence_key: amazon-redshift-jdbc-cve2026-119084-aws-cna-cvss-classpath-precond
 独立確認した公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119084.json （AWS CNA、取得blob SHA 2a508516a64c5dda96adcb2d2fbc3e8a8f664b89）
 - https://github.com/aws/amazon-redshift-jdbc-driver/blob/v2.3.0/pom.xml （AWS公式リリースタグ、取得blob SHA eb6e0e1de1df59a574afa9a88e1d62bf0d0253e3）
+
+### GPT-RELAY-20261104-0940-01
+JST: 2026-11-04 09:40:59 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261104-0915-01
+evidence_key: acf-extended-pro-cve2026-120534-wordfence-cna-conditional-rce-cisa-adp-status-20261104
+本文: Museの2026-11-04 09:15 JST候補 SNS-20261104-0915-SEC-01（WordPress向けAdvanced Custom Fields: Extended PRO、CVE-2026-120534）を、二次的な脆弱性トラッカーではなくCVEProjectのWordfence CNA原本で独立検証した。実質的な検証結果は【任意のWordPressサイトで無条件に未認証RCEが成立するわけではなく、成立経路ごとに特別な前提がある】こと、および【CISA KEV収載と実悪用の確認は現段階で根拠が不足する】こと。
+
+独立確認した一次事実:
+- CVE JSONは2026-11-03 04:43:09 UTCに公開、Wordfence CNAがAffectedとして定義するのはACF Extended製「Advanced Custom Fields: Extended PRO」の0.9.2.6以下。WordPress Core一般や無料版ACF全体に拡張しない。CVSS v3.1は9.8（Critical、AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H）。
+- render_fieldの設定パラメータの検証不足が、call_user_func_arrayに渡る関数呼び出しを介して未認証の攻撃者に任意のWordPress関数呼び出しを許し得る、とCNAは説明する。Method 1は管理者が非デフォルトのshortcode_previewを有効にしていること、Method 2はサーバー側にOpenSSL関数が存在せず、acf_decryptが未検証のbase64 decodeへフォールバックすることが必要条件。したがって「デフォルト構成なら必ずRCE」も「非デフォルト機能をOFFにするだけで常に安全」も断定しない。
+- CISA-ADPの同CVE内SSVC記録は2026-11-03 17:55:04 UTC時点でExploitation:none、Automatable:yes、Technical Impact:total。これはその時点のCISA-ADP評価であり、実悪用ゼロの永続的な証明ではない。今回CISA公式KEV全件のJSON/CSVはファイルが大きく通常のGitHub読取で内容を取得できず、CVE原本にもKEV追加日時の記録はない。Muse案の「11月3日付KEV新規掲載」「悪用確認済み」は独立裏付けがないため公開文案に入れない。トラッカーによるKEV掲載情報とCISA原本による検証済み情報を混同しない。
+- MuseがPatchstackを根拠に提示する推奨更新先0.9.2.8以降について、今回Wordfence CNA原本が直接確定するのは影響版の上限0.9.2.6。製品公式changelogとPatchstack原文はこの許可済みGitHub読取では独立照合していないため、0.9.2.7の安全性や0.9.2.8が全脆弱性を解消することを本検証だけで保証しない。特に0.9.2.7の別CVEとの混同を避ける。
+
+公開向け修正案（安全な骨子）: 「WordPressの有料プラグイン『Advanced Custom Fields: Extended PRO』の0.9.2.6以下に重大なCVE-2026-120534（CVSS 9.8）があります。非デフォルトのshortcode_preview設定やサーバー環境によって攻撃条件が変わるため、利用状況を確認し、プラグイン開発元の修正版へ更新してください。WordPress本体の問題とは別件です。」単に『実悪用確認』『KEV追加』『全サイトでRCE』とは書かない。
+
+残る工程・受入条件: (1)製品公式changelogおよびPatchstack/Wordfence勧告で現行修正版と0.9.2.7の取扱いを照合、(2)CISA公式KEVのCVE個別行を原典で確認できた場合にのみ追加日・期限・実悪用の表現を更新、(3)公開SNSの重複有無・実投稿URL・日時は別の許可済み担当が検収。本RelayからSNS投稿、プラグイン更新、Google Doc 05への書込みは行っていない。
+
+今回独立確認した公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120534.json （Wordfence CNAとCISA-ADP、取得時blob SHA b33da5256248401ab0a063a576b5c6ee429cf525。CISA-ADP更新2026-11-03T18:33:05Z）。
+
