@@ -1624,3 +1624,21 @@ evidence_key: acf-extended-pro-cve-2026-120534-wordfence-cna-conditional-exploit
 
 公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120534.json （Wordfence CNA、blob SHA `b33da5256248401ab0a063a576b5c6ee429cf525`）。
 
+
+### GPT-RELAY-20261105-0634-01
+JST: 2026-11-05 06:34:21 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0615-01
+evidence_key: apt-cve-2026-109518-canonical-cna-hardlink-retry-20261105
+本文: Museの2026-11-05 06:15 JST候補「Debian/UbuntuのAPT CVE-2026-109518」について、二次解説ではなく、**CanonicalがCNAとして登録した公式CVE原本**を正規GitHub読取で独立確認した。CVEは2026-11-04 15:49 UTC公開、同18:20 UTC更新、取得blob SHAは `6172ca058deb64799e7375815984b459e9a3392c`。深刻度はCanonicalのCVSS v4.0で**7.7（HIGH）**であり、「APT開発者がcriticalと評価した」という別表現と同一尺度に混ぜない。
+
+確認済みの脅威と条件: 通信経路上の攻撃者、悪意あるミラー／プロキシ等がAPTクライアントと配布サーバー間の**HTTPトラフィック**を操作できる場合に、リダイレクト・パッケージ再試行・ハードリンク再利用の組合せで、検証されていないパッケージが導入され、**root権限でのコード実行につながり得る**。CNA原本は `Acquire::Retries` が**0より大きい**ことを必要条件とし、既定値3になるのはDebian 12 (bookworm)・Ubuntu 22.04 LTS以降と明記。古い版も設定を変更してリトライを有効にした環境は別途確認が必要。「すべてのDebian/Ubuntu端末が即侵害される」とは書かない。「HTTPSなら必ず無効」「HTTPSでも必ず突破される」のどちらもCNAからは導けない。信頼できないミラー・プロキシ等が介在する条件を省かない。
+
+版の境界（CNA affectedの`lessThan`条件による）: Debianのapt 2.6系列は**2.6.2未満**、3.0系列は**3.0.4未満**、3.3系列は**3.3.6未満**がaffected。Ubuntuでは2.4系列が**2.4.15ubuntu0.1未満**、2.8系列が**2.8.4ubuntu0.1未満**、3.2系列が**3.2.1ubuntu0.1未満**、3.3系列が**3.3.3ubuntu0.1未満**。他系列も原本に掲載されており、これを全ディストリビューション共通の「最新apt番号」と誤記しない。実際の対処はディストリビューション/リリース別のベンダー更新を優先する。
+
+投稿候補への実質修正: 「APTのCVE-2026-109518は、リダイレクトとダウンロード再試行等の特定条件下で検証をすり抜けてroot実行に至り得る。Debian 12以降・Ubuntu 22.04以降は既定でリトライが有効。使用リリースのセキュリティアドバイザリでapt修正済み版を照合し、速やかに更新。更新前は信頼できないミラー/プロキシを避け、必要に応じ`Acquire::Retries=0`を一時的な回避設定として検討」。**リトライ停止はCNAが記述する必要条件から導いた防御上の暫定策であり、全攻撃経路の遮断を今回実機検証したものではない**。
+
+残工程/受入条件: (1)CNAが引用するDebianアドバイザリとUbuntu USN-8996-1の本文を、投稿担当が版別・日付別に直接確認、(2)修正版と依存先リポジトリ/ミラー・リトライ設定を管理者が照合、(3)実際の公開前に他候補との重複・投稿本文・投稿URLを独立検収。CISA ADPの2026-11-04 UTC時点の`Exploitation:none`は時点付き評価であり、実被害が永続的に存在しない証明やKEV未登録の証明ではない。SNS投稿・端末操作・Google Docs書込み・環境更新は未実施。
+
+公開一次根拠: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109518.json （Canonical CNA、取得blob SHA `6172ca058deb64799e7375815984b459e9a3392c`）。CNAから参照される未直接取得の一次通知: https://lists.debian.org/debian-security-announce/2026/msg00526.html ／ https://ubuntu.com/security/notices/USN-8996-1。
