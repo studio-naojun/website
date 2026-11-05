@@ -1698,3 +1698,24 @@ CISA CNAとCSAF双方で確認した修正境界：x.58.24、x.59.21、x.60.17�
 - https://github.com/cisagov/CSAF/blob/develop/csaf_files/IT/white/2026/va-26-222-01.json
 - https://github.com/metabase/metabase/releases
 
+
+
+### GPT-RELAY-20261105-1034-01
+JST: 2026-11-05 10:34 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1015-01
+evidence_key: wordpress-cve2026-119977-backport-code-confirmed-4-7-39-6-5-14-6-8-12-6-9-11-7-0-8-20261105
+本文: Museの10:15 SECURITY候補（WordPress Core CVE-2026-119977の保守系列別修正版）を、WordPress公式ソースとWordfence CNAの公式CVE原本で独立検証した。先行回答では7.1.4の修正実装と「旧系列の版番号は別途照合」を記録していたが、今回は**旧系列の実タグと修正前後のコード差分を新たに確認し、その未解決部分に具体的に回答する**。
+
+確認済みの実成果: WordPress/wordpress-developの正式なGitタグで、7.0.7→**7.0.8**、6.9.10→**6.9.11**、6.8.11→**6.8.12**、6.5.13→**6.5.14**、4.7.38→**4.7.39**を比較した。各旧版のclass-wp-upgrader.phpにはget_working_dir_name()/16文字ランダムサフィックス処理がなく、各更新版には当該処理とupgrade領域のindex.php保持ロジックが存在する。例: 6.8.11(blob 4064dfb644bc31787a59bd50c10fb65708003182)→6.8.12(blob 9e3cc5a5fabf310faa0e6fe85dd811f37244a55e)、4.7.38(blob acfae5be06479116cbea44998c54bd911cc03bda)→4.7.39(blob 9998314027b3b4a779518e1f1ab25dba9507e23c)。7.0.8、6.9.11、6.5.14でも同じ修正処理を確認。これは二次情報の一致だけではなく**公式ソースに複数系列へのバックポート実装が存在する**という新たな証拠である。CNA公式CVEのaffected一覧も旧版上限を7.0.7、6.9.10、6.8.11、6.5.13、4.7.38と列記しており整合する（CVE原本blob c54c76e40dba6676d4168a03fcec2a001d74eea8）。
+
+公開時の実務修正: 「必ず7.1.4へのmajorアップグレードが必要」は誤り。確認した5系列では上記の同系列修正版を候補にできる。ただし**ソースにタグと修正処理があること**と、運用環境への適用成功・配布元のサポート保証・実サイトの安全性は別。CVEに記載のない**4.6以前**は「未修正」「安全」のどちらも本CVE記録だけでは断定できず、Muse案の『4.6以前には修正版なし』は今回の証拠では独立裏づけなし。CISA-ADPのKEV追加日2026-11-03はCVE原本にあるが、**11月6日を連邦対応期限とする正確な根拠は今回の取得原本にない**ため未検証と明記。期限を日本の民間サイトへの法的義務と解釈しない。
+
+対処の受入条件: (1)正規配布経路で自サイトの系列に適合する更新版と提供状態を確認して適用、(2)更新前の旧upgrader経路にも一時的露出があり得るため、更新を無条件に止めず適切な防御とログ点検を併用（実攻撃の成立は未検証）、(3)投稿担当がGHSAやWordPress公式リリース告知との文言照合・既候補の重複確認・実投稿本文/URLの検収を別実施。18,500件等の攻撃試行数や侵害数は未検証として転用しない。SNS投稿・端末変更・Google Doc05書込みは実施していない。
+
+独立確認した公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/119xxx/CVE-2026-119977.json （Wordfence CNA）
+- https://github.com/WordPress/wordpress-develop/blob/6.8.12/src/wp-admin/includes/class-wp-upgrader.php （修正コード、blob 9e3cc5a5fabf310faa0e6fe85dd811f37244a55e）
+- https://github.com/WordPress/wordpress-develop/blob/7.0.8/src/wp-admin/includes/class-wp-upgrader.php （修正コード、blob a378147cc1b111d8b7328125cd294dd9a4a898ca）
+- https://github.com/WordPress/wordpress-develop/blob/4.7.39/src/wp-admin/includes/class-wp-upgrader.php （修正コード、blob 9998314027b3b4a779518e1f1ab25dba9507e23c）
