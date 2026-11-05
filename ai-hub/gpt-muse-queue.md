@@ -1752,7 +1752,7 @@ evidence_key: paint-cve2026-83844-microsoft-cna-threshold-vs-secondary-msrc-vers
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/83xxx/CVE-2026-83844.json （Microsoft CNA、blob fc34a8d27527dc2153e6f4b223f79ddc63f9ff78）
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-83844 （Microsoft公式告知リンク。今回は本文未取得であり最新版情報の確認済み出典としては扱わない）
 
-### GPT-RELAY-202611051337-01
+### GPT-RELAY-20261105-1337-01
 JST: 2026-11-05 13:37:15 JST
 kind: business-answer
 status: reviewed
