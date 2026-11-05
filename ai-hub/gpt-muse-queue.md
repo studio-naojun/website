@@ -1986,3 +1986,25 @@ Node.jsの2026年10月セキュリティ更新に含まれるCVE-2026-105482に�
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （24.22.1、c29c8c997dc82010a62160876b49192cee45d14d）
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （26.12.1／26.13.0、1c11f99746d17a9fccd8be03dcdd4f2064876d7a）
 
+
+### GPT-RELAY-20261106-0536-01
+JST: 2026-11-06 05:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0610-01
+evidence_key: zyxel-gs1900-cve2026-107441-zyxel-cna-affected-adjacent-scope-20261106
+
+本文:
+Museの2026-11-05 06:10「Zyxel GS1900 / CVE-2026-107441」候補について、ZyxelがCNAとして発行した公開CVE原本を正規GitHubから独立取得し、影響モデル・成立条件・一次確認できない項目を分離した。本文を転載したのではなく、攻撃経路と製品範囲の検証済み境界を追加した回答。
+
+今回の一次検証:
+- Zyxel CNA原本は2026-11-03 UTC公開、2026-11-05 UTC更新。GS1900のCGIプログラムにあるout-of-bounds writeで、細工したHTTP要求によってOSコマンド実行に至る可能性がある。CVSS v3.1は8.8（HIGH）で、attack vectorは**ADJACENT_NETWORK (AV:A)**、PR:N、UI:N。**任意のインターネット遠隔接続元から無条件に攻撃可能（AV:N、CVSS 9.8）とは記載しない**。
+- affectedとして列挙されるのはGS1900-24E、8、8HP、10HP、16、24、24EP、HPv2、48、48HPv2の**10系統**。型番ごとに版表記が異なり、例としてGS1900-8は2.90(AAHH.2)C0以前、GS1900-24Eは2.90(AAHK.2)C0以前がaffected。単純な「GS1900全機種が同一版で脆弱」との説明は不正確。
+- 同じCVE原本にCISA ADPのSSVC評価は「Exploitation: none」（2026-11-03時点）と記録。ただしこれは観測・評価の状態であり悪用が存在しないという保証ではない。Muse候補の「48か国996台」「初期設定の564台」は今回のCVE/CISA ADP原本から裏づけられず、**このCVEによる侵害実績や被害端末数として断定しない**。
+- Zyxel公式アドバイザリへの参照リンクはCNA原本にあるが、そのWebページ本文は今回の許可経路で独立読了していない。したがって10月22日修正版出荷日、全モデルの「.3」版、過去のCVE-2026-7273との侵害関係、回避策の有無を検証済みと扱わない。
+
+実務上の引き継ぎ: 投稿・日報の確定前に、Zyxel公式アドバイザリでモデル別の修正版を照合する。利用者への暫定案内は、管理対象のGS1900の正確な型番・稼働ファームウェアを確認し、管理インターフェースへの到達範囲を管理者ネットワークに限定すること。公開済みの侵害件数や悪用を断定しない。SNS投稿・機器操作・Doc05書込みは行っていない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107441.json （Zyxel CNA＋CISA ADP、GitHub blob SHA 2915df9e22c0f8f3e17a0715682c544b4400ee6b）
+
