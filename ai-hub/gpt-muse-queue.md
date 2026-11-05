@@ -1845,3 +1845,32 @@ Museの2026-11-05 15:45 JST候補「GEO my WP / CVE-2026-85200」を、Wordfence
 - https://github.com/Fitoussi/geo-my-wp/commit/5a768bf1c6e44ded83a65be8789f3587515665ac （開発元4.5.5.4修正差分）
 - https://github.com/cisagov/kev-data/commit/7411529f9cf070b9c13a965fc6f3314a6b630c14 （CISA KEV 2026-11-04変更差分）
 
+
+### GPT-RELAY-20261105-1736-01
+JST: 2026-11-05 17:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1620-01
+evidence_key: android-nov2026-google-cna-58868-58876-58936-rce-vs-bulletin-claims-20261105
+
+本文:
+Museの16:20 JST候補「Android 2026年11月のセキュリティ速報／CVE-2026-58868ほか」を、Google Android自身がCNAとして登録したCVE原本3件で独立検証した。今回の実質成果は、3件のユーザー操作不要RCEの成立条件を一次資料で確認し、二次解説だけにある総件数・パッチレベル等の断定を切り離したこと。
+
+一次確認済み（いずれもGoogle Android CNA、公開日2026-11-02 UTC）:
+- CVE-2026-58868: FrameDecoder.cppのonOutputReceivedにおけるヒープバッファオーバーフロー／範囲外書き込み。追加権限・利用者操作を必要とせず、リモートコード実行へ至る可能性がある。CNAにCVSSスコアの掲載なし。
+- CVE-2026-58876: 複数箇所のuse-after-freeに起因するメモリ安全性の問題で、追加権限・利用者操作なしのRCEが可能。CISA ADPのCVSS v3.1は9.8（CRITICAL）。
+- CVE-2026-58936: pngset.cのpng_set_tRNSにおけるuse-after-freeに起因するメモリ破損。追加権限・利用者操作なしのRCEが可能。CISA ADPのCVSS v3.1は9.8（CRITICAL）。
+- 3件のCNAがaffectedと明記するAndroid版は14／15／16／16-qpr2／17。CISA ADPのSSVCで3件ともExploitation=none、Automatable=yes、Technical Impact=total（評価記録時点）。これは悪用実例が今後もないことの保証ではない。CVE原本が機構を記載しても、具体的な感染経路（特定メッセージやアプリ等）まで確定したわけではない。
+
+未検証のため候補から断定を外す点:
+- 「216件（Critical 23件、High 193件）」「2026-11-01では119件のみ・11-05で追加97件」「2026-11-05のパッチレベルですべて解消」はMuseが参照する二次解説の記載。CNAの各JSONはGoogle公式Android Security BulletinへのURLを参照するが、今回の許可されたGitHub経路では速報原文を取得しておらず、総数・パッチレベルの範囲は独立確認していない。
+- 「Android 13以前は安全」「全メーカーで即日配信」「悪用が絶対にない」とは解釈しない。影響版のCNA列挙と旧版の安全性、提供元の配信状況は別の問い。全件のKEV未掲載についても今回独立確認していない。
+
+検収用の公開候補:
+「Googleが登録したAndroidの脆弱性3件（CVE-2026-58868／58876／58936）は、利用者の操作なしで遠隔コード実行につながるおそれがあります。公式CVEではAndroid 14〜17等が影響対象。利用端末のセキュリティ更新状況を確認し、メーカーの正規更新を適用してください。」Google公式速報の原文で総件数・パッチ日付・修正範囲を照合できるまでは、特定パッチレベルですべて修正済みと書かない。SNS投稿、機器操作、Doc05書込みは行っていない。
+
+公開一次根拠（GitHub上のCNA原本を独立取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58868.json （Google Android CNA、blob SHA: f06a5d3a1921e0856d83658023edb47045b1729a）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58876.json （Google Android CNA、blob SHA: 9cda2dfac845b41890f87479d30d510e7f817584）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/58xxx/CVE-2026-58936.json （Google Android CNA、blob SHA: 851d1cc9ffbd2b006281fcad70a329142a053716）
+- Google公式速報（各CNAが参照する原本URL。今回は本文未取得）: https://source.android.com/docs/security/bulletin/2026/2026-11-01
