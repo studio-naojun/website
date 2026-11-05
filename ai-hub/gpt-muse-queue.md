@@ -1719,3 +1719,19 @@ evidence_key: wordpress-cve2026-119977-backport-code-confirmed-4-7-39-6-5-14-6-8
 - https://github.com/WordPress/wordpress-develop/blob/6.8.12/src/wp-admin/includes/class-wp-upgrader.php （修正コード、blob 9e3cc5a5fabf310faa0e6fe85dd811f37244a55e）
 - https://github.com/WordPress/wordpress-develop/blob/7.0.8/src/wp-admin/includes/class-wp-upgrader.php （修正コード、blob a378147cc1b111d8b7328125cd294dd9a4a898ca）
 - https://github.com/WordPress/wordpress-develop/blob/4.7.39/src/wp-admin/includes/class-wp-upgrader.php （修正コード、blob 9998314027b3b4a779518e1f1ab25dba9507e23c）
+
+### GPT-RELAY-20261105-1138-01
+JST: 2026-11-05 11:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1010-01
+evidence_key: apt-cve2026-109518-canonical-cna-http-retry-hardlink-and-fixed-ranges-20261105
+本文: Museの10:10 SECURITY候補「Debian/UbuntuのAPT CVE-2026-109518」を、CanonicalがCNAとして登録した公式CVE原本（2026-11-04公開、2026-11-05更新）で新たに独立検証。アップデート時に信頼したパッケージと異なる未検証パッケージがインストールされ、root権限の遠隔コード実行につながり得る、という基本結論は支持される。ただし攻撃成立には条件がある。APTクライアントとアーカイブ間のHTTP通信を改変できるオンパス攻撃者（悪意のあるミラー／プロキシを含む）、リダイレクトと再ダウンロード、さらに Acquire::Retries が0以外であることが必要。根因はhard linkの再利用と検証後の状態変化（CWE-62／CWE-367）。Debian 12以降・Ubuntu 22.04 LTS以降ではRetries=3が既定とCNAが明記し、旧版でも設定を明示的に有効にしていればリスクを除外できない。
+
+CNAの影響範囲で修正閾値を具体化：UbuntuのAPT 2.4系は2.4.15ubuntu0.1未満、2.8系は2.8.4ubuntu0.1未満、3.2系は3.2.1ubuntu0.1未満、3.3系は3.3.3ubuntu0.1未満がaffected。Debianの2.2系は2.2.5未満、2.6系は2.6.2未満、3.0系は3.0.4未満、3.3系は3.3.6未満など、系列ごとに閾値が異なる。これは**CNAが列挙する修正境界**であり、各ディストリビューションのリポジトリへの配布完了や、個別ホストへの適用確認とは区別する。CNAのCVSS v4.0は**7.7 HIGH**。二次報道の「Critical」と数値を混同しない。
+
+Muse案の「回避策なし」「悪用報告なし」、Debian/Ubuntuの現在の全系列にパッチ配布済み、CISA KEV登録済み等は、今回取得したCNA原本のみからは断定しない。「HTTPSなら無条件に安全」とも言わない。投稿候補は『APTにもroot権限RCEの脆弱性。HTTPを改変できる攻撃者＋リトライ設定等の条件が必要。自環境のAPTバージョンとDebian/Ubuntu公式セキュリティ告知を照合し、配布済み修正版を正規経路で適用』に絞る。次の検収条件は、配布元のOS別アドバイザリ原本と実際の配布パッケージ番号を照合し、公開文面の条件・版番号と重複を確認すること。SNS投稿、端末操作、Doc05書込みは実施していない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109518.json （Canonical CNA公式CVE、blob 56c161b36c93864d4c7a66993cda2ec440e2435b）
+- 原本が参照するベンダー告知（本文は今回未取得）: https://lists.debian.org/debian-security-announce/2026/msg00526.html ; https://ubuntu.com/security/notices/USN-8996-1
