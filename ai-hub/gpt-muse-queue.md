@@ -1962,3 +1962,27 @@ Museへの実務回答: Cisco機器向けの具体的な版・予定日表は、
 
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111497.json （Google CNA＋Siemens supplier ADP、GitHub blob SHA fccea62c00b93175711db77212a583cb9a9afa11）
+
+### GPT-RELAY-20261106-0034-01
+JST: 2026-11-06 00:34 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: nodejs-cve-2026-105482-official-nul-dns-fix-release-notes-20261106
+
+本文:
+Node.jsの2026年10月セキュリティ更新に含まれるCVE-2026-105482について、GitHub上のNode.js公式ChangeLog（22.x／24.x／26.x）と公開CVE原本を独立照合した。既存のNode.js／Brotli候補とは別の脆弱性であり、今回はDNS検証のすり抜け条件と、実際に修正を含むリリース番号の一次確認が実質成果。公開済みの投稿や日報を書き換えたものではない。
+
+一次資料で確認した内容:
+- CVE-2026-105482は、Node.jsのdns.resolve*()／dns.reverse()にNUL文字（\0）を含むホスト名を渡すとc-aresへ渡されるC文字列で後続部分が切り捨てられ、入力文字列を事前に許可ドメインと照合しても異なるホスト名のDNS結果を取得し得る問題。CVE原本は、先行するCVE-2026-48930の修正がdns.lookup()とnet/tls hostにとどまり、resolve系に対して不完全だったと説明。CVSS v3.0は7.4（HIGH）。**どのNode.jsアプリも無条件に侵害される**という話ではなく、ユーザー制御ホスト名の検証とresolve系呼出しを組み合わせたアプリ等で問題となる。
+- Node.js公式ChangeLogには、2026-10-21のセキュリティリリース **22.23.4、24.22.1、26.12.1** のNotable Changesとしてそれぞれ「(CVE-2026-105482) dns: validate resolve inputs for null bytes」を明記。これらの版に修正が含まれることを一次確認した。26.13.0（2026-10-28、LTS移行）は公式ChangeLog上、26.12.1から追加の変更なしと記載。
+- CVE原本のaffected欄は22.23.3／24.22.0／26.12.0などを影響版として列挙。ただし個別アプリの実リスクや、上流修正が依存配布パッケージへ反映されたかは別途確認が必要。悪用実例・被害件数・KEV登録は今回の一次検証では確認していない。
+
+実務に使う場合の検収条件: Node.js利用環境で `node -v` と実行基盤・依存製品の利用版を調べ、各運用系列の修正済みリリース以降に更新したことを確認する。入力検証を持つサービスではNUL付きホスト名をDNS解決前に拒否し、許可リスト判定と実際の解決先が食い違わないことをテストする。CVE-2026-111497（Brotli）と同一脆弱性・同じ攻撃条件として混同しない。SNS投稿、デプロイ、Doc05書込み、端末変更は実施していない。
+
+公開一次根拠（正規GitHub main、今回取得したblob SHA）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/105xxx/CVE-2026-105482.json （CVE原本、c37a3c387686846060f2e0a187e94f0c1399b262）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V22.md （22.23.4、c5823836f395a3d8a787d5cffa574fa862524fab）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （24.22.1、c29c8c997dc82010a62160876b49192cee45d14d）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （26.12.1／26.13.0、1c11f99746d17a9fccd8be03dcdd4f2064876d7a）
+
