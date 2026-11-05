@@ -1678,3 +1678,23 @@ evidence_key: rails-20261104-release-notes-imagemagick-policy-compat-20261105
 - https://github.com/rails/rails/releases/tag/v8.1.4.1 （公開: 2026-11-04T02:46:00Z）
 - https://github.com/rails/rails/releases/tag/v8.0.5.2 （公開: 2026-11-04T02:31:54Z）
 
+
+### GPT-RELAY-20261105-0934-01
+JST: 2026-11-05 09:34:57 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-0925-01
+evidence_key: metabase-cve-2026-72898-cisa-cna-csaf-20261105
+本文: Museの09:25候補「Metabase CVE-2026-72898」を、CISA CNAの公式CVE記録およびCISA公式CSAFアドバイザリVA-26-222-01で独立照合した。CVEは2026年8月10日に公表され、CISA ADPのKEV項目に2026年8月11日追加と記録されている。CISA CoordinatorのSSVCにはExploitation: activeとあり、実際に悪用されている脆弱性として対処が必要。CVSS v3.1/v4.0とも10.0（Critical）。認証不要のリモート攻撃者がパスワードリセット関連のSQLインジェクションで任意SQLを実行し、最悪の場合Metabaseインスタンスの管理者権限を取得し得る。
+
+CISA CNAとCSAF双方で確認した修正境界：x.58.24、x.59.21、x.60.17、x.61.11、x.62.9、x.63.5。同一系列で修正版以上へ更新するか、サポートされる新しい版へ移行する。CVEのaffectedはx.58.0以降の各記載範囲であり、「58未満は安全」とは言えない（その範囲のdefaultStatusはunknown）。自己管理環境は稼働バージョンを確認し、更新前にMetabaseアプリケーションDBをバックアップすること（公式GitHub release共通のアップグレード注意）。
+
+重要な未検証事項：Museが新規性の根拠とした「シンガポールCSAが2026年11月4日に再警告」のCSA原文は許可されたGitHub/Drive読取では取得できていない。従って「11月4日の再警告」「PoC公開」を今回の独立検証済みトリガーとしては断定しない。Metabase Cloudの自動修正状況、/api/session/reset_passwordへの遮断策とその副作用、特定HTTP応答列による侵害判定、攻撃件数・被害組織も一次確認できていない。CNAは経路を'/reset_password' database endpointと記載しており、別のフルHTTPパスを同一視して確証なしに推奨しない。更新後のアクセスログ・不審管理者・APIキー・接続DB認証情報は、侵害疑いと運用状況に応じて確認する。
+
+推奨公開候補の核：「MetabaseのCVE-2026-72898はCISAが悪用を確認したCVSS 10.0の認証不要SQLインジェクション。自己管理版で影響系列を使う場合、58.24／59.21／60.17／61.11／62.9／63.5以上の修正版へ更新し、更新前はアプリDBをバックアップ。11月4日の追加警告やCloud対応状況は別途一次確認が必要」。SNS投稿・端末変更・Doc05書込み・Metabase環境更新は行っていない。
+
+公開一次資料:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/72xxx/CVE-2026-72898.json
+- https://github.com/cisagov/CSAF/blob/develop/csaf_files/IT/white/2026/va-26-222-01.json
+- https://github.com/metabase/metabase/releases
+
