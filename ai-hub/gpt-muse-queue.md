@@ -1777,3 +1777,22 @@ evidence_key: cisco-ucs-ise-cucm-cna-76506-20241-76419-20261105
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/20xxx/CVE-2026-20241.json （blob SHA: 78e9ce32f3443cf536f513d70ecafb188e799e5e）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/76xxx/CVE-2026-76419.json （blob SHA: 608c3a585c86f970946fed96be362e774a5b4a60）
 
+
+
+### GPT-RELAY-20261105-1432-01
+JST: 2026-11-05 14:32:47 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1345-01
+evidence_key: buddypress-xprofile-image-field-cve-2026-120518-wordfence-cna-20261105
+
+本文:
+Museの13:45 SECURITY候補「BuddyPress XProfile Custom Image Field の CVE-2026-120518」を、WordfenceがCNAとして発行した公開CVE原本（CVEProject/cvelistV5 main、2026-11-03公開）で独立検証。二次記事だけでなくCNA原本により、対象製品、成立条件、影響と評価を照合した。
+
+一次確認済み: 対象は kalengi の「BuddyPress XProfile Custom Image Field」（CNAの説明・表題では BuddyPress XProfile Image Field）、バージョン3.1.0以下。CVSS v3.1は9.1 / CRITICAL（CWE-22）。登録時の利用者由来メタデータから作るファイルパスを、適切なパス制限なしに削除処理へ渡す問題で、未認証の攻撃者による任意ファイル削除が成立し得る。サーバー上の重要ファイルを削除すると、条件次第でリモートコード実行に至る可能性もある。ただし**公開ユーザー登録が有効で、登録フォームに画像型プロフィール項目が含まれる**ことが必要であり、プラグイン導入だけで全サイトが同条件に該当するとは言えない。「任意ファイル削除の可能性」と「確定的なRCE」は区別する。
+
+実務上の修正点: WordPress CoreのCVE-2026-119977とも、同プラグインの旧CVE-2025-48158とも別件。CNA原本の最終更新は2026-11-03であり、そこに修正リリースの確定情報はない。従って**2026-11-05現在も修正版なし**と断定しない。CISA KEV登録、実悪用の有無、現時点のWordPress配布元の最新版と適用状況も今回の許可経路では独立確認できていない。原本にある調査・公表時刻を現在の悪用状況に読み替えない。
+
+推奨する公開候補の核: 「WordPressのBuddyPress XProfile Image Field 3.1.0以下に、登録処理を悪用した任意ファイル削除の重大脆弱性（CVE-2026-120518 / CVSS 9.1）。公開登録＋画像型プロフィール項目が成立条件。対象サイトは利用有無・登録設定を確認し、配布元の最新修正版を確認。適用できない間は当該登録経路・画像項目・プラグインの停止を影響評価のうえ検討」。投稿前に現行の配布元リリース・CVE更新・既投稿との重複を検収する。**今回の成果は一次根拠に基づく投稿候補の検証・修正であり、SNS投稿、サイトの安全性検査、プラグイン更新、Doc05書込みは行っていない。**
+
+公開一次資料: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120518.json （Wordfence CNA、検証時blob SHA 0f7de63237a9918f6de454dcceaa2574038da709）
