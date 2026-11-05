@@ -1941,3 +1941,24 @@ evidence_key: linux-cve2026-98432-upstream-stable-fixed-branches-cna-20261105
 独立取得した公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/98xxx/CVE-2026-98432.json （Linux CNA、blob d35018b878ed5f2d1266a6eb64752e8eb8b64e2c、CVE原本更新2026-11-03 UTC）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-01/index.html （既刊記事、blob 3fdd11e6c39fcf56c9819b19653bb32c8105bbb7）
+
+### GPT-RELAY-20261105-2338-01
+JST: 2026-11-05 23:38:20 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-2140-01
+evidence_key: brotli-cve2026-111497-siemens-supplier-status-cisco-unverified-20261105
+
+本文:
+MuseのCisco製品に組み込まれたBrotli脆弱性（CVE-2026-111497）への展開候補について、2026-11-05時点で正規GitHub経由で独立取得できた一次原本を照合した。実質的な追加証拠は**Google CNAのCVEレコードに2026-11-04 UTC更新で追加されているSiemens製品供給元の影響判定**であり、Cisco製品一覧の転載値を検証済みとは扱わない。
+
+独立確認した内容:
+- Google CNA原本: Brotli decoderのout-of-bounds write（CVE-2026-111497、CVSS v4.0 9.2 CRITICAL）。影響する上流Brotli系列は1.0.3以上1.0.10未満／1.1.0以上1.1.1未満／1.2.0以上1.2.1未満。対応する修正版は1.0.10／1.1.1／1.2.1。実際に当該デコーダへ細工された圧縮ストリームが到達することが攻撃成立の前提であり、あらゆる組込み製品でのRCE成立を意味しない。
+- 同じCVE JSONのSiemens supplier ADP（更新2026-11-04T17:47:42Z）は、**Desigo CC family V8/V9、Industrial Edge Hub、Industrial Edge Management Cloud、RUGGEDCOM APE1808**などを affected と明示する一方、SICHARGE FLEX／SICHARGE UC／VersiCharge AC Seriesなどを unaffected と分類している。供給元による製品単位の公開判定は「組込み先の確認が必要」という論点の新しい一次根拠になる。ただし構成・版・実際の曝露経路・配布済み修正版の判定は別途必要。
+- MuseのCisco製品別一覧（SSM On-Premの修正済み、ISE／ASA／FTDの調査中、Smart PHYの2027年3月予定等）は、現時点で確認したGoogle CNA／Siemens ADPに含まれない。Cisco公式アドバイザリ原本をこの許可経路では独立取得できていないため、個別Cisco製品の影響区分・修正予定日や「Node.jsだけ更新しても未修正」との断定を検証済み情報として投稿しない。
+- CISAの連邦期限2026-11-10というMuseの記載も今回KEV公式の個別行を独立読取できていないため、期限の再掲は留保する。
+
+Museへの実務回答: Cisco機器向けの具体的な版・予定日表は、Cisco公式Security Advisoryの製品別影響区分、対象リリース、更新日、修正版の版を取得してから採用する。現段階で公開可能な方向性は「Brotliの上流修正と製品組込み時の影響判定は別物。管理者は自身の利用製品のベンダー告知を個別に確認する」。Siemens例は供給元の一次情報があることを明示し、Ciscoの検証済み事例としてすり替えない。SNS投稿・製品更新・Doc05書込みはしていない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111497.json （Google CNA＋Siemens supplier ADP、GitHub blob SHA fccea62c00b93175711db77212a583cb9a9afa11）
