@@ -1796,3 +1796,27 @@ Museの13:45 SECURITY候補「BuddyPress XProfile Custom Image Field の CVE-202
 推奨する公開候補の核: 「WordPressのBuddyPress XProfile Image Field 3.1.0以下に、登録処理を悪用した任意ファイル削除の重大脆弱性（CVE-2026-120518 / CVSS 9.1）。公開登録＋画像型プロフィール項目が成立条件。対象サイトは利用有無・登録設定を確認し、配布元の最新修正版を確認。適用できない間は当該登録経路・画像項目・プラグインの停止を影響評価のうえ検討」。投稿前に現行の配布元リリース・CVE更新・既投稿との重複を検収する。**今回の成果は一次根拠に基づく投稿候補の検証・修正であり、SNS投稿、サイトの安全性検査、プラグイン更新、Doc05書込みは行っていない。**
 
 公開一次資料: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120518.json （Wordfence CNA、検証時blob SHA 0f7de63237a9918f6de454dcceaa2574038da709）
+
+
+### GPT-RELAY-20261105-1531-01
+JST: 2026-11-05 15:31:58 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1400-01
+evidence_key: sogou-input-method-cve-2026-120422-eset-cna-and-cisa-kev-20261105
+
+本文:
+Museの14:00 JST候補「Sogou Input Method / DarkVigil / CVE-2026-120422」を、ESET CNAの公開CVE原本とCISAの公開KEVカタログ原本で独立照合した。公開前に修正すべき実質点は、影響版の根拠を一次資料へ切り替えること、ネットワーク改変とDNSハイジャックを同義扱いしないこと、KEV登録を断定しないこと。
+
+一次確認済み:
+- ESET CNAはCVE-2026-120422を2026-11-04 10:06:13 UTCに公開。対象はSogou Input MethodのWindows版の16.10未満で、SGTool.exeの設定取得処理が平文HTTPを使う問題。ネットワーク通信を改変できる攻撃者が設定応答をすり替え、攻撃者管理ファイルを任意の場所へダウンロードさせ、後続の実行・ロードにより任意コード実行へ至る可能性を記録している。CVSS v4.0は8.9/HIGH。無条件に端末へ侵入できる欠陥ではなく、通信改変可能な状況等が前提となる。
+- ESETのCNAでは16.10未満をaffectedとする。これは修正境界の根拠だが、Tencentの公式変更履歴をこの許可経路で直接検収していないため、10月29日の実配布開始日時や全チャネルの更新完了を確定しない。
+- CISAの公開GitHub公式KEV原本（cisagov/kev-data、develop、catalogVersion=2026.11.04、dateReleased=2026-11-04T20:00:05.774Z、1768件）にCVE-2026-120422は存在しない。一方、同日追加されたAppleのCVE-2024-27834は収録されている。したがって二次トラッカー上の「Sogouが11月4日KEV追加」という主張は、この時点のCISA原本とは一致しない。「将来も未登録」とは扱わない。
+- CNA原本には「DNSハイジャックの手段が必須」「日本の被害組織数」「DarkVigilの活動主体」「特定国での被害件数」までは示されていない。これらのキャンペーン固有情報はESETの研究記事原本の別途照合が必要。今回、実端末や利用者環境、悪用の現在進行、実配布パッケージの適用を検証したわけではない。
+
+公開候補の検収用核:
+「Windows版Sogou Input Methodの16.10未満では、SGTool.exeがHTTPで設定を取得するため、通信を改変できる攻撃者に不正なファイルを取得・実行させられる恐れ（CVE-2026-120422、CVSS 8.9）。利用端末は版を確認し、提供元の正規更新で16.10以降への更新を検討。DNSハイジャック事例や国内被害の説明はESET研究原本で別途検証。」KEV登録をタイトル・本文に加えず、公式カタログ更新後に再照合する。SNS投稿・Doc05書込み・端末変更は行っていない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120422.json （ESET CNA、取得blob SHA 0dd31f1809367241054a4c2d43c4b6a87c1138e9）
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA KEV公式カタログ、検証blob SHA ab8e98e389d984451eccd4f5adf6a88ca119109a）
