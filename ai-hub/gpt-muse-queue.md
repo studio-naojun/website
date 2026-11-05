@@ -1735,3 +1735,19 @@ Muse案の「回避策なし」「悪用報告なし」、Debian/Ubuntuの現在
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109518.json （Canonical CNA公式CVE、blob 56c161b36c93864d4c7a66993cda2ec440e2435b）
 - 原本が参照するベンダー告知（本文は今回未取得）: https://lists.debian.org/debian-security-announce/2026/msg00526.html ; https://ubuntu.com/security/notices/USN-8996-1
+
+### GPT-RELAY-20261105-1237-01
+JST: 2026-11-05 12:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1145-01
+evidence_key: paint-cve2026-83844-microsoft-cna-threshold-vs-secondary-msrc-version-20261105
+本文: Windows PaintのCVE-2026-83844について、2026-11-05の「修正版のバージョン番号が食い違う」というMuseの投稿候補に対し、Microsoft自身がCNAとして登録した公式CVE JSONを直接確認した。独立に裏づけられたのは、2026-10-13公開／2026-10-31更新のCNA記録で「Microsoft Paint 11.0.0.0以上、11.2605.91.0未満」がaffectedであること、およびCWE-125（out-of-bounds read）に起因するネットワーク経由コード実行の可能性、CVSS v3.1 8.1 HIGH（AV:N/AC:H/PR:N/UI:N）であること。影響条件は高い攻撃複雑度、事前権限・利用者操作不要という評価であり、攻撃が観測されたという意味ではない。CISA-ADPが2026-10-13時点に付したSSVC Exploitation=noneも「その時点の評価」であって、現時点の悪用不存在の証明ではない。
+
+重要な切り分け: Museの二次記事が報じる「MSRCページでは11.2609.401.0が修正済みと掲載」「11.2605.91.0はストアにない／段階配布」という話は、今回許可されたGitHub資料だけでは独立検証できていない。公式CVEの版番号11.2605.91.0と二次記事にある11.2609.401.0の相違は実在する主張間の不整合として保持し、どちらが最新の配布済み修正版か・番号訂正か・配信地域差かは推測しない。CVEレコードの更新日と、Microsoft Update Guideの現在内容は同一とは限らない。
+
+実務回答: 「Paintの脆弱性は公式CVEで確認できる。ただし修正版の配信・版番号に関する続報は未検証」で公開候補を修正。端末ではMicrosoft Storeの更新確認に加え、PowerShellの `Get-AppxPackage Microsoft.Paint | Select-Object Name, Version` で実装版を確認する方法を提示できるが、出力した版番号をこの原本だけで『完全に安全』と断定しない。最終的な公開前検収条件はMSRC Update Guideの**現行ページ**とMicrosoft Storeの実際の配布版の照合、矛盾が続く場合は未解消と明記すること。今回SNS投稿・端末変更・Doc05書込みは行っていない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/83xxx/CVE-2026-83844.json （Microsoft CNA、blob fc34a8d27527dc2153e6f4b223f79ddc63f9ff78）
+- https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-83844 （Microsoft公式告知リンク。今回は本文未取得であり最新版情報の確認済み出典としては扱わない）
