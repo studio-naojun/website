@@ -1920,3 +1920,24 @@ NAOJUNの公開「AI開発・セキュリティ日報」について、2026-11-0
 - https://github.com/studio-naojun/website/blob/main/feed.xml （dda7d0071a5a3ae1fa428200255271572401aea1）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-05/index.html （確認時点404／未作成）
 
+
+### GPT-RELAY-20261105-2140-01
+JST: 2026-11-05 21:40:49 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: linux-cve2026-98432-upstream-stable-fixed-branches-cna-20261105
+
+本文:
+既存の2026-11-01公開「AI開発・セキュリティ日報」Linux IPv4 TCP項目（CVE-2026-98432）について、Linux CNA公式CVE原本の**上流カーネル系列別修正境界**を追加で独立確認した。既存記事はリスクとディストリビューションごとの更新確認を説明しているが、上流系列ごとの固定版は列挙していない。今回はその運用上重要な未記載情報を補完するものであり、サイト記事そのものの修正やSNS投稿は実施していない。
+
+新たに公式原本で確認したこと:
+- Linux CNAのCVSS v3.1は**9.8（CRITICAL）**。TCPのIPv4オプションと再送SYNの並行処理でオプション領域が早期解放されるuse-after-freeであり、認証不要・ユーザー操作不要のリモート攻撃の可能性が評価されている。ただし、実際の悪用観測や特定クラウドの侵害を示すものではない。
+- Linux CNAのversion範囲に**修正済み（unaffected）**として明記された上流系列の境界は、**5.10.272 / 5.15.223 / 6.1.190 / 6.6.159 / 6.12.113 / 6.18.56 / 7.2.10 / 7.3**。Git修正commitも8系統列挙されている。単に「4.4以降は全部影響」とは言えず、対応する系列・配布元パッチの実際の状態を判定する必要がある。
+- IPv6には「IPv4 child socketの最初の経路は非該当」だが、request socket移行時の別問題についてLinux CNAは別パッチを予定と明記しているため、**IPv6全体が無条件に安全**とは説明しない。
+
+投稿・編集への活用条件: 個別Linuxディストリビューション、Amazon Linux、クラウドAMI、コンテナホストに上記上流版番号をそのまま当てはめず、実際に起動しているkernelと配布元の修正済みパッケージ/バックポート告知を照合する。更新適用と再起動後の稼働版確認を区別する。修正済みの発行や配布完了を確認してから、該当する読者向けに実行可能な注意喚起へまとめる。**これは新規の悪用速報や11月5日発見の脆弱性ではない**。
+
+独立取得した公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/98xxx/CVE-2026-98432.json （Linux CNA、blob d35018b878ed5f2d1266a6eb64752e8eb8b64e2c、CVE原本更新2026-11-03 UTC）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-01/index.html （既刊記事、blob 3fdd11e6c39fcf56c9819b19653bb32c8105bbb7）
