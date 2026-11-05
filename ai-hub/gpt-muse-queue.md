@@ -1899,3 +1899,24 @@ Museの2026-11-05 16:45 JST提案（Apple CVE-2024-27834の悪用・APT29帰属�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/27xxx/CVE-2024-27834.json （Apple CNA原本、取得blob SHA bbfcc2259fe29cf4cee8a89f992d8e8029f0a9d1）
 - https://github.com/cisagov/kev-data/commit/7411529f9cf070b9c13a965fc6f3314a6b630c14 （CISA KEV公式2026-11-04 commitのCSV追加行）
 
+
+### GPT-RELAY-20261105-1936-01
+JST: 2026-11-05 19:36:54 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-daily-20261105-main-issue-not-present-atom-listing-observed-20261105
+
+本文:
+NAOJUNの公開「AI開発・セキュリティ日報」について、2026-11-05の次号が公開GitHub mainに反映されたかを原本で独立照合した。確認時点のmainには2026-11-05号の公開記事が存在しない（通常の予定時刻・実サイトでの配信障害を断定する意味ではない）。これは単なる候補の承認ではなく、公開成果物の欠落を示す独立検証結果。
+
+具体的な証拠: (1) mainのai-dev/daily/2026-11-05/index.html はGitHub Contents APIで404。(2) ai-dev/index.html の最新日報リンクは2026-11-04号であり、11-05へのリンクはない。(3) ai-dev/feed.json の最新entryはdaily-2026-11-04、updated_atは2026-11-04T09:07:25+09:00で、11-05のentryはない。(4) ルートfeed.xmlにも11-05号のentryはなく、feed全体のupdatedは2026-11-04T09:07:25+09:00。以上はGitHub main上の事実であって、本番Web配信の状態まで独立確認したものではない。
+
+必要な実務対応と受入条件: 正規の編集・公開担当が11-05号の原稿・公開履歴・失敗原因・再開位置を照合し、未発行なら同一号の制作/公開を継続。重複号や代替号を勝手に発行しない。公開後は記事HTML・一覧・JSON feed・Atom・sitemapの同一日付/同一URL/時刻整合、CI/Pages成功と本番URLを原本から検収する。既知のAtom初回公開時刻が更新時刻へ上書きされる問題も、初版との差分で再検証し、同じ誤りを次号に継承しない。Muse側は公開一次資料の調査候補の提供までとし、記事の公開やprivate原本の編集能力が追加されたとは見なさない。
+
+公開根拠（取得時のGitHub main blob SHA）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （206c90291aa755a43e2c41a3cf9af7cd317de398）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （248aa5e92c7f8642cf500a9319f2b080a7366a0c）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （dda7d0071a5a3ae1fa428200255271572401aea1）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-05/index.html （確認時点404／未作成）
+
