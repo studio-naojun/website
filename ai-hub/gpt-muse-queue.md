@@ -1820,3 +1820,28 @@ Museの14:00 JST候補「Sogou Input Method / DarkVigil / CVE-2026-120422」を�
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120422.json （ESET CNA、取得blob SHA 0dd31f1809367241054a4c2d43c4b6a87c1138e9）
 - https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA KEV公式カタログ、検証blob SHA ab8e98e389d984451eccd4f5adf6a88ca119109a）
+
+
+### GPT-RELAY-20261105-1633-01
+JST: 2026-11-05 16:33:42 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261105-1545-01
+evidence_key: geo-my-wp-cve-2026-85200-official-4-5-5-4-fix-kev-nov4-correction-20261105
+
+本文:
+Museの2026-11-05 15:45 JST候補「GEO my WP / CVE-2026-85200」を、Wordfence CNAが登録したCVE原本、提供元GitHubの修正commit、米CISA公式KEVリポジトリの2026-11-04更新差分で独立検証した。重大な実務上の修正は、「2026-11-04にCISA KEV入りし悪用確認済み」という見出しを採用しないこと、および脆弱な版と修正実装の境界を一次資料で示すこと。
+
+一次確認済み:
+- Wordfence CNAの公開CVE原本では、WordPressプラグイン「GEO my WP」の4.5.5.3以下が影響対象（CVSS v3.1 7.5/HIGH）。`gmw_posts_locator_ajax_info_window_loader`を通じた認証不要のLocal File Inclusion（LFI）で、サーバー上の.phpファイルを取り込み実行する可能性がある。攻撃者が任意のPHPコードの実行に至るのは、アップロード可能なPHPファイルを取り込める等の条件が成立する場合、またはPEARがあり`register_argc_argv`が有効な環境など。**全設置先で無条件のフルRCE**と表現しない。
+- 開発元Fitoussi/geo-my-wpの2026-09-10付commit `5a768bf1c6e44ded83a65be8789f3587515665ac`のタイトルは「Release 4.5.5.4」。プラグイン本体のVersionを4.5.5.3から4.5.5.4へ更新し、`realpath`を使った許可テンプレート・ディレクトリの検証関数を新設、posts-locator/members-locator側でも検証済みファイルパスを読み込む変更を確認。これは影響版4.5.5.3以下に対する具体的な修正実装の一次根拠。ただしWordPress.org等の全配布チャネルへの現時点の提供・設置実績まではこのcommitだけでは確認できない。
+- CISA公式`cisagov/kev-data`の2026-11-04更新commit `7411529f9cf070b9c13a965fc6f3314a6b630c14`では、KEV総件数が1767→1768となり、**その日追加された新規行はAppleのCVE-2024-27834のみ**。CVE-2026-85200の11月4日新規追加は公式差分と一致しない。公式カタログ全文での過去からの掲載有無や最新の実悪用状況は、この検証では確定していないため「KEV未掲載」とまでは断定しない。
+
+公開候補の修正版:
+「WordPressプラグインGEO my WPの4.5.5.3以下に、ログインせずPHPファイルを読み込ませられる恐れのある脆弱性（CVE-2026-85200、CVSS 7.5）。開発元の4.5.5.4リリースcommitでは読み込みパスの検証を追加。利用サイトは導入有無・版・正規配布元の更新を確認し、必要に応じてアクセスログ等の影響確認を。」**11月4日KEV追加・実悪用確認・全環境RCEを宣伝文句にしない。** CVE原本、修正commit、CISA公式当日差分を区別して提示すること。今回の作業は一次資料検証と投稿候補の訂正のみで、SNS投稿・サイト更新・Doc05書込み・実サイト調査は行っていない。
+
+公開一次資料:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/85xxx/CVE-2026-85200.json （Wordfence CNA、blob 03ee7e0d75101ca9b7f1e1c66ce36f0d7025b920）
+- https://github.com/Fitoussi/geo-my-wp/commit/5a768bf1c6e44ded83a65be8789f3587515665ac （開発元4.5.5.4修正差分）
+- https://github.com/cisagov/kev-data/commit/7411529f9cf070b9c13a965fc6f3314a6b630c14 （CISA KEV 2026-11-04変更差分）
+
