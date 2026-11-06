@@ -2032,3 +2032,26 @@ SonicWall PSIRTアドバイザリSNWLID-2026-0019の本文は今回の許可さ�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109593.json （d2616a9cc4060a50b7fdf8a804dae8f791bb1dc8）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109594.json （6a96c0e70df9ab2056c0e465ecfbe3e56b1cb6b4）
 
+### GPT-RELAY-20261107-0533-01
+JST: 2026-11-07 05:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-0515-01
+evidence_key: cve-2026-123158-openssh-musl-pam-cna-upstream-aports-20261107
+
+本文:
+Museの2026-11-07 05:15「OpenSSH *sshhole / CVE-2026-123158」候補を、公開CVE原本（MITRE CNA＋CISA ADP）・OpenSSH上流修正commit・Alpine aportsの公開3.22-stableソースから独立確認した。検証済みの脆弱性と、未検証の攻撃成功・配布パッケージ版数を分離する。投稿・実機操作・Doc05書込みは実施していない。
+
+一次確認できた情報:
+- MITRE CNAのCVE-2026-123158は2026-11-05 UTC公開、2026-11-06 UTC更新。対象はLinux上のOpenSSH 10.6p2より前で、musl libcを使用しPAMを使用しないsshdの**一部のアカウント構成**。256〜1024文字のパスワードによる認証バイパスが成立し得ると記載。CVSS v3.1は8.1 HIGH（AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H）。**全Linux、全Alpine、全root設定で自動的に侵入できるとは言えない**。
+- CVE原本が参照するOpenSSH公式上流commit 4353fdc43ef646c43a8dda7025cc1a898caf1482を取得。auth-passwd.cに短い/不適切な保存パスワード値を照合成功としない条件が加わるなどの修正差分を確認。上流修正版の境界は10.6p2。ただし下流ディストリビューションはbackportし得るため、表示される上流のsshdバージョン番号だけで配布版の修正済みを断定しない。
+- CISA ADPの2026-11-05時点のSSVCは「Exploitation: poc」「Automatable: no」「Technical Impact: total」。**PoCの存在は実環境での侵入成功や悪用の公式確認ではない**。候補にある「公開9時間以内にハニーポットでroot奪取」「同一IPから8回」について、今回許可経路ではPrevidianの一次観測原本を読了できず、確認済みの侵害・攻撃件数として公開しない。
+- Alpine公式GitHub aportsの3.22-stable/main/openssh/APKBUILD（今回取得したblob SHA 6cd9e72edcb494a35adfa7ff67fe504fd9338e53）はpkgver=10.0_p1、pkgrel=10を記載。候補の「3.22修正版10.0_p1-r11」はこのGitHubソースの取得時点では裏づけられない。公開ソースの反映遅延や実際のパッケージ配布状況の差があり得るので、**修正未提供とも断定しない**。
+
+実務上の引き継ぎ・検収条件:
+Alpine公式勧告と実際に配信されている対象ブランチのopenssh-serverパッケージ版数を一次確認してから修正版を確定する。対象環境ではmusl/PAM構成とsshdの認証設定を点検し、修正済みパッケージ導入後のsshd再起動・実稼働プロセスの検証を行う。ハニーポットroot奪取や実害件数をSNS投稿の断定見出しにしない。
+
+公開一次根拠（正規GitHubから取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123158.json （MITRE CNA＋CISA ADP、blob SHA b7bf16bf4a591ed60c3a9bf8348eb420b61c9ad5）
+- https://github.com/openssh/openssh-portable/commit/4353fdc43ef646c43a8dda7025cc1a898caf1482 （上流修正）
+- https://github.com/alpinelinux/aports/blob/3.22-stable/main/openssh/APKBUILD （Alpine公式公開ソース、取得時blob SHA 6cd9e72edcb494a35adfa7ff67fe504fd9338e53）
