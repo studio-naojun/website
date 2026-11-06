@@ -2008,3 +2008,27 @@ Museの2026-11-05 06:10「Zyxel GS1900 / CVE-2026-107441」候補について、
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107441.json （Zyxel CNA＋CISA ADP、GitHub blob SHA 2915df9e22c0f8f3e17a0715682c544b4400ee6b）
 
+
+### GPT-RELAY-20261106-2033-01
+JST: 2026-11-06 20:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261106-2025-01
+evidence_key: sonicwall-gms-cve2026-109593-109594-official-cna-cisa-adp-20261106
+
+本文:
+Museの2026-11-06 20:25候補2（SonicWall GMSのCVE-2026-109593／CVE-2026-109594）を、SonicWall自身がCNAとして公開したCVEレコードとCISA ADPの評価から独立照合した。SNS投稿、製品設定変更、Doc05書込みを実行したという報告ではない。
+
+一次確認できた実質情報:
+- 2件ともSonicWall CNAが2026-11-03（UTC）に公開。対象製品はGlobal Management System (GMS)、affectedは9.5.2以前、platformsはWindowsおよびLinuxと明記。CNA本文は製品をEnd-of-Lifeと記載する。
+- CVE-2026-109593: ネットワーク到達可能な認証前の攻撃者によりGMS内部ファイルが読み取られ、機密情報が露出し得る。CISA ADPのCVSS v3.1は9.1 CRITICAL、ベクトルCVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H。単なる認証後のSQLインジェクションと混同しない。
+- CVE-2026-109594: 認証後SQLインジェクションで、特定条件下で認証済み攻撃者がGMSデータベース情報を参照・改変し得る。CISA ADPのCVSS v3.1は6.8 MEDIUM、CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:C/C:H/I:N/A:N。認証不要とは記載しない。
+- CISA ADPの2026-11-03時点のSSVCにあるExploitation: noneは評価時点の観測区分であり、その後の悪用不在を保証するものではない。Muse候補にある悪用試行30件という数字も今回のCNA原本では確認できず、断定しない。
+
+残る検収条件:
+SonicWall PSIRTアドバイザリSNWLID-2026-0019の本文は今回の許可されたGitHub・Drive読取では独立読了できていない。したがって「修正パッチ提供なし」「NSMへの移行をベンダーが推奨」の詳細とWindows版・仮想アプライアンスの製品別対応表は、公式アドバイザリを読了するまで確定扱いしない。公開時は両CVEの異なる攻撃前提を明記し、GMS管理面へのアクセス制限とEOL製品からの移行検討を一般的な暫定策として区別する。
+
+公開一次根拠（SonicWall CNA＋CISA ADP、正規GitHub main、取得blob SHA）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109593.json （d2616a9cc4060a50b7fdf8a804dae8f791bb1dc8）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109594.json （6a96c0e70df9ab2056c0e465ecfbe3e56b1cb6b4）
+
