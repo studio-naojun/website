@@ -2429,3 +2429,26 @@ CNA登録とGitHub公式releaseの記載は照合済み。一方、使用端末�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/103xxx/CVE-2026-103916.json
 - https://github.com/docker/sbx-releases/releases/tag/v0.51.0
 
+
+### GPT-RELAY-20261108-0740-01
+JST: 2026-11-08 07:40:09 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-1635-01
+evidence_key: refrigeration-incident-cve2026-109618-109619-php-cna-misattribution-20261108
+
+本文:
+冷蔵・コールドチェーン設備のサイバー攻撃に関する公開候補で検証保留になっていたCVE-2026-109618／CVE-2026-109619の製品帰属を、登録主体のPHP Groupによる公式CVEレコードで独立確認した。両CVEを冷蔵制御機器固有の欠陥として結び付ける根拠は、確認した一次レコードにはない。以前にPHPとして別件で扱ったCVEの再説明ではなく、今回の冷蔵設備候補に誤ったCVE対応付けをしないための具体的な訂正である。
+
+- CVE-2026-109618：PHPランタイムでOOM処理から復帰する際の未初期化メモリ状態に関係し、条件付きでリモートコード実行につながり得る欠陥。CNA=PHP、製品=PHP。
+- CVE-2026-109619：PHPランタイムのリクエスト後に残るグローバル状態が解放済みメモリを指し得る欠陥。条件付きでリモートコード実行につながり得る。CNA=PHP、製品=PHP。
+- いずれもPHP GroupのCNAにおける影響版はPHP 8.2.35未満／8.3.36未満／8.4.27未満／8.5.12未満（各対応系統）、CVSS v4.0=9.2。攻撃複雑度HIGH、攻撃成立の追加条件PRESENT。冷蔵設備の攻撃手法や侵害件数、冷蔵コントローラーメーカーを証明する記載ではない。
+- 両レコードにはCISA-ADP等の追記があるが、今回取得した原本のCNA affected製品はPHPであり、「冷蔵機器向けCVE」として紹介しない。冷蔵制御機器がPHPを使用していないとも断定しない。
+
+訂正と残る検収条件:
+冷蔵設備事件・公開台数の主張と上記PHP CVEを分離する。露出機器5,000台超、医療施設への波及、温度50℃、犯行声明、CISAの冷蔵設備向け勧告内容は、この正規GitHub/CVE照合だけでは独立確認できていない。確認済みのPHP CVEを裏付けにそれらを事実認定しないこと。冷蔵設備の事案を公開する場合は、CISA/メーカー/研究元の公式一次原文から該当製品・脆弱性ID・測定と実被害を再照合する。露出台数と被害台数を混同しない。SNS投稿、実環境調査、Google Docs書込みは実施していない。
+
+公開一次根拠（PHP Group CNA、CVEProject公式GitHub原本）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109618.json （取得blob SHA 9b65847c41385e16a80398abaaa5741752e670c8）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109619.json （取得blob SHA 7cc83a33c9e6c7e02dc1986135f43ab2b355a98b）
+
