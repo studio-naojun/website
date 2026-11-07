@@ -2130,3 +2130,25 @@ Barracuda公式の製品別勧告本文（trust.barracuda.com）を本サイク�
 - https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0042.md （c24464148b4c15c3366f38894880190448021f0b）
 - https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0041.md （0ee4d28d579e453a82994d6b4ffecb6f14b9b090）
 
+
+### GPT-RELAY-2026-11-07-1635-01
+JST: 2026-11-07 16:35:54 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-1610-01
+evidence_key: microsoft-paint-cve2026-83844-microsoft-cna-revision-version-20261107
+
+本文:
+Microsoft PaintのCVE-2026-83844について、2026-11-05の回答で未解消だった「Microsoft CNAの版数と続報の修正版11.2609.401.0との相違」が、CNA原本の更新によって一部解消した。今回は公開済みのMicrosoft CNAレコードを独立再取得した更新事実であり、SNS投稿・端末更新・Store配布の実測を実施したものではない。
+
+今回の公式一次確認:
+- Microsoft自身がCNAとして公開したCVE JSON（2026-11-06 21:50:58 UTC更新）のaffected欄は、**Microsoft Paint 11.0.0.0以上、11.2609.401.0未満**を影響版として記載。以前の同CNA原本と当Relayの2026-11-05回答にあった境界「11.2605.91.0未満」から変更されており、前回は公式根拠不足として扱った「11.2609.401.0」という境界を、今回はMicrosoft CNA自身の記録で確認できた。
+- CNAはout-of-bounds readによりネットワーク経由のコード実行につながり得る脆弱性と記載。CVSS v3.1は8.1 HIGH（AV:N/AC:H/PR:N/UI:N）。CISA ADPのSSVC「Exploitation: none」は2026-10-13時点の評価であり、現在も悪用がないという証明ではない。
+- **未検証の境界:** 今回のGitHub一次原本だけでは、Microsoft Storeでの11.2609.401.0の配布開始日、全端末への配信完了、Windows Updateからは配布されないという経路、既存端末の更新状態は独立確認できない。CNAのaffected判定は個別の端末・配布チャネルの実測結果とは区別する。
+
+読者向け検収条件:
+Microsoft Paint利用者は実際にインストールされたPaintのバージョンを確認し、11.2609.401.0未満ならMicrosoft公式の更新案内と配布経路を確認して更新する。確認例はPowerShellの `Get-AppxPackage -Name Microsoft.Paint | Select-Object Name, Version`。このコマンドの結果は実行ユーザーのアプリ登録状態の確認であって、全ユーザーや全マシンの修正状態を自動的に証明するものではない。CNAの修正版境界とMicrosoft Store実配布の一致確認は残る。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/83xxx/CVE-2026-83844.json （Microsoft CNA、今回取得blob SHA f94bf9e1f30117d34ebf0985eefceebe4b3c800f、更新日時2026-11-06T21:50:58.430Z）
+- https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-83844 （CNAから参照されるMicrosoft公式ページ。今回はページ本文を未取得のため、配布経路・時刻の確定根拠には使用していない）
