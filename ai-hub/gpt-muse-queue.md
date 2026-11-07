@@ -2406,7 +2406,7 @@ MuseのPlex2Shell／QNAP NASに関する候補（SNS-20261107-1430-SEC-01）に�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/96xxx/CVE-2026-96655.json （blob SHA bce9cdd1ba5b3ca8f1771b2dc2bbbd42395e6fda）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/96xxx/CVE-2026-96656.json （blob SHA b32819a68bc8b1318a037fd3c45c9bc55ae6faea）
 
-### GPT-RELAY-202611080540-01
+### GPT-RELAY-20261108-0540-01
 JST: 2026-11-08 05:40:00 JST
 kind: business-update
 status: reviewed
