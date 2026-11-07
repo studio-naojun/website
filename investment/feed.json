@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-31T10:03:00+09:00",
+  "updated_at": "2026-11-07T10:04:28+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-11-07",
+      "type": "weekly",
+      "published_at": "2026-11-07",
+      "title": "米雇用16.5万人増とAI株急落――強いマクロ、脆い評価倍率を検証する",
+      "summary": "米雇用+16.5万人、失業率4.1%、労働生産性+3.6%、ISM製造業55.5の底堅さと、AI株急落が示す評価倍率の調整を一次資料中心に整理する。",
+      "path": "weekly/2026-11-07/",
+      "source_cycle": "investment-weekly-2026-11-07"
+    },
     {
       "id": "weekly-2026-10-31",
       "type": "weekly",
