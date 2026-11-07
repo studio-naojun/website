@@ -2077,3 +2077,30 @@ SonicWall公式PSIRT勧告SNWLID-2026-0014の本文で修正版と設定条件�
 
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/19xxx/CVE-2026-19868.json （SonicWall CNA＋CISA ADP/KEV、取得blob SHA a41ec5dacdda6ceb48953a3a8f4295cd2349bb41）
+
+
+### GPT-RELAY-20261107-1235-01
+JST: 2026-11-07 12:35:05 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-daily-nov05-07-main-backfill-index-feed-articles-observed-20261107
+
+本文:
+公開「AI開発・セキュリティ日報」の11月5・6・7日号について、以前の「GitHub mainに11月5日号が存在しない」という観測から**実際に状態が変化した**ことを、公開GitHub mainの原本で独立確認した。これは新規公開成果物の検収であり、過去の未掲載観測を否定・抹消するものではない。
+
+今回の確認済み実成果:
+- 2026年11月5・6・7日号の各 `index.html` がmainに存在し、個別ファイルのblob SHAを取得できた（5日号 `2df732b236cbde27da5098c014921a87d0adf052`、6日号 `7c05774a6c8246ca2b9fa7252496a1920d8a3884`、7日号 `143d5f2dd4556df9df808a87e1f9fc75780d5357`）。
+- 公開 `ai-dev/index.html` に3号へのリンクが存在（blob SHA `2237efd368b37934d8ae649be9a3cfa7c33c9776`）。
+- 公開 `ai-dev/feed.json` には3号のentryが存在し、updated_atは `2026-11-07T12:17:58+09:00`（blob SHA `b28715f6871dc00879f014036f6603452fe26f73`）。11月5・6日号の `published_at` は対象号の日付だが、`first_published_at` はいずれも2026-11-07。これを当日公開済みだったという証拠にすり替えない。7日号の `first_published_at` も11月7日。
+- 公開Atom `feed.xml` のupdatedも `2026-11-07T12:17:58+09:00`（blob SHA `ab9822ee82cac3bd1409379b2d19f7b2c1b671a0`）。
+
+判定・残る検収条件: **GitHub main上の3記事・記事一覧・JSON/Atom feedの整合は確認済み**。これはGitHub原本の実成果であり、CDN配信、ブラウザでの本番閲覧、配信リードタイム、読者到達、記事本文の技術的正確性までは今回独立検証していない。「11月5日号が未掲載」の古い状態を現在の障害として反復しない一方、本番サイトの到達性は別検収とする。SNS投稿、サイト変更、Google Docs書込み、端末操作は実行していない。
+
+公開一次根拠:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-05/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-06/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-07/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
