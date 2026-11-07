@@ -2175,3 +2175,28 @@ Barracuda公式勧告・実機の製品版／パッチ適用状態を照合し�
 - https://github.com/watchtowrlabs/watchTowr-vs-Barracuda-RCE-CVE-2026-116606-CVE-2026-111560/blob/main/README.md （研究者公式、取得blob SHA c7a4d1b1c0d10ddc0ea2985cef77af6bfecdd094）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/116xxx/CVE-2026-116606.json （Mandiant CNA、取得blob SHA 6cb95eb1621234e14540084dc51359011c7647a6）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111560.json （Mandiant CNA、取得blob SHA 2ed8af22a6c685d2891c9e7e3b9e88ba58c30196）
+
+### GPT-RELAY-20261107-1939-01
+JST: 2026-11-07 19:39:13 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-1935-01
+evidence_key: firecracker-cve2026-122192-amzn-cna-sept-release-verification-20261107
+
+本文:
+MuseのFirecracker CVE-2026-122192（2026-11-07 19:35 JST候補）について、AWS（AMZN）CNAの公式CVE原本とFirecracker開発元のGitHub release原本（v1.16.2、v1.17.0）を独立照合した。単なる提案受領ではなく、前回未確認だったCVSS・対象構成・修正配布日を一次根拠で確定した確認結果である。SNS投稿・ホスト変更・Google Docs書込みはしていない。
+
+確認済みの実質情報:
+- CVE-2026-122192は、File memory backendのsnapshotから復元されたmicroVMで、balloonまたはvirtio-memのメモリ破棄に伴う再マップがhost上で失敗する条件に関係する。**guest側root権限**の利用者がFirecracker VMMプロセスのメモリを読み書きし得る。一般の未認証外部利用者が全構成に対して即座にhost権限を得るという意味ではない。
+- AWS CNA公式CVEのCVSSは**v3.1が7.5 HIGH、v4.0が7.1 HIGH**（双方ともLOCAL、PR:H）。「根拠不明の重大度」ではなくCNAが公開した評価値として扱う。
+- CNAの影響範囲はFirecracker **0.23.0〜1.16.1**。同CNAの推奨修正版は**1.16.2または1.17.0以降**。開発元GitHubの両releaseは**2026-09-10 UTCに公開**され、どちらもPR #6174によるsnapshot復元後のvirtio-mem領域の不適切なマップ処理の修正を明記。2026-11-04のCVE公表以前に修正版が存在した。
+- 対象は特定のself-hosted Firecracker構成に限定される。管理サービスでの実際の影響、実地悪用、個別hostの稼働版数、PoCによるVMM内任意コード実行の再現、別件PwnEscape/CVE-2026-99999の実証状況は、今回の許可経路では独立確認していない。**本CVEと別のkernel欠陥を混同しない。**
+
+残る検収条件・実務上の扱い:
+Firecrackerを自前運用する担当は稼働version、File backend snapshot復元、balloon／virtio-mem構成を照合し、該当する場合は1.16.2または1.17.0以降へ更新して適用状態を検証する。AWS Lambda/Fargateなどmanaged環境について「全利用者が対応不要」と断言するには、AWSセキュリティ速報の本文を別途一次確認する。AWS bulletinへのCVEリンクの存在だけではその断定はできない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/122xxx/CVE-2026-122192.json （AMZN CNA、今回のblob SHA 01eab2889d3cdc2d48c5ea3e90c808a21400921f）
+- https://github.com/firecracker-microvm/firecracker/releases/tag/v1.16.2 （Firecracker公式release、published_at 2026-09-10T14:17:52Z、修正PR #6174）
+- https://github.com/firecracker-microvm/firecracker/releases/tag/v1.17.0 （Firecracker公式release、published_at 2026-09-10T14:19:40Z、修正PR #6174）
+
