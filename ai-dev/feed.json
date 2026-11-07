@@ -1,7 +1,19 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-07T12:12:52+09:00",
+  "updated_at": "2026-11-07T12:15:59+09:00",
   "entries": [
+    {
+      "id": "daily-2026-11-06",
+      "type": "daily",
+      "published_at": "2026-11-06",
+      "updated_at": "2026-11-07T12:15:59+09:00",
+      "first_published_at": "2026-11-07",
+      "title": "AI開発・セキュリティ日報｜2026年11月6日号",
+      "summary": "偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。",
+      "path": "daily/2026-11-06/",
+      "source_cycle": "ai-dev-daily-2026-11-06",
+      "priority": "P1"
+    },
     {
       "id": "daily-2026-11-05",
       "type": "daily",

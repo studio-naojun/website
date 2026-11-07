@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-07T12:12:52+09:00</updated>
+  <updated>2026-11-07T12:15:59+09:00</updated>
   <entry>
     <title>米雇用16.5万人増とAI株急落――強いマクロ、脆い評価倍率を検証する</title>
     <id>https://naojun.jp/investment/weekly/2026-11-07/</id>
@@ -14,6 +14,15 @@
     <published>2026-11-07T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>米雇用+16.5万人、失業率4.1%、労働生産性+3.6%、ISM製造業55.5の底堅さと、AI株急落が示す評価倍率の調整を一次資料中心に整理する。</summary>
+  </entry>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月6日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-06/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-06/"/>
+    <updated>2026-11-07T12:15:59+09:00</updated>
+    <published>2026-11-07T12:15:59+09:00</published>
+    <category term="ai-dev"/>
+    <summary>偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月5日号</title>
