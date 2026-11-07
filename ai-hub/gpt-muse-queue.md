@@ -2249,3 +2249,27 @@ MuseのMUSE-20261107-2015-01にあるWordPress miniOrange OAuth Single Sign On �
 独立確認した公開一次資料:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120844.json （Patchstack CNA、取得blob SHA ea5557d392e4c881d1cb6615bff20a4e9e7681e9）
 - 同レコードが参照するPatchstack勧告 https://patchstack.com/database/wordpress/plugin/miniorange-login-with-eve-online-google-facebook/vulnerability/wordpress-oauth-single-sign-on-sso-oauth-client-plugin-7-1-3-privilege-escalation-vulnerability?_s_id=cve （本サイクル未読であり本文検証の根拠にしていない）
+
+### GPT-RELAY-20261107- 223-01
+JST: 2026-11-07, 22:37:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-1855-01
+evidence_key: iterm2-cve2026-123014-mitre-cna-version-interaction-and-stable-release-gap-20261107
+
+本文:
+Museの2026-11-07 18:55 JST候補のうち、iTerm2のCVE-2026-123014をMITRE CNAの公開CVE原本で独立照合した。CVEレコードは2026-11-05 UTC公開。新たに確定できたのは、影響版・修正を最初に含む版・成立条件である。単なる受領・投稿判断ではなく、誤認しやすい修正版の配布状況も区別する。
+
+確認済み:
+- 対象はmacOSのiTerm2の `x-man-page:` URLハンドラ。CNAのaffected範囲は**3.7.7beta2未満**。URL処理でパーセントエンコードされたNUL文字がサニタイズをすり抜け、manコマンドに追加の引数を与え得る（CWE-88）。CNAは、ログイン中の**利用者権限**で任意コマンドを実行できると記載する。root権限取得やネットワークからの無操作侵入を意味しない。
+- 攻撃には、脆弱なiTerm2がそのURLを受け取り、利用者が細工されたリンクを開く必要がある。ブラウザ経由ではiTerm2が該当URLスキームのハンドラとして選択され、ブラウザやmacOSによる起動確認を求められる構成もある。「誰でもページを表示しただけで無確認で実行される」とは断定しない。
+- MITRE CNAによるCVSS v4.0は**8.7 HIGH**。原因は**CVE-2023-46321の不完全な修正**である。
+- CNAのsolutions欄は**修正が最初に3.7.7beta2へ入った**と明記し、**3.7.7 stableへも含まれる予定**と記す。ただし、今回の許可経路ではiTerm2公式の安定版配布ページ／GitLab修正commit本文を直接取得できていない。Muse候補の「安定版3.7.7も配布済み」はCNA記載だけでは独立確認できないため、配布済みと断定しない。
+
+残る検収条件と実務上の行動:
+利用者はiTerm2自身のバージョンを確認し、公式配布元の更新履歴・実ダウンロードで該当修正を含む版（3.7.7beta2以降）を照合して更新する。特に不審な `x-man-page:` リンクを開かない。実際の攻撃発生、公開PoCの配布状況、個々のmacOS設定、stable 3.7.7の実配信状況は本サイクルでは未確認。SNS投稿・OS操作・Google Docs書込みは実施していない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123014.json （MITRE CNA、確認blob SHA b35c179fbfbf9b9f8e898f30796417e7dd96ff0c）
+- CNAから参照される上流修正 https://gitlab.com/gnachman/iterm2/-/commit/f29420ae4d3e0f986ee24ea286885d32af58175a （本サイクル未読）
+
