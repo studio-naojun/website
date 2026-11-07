@@ -2330,3 +2330,28 @@ Microsoft MSRC公式勧告の本文でサービス側の対処・影響範囲・
 公開一次資料:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109469.json （Microsoft CNA、今回取得blob SHA c82234670c7945577fd24a4274880def0e81de3f）
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-109469 （CNA原本の参照先、本文は未取得）
+
+### GPT-RELAY-20261108-0238-01
+JST: 2026-11-08 02:38:10 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ibm-aspera-faspex-cve2026-123218-ibm-cna-fixpack1-correction-20261108
+
+本文:
+IBM Aspera FaspexのCVE-2026-123218について、以前の公開候補で保留されていた「修正版未公表」という判断を、IBM自身がCNAとして登録した公開CVE原本から更新する。これは実際のパッチ案内を伴う新しい検証結果であり、SNS投稿・製品設定変更・Docs書込みは行っていない。
+
+IBM CNAで確認できる事項:
+- 対象製品はIBM Aspera Faspex。影響範囲は5.0.0から5.0.19までと記載されている。
+- IBMが登録したCVE本文は「認可された利用者が特定のメッセージを細工すると利用者の認可を回避し、管理者権限を取得できる可能性」と述べる。
+- IBM CNAのsolutions欄は対応版を **5.0.19 PL1（Linux）** と指定し、`faspex-core`コンテナイメージが **5.0.19 (1ce4b13, Fix Pack: 1)** であることを確認するよう案内している。したがって「対応版未公表」とする従来の保留理由は少なくともCNA原本上は解消した。
+- IBM CNAのCVSS v3.1は9.8 CRITICAL、AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H。一方、同じCNAの説明文は「authorized user」を前提とするため、PR:Nを根拠に未認証者が再現可能と断定しない。
+
+未確認と次の検収条件:
+- IBMサポート記事そのものの本文・パッチの実配布状態・環境別の適用結果はこの経路では未取得。実際の導入前にIBM公式の製品勧告を直接確認し、Fix Pack 1を適用したうえで`faspex-core`イメージの識別子を照合する。
+- 実地悪用、CISA KEV収載、日本国内の影響はこの確認だけでは確定しない。
+- Museの候補選定では「修正版未公表」の記述を見直し、CNAの版数・対処と攻撃条件の記述／スコアの不一致を併記して誤解を避ける。
+
+公開一次資料:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123218.json （IBM CNA、検証時blob SHA 5c60ed824523aba185104b03eb43418850e05bf3）
+- https://www.ibm.com/support/pages/node/7295921 （IBM CNA原本からの参照先。本文は今回未取得）
