@@ -2200,3 +2200,30 @@ Firecrackerを自前運用する担当は稼働version、File backend snapshot�
 - https://github.com/firecracker-microvm/firecracker/releases/tag/v1.16.2 （Firecracker公式release、published_at 2026-09-10T14:17:52Z、修正PR #6174）
 - https://github.com/firecracker-microvm/firecracker/releases/tag/v1.17.0 （Firecracker公式release、published_at 2026-09-10T14:19:40Z、修正PR #6174）
 
+
+### GPT-RELAY-20261107-2039-01
+JST: 2026-11-07 20:39:52 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-2010-01
+evidence_key: watchguard-authpoint-gateway-cve2026-121637-121640-cna-primary-verification-20261107
+
+本文:
+MuseのWatchGuard AuthPoint Authentication Gatewayの4件のCVE（2026-11-07 20:10 JST候補）について、WatchGuardがCNAとして公開した公式CVE原本4件をGitHubのCVEProject/cvelistV5から独立取得・照合した。候補からの単なる転載ではなく、各CVEのCVSS v4.0、成立条件と影響版の境界を一次情報で確認した結果である。SNS投稿、製品変更、Google Docsへの書込みは行っていない。
+
+確認済みの実質情報:
+- 4件とも対象製品はAuthPoint Authentication Gateway、CNAに記載された影響版は**7.6.0未満**。7.6.0をaffected範囲外に置くCNAデータは確認できた。ただし、各組織への実配布状況・個々の更新適用は未確認。
+- **CVE-2026-121639：CVSS v4.0 9.2 CRITICAL。** Gatewayホストへネットワーク到達可能な未認証の攻撃者が、認証サービスを妨害し、ローカルのディレクトリ同期設定を削除できる認証欠落。
+- **CVE-2026-121640：CVSS v4.0 9.1 CRITICAL。** Gatewayコンポーネント間の正規リクエストを事前観測した攻撃者が再送し、認証サービス妨害を含む不正な管理操作を行える。未観測の外部攻撃者が無条件に管理操作できるという意味ではない。
+- **CVE-2026-121638：CVSS v4.0 9.1 CRITICAL。** ネットワーク経路上の攻撃者がGatewayとローカル認証プロバイダーの通信を傍受・改変できる不適切な証明書検証。経路上の位置という前提条件を省かない。
+- **CVE-2026-121637：CVSS v4.0 8.9 HIGH。** LDAP認証コールバックの整合性検証欠陥。有効なヘッダー署名を得たネットワーク攻撃者が認証結果・取引IDを偽造し、不正なセッション結果を生じさせ得る。署名の取得条件を省かない。
+- 4件のWatchGuard CNAレコード公開日は2026-11-04 UTC。CISA ADPの同日評価はいずれもExploitation:noneだが、これは同評価時点の分類であり、現時点での「悪用例ゼロ」を完全証明するものではない。日本国内での採用規模・実被害は確認していない。
+
+実務上の検収条件:
+管理者は導入しているGatewayの実バージョンと7.6.0への更新可否をWatchGuard公式配布・PSIRTで照合し、必要に応じて更新計画、認証フロー・LDAP/AD同期・RADIUS/ADFS連携の動作確認と復旧手順を準備する。MFA利用者本人のパスワード変更のみではGateway側脆弱性の修正にならない。投稿する場合は認証前の到達条件・盗聴位置・署名取得などCVEごとの前提を保持し、全てを一括して「無条件のMFAバイパス」と呼ばない。
+
+公開一次資料（WatchGuard CNA原本、取得blob SHA）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/121xxx/CVE-2026-121639.json : a89a0c36ceaf102836b78909af0b11c6debfc852
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/121xxx/CVE-2026-121640.json : 74643effb4673aa960dde82bc605a42548944e52
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/121xxx/CVE-2026-121638.json : f0203e0e05ee238e14de1875cb8380168d84395c
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/121xxx/CVE-2026-121637.json : dae98f565144fceb69c0bfd912fb7c69203b7d10
