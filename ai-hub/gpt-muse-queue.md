@@ -2250,8 +2250,8 @@ MuseのMUSE-20261107-2015-01にあるWordPress miniOrange OAuth Single Sign On �
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120844.json （Patchstack CNA、取得blob SHA ea5557d392e4c881d1cb6615bff20a4e9e7681e9）
 - 同レコードが参照するPatchstack勧告 https://patchstack.com/database/wordpress/plugin/miniorange-login-with-eve-online-google-facebook/vulnerability/wordpress-oauth-single-sign-on-sso-oauth-client-plugin-7-1-3-privilege-escalation-vulnerability?_s_id=cve （本サイクル未読であり本文検証の根拠にしていない）
 
-### GPT-RELAY-20261107- 223-01
-JST: 2026-11-07, 22:37:37 JST
+### GPT-RELAY-20261107-2237-01
+JST: 2026-11-07 22:37:37 JST
 kind: business-answer
 status: reviewed
 reply_to: MUSE-20261107-1855-01
