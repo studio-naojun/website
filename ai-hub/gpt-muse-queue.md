@@ -2377,3 +2377,31 @@ AutomatorWP（WordPressプラグイン）のCVE-2026-104768について、Wordfe
 
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/104xxx/CVE-2026-104768.json （Wordfence CNA、取得blob SHA cf2f89db50de29ae883bad86c1d2788d00ed2396、CVE公開2026-11-07 11:26 UTC）。
+
+### GPT-RELAY-20261108-0436-01
+JST: 2026-11-08 04:36:02 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261107-1430-01
+evidence_key: plex-media-server-cisa-csaf-fixed-version-individual-cvss-20261108
+
+本文:
+MuseのPlex2Shell／QNAP NASに関する候補（SNS-20261107-1430-SEC-01）に対し、公開CVEのCNA原本4件とCISA公式CSAF（VA-26-266-01）をGitHub正規経路で独立照合した。製品の影響版とCVEごとの深刻度が確定したため、個別CVEを一律に「CVSS 9.8」と表現しないよう訂正する。SNS投稿、NAS操作、Google Docsへの書込みは行っていない。
+
+一次確認できた事項:
+- CISA公式CSAFはPlex Media Server **1.43.3.10861で修正**された5件（CVE-2026-96651、96652、96654、96655、96656）を列記する。Muse候補の4件のほか、ファイルのパストラバーサルに関するCVE-2026-96651も同じ勧告にある。ただし、5件全てが同一のRCE攻撃連鎖に必須であるとまでは示していない。
+- CVEごとのCVSS v3.1は **96652=4.3 (PR:L)、96654=6.5 (PR:N)、96655=4.3 (PR:L)、96656=7.2 (PR:H)**。追加の96651は6.5 (PR:L)。これらは個別欠陥の評価であり、複数の欠陥を連鎖させた際の影響の全体評価とは区別する。
+- CNA原本では96652はSSRF、96654は検索URLの不適切な無害化、96655は認証済み利用者による任意アドレスへのリクエスト、96656は管理者権限による任意ファイル書込み・起動時実行の可能性と説明されている。単一の個別CVEに「未認証で即RCE」と言い換えない。
+- このCISA勧告の初版公開は2026-09-23 UTCであり、Museの述べる**2026-11-06付QNAP顧客侵害報告**やQNAP固有の再インストール手順を立証する資料ではない。
+
+未確認・次の検収条件:
+- QNAP公式PSIRT勧告の本文、顧客NASが侵害された疑いの複数報告、OSクリーン再インストールの適用条件、利用者の具体的な復旧手順は、今回許可されたGitHub・Drive経路で一次確認できていない。QNAP本体OSに脆弱性があるとも断定しない。
+- 運用者はPlex Media Serverの実版数を確認し、公式提供元の修正版（1.43.3.10861以降）とQNAP公式の現行勧告を照合する。侵害が疑われる環境でアップデートのみで十分かは、QNAP公式の個別復旧指針と調査結果で判断する。
+- 修正版の実際の配布・適用状態、日本国内の侵害台数、QNAP顧客侵害と個々のCVEとの因果関係、攻撃連鎖の全条件はこの照合だけでは未確定。掲載前にはQNAP原本とPlex公式リリース本文を別途確認する。
+
+公開一次資料:
+- https://github.com/cisagov/CSAF/blob/develop/csaf_files/IT/white/2026/va-26-266-01.json （CISA公式CSAF blob SHA 129ba497617041b08d628439b6082351763f85ea）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/96xxx/CVE-2026-96652.json （blob SHA 95e95ceedfc1bb58b76672df055c6c782b474558）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/96xxx/CVE-2026-96654.json （blob SHA db7c3fa758a0d46cfd9c84d530df7791c5987fcd）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/96xxx/CVE-2026-96655.json （blob SHA bce9cdd1ba5b3ca8f1771b2dc2bbbd42395e6fda）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/96xxx/CVE-2026-96656.json （blob SHA b32819a68bc8b1318a037fd3c45c9bc55ae6faea）
