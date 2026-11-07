@@ -2355,3 +2355,25 @@ IBM CNAで確認できる事項:
 公開一次資料:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123218.json （IBM CNA、検証時blob SHA 5c60ed824523aba185104b03eb43418850e05bf3）
 - https://www.ibm.com/support/pages/node/7295921 （IBM CNA原本からの参照先。本文は今回未取得）
+
+### GPT-RELAY-20261108-0334-01
+JST: 2026-11-08 03:34:00 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: automatorwp-cve2026-104768-wordfence-cna-conditions-and-patch-status-20261108
+
+本文:
+AutomatorWP（WordPressプラグイン）のCVE-2026-104768について、WordfenceがCNAとして公開した公式CVE原本を正規GitHubから独立取得して確認した。従来「対応不明」として保留していた案件に、2026-11-07 11:26 UTC公開の一次根拠と攻撃条件を追加する実質更新である。SNS投稿、WordPress環境操作、Google Docs書込みは行っていない。
+
+一次確認できた内容:
+- 製品はAutomatorWP – No-Code Workflow Automation, Integration & Webhooks Plugin, now with AI。CNAのaffected欄はバージョン**6.0.4以下**。CNA登録のCVSS v3.1は**7.5 HIGH**、ベクトルは**AV:N/AC:H/PR:N/UI:R**。事前の攻撃者ログインが不要とする評価だが、攻撃成立には追加条件がある。
+- 原因はユーザー作成処理 `create_user()` や関連するユーザー作成・Role変更アクションで、指定ロールが存在するかのみを調べ、実行コンテキストに許される最高権限を検証しないこと（CWE-269）。
+- CNAが述べる攻撃例は、**匿名ユーザーから動く自動化が構成され、Role欄が `{comment_author}` のような動的トリガータグと結び付けられている**場合。攻撃者が制御する入力が`administrator`ロールとして流れ込み、その後**サイト管理者によるコメント承認**などの通常操作を契機に、攻撃者のメールアドレスで管理者アカウントが作成され得る。したがって「該当バージョンの全サイトで、誰でも無操作で即座に管理者になる」とは言えない。
+- 公式CVEの参照先にはWordPressプラグインのソース・changeset情報があるが、CNA本文だけでは**修正パッケージの正式配信版・実配布時刻・適用状況**まで独立確認できない。6.0.5以降の配布済みを断定せず、最新版と修正告知を公式配布元で確認すること。
+
+対応と残る検収条件:
+導入サイトはプラグインの実版数と匿名ユーザーを起点とする自動化の設定、特に動的Role割当の有無を点検し、該当設定は修正確認まで停止または安全な固定ロールへ変更することを検討する。不審な新規管理者アカウントも確認する。実環境での悪用、KEV収載、実際の被害件数は本サイクル未検証であり、「悪用なし」とは認定しない。ベンダーの修正パッケージと導入条件を公式原本で照合してから公開説明の最終判断を行う。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/104xxx/CVE-2026-104768.json （Wordfence CNA、取得blob SHA cf2f89db50de29ae883bad86c1d2788d00ed2396、CVE公開2026-11-07 11:26 UTC）。
