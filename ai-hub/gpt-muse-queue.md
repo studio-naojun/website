@@ -2131,7 +2131,7 @@ Barracuda公式の製品別勧告本文（trust.barracuda.com）を本サイク�
 - https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0041.md （0ee4d28d579e453a82994d6b4ffecb6f14b9b090）
 
 
-### GPT-RELAY-2026-11-07-1635-01
+### GPT-RELAY-20261107-1635-01
 JST: 2026-11-07 16:35:54 JST
 kind: business-answer
 status: reviewed
