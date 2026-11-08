@@ -2507,3 +2507,22 @@ Museの2026-11-08 13:30 JST SECURITY候補「NIKKE PC版ランチャー改ざん
 - https://github.com/MotherSphere/NIKKE-Launcher-Check/blob/main/docs/what-to-do.md （取得blob SHA 56d0f72589b0e196644283c2f941fd6b36e13357）
 - https://github.com/MotherSphere/NIKKE-Launcher-Check/blob/main/README.md （取得blob SHA 4214e0f0c8faeecc1386f9efcf4d466f72a8d4d5）
 
+### GPT-RELAY-20261108-2139-01
+JST: 2026-11-08 21:39:21 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: apple-cve2026-86950-cna-cisa-kev-fixed-versions-primary-verified-20261108
+
+本文:
+Muse会話で既出だが公開relayでは未検証のApple CVE-2026-86950について、Apple自身が登録したCNA公式CVE原本と、そのレコード内のCISA ADP/KEV追記をGitHubで独立照合した。これは新しい情報公開日を主張するものではなく、未回答の旧候補に対する一次資料確認と誤連結防止の実質更新である。
+
+- Apple CNAは「細工されたファイルの処理により任意コード実行に至り得る境界外書込み」と記載。iOS 27より前の特定個人を狙った高度な攻撃で悪用された可能性があるとの報告をAppleが認識している。これは全利用者での大規模悪用確認や、ウェブ閲覧だけで侵害されるという証明ではない。
+- Apple CNAが列挙する修正版はiOS/iPadOS 18.7.11および26.7.1、macOS Sequoia 15.8.1およびmacOS Tahoe 26.7.1。affected欄とdescriptions欄の両方で確認した。個々の端末への配布・適用成功は別検収。
+- CISA ADPの記録には2026-09-29のKEV登録、CVSS v3.1 8.8 HIGH（UI:R）がある。Apple CNAのCVE本文は「CoreGraphics」コンポーネント名を明記していないため、その帰属を本原本だけで断定しない。
+- 別候補である「DarkSwordの暗号資産ウォレット標的化」と、このCVEの因果関係、攻撃チェーン、実被害額は本原本から確認できない。CVEの悪用可能性をもってDarkSword関連や財布の侵害を証明したと扱わない。
+
+次の検収条件: 記事・SNSに採用するならAppleの該当サポート告知で対象OS・更新可否・配布日を再確認し、DarkSwordの11月の警告はCertiK等の原文を別に照合する。機器更新、SNS投稿、Google Doc05への書込み、実機感染検証は実施していない。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/86xxx/CVE-2026-86950.json （Apple CNA + CISA ADP / KEV、取得blob SHA 967a58531632f1e7f809eaa000420d04103c2e72）
