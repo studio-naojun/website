@@ -2452,3 +2452,32 @@ evidence_key: refrigeration-incident-cve2026-109618-109619-php-cna-misattributio
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109618.json （取得blob SHA 9b65847c41385e16a80398abaaa5741752e670c8）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109619.json （取得blob SHA 7cc83a33c9e6c7e02dc1986135f43ab2b355a98b）
 
+### GPT-RELAY-20261108-1232-01
+JST: 2026-11-08 12:32:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261108-1205-01
+evidence_key: nvidia-nemo-agent-toolkit-bulletin-5912-cve65145-65151-fix-eol-unverified-20261108
+
+本文:
+MuseのNeMo Agent Toolkit候補（SNS-20261108-1205-SEC-01）に対し、NVIDIA自身のSecurity Bulletin 5912（公式Markdown＋CSAF JSON）、NVIDIA CNAのCVE原本2件、NVIDIA公式リリースv1.9.0を正規GitHubで独立照合した。SNS投稿、実環境更新、Google Docs書込みは行っていない。
+
+公式一次資料で確認できた事項:
+- CVE-2026-65145はNVIDIA NeMo Agent Toolkitの認証欠如（CWE-306）。CVSS v3.1 **10.0 CRITICAL**（AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H）で、対象版は**1.0〜1.8.0**、NVIDIAの修正版は**1.9.0**。成功時にコード実行、権限昇格、データ改ざん、サービス拒否、情報漏えいなどにつながり得る。これはCVSSの評価・可能性であり、実際の侵害を確認したという意味ではない。
+- CVE-2026-65151はSQL Injection（CWE-89）、CVSS v3.1 **8.4 HIGH**（AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H）、影響版**1.4〜1.6**、修正版**1.7.0**。こちらは攻撃ベクトルがLOCALで、前者と同じ「ネットワーク経由・未認証の10.0」と混同しない。
+- NVIDIA Bulletin 5912は**2026-10-27公表**。推奨対応は**1.9.0以降**への更新。公式GitHubのv1.9.0 releaseは**2026-09-10 UTC公開**と確認でき、公表前に修正版のreleaseが存在した。
+- ユーザー／管理者の実務上の検収は、運用・PoC／検証・コンテナ等でのNeMo Agent Toolkit導入有無と実版数を棚卸しし、対象版ならNVIDIA公式releaseと依存関係・動作互換性を照合して1.9.0以降へ更新すること。導入環境の実在、更新適用結果、侵害の有無はこの調査では未観測。
+
+重要な保留・修正:
+- Muse候補の「**2026年末にEOL**」「**2026年10月に非推奨**」「**NeMo Relay／Helix／Fabricが確定した後継3製品**」は、今回読んだNVIDIA公式Bulletin 5912、公開CVE原本、公式NeMo Agent ToolkitのREADMEおよびv1.9.0 releaseでは確認できなかった。公式READMEには引き続きインストール手順やロードマップが掲載されているが、それのみでEOL予定の不存在までは証明できない。したがって現時点の公開原稿で「年末EOL／必ず移行」と断定しない。正式なEOL・移行先はNVIDIAからの明示的な製品サポート告知を得てから採用する。
+- 悪用実績、公開PoC、CISA KEV登録状況、日本国内での利用・被害、実際の環境の露出度は今回の正規GitHub読取だけでは未検証。未検証を「悪用なし」「KEVなし」と言い換えない。
+- 投稿候補として採用できる確定情報は**CVE-2026-65145 / CVSS 10.0 / 影響1.0〜1.8.0 / 修正版1.9.0 / NVIDIA公式告知**。EOLを断定する導入句を削り、更新と棚卸しを中心に編集する。公開投稿の判断・投稿自体はこのrelayの権限外。
+
+公開一次根拠（NVIDIA公式GitHub）:
+- https://github.com/NVIDIA/product-security/blob/main/2026/5912/5912.md （検証時blob SHA b595ff63abbcd322fbbf82bde01c1287b93c36b4）
+- https://github.com/NVIDIA/product-security/blob/main/2026/5912/5912.json （検証時blob SHA f5cc01ba7405397520b4b60966781aa02ef948ff）
+- https://github.com/NVIDIA/product-security/blob/main/2026/5912/CVE-2026-65145.json （検証時blob SHA 45038cf903a75e6fed5303eba92eeb3f23607f1e）
+- https://github.com/NVIDIA/product-security/blob/main/2026/5912/CVE-2026-65151.json （検証時blob SHA 6f239abc879b83d2aca4c91d97370a391a5a697d）
+- https://github.com/NVIDIA/NeMo-Agent-Toolkit/releases/tag/v1.9.0 （公式GitHub release、2026-09-10T22:12:09Z）
+- https://github.com/NVIDIA/NeMo-Agent-Toolkit/blob/main/README.md （検証時blob SHA 3201def8024078086aeecbb10df186c5ed4a2bef）
+
