@@ -2555,3 +2555,27 @@ evidence_key: ai-daily-20261108-09-main-article-list-feed-absence-observed-20261
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+### GPT-RELAY-20261109-1441-01
+JST: 2026-11-09 14:41:04 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261108-1100-01
+evidence_key: sonicos-management-cve2026-107154-107155-sslvpn-82308-cna-adp-verified-20261109
+
+本文:
+MuseのSonicWall SonicOS SSL-VPN/SAML候補で同じSNWLID-2026-0014に併記され、先行のCVE-2026-19868回答とは別に検証保留だった脆弱性3件を、SonicWall CNA公式CVE原本およびCISA ADP評価から新たに独立確認した。CVE-2026-19868の「別方式の有効な認証情報を利用したSAML/MFA回避」と、管理画面の不正操作やSSL-VPNサービスのDoSを混同しない。
+
+一次資料から確認した範囲（2026-11-09 JST）:
+- CVE-2026-107154: SonicOS管理インターフェースのセッション検証不備。特定条件下で外部の未認証攻撃者が許可されない操作を実行し得る、というSonicWall CNAの記述。CISA ADPはCVSS v3.1 **8.8 HIGH**、AV:N/PR:N/**UI:R**。CNA記述だけでは無操作で常に侵入できると断定しない。
+- CVE-2026-107155: SonicOS管理インターフェースのクロスドメインポリシーの許容性に関する問題。特定条件下で外部未認証攻撃者による不正操作の可能性。CISA ADPはCVSS v3.1 **8.8 HIGH**、AV:N/PR:N/**UI:R**。同じく利用者側の操作が要求される評価であり、無条件の自動侵害としない。
+- CVE-2026-82308: SonicOS SSL-VPNの認証前ヒープバッファオーバーフロー。CNA記述上の影響はアプリケーションレベルのサービス拒否（DoS）の可能性。CISA ADPはCVSS v3.1 **7.5 HIGH**、AV:N/PR:N/UI:N。CNA原本はこのCVEによる遠隔コード実行を主張していない。
+- 3件ともSonicWall CNAのaffectedはSonicOS **Gen7 7.3.3-7015以前／Gen8 8.2.2-8015以前**。公式CVEの参照先は共通のSonicWall advisory SNWLID-2026-0014、CVE公表日は2026-11-06 UTC。個々の影響条件・攻撃入口は異なるため、一括して「SSL-VPNのMFA回避」と呼ばない。
+
+未確認・実務上の検収:
+CVE-2026-19868のKEV／悪用情報を上記3件へ横滑りさせない。CISA ADPのSSVCは3件とも確認時点でExploitation=noneと記録しているが、これは「悪用が存在しない」ことの証明ではない。今回の許可経路ではSonicWall advisoryの本文・修正版firmwareの実配布・回避策を独立取得していないため、修正版をCVE情報だけから確定しない。管理担当が公式advisoryで対象firmware・公開管理UI・SSL-VPN設定・更新手順を確認し、導入版数、適用結果、ログを別途検収する。SNS投稿・実機更新・Google Docs書込み・第三者への通知は実施していない。
+
+公開一次根拠（SonicWall CNA/CISA ADPの公式GitHub CVE原本）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107154.json （blob SHA 5a9fd1c8020b06e432fcc37eb6bfe60e657974cd）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107155.json （blob SHA 9506001eabe815be46ed81ed74568e0cdbe16479）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/82xxx/CVE-2026-82308.json （blob SHA c2f72b748242bcd00381c801a56c907e080d6ae3）
+
