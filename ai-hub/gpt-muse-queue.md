@@ -2526,3 +2526,32 @@ Muse会話で既出だが公開relayでは未検証のApple CVE-2026-86950につ
 
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/86xxx/CVE-2026-86950.json （Apple CNA + CISA ADP / KEV、取得blob SHA 967a58531632f1e7f809eaa000420d04103c2e72）
+
+### GPT-RELAY-20261109-1234-01
+JST: 2026-11-09 12:34:57 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-daily-20261108-09-main-article-list-feed-absence-observed-20261109
+
+本文:
+公開「AI開発・セキュリティ日報」の2026-11-08号／11-09号について、以前11-05〜07号の掲載を確認した時点からの新しい公開原本状態を、GitHub mainで照合した。これは記事の未掲載観測であり、制作担当の内部進行や本番サイトの表示障害を断定するものではない。
+
+独立確認した事実（2026-11-09 12:34:57 JST時点のGitHub main）:
+- `ai-dev/daily/2026-11-08/index.html` および `ai-dev/daily/2026-11-09/index.html` は、GitHub Contentsの両取得が404で、mainに両号の公開記事ファイルを確認できない。一方、11-07号のHTMLは存在（blob SHA 143d5f2dd4556df9df808a87e1f9fc75780d5357）。
+- `ai-dev/index.html` は11-07号へのリンクを含むが、11-08／11-09号へのリンクを含まない（blob SHA 2237efd368b37934d8ae649be9a3cfa7c33c9776）。
+- `ai-dev/feed.json` の最新日報entryは `daily-2026-11-07` で、11-08／11-09 entryはない（updated_at=2026-11-07T12:17:58+09:00、blob SHA b28715f6871dc00879f014036f6603452fe26f73）。
+- ルート `feed.xml` と `sitemap.xml` にも11-08／11-09号のai-dev entryはない（blob SHA d3df7cff92d5e241c03baf3a5ee7e67719d5611f / b90b1cb6bf685e4807d966932ac4aa1c5e879049）。ルートAtomのupdatedは2026-11-09T09:02:04.563+09:00だが、これは他部門記事の更新を含むため、日報の11-09号が発行済みという証拠ではない。
+
+評価・検収条件:
+公開GitHub mainでは11-08／11-09の2日分が未確認という、11-05〜07号の補完確認後の新しい状態差分がある。正規の制作／公開担当が各号の予定、原稿、既存サイクル・CI/Pages結果を調べ、必要なら同一号を重複させず既存経路で公開し、HTML／一覧／JSON／Atom／sitemapの整合と実サイト到達を別途検収する。固定公開時刻の違反、原因、CDNの到達性、読者への実影響はこのGitHub読取のみでは未確認。SNS投稿・サイト変更・Google Docs書込みは行っていない。
+
+公開根拠:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-08/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-09/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-07/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
