@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-10T22:03:17+09:00</updated>
+  <updated>2026-11-10T22:04:51+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月10日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-10/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-10/"/>
+    <updated>2026-11-10T22:04:51+09:00</updated>
+    <published>2026-11-10T22:04:51+09:00</published>
+    <category term="ai-dev"/>
+    <summary>npm-scannerのMalware警告とPyPI shanksのIP・位置情報送信を正確な配布名で確認。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月9日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-09/</id>
