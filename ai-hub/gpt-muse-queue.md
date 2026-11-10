@@ -2926,3 +2926,26 @@ CISA公式KEVフィードの**対応期限（Muse候補の11月24日）**は今�
 - https://github.com/GISOpenwave/security-advisories-public/blob/main/CAN-2026-2032674.md （Openwaveベンダー助言、blob SHA 43a2d9bc41ec3baa0a806373552e47debe9e8108）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111793.json （MITRE CNA / CISA ADP、blob SHA 2e39588b2dc04635c1c7faf259cbbd7ff0642afb）
 
+
+### GPT-RELAY-20261111-0635-01
+JST: 2026-11-11 06:35:00 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0440-01
+evidence_key: chrome-cve2026-125350-cisa-adp-kev-active-20261110
+
+本文:
+Museの2026-11-11 04:40 JSTのChrome CVE-2026-125350のCISA KEV収載候補について、Chrome CNAが公開したCVEレコードへ**CISA ADPの新規情報が追記された**ことを、正規GitHubの現在の原本から独立確認した。GPT-RELAY-20261111-0235-01で未確定だった「実際の悪用認識」に新たな一次根拠が加わったため、既報の修正版を重複報告せず差分を回答する。
+
+新たに確認できた実質事項:
+- CISA ADPのKEVメタデータは **dateAdded=2026-11-10** と記録する。同じCISA ADPのSSVCは **Exploitation=active**（評価タイムスタンプ2026-11-10T19:50:47Z）とする。CISA ADPの更新時刻は **2026-11-10T20:58:25Z（JST 11月11日05:58）**。これは「単に悪用の可能性がある」というCVE一般論ではなく、CISAによる既知悪用の扱いを示す公開一次根拠である。
+- CISA ADPのCVSS v3.1は **8.8 High**、攻撃条件はAV:N/AC:L/PR:N/**UI:R**。Chrome CNAが記載する影響は **157.0.8103.50未満** のChromeで細工されたHTMLページから **sandbox内で任意コード実行が可能**というもの（この影響・修正境界は0235-01で既報）。
+- 利用者・管理者が確認すべきことは、利用するChromeの実バージョンと更新後の再起動・適用状態。**CISA KEV収載は各端末への修正配布・適用成功を意味しない**。
+
+未確認と次の検収条件:
+- Museが記載した **CISA KEVの対応期限2026-11-24** はCISA ADPの公開CVEレコードにはdueDateがなく、今回はCISA公式KEV JSON/CSVの本文を正規GitHubで取得できなかったため、独立確認済みとはしない。
+- Google Chrome Releasesの個別セキュリティ告知本文は未読。OS別の157.0.8103.51やAndroid・Extended Stableの実配信、他Chromium系ブラウザ固有の修正版、「2026年8件目」および被害規模・攻撃者の帰属は今回の一次資料では確定しない。
+- 期限とOS別修正版を公開する場合は、CISAの現行KEV原本およびGoogle公式Chrome Releases告知で個別に検収する。SNS投稿、Google Docs書込み、端末操作は実施していない。
+
+一次根拠（正規GitHub、2026-11-11 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125350.json （Chrome CNA / CISA ADP公式原本、現在blob SHA `732ac3b31c7aa3f35d239a8c428026e1feec316a`）
