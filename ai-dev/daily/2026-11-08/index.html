@@ -37,33 +37,33 @@
       <p class="ai-dev-lead">PyPI rainbowcolorsとinfra-libsの悪性版を、実行・import条件と安全な復旧手順から整理。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-10 21:58 JST（初回公開 2026-11-10）</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">PyPI rainbowcolors 0.1.0：Windowsで実行ファイルを取得・起動（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">PyPI infra-libs 99.99.99：install/import時のホスト名DNS送信（P2）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">調査範囲と非該当</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">PyPI rainbowcolors 0.1.0：Windowsで実行ファイルを取得・起動（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">PyPI infra-libs 99.99.99：install/import時のホスト名DNS送信（P2）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">調査範囲と非該当</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">初回公開と更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">PyPI rainbowcolors 0.1.0：Windowsで実行ファイルを取得・起動（P1）</a></li><li><a href="#reading-section-2">PyPI infra-libs 99.99.99：install/import時のホスト名DNS送信（P2）</a></li><li><a href="#reading-section-3">調査範囲と非該当</a></li><li><a href="#reading-section-4">更新履歴</a></li><li><a href="#reading-section-5">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">PyPI rainbowcolors 0.1.0：Windowsで実行ファイルを取得・起動（P1）</a></li><li><a href="#reading-section-2">PyPI infra-libs 99.99.99：install/import時のホスト名DNS送信（P2）</a></li><li><a href="#reading-section-3">調査範囲と非該当</a></li><li><a href="#reading-section-4">初回公開と更新履歴</a></li><li><a href="#reading-section-5">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
-    <p><strong>対象日：2026-11-08 ／ 遅延初回公開：2026-11-10 ／ 公式資料の確認：2026-11-10 21:58 JST。</strong> 依存パッケージの警告は該当する名前・版・実行条件を確認してから適用してください。</p>
-<p>対象日までに公表された公式GitHub Advisoryのうち、個人開発者・小規模CIで依存確認ができるものを選びました。悪性パッケージの存在と個別端末の侵害を同一視しません。</p>
+    <p><strong>対象日：2026-11-08／公式Advisory確認：2026-11-10 JST／初回公開：2026-11-10（欠号の遅延復旧）</strong></p>
+<p>本号はGitHub Advisory Databaseに登録されたPyPIの悪性パッケージ2件を扱います。<strong>優先度は一般読者の確認順</strong>で、P1は導入状況を優先照合、P2は条件付き情報露出の点検です。該当する実行・不審な防御設定を確認した端末は、見出しの優先度とは別に即時の隔離・調査が必要です。</p>
 <h2 id="reading-section-1">PyPI rainbowcolors 0.1.0：Windowsで実行ファイルを取得・起動（P1）</h2>
-<p>GitHub Advisoryの解析によれば、色付き表示用と称するパッケージで、Windows上のColorメソッドを最初に呼び出すと外部ファイル共有から実行ファイルを取得・起動し、Microsoft Defenderの除外設定を試みます。 <a href="https://github.com/advisories/GHSA-fh9h-99qg-6xm4" target="_blank" rel="noopener noreferrer">一次情報：GHSA-fh9h-99qg-6xm4</a>（公開 2026-11-08 21:33 JST）。<strong>対象版：0.1.0。</strong></p>
-<p><strong>該当条件：</strong> 対象のPythonパッケージの0.1.0を実際に導入・呼び出したWindows環境が主な確認対象です。名前の似た別ライブラリだけでは該当しません。</p>
-<p><strong>安全な確認：</strong> 依存関係のlockfile、pipの導入履歴、CIログと端末防御ログを安全な端末から照合します。検証のために対象パッケージをimport・起動しません。</p>
-<p><strong>対処と復旧：</strong> 実行が確認された環境はネットワークから分離して証拠を保全し、アクセス可能だった秘密を安全な別端末から失効・再発行してクリーンなイメージから再構築します。悪性版への巻き戻しはしません。</p>
-<p><strong>留保：</strong> 公式Advisoryに修正版は示されておらず、感染が成立した端末数は確認できません。</p>
+<p>GitHub Advisory Databaseの解析によると、Windowsで<code>rainbowcolors</code>のColorメソッド（print/paint/__call__など）を初めて呼ぶと、外部の匿名共有先から実行ファイルを取得・起動します。その前後にMicrosoft Defenderの除外設定を追加しようとする挙動も報告されています。これは個別端末で実行が成功した証拠ではありません。<a href="https://github.com/advisories/GHSA-fh9h-99qg-6xm4" target="_blank" rel="noopener noreferrer">一次情報：GHSA-fh9h-99qg-6xm4</a>（公開：2026-11-08 12:33:47 UTC＝21:33:47 JST、更新：15:32:34 UTC）。<strong>Advisoryの影響版：<code>= 0.1.0</code>。</strong> 他の版まで影響すると断定しません。</p>
+<p><strong>該当条件：</strong> <code>rainbowcolors==0.1.0</code>を導入したWindows環境を確認してください。実行に関してAdvisoryが示すのは最初のColorメソッド呼び出しであり、単なる名称の類似では対象になりません。</p>
+<p><strong>安全な確認：</strong> ①依存・ロックファイルに該当版がなければ、このAdvisoryに基づく対応は不要です。②導入済みでも実行の有無が不明な場合、対象コードを起動せずに隔離環境から導入証跡、EDR・Defenderの検出履歴と除外パス・除外プロセス設定を読み取り専用で点検してください。③実行や不審な除外が確認できた場合は侵害を疑う段階です。</p>
+<p><strong>対処と復旧：</strong> 導入済みで実行不明なら悪性版を除外して安全な依存へ置換し、設定・防御ログを確認します。実行または防御除外の不審な変更が確認されたらネットワークから分離して証拠を保全し、到達可能だった秘密を清浄な別端末から失効・再発行して、クリーンなイメージで再構築します。除外設定は証拠を確認したうえで適切に修正します。</p>
+<p><strong>留保：</strong> 侵害の成立、取得先バイナリの最終動作、被害端末数はこのAdvisoryだけでは確定できません。修正版は示されていません。</p>
 <h2 id="reading-section-2">PyPI infra-libs 99.99.99：install/import時のホスト名DNS送信（P2）</h2>
-<p>公式Malware Advisoryによれば、セットアップ時とimport時にインストール元のホスト名をDNS照会に埋め込み、外部の権威DNSへ伝える実装が含まれます。 <a href="https://github.com/advisories/GHSA-cj88-j9xh-9cwj" target="_blank" rel="noopener noreferrer">一次情報：GHSA-cj88-j9xh-9cwj</a>（公開 2026-11-08 21:33 JST）。<strong>対象版：99.99.99。</strong></p>
-<p><strong>該当条件：</strong> 正確な名前と99.99.99版をインストールまたはimportした環境が対象です。Advisoryが示す送信対象はホスト名であり、秘密鍵の流出を同じ証拠から断定できません。</p>
-<p><strong>安全な確認：</strong> pip freeze／ロックファイル、ビルドログ、許可されたDNS監査ログを照合。分析のために再インストールしないでください。</p>
-<p><strong>対処と復旧：</strong> 該当依存を除外してクリーンな環境から再ビルドし、必要に応じホスト識別子の露出を評価します。移行先で依存関係を再確認し、当該版には戻しません。</p>
-<p><strong>留保：</strong> 修正版の記載はなく、外部の受信者が何を利用したかは一次資料だけでは確認できません。</p>
+<p>GitHub Advisory Database（OpenSSFなどの悪性パッケージ観測データを含む）によれば、<code>infra-libs</code>のセットアップ時とimport時にホスト名をDNSサブドメインへ埋め込み、外部の権威DNSへ送信する実装が見つかっています。<a href="https://github.com/advisories/GHSA-cj88-j9xh-9cwj" target="_blank" rel="noopener noreferrer">一次情報：GHSA-cj88-j9xh-9cwj</a>（公開：2026-11-08 12:33:47 UTC＝21:33:47 JST、更新：15:32:34 UTC）。<strong>Advisoryの影響版：<code>= 99.99.99</code>。</strong></p>
+<p><strong>該当条件：</strong> 正確な配布名と99.99.99版をインストールした環境が対象です。セットアップでも実行され得るため、importの有無だけで除外できません。<code>infra-libs</code>という社内依存名が公開PyPIのパッケージ名と重なり、<code>extra-index-url</code>などで外部indexも参照する構成では、依存関係混同による<strong>意図しない取り込みの可能性</strong>も点検してください。ただし、この個別配布の攻撃意図までは断定しません。</p>
+<p><strong>安全な確認：</strong> requirements／lockfileの名称・版を完全一致で照合し、依存indexの設定（<code>index-url</code>／<code>extra-index-url</code>）とハッシュ固定の有無を読み取ります。保存済みビルド記録と許可されたDNS監査ログを調べます。悪性パッケージを再インストール・importしないでください。</p>
+<p><strong>対処と復旧：</strong> 該当版を依存から除去し、正しい取得先と版を固定して清浄な環境で再ビルドします。DNSによるホスト識別子の流出可能性を評価し、配布物とCIキャッシュを再利用しないでください。</p>
+<p><strong>留保：</strong> Advisoryが裏づける送信対象はホスト名です。秘密鍵やファイルの流出、個々の環境での受信成功までは断定できません。修正版・実被害の規模も未確認です。</p>
 <h2 id="reading-section-3">調査範囲と非該当</h2>
-<p>確認済みは上記のGitHub Advisory原本と記載された版・条件です。全GitHub Advisory、全CISA KEV、全開発環境への該当を網羅したものではありません。特定の家族・事業・Windows端末が当該版を導入した事実は確認していません。</p>
-<h2 id="reading-section-4">更新履歴</h2>
-<p>対象日が過ぎた後の欠号復旧です。発行日と実際の初回公開日時を混同せず、公開検収後に正確な初回公開日を記録します。</p>
+<p>2026-11-10に上記GitHub Advisoryの影響版・Published・Updated・挙動記述を個別確認しました。<strong>この2件に限る選択的な調査</strong>であり、同日のCISA KEVや全GHSA、主要ベンダーのすべての更新は網羅していません。「調査して問題なし」とは判定していません。特定の利用者の端末・CI環境への導入状況も未確認です。</p>
+<h2 id="reading-section-4">初回公開と更新履歴</h2>
+<p>2026-11-10 JST：11月8日対象号として遅延初回公開。2026-11-10 JST：公開後の独立Claude Opusレビューを受け、影響版の原文表記、導入のみ・実行不明の条件、優先度、安全な確認、依存関係混同の留保、確認範囲と更新履歴を一次情報に基づいて訂正しました。初回公開の分単位時刻は検収原本に確定記録がないため記載していません。</p>
     <aside class="source-note">
-      <h2 id="reading-section-5">出典・更新履歴</h2>
+      <h2 id="reading-section-5">一次資料</h2>
       <ul><li><a href="https://github.com/advisories/GHSA-cj88-j9xh-9cwj" target="_blank" rel="noopener noreferrer">GHSA-cj88-j9xh-9cwj</a></li><li><a href="https://github.com/advisories/GHSA-fh9h-99qg-6xm4" target="_blank" rel="noopener noreferrer">GHSA-fh9h-99qg-6xm4</a></li></ul>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
