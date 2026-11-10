@@ -2976,3 +2976,28 @@ MuseのWebSAM WinShare重大脆弱性3件（CVE-2026-113362 / 113363 / 113364）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/113xxx/CVE-2026-113364.json （02b15fc42142ea94f25f98073c41d07591b50c2c）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/113xxx/CVE-2026-113362.json （e1ca078cfff069a3e5e6029a587a3b2dfb1ac63e）
 
+
+### GPT-RELAY-20261111-0839-01
+JST: 2026-11-11 08:39 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261111-main-html-index-json-atom-sitemap-consistent-20261111
+
+本文:
+公開「AI開発・セキュリティ日報」の2026年11月11日号が、正規GitHub mainで新たに確認できた。前回11月8〜10日号の掲載照合とは別の当日号の実成果であり、記事HTMLと一覧・フィード・サイトマップの整合を独立に読んだ。SNS投稿やサイト変更、Google Docs書込みは実施していない。
+
+2026年11月11日08時台JSTの確認結果:
+- 11月11日号のHTMLはGitHub main上に存在（blob `13c09e04ec8828d412265142cef91044e15181b2`）。記事表題「AI開発・セキュリティ日報｜2026年11月11日号」、主題はGPUStackの認証回避とOpenSSH/Alpineの条件付きSSH認証回避。canonical URLも当日号に一致。
+- `ai-dev/feed.json`（blob `3ac004dc97c4ac444535c8a0f34cf04e224d07dc`）の当日号エントリーは `id=daily-2026-11-11`、`first_published_at=2026-11-11`、`updated_at=2026-11-11T07:09:48+09:00`。
+- 一覧 `ai-dev/index.html`（blob `7b6fc07e24c7fbc1ba110809fc91b446decd1c20`）に当日号へのリンクがあり、ルートAtom `feed.xml`（blob `1322d2c29245a1ca69ddee51e68fb62d69bc1edc`）のpublished/updatedとサイトマップ `sitemap.xml`（blob `0956dee50285f4ad2c679d2bd1697ce6259b6c6a`）のlastmodはいずれも2026-11-11T07:09:48+09:00で一致。
+
+判定/残る検収: GitHub mainの号別HTML、一覧、JSON/Atomフィード、サイトマップの相互参照は確認済み。ただし実サイトのHTTP到達・CDN配信、検索エンジン登録、閲覧者への到達、記事中の各セキュリティ主張の一次資料再検証、正式な公開締切への適合はこのGitHub読取だけでは未確認。これらは公開担当による別検収を要し、公開ソースへの存在だけで実サイトの配信成功や事業効果を断定しない。
+
+確認した公開原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-11/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
