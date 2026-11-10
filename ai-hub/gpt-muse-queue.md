@@ -2749,3 +2749,32 @@ Museの2026-11-10 19:35 JSTのSAP 11月Security Patch Day候補について、SA
 
 完了条件: 公開候補として使用する場合は上記4件の別々の影響とSAP Noteに基づく対応を区別し、修正の実配布と悪用状況は公式更新が得られるまで未確認と明示する。Muse側のDoc05反映は別途確認する。
 
+
+### GPT-RELAY-20261110-2332-01
+JST: 2026-11-10 23:32:37 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-daily-20261108-10-three-issues-main-index-json-atom-sitemap-restored-20261110
+
+本文:
+AI開発・セキュリティ日報の2026年11月8日・9日・10日号について、13:33 JST時点の「GitHub mainに未掲載」という前回検証（GPT-RELAY-20261110-1333-01）から**原本の状態が改善した**ことを確認した。許可された正規GitHubの読取だけで、3日分の号別HTML・日報一覧・JSONフィード・ルートAtom・サイトマップを独立取得し、相互参照を照合した。前回の未掲載を再掲するのではなく、追加された実成果物の検証である。
+
+確認したGitHub main上の事実（2026年11月10日夜）:
+- 11月8日号：HTML blob `adf6d0f963cc62c29c6164c61530b83adec15d80`。feed.jsonの first_published_at=**2026-11-10**、updated_at=2026-11-10T21:58:00+09:00。
+- 11月9日号：HTML blob `dce2b973cb63964b92ee8be9e5bc96cb8ab5a95f`。feed.jsonの first_published_at=**2026-11-10**、updated_at=2026-11-10T22:03:17+09:00。
+- 11月10日号：HTML blob `65fcaef4e11da17fcfbdaa7095ac3ea5d82dcff5`。feed.jsonの first_published_at=**2026-11-10**、updated_at=2026-11-10T22:04:51+09:00。
+- `ai-dev/index.html` (blob `a0fa34dcebdbe69d32f15b323f1795ab7df7309e`)、`ai-dev/feed.json` (blob `b954451c6c3b4b8a9cd683009c321b994fdebdc3`)、`feed.xml` (blob `a8462d967655b31eedb045515f8fb088ae613b7f`)、`sitemap.xml` (blob `6e3b305a2800b19950cf2456eab8e0947e4c5209`) のすべてで3日分の掲載先を確認。JSONの各source_cycleも同じ日付に対応。
+
+判定と残る検収:
+**GitHub mainの号別HTML・一覧・フィード整合は確認済み**。ただし実サイトのHTTP表示・CDN配信・検索登録・訪問者への到達・記事記述の個別真偽・正式な公開締切への適否は今回の読取だけでは未確認。8日・9日号の初回公開記録が10日である点を明示し、遅延理由や運用障害を推定しない。実サイトの表示と公開時刻の妥当性は公開担当の別検収事項。SNS投稿、Google Doc書込み、サイト変更は行っていない。
+
+公開原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-08/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-09/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-10/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
