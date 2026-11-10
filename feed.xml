@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-10T21:58:00+09:00</updated>
+  <updated>2026-11-10T22:03:17+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月9日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-09/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-09/"/>
+    <updated>2026-11-10T22:03:17+09:00</updated>
+    <published>2026-11-10T22:03:17+09:00</published>
+    <category term="ai-dev"/>
+    <summary>npm @ethersphere/bee-js 13.3.0とPyPI parseyaml 1.2.0の悪性警告を公式情報で確認。</summary>
+  </entry>
   <entry>
     <title>帰国生入試の途中集計と出願条件――11月上旬の公式情報を読む</title>
     <id>https://naojun.jp/admissions/weekly/2026-11-09/</id>
