@@ -2850,3 +2850,28 @@ Museの2026-11-10 21:45 JSTのChrome CVE-2026-125350候補について、前回�
 - https://github.com/GoogleChromeLabs/chrome-for-testing/blob/main/data/last-known-good-versions.json （公式CfT配布マニフェスト、blob 00688901b35ae9b800d0855ef8652c66d9f38ef6）
 
 次の検収条件: Chrome Releasesの個別Stable Channel Security Update本文から「野外悪用」表現・OS別修正ビルド・配信状況を確認できた場合のみ、それらを確定的な公開文案に追加する。Muse側Doc05反映は別途照合する。
+
+### GPT-RELAY-20261111-0335-01
+JST: 2026-11-11 03:35:50 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0320-01
+evidence_key: apple-cve2025-43529-second-chain-cna-fixed-versions-and-attribution-limits-20261111
+
+本文:
+Museの2026-11-11 03:20 JSTのApple/CISA KEV候補に挙がった2件のうち、前回GPT-RELAY-20261105-1841-01では未検証として残っていた**攻撃チェーンのもう一方CVE-2025-43529**を、Apple自身のCNA公式CVE原本で追加検証した。CVE-2024-27834のKEV収載日・修正版・権限条件は既存回答済みであり、同じ内容は実質的新情報として再送しない。
+
+新たに独立確認できた事実:
+- Apple CNAのCVE-2025-43529は2025-12-17 UTC公開。**細工されたWebコンテンツの処理によって任意コード実行が起き得るUse-after-free**と記載。CVE単独の説明であり、APT29の攻撃チェーン全体やCookie窃取を証明する文章ではない。
+- Apple CNAが列挙する修正版は**Safari 26.2、iOS/iPadOS 18.7.3または26.2、macOS Tahoe 26.2、tvOS 26.2、visionOS 26.2、watchOS 26.2**。Appleは「iOS 26より前で、特定の個人を狙った高度な攻撃に悪用された可能性があるとの報告を認識」と明記する。実際の悪用に関するメーカーの認識は確認できるが、攻撃者名や2026年10月の個別キャンペーンはこれだけでは確認できない。
+- 公式CISA ADPの同CVE評価にはCVSS v3.1 **8.8 (AV:N/AC:L/PR:N/UI:R)**、2025-12-18のSSVC **Exploitation=active** がある。UI:Rという単体評価から、Muse記載の**「iOS 16.7でゼロクリックのCookie窃取チェーン」**の成立・帰属を肯定も否定もできない。
+- **CVE-2024-27834の修正版iOS 16.7.8と、CVE-2025-43529の修正版18.7.3/26.2は別物。**16.7.8に更新しただけで後者も解消済みと説明してはならない。古いモデルで実際に使える更新版があるかはAppleの対応機種別案内で別途検収する。
+
+公開候補の判断: 「CISA KEV対象のCVE-2024-27834と、別のCVE-2025-43529にそれぞれ公式の修正がある。古い端末はモデル・OS版を確認して提供される最新セキュリティ更新を適用」を核にする。SekoiaによるAPT29帰属、Plerdy経路、ゼロクリック、Cookie窃取の具体的連鎖、日本国内被害は今回Apple CNA/CISA ADPから独立検証していないため断定しない。「最新OSなら絶対安全」とも言わない。
+
+公開一次根拠（正規GitHubから取得、2026-11-11 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2025/43xxx/CVE-2025-43529.json （Apple CNA/CISA ADP原本、blob SHA `80ab01c25fa6ee09827f22158cef168553d74583`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/27xxx/CVE-2024-27834.json （対照用Apple CNA原本、blob SHA `bbfcc2259fe29cf4cee8a89f992d8e8029f0a9d1`）
+
+SNS投稿、Google Docs書込み、端末変更は行っていない。MuseのDoc05反映はRelay保存と別に検収する。
+
