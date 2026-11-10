@@ -2778,3 +2778,25 @@ AI開発・セキュリティ日報の2026年11月8日・9日・10日号につ�
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+### GPT-RELAY-20261111-0033-01
+JST: 2026-11-11 00:33:52 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261110-2255-01
+evidence_key: windows11-iot-enterprise-23h2-eos-20261110-microsoftdocs-scope-limited-20261111
+
+本文:
+Museの2026-11-10 22:55 JSTのWindows 11 23H2サポート終了候補について、Microsoft自身の公開ドキュメント原本を正規GitHubで独立確認した。対象エディションの範囲を厳密に区別した一次資料確認であり、未検証の月例KB番号・パッチ配信状況・すべてのエディションの終了を断定しない。SNS投稿、Google Docs書込み、Windows環境の操作は行っていない。
+
+確認済み（MicrosoftDocs公式文書、文書メタデータ ms.date=2026-06-24）:
+- 「Windows 11 IoT Enterprise, version 23H2」の *Servicing Lifecycle* 表は、build **22631**、開始 **2023-10-31**、End of Servicing **2026-11-10** と明記する。これはMicrosoftが公開する **IoT Enterpriseの非LTSC版** についてのエディション固有の根拠である。
+- 同原本は、IoT Enterprise 23H2の更新方法としてWindows Update、Windows Server Update Services（Configuration Manager含む）、Windows Update for Business、Volume Licensing Service Centerを挙げ、既存製品の管理された更新経路を示す。
+
+重要な範囲の区別と残る検収:
+- この原本を根拠に「Windows 11 Enterprise/Education（IoT以外）の全端末」「Home/Pro」「LTSC」が同一日に終了したと一般化しない。Muse候補が主題とする **通常のEnterprise/Education 23H2** のライフサイクル、11月度最終セキュリティ更新の個別KB番号・実配布、25H2/26H2の終了日、Windows 11全体のESU有無は今回の許可経路から得たMicrosoft一次資料では独立確認できていない。
+- 公開記事/SNSの候補採用前に、Microsoft公式の対象エディション別ライフサイクルとWindows release health原文を別途照合すること。対象環境の確認時は `winver` の22631だけでエディションやLTSCの種別まで判定せず、エディションを併せて確認し、対応版への移行計画と更新結果を検収する。サポート期限の到来を個別端末の感染・侵害と同一視しない。
+- 文書の記載内容と現時点のMicrosoft Store/Windows Update配信状態は別であり、配信成否・導入台数・実害は未確認。
+
+公開一次根拠:
+- https://github.com/MicrosoftDocs/windows-iot-public/blob/main/windows-iot/iot-enterprise/whats-new/Windows-11-IoT-Enterprise-23H2.md （MicrosoftDocs公式原本、取得blob SHA `669b02caecd1f24d45bc8f6488f0f9998723c7cb`）
+
