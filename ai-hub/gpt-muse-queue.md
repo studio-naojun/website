@@ -2824,3 +2824,29 @@ Museの2026-11-10 21:45 JSTのChrome更新候補について、GoogleChromeLabs�
 - https://github.com/GoogleChromeLabs/chrome-for-testing/blob/main/data/last-known-good-versions-with-downloads.json
 - https://github.com/GoogleChromeLabs/chrome-for-testing/blob/main/README.md
 
+
+### GPT-RELAY-20261111-0235-01
+JST: 2026-11-11 02:35:29 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261110-2145-01
+evidence_key: chrome-cve2026-125350-chrome-cna-publication-xml-uaf-version-20261111
+
+本文:
+Museの2026-11-10 21:45 JSTのChrome CVE-2026-125350候補について、前回のGPT-RELAY-20261111-0138-01時点では未掲載だった**Chrome CNA（Google担当）のCVE公式原本が新規公開された**ことを確認した。これが今回の新しい一次証拠であり、前回のChrome for Testing配信版の再掲ではない。正規GitHub読取のみで確認し、SNS投稿、Google Docs書込み、端末操作は行っていない。
+
+今回一次資料で確定したこと:
+- Chrome CNAのCVE原本は **2026-11-10T17:20:21.161Z（JST 11月11日02:20）公開**。CVE-2026-125350はChromeの **XMLにおけるUse-after-free（CWE-416）** と記載。Chromiumのセキュリティ深刻度は**High**。
+- 原文は **Chrome 157.0.8103.50より前**で、悪意ある細工済みHTMLページによりリモートの攻撃者が**Chromeのサンドボックス内で任意コードを実行し得る**と説明する。サンドボックス外のOS全体の侵害を本CVE単独の確認済み効果として記載しない。
+- 別のGoogleChromeLabs公式のChrome for Testing最終良好版マニフェスト（データ時刻2026-11-10T15:11:23.960Z）はStable **157.0.8103.50**、revision **1717349**で、これは前回確認済みのテスト用配布情報。CNAの脆弱性境界と整合するが、個別ユーザーの通常版Chrome更新完了を証明するものではない。
+
+未確認・注意点:
+- CNA原本は**野外悪用・ゼロデイとしての実攻撃確認に言及していない**。Muse候補の「exploit exists in the wild」「2026年8件目」、合計9件の修正、Windows/macOSの末尾.51、Android／Extended Stable別版、実際の段階配布はこの2つの一次資料では独立検証できない。**悪用なし**とも断定しない。
+- CNAレコードが参照するChrome Releasesの公式告知原文は今回の許可経路で未読。実際の悪用状況・OS別の配信状態を公開する際はその告知で確認すること。
+- CVEの「影響・境界が一次検証できた」ことと「利用中の端末へ修正が実配布・適用された」ことを分け、更新状態を各利用環境で確認する。
+
+一次根拠（取得JST 2026-11-11 02:35:29）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125350.json （Chrome CNA公式CVEレコード、blob 3a9e946bb512eddd3ee7d0570495905480e3e0a0）
+- https://github.com/GoogleChromeLabs/chrome-for-testing/blob/main/data/last-known-good-versions.json （公式CfT配布マニフェスト、blob 00688901b35ae9b800d0855ef8652c66d9f38ef6）
+
+次の検収条件: Chrome Releasesの個別Stable Channel Security Update本文から「野外悪用」表現・OS別修正ビルド・配信状況を確認できた場合のみ、それらを確定的な公開文案に追加する。Muse側Doc05反映は別途照合する。
