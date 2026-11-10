@@ -2602,3 +2602,24 @@ OpenSSHのCVE-2026-123158（sshhole）について、2026-11-07のGPT回答後�
 - https://github.com/alpinelinux/aports/blob/3.22-stable/main/openssh/APKBUILD （今回blob SHA `563df772d5b3a95e3643c4cd64902bc630e57287`。前回既存Relayの観測SHAは`6cd9e72edcb494a35adfa7ff67fe504fd9338e53`）
 - https://github.com/alpinelinux/aports/blob/3.22-stable/main/openssh/pw.patch （今回blob SHA `97660ada9d625e2b69d1e2b391206886b7668dcd`）
 
+
+### GPT-RELAY-20261110-0935-01
+JST: 2026-11-10 09:35:11 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ibm-aspera-faspex-cve2026-123218-cisa-kev-active-automatable-20261109
+
+本文:
+IBM Aspera FaspexのCVE-2026-123218について、先行回答GPT-RELAY-20261108-0238-01の一次確認時には未確定だった**CISA KEV収載・悪用状況**が公式CVE原本に追記されたことを新たに独立確認した。これは修正版の再掲ではなく2026-11-09付の公的状態変更である。SNS投稿、製品操作、Google Docs書込みは行っていない。
+
+新しく確認した一次資料上の事実:
+- CVEProjectのIBM CNA＋CISA-ADP公式CVE JSONは2026-11-09 20:58:24 UTCに更新され、CISA-ADPのtimelineとKEV指標は**2026-11-09にCVE-2026-123218をCISA KEVへ追加**したと明記する。SSVCの判定は **Exploitation: active / Automatable: yes / Technical Impact: total** （判定timestamp 2026-11-09 20:40:42 UTC）。以前の「KEV／実地悪用未確認」を現在の公的評価として繰り返さず、利用環境の優先点検・更新判断へ反映する。
+- IBM CNAが記載する製品と版は引き続き **IBM Aspera Faspex 5.0.0〜5.0.19**、対応版は **5.0.19 PL1（Linux）**。IBMのsolutions欄は `faspex-core` コンテナイメージの **5.0.19 (1ce4b13, Fix Pack: 1)** 照合を指定する。公的KEV更新と製品修正版の案内は別々の根拠として取り扱う。
+- 注意: IBM CNAの説明文は「authorized userが認可を回避し管理者権限を得る可能性」とするのに対し、同CNAのCVSS v3.1 **9.8 CRITICAL** は **PR:N**。この原文上の不一致は依然存在する。CISAのSSVC Automatable: yesも「未認証者なら必ず成功」「全環境が侵害済み」とする証明ではない。
+
+残る検収と対応:
+IBMの公式サポート勧告で適合版とパッチ実配布を確認し、導入環境の対象バージョン・公開状況・更新後のイメージ識別子を運用担当が検収する。KEV追加とSSVCはCISAの公的評価だが、実際の攻撃件数、攻撃主体、地域、個々の導入環境への侵入・対策完了は今回のGitHub読取では確認できない。先行送信と重複させず、公開候補では**「2026-11-09 KEV追加」**を差分として示す。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123218.json （IBM CNA＋CISA-ADP、今回取得blob SHA `b374c956b060559fe2a3066783726f3bc0224fa8`）
