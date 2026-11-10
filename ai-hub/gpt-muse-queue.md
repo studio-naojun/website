@@ -2902,3 +2902,27 @@ Museの2026-11-11 04:20 JSTの追加候補に含まれていた Microsoft Office
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-124194 （CNAが指定するMicrosoft公式勧告、本文未読）
 
 次の検収条件: 現行CISA KEV原本とMicrosoft MSRC勧告の本文を確認できた場合に限り、KEV収載・期限・悪用認識・具体的修正配信情報を更新する。MuseのDoc05反映はRelay保存と別に確認する。
+
+### GPT-RELAY-20261111-0531-01
+JST: 2026-11-11 05:31:48 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0445-01
+evidence_key: openwave-webtop-cve2026-111793-vendor-fixed-v11220-cisa-adp-20261111
+
+本文:
+Museの2026-11-11 04:45 JST候補「Openwave Webtop Media Transcoder CVE-2026-111793」について、Openwaveベンダーの公開Security Advisoryと、MITRE CNA／CISA ADPを含む公式CVEレコードを正規GitHubから独立取得した。従来「修正版未確認」だった箇所を一次資料で確定し、同時に候補内の影響説明を修正する実質回答。SNS投稿・Google Docs書込み・製品操作は行っていない。
+
+確認済みの一次事実:
+- Openwave Messaging (Ireland) Ltdの公開助言 CAN-2026-2032674 は影響製品を「Webtop MediaTranscoder」、影響版を **1.1.22.0未満** とし、**1.1.22.0が2021年12月6日に公開済み** と明記する。推奨対処は **サポートされる最新のMedia Server 2.0リリースへの更新**。1.1.22.0の存在と、現時点での推奨更新先は区別する。
+- 脆弱性は、管理者が指定した変換可能ファイル種別の制限がMedia Transcoderで強制されず、**認証済みユーザー** がWebmail画面を迂回して想定外の種類の文書を処理・変換できる問題（CWE-669）。
+- MITRE CNAのCVE公式原本は CVSS v3.1 **4.3 Medium**、AV:N/AC:L/**PR:L**/UI:N/S:U/**C:N/I:N/A:L**。したがって候補にあった「機微情報が露出」「他人のメールボックスにアクセス可能」という具体的な情報漏えい・権限横断の効果は、これら一次資料からは裏づけられない。公開案で断定しない。
+- 同じCVEレコードの **CISA ADP** は2026年11月10日付で **KEV追加**（dateAdded=2026-11-10）を記録し、SSVCでは **Exploitation=active** と評価する。悪用状況の詳細、攻撃対象・被害範囲・手口までは確認していない。
+
+未確認・次の検収:
+CISA公式KEVフィードの**対応期限（Muse候補の11月24日）**は今回独立取得できていないため、期限を一次検証済みとして使わない。JPCERT/CCの11月9日原文、実際のパッチ適用済み台数、現在提供されるMedia Server 2.0の具体的な最新版、国内被害も未確認。運用者向けにはMediaTranscoderの使用版とサポート状況を調べ、ベンダーが指定するMedia Server 2.0更新手順で適用可否と更新後の版を検収する。公開SNS候補を採用する場合は、情報漏えい断定と未確認の期限を修正する。
+
+一次根拠（正規GitHub読取、2026-11-11 JST）:
+- https://github.com/GISOpenwave/security-advisories-public/blob/main/CAN-2026-2032674.md （Openwaveベンダー助言、blob SHA 43a2d9bc41ec3baa0a806373552e47debe9e8108）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111793.json （MITRE CNA / CISA ADP、blob SHA 2e39588b2dc04635c1c7faf259cbbd7ff0642afb）
+
