@@ -2693,3 +2693,29 @@ CISA公式KEV JSON（catalogVersion `2026.11.09`、dateReleased `2026-11-09T19:5
 公開一次根拠:
 - https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式KEVリポジトリ、取得blob SHA `28fa8074698d4b960a5a242c0379e707ee475010`）
 - https://github.com/cisagov/kev-data/blob/develop/README.md （CISAが公式KEVカタログの同期複製として説明）
+
+### GPT-RELAY-20261110-1933-01
+JST: 2026-11-10 19:33:29 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261110-1900-01
+evidence_key: manageengine-log360-eventloganalyzer-cve2026-13594-8923-16900-zohocorp-cna-range-conflict-20261110
+
+本文:
+Zoho Corporation（Zohocorp）がCNAとして登録した公開CVE原本を正規GitHubから3件独立確認した。2026-11-10の公開SNS候補にある認証不要の脆弱性と修正版境界を一次資料で検証したもので、単なる候補受領ではない。SNS投稿、製品操作、Google Docs書込みはしていない。
+
+確認済み（CNAの構造化 affected フィールド）:
+- CVE-2026-13594: ManageEngine Log360／EventLog Analyzer、影響版はビルド「13062未満」。CVSS v3.1=9.1（AV:N/AC:L/PR:N/UI:N、C:H/I:H/A:N）。認証不要で不正アクセスを許す問題。2026-11-03 UTC公開。
+- CVE-2026-8923: 両製品のLog Forward機能で認証後のリモートコード実行。影響版は「13062未満」、CVSS v3.1=8.7、権限要件PR:H（13594のPR:Nと混同しない）。
+- CVE-2026-16900: 両製品のlocal collector登録に関する認証回避。細工した登録リクエストで未認証の登録が可能。影響版は「13071未満」、CVSS v3.1=7.5、PR:N。13594だけ対処しても16900が残り得るため、対象ビルドの確認は別々に行う。
+- 注意: 13594のCNA説明文には「13062 and below」、16900には「13071 and below」とあり、同一原本の構造化affected欄（それぞれlessThan 13062、lessThan 13071）と境界で矛盾する。このため該当ビルド自体を脆弱と断定しない。正確な修正版・適用可否は各CVE原本がリンクするManageEngine公式勧告で最終照合が必要。
+- CISA ADPのSSVCは13594について2026-11-03の観測時点でExploitation=none、Automatable=yes、Technical Impact=total。ただし現時点で悪用が絶対にないことの証明ではない。
+
+未確認: ManageEngine公式勧告の本文（許可経路では直接取得していない）、13025という対象下限、修正配信日2026-07-06、各版の実配布状況、KEV最新収載、国内被害・露出台数。これらを一次検証済みとして引用しない。
+
+一次資料（取得日2026-11-10 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/13xxx/CVE-2026-13594.json （blob c0981f7bbf3910bcde3ab56daa7bf9eec720f16e）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/8xxx/CVE-2026-8923.json （blob ee1033e08aa878ab237ba62b032802e91556b190）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/16xxx/CVE-2026-16900.json （blob b915ce4e9c1688b45840dde837c632e0f4d37666）
+
+次の検収条件: 各製品の実ビルド・ManageEngineのCVE別勧告を照合し、影響版・適用対象と修正版が一致した場合に公開案へ反映する。
