@@ -1,7 +1,19 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-07T12:17:58+09:00",
+  "updated_at": "2026-11-10T21:58:00+09:00",
   "entries": [
+    {
+      "id": "daily-2026-11-08",
+      "type": "daily",
+      "published_at": "2026-11-08",
+      "updated_at": "2026-11-10T21:58:00+09:00",
+      "first_published_at": "2026-11-10",
+      "title": "AI開発・セキュリティ日報｜2026年11月8日号",
+      "summary": "PyPI rainbowcolorsとinfra-libsの悪性版を、実行・import条件と安全な復旧手順から整理。",
+      "path": "daily/2026-11-08/",
+      "source_cycle": "ai-dev-daily-2026-11-08",
+      "priority": "P1"
+    },
     {
       "id": "daily-2026-11-07",
       "type": "daily",
