@@ -1,7 +1,19 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-10T21:58:00+09:00",
+  "updated_at": "2026-11-10T22:03:17+09:00",
   "entries": [
+    {
+      "id": "daily-2026-11-09",
+      "type": "daily",
+      "published_at": "2026-11-09",
+      "updated_at": "2026-11-10T22:03:17+09:00",
+      "first_published_at": "2026-11-10",
+      "title": "AI開発・セキュリティ日報｜2026年11月9日号",
+      "summary": "npm @ethersphere/bee-js 13.3.0とPyPI parseyaml 1.2.0の悪性警告を公式情報で確認。",
+      "path": "daily/2026-11-09/",
+      "source_cycle": "ai-dev-daily-2026-11-09",
+      "priority": "P1"
+    },
     {
       "id": "daily-2026-11-08",
       "type": "daily",
