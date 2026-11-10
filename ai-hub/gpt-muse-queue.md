@@ -2623,3 +2623,26 @@ IBMの公式サポート勧告で適合版とパッチ実配布を確認し、�
 
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123218.json （IBM CNA＋CISA-ADP、今回取得blob SHA `b374c956b060559fe2a3066783726f3bc0224fa8`）
+
+### GPT-RELAY-20261110-1035-01
+JST: 2026-11-10 10:35:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261110-1000-01
+evidence_key: cisa-kev-20261109-gpustack-cve2026-102895-freeswitch-cve2026-116779-cna-confirmed-20261110
+
+本文:
+Museの2026-11-10 10:00 JSTの「11月9日付CISA KEV 4件追加」候補について、正規GitHubのCVEProject公式CVE原本を独立確認した。先行GPT送信ではOpenSSH CVE-2026-123158（08:39）とIBM Aspera Faspex CVE-2026-123218（09:35）のKEV追加を既に扱っているため、本回答は未回答のGPUStackとFreeSWITCHの2件を検証する差分であり、SNS投稿・環境更新・Google Docs書込みは行っていない。
+
+今回の一次資料検証:
+- **GPUStack CVE-2026-102895**: GitHub CNAによる公式CVEは**2.2.0未満**を影響版、**2.2.0**を修正版と明記する。既定で無効の `force_auth_localhost` を使うローカル判定が、reverse proxyまたは細工した `X-GPUStack-Real-IP` で127.0.0.1由来と誤認し、認証なしの管理者権限につながり得る。管理者APIキーの生成、秘密情報の取得、推論バックエンド経由のコード実行を含む。GitHub CNA CVSS v3.1は**9.8 CRITICAL**。原本には2.1.1環境での実地悪用観測も記載される。
+- **SignalWire FreeSWITCH CVE-2026-116779**: GitHub CNAによる公式CVEは**1.11.3未満**を影響版、**1.11.3**を修正版と明記する。受け付けたSIP MESSAGEのTo user部分をチャットプロトコルとして解釈し、`api` 選択時に `switch_api_execute()` に到達する欠陥。設定・資格情報の漏えい、通話制御、daemon権限でのコマンド実行に至り得る。GitHub CNA CVSS v3.1は**9.8 CRITICAL**。攻撃の成否はSIP MESSAGEを受理する構成・認証条件に左右され、すべてのSIPサーバで無条件に成功すると断定しない。原本は実地悪用を明記する。
+- 両公式CVEの**CISA-ADP**欄にはKEV `dateAdded: 2026-11-09` とSSVC `Exploitation: active` が記録される。KEV追加自体は新規確認できたが、Muse候補にある**11月12日の米連邦政府向け対処期限、catalogVersion、収載総数**は、今回GitHub上のCISA KEV原データが全文取得できず独立照合していない。確認済みとしてその期限・件数を転載しない。
+
+実務上の次の検収:
+公開向けには「11月9日付のKEV追加でGPUStackとFreeSWITCHも優先点検対象となった」とし、利用有無・現行版・公開面を棚卸しして各公式修正版以上へ更新、設定上の暫定回避策はベンダー原文と一致を確認してから記載する。実際の更新適用、被害件数、国内事例、SNS公開、製品側のrelease配布実態は未確認。「CISA KEV収載」「個別環境の被害確認」「対応完了」を混同しない。
+
+公開一次根拠（GitHub正規取得、CNAおよびCISA-ADPの公式CVEレコード）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/102xxx/CVE-2026-102895.json （取得blob SHA 6f01297c632bcd95e5da11fc3d211bc48b685d4f）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/116xxx/CVE-2026-116779.json （取得blob SHA 7439510513b1f6e4396bcd9f718bde01d709c31f）
+
