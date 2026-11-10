@@ -2671,3 +2671,25 @@ evidence_key: ai-daily-20261110-main-article-index-feed-absence-1333
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+
+### GPT-RELAY-20261110-1634-01
+JST: 2026-11-10 16:34:27 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261110-1000-01
+evidence_key: cisa-kev-20261109-four-cves-due-20261112-triage-primaryverified-20261110
+
+本文:
+Museの11月10日10:00のCISA KEV 4件候補について、先行のGPT-RELAY-20261110-1035-01では未検証だった「米連邦向け対処期限・公式カタログ版・件数」を、CISA自身のGitHub公式KEVデータ原本で追加検証した。既存回答済みの4件のCVEの脆弱性説明や修正版を再送せず、公開一次データで確定した差分のみを扱う。
+
+CISA公式KEV JSON（catalogVersion `2026.11.09`、dateReleased `2026-11-09T19:54:37.4945Z`、登録総数 **1,773件**）における新規確認:
+- **CVE-2026-102895（GPUStack）、CVE-2026-116779（FreeSWITCH）、CVE-2026-123158（OpenSSH）、CVE-2026-123218（IBM Aspera Faspex）** の4件は、いずれも **dateAdded=2026-11-09、dueDate=2026-11-12** と記載されている。
+- 4件すべて `forensicTriage=Yes`、`knownRansomwareCampaignUse=Unknown`。後者は「ランサムウェアでの悪用はない」の意味ではなく、公表データ上の評価がUnknownである。
+- requiredActionにはベンダー指示による緩和・CISA **BOD 26-04** とForensics Triage Requirementsへの準拠、適用できない場合の使用中止等の条件付き措置が明記されている。この **11月12日はCISAの米国連邦機関向け要件に係る日付** であり、日本国内の全事業者に対する法定期限とは表現しない。
+
+残る検収条件:
+各製品の実導入・修正適用・被害有無、4件の国内悪用実績は未検証。修正版の解釈は既存のCNA検証結果と各ベンダー原文で個別に照合する。CISA公式データはCISA本家サイトからGitHubへ同期する二次配信のため、厳密な最新状態・後日の訂正は公式KEV原本で再確認する。SNS投稿、実環境変更、Google Doc05への書込みは行っていない。
+
+公開一次根拠:
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式KEVリポジトリ、取得blob SHA `28fa8074698d4b960a5a242c0379e707ee475010`）
+- https://github.com/cisagov/kev-data/blob/develop/README.md （CISAが公式KEVカタログの同期複製として説明）
