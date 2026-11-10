@@ -37,33 +37,33 @@
       <p class="ai-dev-lead">npm @ethersphere/bee-js 13.3.0とPyPI parseyaml 1.2.0の悪性警告を公式情報で確認。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-10 22:03 JST（初回公開 2026-11-10）</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">npm @ethersphere/bee-js 13.3.0：悪性パッケージ警告（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">PyPI parseyaml 1.2.0：YAML loaderを装う遠隔コード処理（P1）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">調査範囲と非該当</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">npm @ethersphere/bee-js 13.3.0：悪性パッケージ警告（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">PyPI parseyaml 1.2.0：YAML loaderを装う遠隔コード処理（P1）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">調査範囲と非該当</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">初回公開と更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">npm @ethersphere/bee-js 13.3.0：悪性パッケージ警告（P1）</a></li><li><a href="#reading-section-2">PyPI parseyaml 1.2.0：YAML loaderを装う遠隔コード処理（P1）</a></li><li><a href="#reading-section-3">調査範囲と非該当</a></li><li><a href="#reading-section-4">更新履歴</a></li><li><a href="#reading-section-5">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">npm @ethersphere/bee-js 13.3.0：悪性パッケージ警告（P1）</a></li><li><a href="#reading-section-2">PyPI parseyaml 1.2.0：YAML loaderを装う遠隔コード処理（P1）</a></li><li><a href="#reading-section-3">調査範囲と非該当</a></li><li><a href="#reading-section-4">初回公開と更新履歴</a></li><li><a href="#reading-section-5">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
-    <p><strong>対象日：2026-11-09 ／ 遅延初回公開：2026-11-10 ／ 公式資料の確認：2026-11-10 22:03 JST。</strong> 依存パッケージの警告は該当する名前・版・実行条件を確認してから適用してください。</p>
-<p>対象日までに公表された公式GitHub Advisoryのうち、個人開発者・小規模CIで依存確認ができるものを選びました。悪性パッケージの存在と個別端末の侵害を同一視しません。</p>
+    <p><strong>対象日：2026-11-09／Advisoryの追加確認：2026-11-10 JST／初回公開：2026-11-10（欠号の遅延復旧）</strong></p>
+<p>本号はGitHub Advisory Databaseの2件に絞った確認です。<strong>優先度は一般読者の点検順</strong>でP1とし、該当悪性版を導入した端末・CIには個別Advisoryの指示に応じ、即時対応（P0相当）を優先します。悪性コードの存在と各端末の感染が確認された事実を混同しません。</p>
 <h2 id="reading-section-1">npm @ethersphere/bee-js 13.3.0：悪性パッケージ警告（P1）</h2>
-<p>GitHub Advisoryは13.3.0をMalwareとして登録し、導入または実行されたコンピュータを侵害を前提に扱い、別の安全な端末から秘密鍵・トークンを交換するよう強く勧告しています。 <a href="https://github.com/advisories/GHSA-hh7j-5m3j-23pf" target="_blank" rel="noopener noreferrer">一次情報：GHSA-hh7j-5m3j-23pf</a>（公開 2026-11-09 10:25 JST）。<strong>対象版：13.3.0。</strong></p>
-<p><strong>該当条件：</strong> この正確なnpmパッケージ名と13.3.0に依存した端末・CIが対象です。他の版への影響や、各端末での攻撃成功まではこの発表だけで断定しません。</p>
-<p><strong>安全な確認：</strong> package-lock.jsonなどの解決済み依存版、npm ls、SBOM、CIのインストール記録を安全な環境で確認。疑わしいコードを実行しないでください。</p>
-<p><strong>対処と復旧：</strong> 該当版を使った実行環境は隔離・保全、別の清浄な端末から認証情報をローテーション、影響確認後に信頼できる依存とイメージで再構築します。単に削除するだけで完全駆除したとは扱いません。</p>
-<p><strong>留保：</strong> Advisoryは修正版・侵害件数を示していません。個別環境の感染成立は別途ログで判定します。</p>
+<p>GitHub Advisory Databaseは正確な配布名<code>@ethersphere/bee-js</code>の<strong><code>= 13.3.0</code></strong>をMalwareとして掲載しています。原文は該当パッケージを導入・実行したコンピュータを侵害されたものとみなし、別の清浄な端末から秘密と鍵を即座に交換するよう勧告しています。<a href="https://github.com/advisories/GHSA-hh7j-5m3j-23pf" target="_blank" rel="noopener noreferrer">一次情報：GHSA-hh7j-5m3j-23pf</a>（公開：2026-11-09 01:25:27 UTC＝10:25:27 JST）。他の版まで影響した証拠はこのAdvisoryにはありません。</p>
+<p><strong>該当条件：</strong> <code>package.json</code>等に13.3.0を含むバージョン範囲（<code>^13.x</code>など）を指定している場合も、実際に13.3.0が依存解決された可能性があります。直接依存だけでなく間接依存・CIでの実際の解決版をlockfileや過去ビルド記録から照合してください。悪性版の公開・取り下げ期間は今回確定していません。</p>
+<p><strong>安全な確認：</strong> <code>package-lock.json</code>、<code>yarn.lock</code>、<code>pnpm-lock.yaml</code>、SBOM、CIの保存済み導入ログを、疑わしい環境で新たなinstallを実行せず読み取ります。疑わしいホストで動く<code>npm ls</code>を確認のため起動する必要はありません。</p>
+<p><strong>対処と復旧：</strong> 該当導入環境は隔離・証拠保全し、秘密鍵・トークンを清浄な別端末からローテーションして、信頼できる依存のみで新しいイメージから再構築します。悪性版のnpm・CIキャッシュを再利用せず、単に依存を削除しただけでは駆除済みとしません。</p>
+<p><strong>留保：</strong> この警告だけで個々の端末で攻撃が成功した履歴や侵害件数は判明しません。Advisoryに修正版は記載されていません。</p>
 <h2 id="reading-section-2">PyPI parseyaml 1.2.0：YAML loaderを装う遠隔コード処理（P1）</h2>
-<p>OpenSSF出典のAdvisoryでは、YAML処理ライブラリを装った依存に、外部スクリプトを取得して実行する仕組みが含まれると説明されています。解析時には実体がstubだったとの留保があります。 <a href="https://github.com/advisories/GHSA-c4fv-65c3-6g99" target="_blank" rel="noopener noreferrer">一次情報：GHSA-c4fv-65c3-6g99</a>（公開 2026-11-09 09:30 JST）。<strong>対象版：1.2.0。</strong></p>
-<p><strong>該当条件：</strong> 正確な配布名parseyamlの1.2.0を導入し、不審なloader経路が実行された場合の評価が必要です。一般的なPyYAMLを使うだけでは該当しません。</p>
-<p><strong>安全な確認：</strong> requirements・lockfile、pip導入履歴、CI/アプリのimport経路を安全な隔離環境から確認します。実行テストは行いません。</p>
-<p><strong>対処と復旧：</strong> 該当版を除去し信頼できる依存に置き換えて再構築。実行が確認された環境ではログ保全、影響した資格情報の交換、再開前の依存再確認を行います。</p>
-<p><strong>留保：</strong> 解析時のstubの状態と全配布物の挙動を混同せず、修正版と実被害の規模は未確認です。</p>
+<p>GitHub Advisory Database（OpenSSFの悪性パッケージ情報）では、<code>parseyaml</code>の<strong><code>= 1.2.0</code></strong>に、YAML loaderを装った依存から外部コードを取得・実行する仕組みが報告されています。解析時にコードはstubだったとの留保もありますが、将来の別の配布物や実行内容の安全性は保証されません。<a href="https://github.com/advisories/GHSA-c4fv-65c3-6g99" target="_blank" rel="noopener noreferrer">一次情報：GHSA-c4fv-65c3-6g99</a>（公開：2026-11-09 00:30:50 UTC＝09:30:50 JST）。</p>
+<p><strong>該当条件：</strong> 配布名<code>parseyaml</code>の1.2.0を導入した環境を確認対象にします。実際に特別なloaderが実行されたか分からない場合も「影響なし」とせず、依存の解決記録と実行可能経路を隔離環境から点検してください。一般的なPyYAMLとは別の配布名です。</p>
+<p><strong>安全な確認：</strong> <code>requirements*.txt</code>、<code>poetry.lock</code>やpip解決結果・CI保存ログ、仮想環境の<code>dist-info</code>を読み取り専用で照合します。実行履歴が残ると決めつけず、疑わしいパッケージはimportしません。</p>
+<p><strong>対処と復旧：</strong> 該当版を隔離して信頼できる依存へ置換し、清浄な環境で再構築します。実行された疑いがある場合は証拠を保全し、到達した秘密を別端末から交換して安全性を評価します。個別Advisoryがbee-jsのように無条件で完全侵害と断定しているわけではないため、同じ被害事実を創作しません。</p>
+<p><strong>留保：</strong> 解析時stubの記載は挙動の限界です。実際の被害、配布物の最終挙動や修正版は未確認です。</p>
 <h2 id="reading-section-3">調査範囲と非該当</h2>
-<p>確認済みは上記のGitHub Advisory原本と記載された版・条件です。全GitHub Advisory、全CISA KEV、全開発環境への該当を網羅したものではありません。特定の家族・事業・Windows端末が当該版を導入した事実は確認していません。</p>
-<h2 id="reading-section-4">更新履歴</h2>
-<p>対象日が過ぎた後の欠号復旧です。発行日と実際の初回公開日時を混同せず、公開検収後に正確な初回公開日を記録します。</p>
+<p>2026-11-10に上記GitHub Advisoryの個別原文で影響版と公開時刻を再確認しました。これ以外の全GHSA、CISA KEV、ベンダー告知を網羅したものではなく、調査対象外を「該当なし」と記載しません。特定環境に悪性版が存在するかも未確認です。</p>
+<h2 id="reading-section-4">初回公開と更新履歴</h2>
+<p>2026-11-10 JST：対象日11月9日号を遅延初回公開。2026-11-10 JST：公開後の独立Claude Opusレビューと公式Advisoryの照合により、依存範囲解決・緊急度・安全な確認・出典の範囲・stubの意味・公開履歴を訂正しました。初回公開の分単位時刻は確認できる記録がないため記載していません。</p>
     <aside class="source-note">
-      <h2 id="reading-section-5">出典・更新履歴</h2>
+      <h2 id="reading-section-5">一次資料</h2>
       <ul><li><a href="https://github.com/advisories/GHSA-c4fv-65c3-6g99" target="_blank" rel="noopener noreferrer">GHSA-c4fv-65c3-6g99</a></li><li><a href="https://github.com/advisories/GHSA-hh7j-5m3j-23pf" target="_blank" rel="noopener noreferrer">GHSA-hh7j-5m3j-23pf</a></li></ul>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>

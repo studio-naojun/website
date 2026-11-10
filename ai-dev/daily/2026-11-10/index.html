@@ -37,33 +37,33 @@
       <p class="ai-dev-lead">npm-scannerのMalware警告とPyPI shanksのIP・位置情報送信を正確な配布名で確認。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-10 22:04 JST（初回公開 2026-11-10）</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">npm npm-scanner：Malware警告、同名ツールと取り違えない（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">PyPI shanks 0.0.4：importによるIP・所在地データ送信（P2）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">対象と検証範囲</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">この日報の更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">npm npm-scanner：悪性版の配布名を完全一致で確認（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">PyPI shanks 0.0.4：importによるIP・所在地データ送信（P2）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">対象と検証範囲</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">初回公開と更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">npm npm-scanner：Malware警告、同名ツールと取り違えない（P1）</a></li><li><a href="#reading-section-2">PyPI shanks 0.0.4：importによるIP・所在地データ送信（P2）</a></li><li><a href="#reading-section-3">対象と検証範囲</a></li><li><a href="#reading-section-4">この日報の更新履歴</a></li><li><a href="#reading-section-5">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">npm npm-scanner：悪性版の配布名を完全一致で確認（P1）</a></li><li><a href="#reading-section-2">PyPI shanks 0.0.4：importによるIP・所在地データ送信（P2）</a></li><li><a href="#reading-section-3">対象と検証範囲</a></li><li><a href="#reading-section-4">初回公開と更新履歴</a></li><li><a href="#reading-section-5">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
-    <p><strong>対象日：2026-11-10 ／ 遅延初回公開：2026-11-10 ／ 公式資料の確認：2026-11-10 22:04 JST。</strong> 依存パッケージの警告は該当する名前・版・実行条件を確認してから適用してください。</p>
-<p>開発者がパッケージ名と版を正確に照合し、必要な場合だけ対応できるよう公式Advisoryの記載と留保を分けて整理します。</p>
-<h2 id="reading-section-1">npm npm-scanner：Malware警告、同名ツールと取り違えない（P1）</h2>
-<p>GitHub Advisory Databaseが配布名npm-scannerをMalwareとして登録しました。告知はインストール済み環境の侵害を疑い、別端末から鍵をローテーションし再構築するよう勧告しています。 <a href="https://github.com/advisories/GHSA-pc5x-m587-83hh" target="_blank" rel="noopener noreferrer">一次情報：GHSA-pc5x-m587-83hh</a>（公表 2026-11-10 13:28 JST）。<strong>対象版 &gt;=0（Advisory掲載範囲）</strong>。</p>
-<p><strong>条件：</strong> npmレジストリ上の正確な配布名npm-scannerを導入した環境が対象です。任意のnpm脆弱性スキャナー製品やコマンド全般が危険という意味ではありません。</p>
-<p><strong>安全な確認：</strong> package.json・lockfile・SBOM・CI導入履歴で配布名を完全一致で確認。安全確認のための再インストールや実行はしません。</p>
-<p><strong>復旧：</strong> 該当導入ホストを隔離・証拠保全し、秘密を別の清浄な端末から再発行、信頼できる依存のみで再構築します。削除だけで復旧完了とせず、導入時期・到達可能だった秘密の範囲を確認します。</p>
-<p><strong>未確定：</strong> 公開Advisoryには技術的な起動条件、実被害件数、修正版の情報がなく、個々の端末の感染成立は未検証です。</p>
+    <p><strong>対象日：2026-11-10／公式Advisory確認：2026-11-10 JST／初回公開：2026-11-10（当日公開）</strong></p>
+<p>GitHub Advisory Databaseの悪性パッケージ警告2件を、名称・版・発動条件で確認します。<strong>一般読者向けP1は優先点検、P2は限定的な情報漏えいリスクの点検</strong>です。該当する実行や全ホスト侵害警告がある場合は見出しの優先度より即時対応を優先してください。</p>
+<h2 id="reading-section-1">npm npm-scanner：悪性版の配布名を完全一致で確認（P1）</h2>
+<p>GitHub Advisory Databaseは<strong>正確なnpm配布名<code>npm-scanner</code></strong>をMalwareとして掲載しています。Advisoryの影響範囲は<strong><code>&gt;= 0</code>（0以上の版を含む全掲載範囲）</strong>であり、特定の別の脆弱性スキャナー製品やコマンドがすべて悪性という意味ではありません。原文は該当版を導入・実行したコンピュータを侵害とみなし、別の清浄な端末から秘密と鍵を交換するよう勧告します。<a href="https://github.com/advisories/GHSA-pc5x-m587-83hh" target="_blank" rel="noopener noreferrer">一次情報：GHSA-pc5x-m587-83hh</a>（公開：2026-11-10 04:28:25 UTC＝13:28:25 JST）。</p>
+<p><strong>条件：</strong> npmの正確な配布名<code>npm-scanner</code>が直接または間接依存でlockfileに現れ、実際の環境に解決・導入された場合を対象とします。名称が似ているだけの異なるツールは該当しません。</p>
+<p><strong>安全な確認：</strong> <code>package-lock.json</code>、<code>yarn.lock</code>、<code>pnpm-lock.yaml</code>、SBOMと過去のCIログを読み取り専用で検索し、導入版を照合してください。疑わしいホストで追加の<code>npm install</code>を行ったり、悪性コードを動かしたりしません。</p>
+<p><strong>復旧：</strong> 導入済み環境は隔離・証拠保全し、清浄な別端末から鍵・トークン等を交換。正規依存のみのクリーンな環境で再構築し、疑わしいパッケージとnpm・CIキャッシュは再利用しないでください。</p>
+<p><strong>未確定：</strong> このAdvisoryは実行条件の詳しいメカニズム・端末ごとの被害・修正版を示しておらず、個別感染の成立は別の証拠で判断します。</p>
 <h2 id="reading-section-2">PyPI shanks 0.0.4：importによるIP・所在地データ送信（P2）</h2>
-<p>OpenSSFの解析を載せたGitHub Advisoryによると、shanks/shanks.pyをimportすると外部の位置情報サービスでIPアドレスと所在地を取得し、ハードコードされたDiscord Webhookへ投稿する処理が含まれます。 <a href="https://github.com/advisories/GHSA-547v-q874-636x" target="_blank" rel="noopener noreferrer">一次情報：GHSA-547v-q874-636x</a>（公表 2026-11-10 09:32 JST）。<strong>対象版 0.0.4</strong>。</p>
-<p><strong>条件：</strong> 正確なPyPI配布名shanksの0.0.4を実際にimportした場合の情報露出が対象です。IPに基づく推定地理情報でありGPSの正確な現在地と同一ではありません。</p>
-<p><strong>安全な確認：</strong> requirementsとlockfile、import履歴・CIのコード経路、ネットワーク監査を安全に確認。悪性コードを検証目的で読み込まないでください。</p>
-<p><strong>復旧：</strong> 依存を除去して清浄な環境で再構築し、IP・所在地の外部共有の可能性を情報管理上評価します。外部投稿の範囲は利用者ごとの証拠で判断し、悪性版へ戻しません。</p>
-<p><strong>未確定：</strong> このAdvisoryから秘密鍵流出や遠隔操作実行まで断定できず、修正版・受信側での利用も未確認です。</p>
+<p>GitHub Advisory DatabaseのOpenSSF由来の解析では、<code>shanks/shanks.py</code>をimportすると外部サービスに公衆IPと位置情報（市・州・郵便番号・緯度経度など）を問い合わせ、ハードコードされたDiscord Webhookへ投稿する処理が報告されています。<a href="https://github.com/advisories/GHSA-547v-q874-636x" target="_blank" rel="noopener noreferrer">一次情報：GHSA-547v-q874-636x</a>（公開：2026-11-10 00:32:04 UTC＝09:32:04 JST）。<strong>影響版：<code>= 0.0.4</code>。</strong></p>
+<p><strong>条件：</strong> 正確なPyPI配布名<code>shanks</code>の0.0.4を導入した環境が確認対象です。報告済みの送信条件はimportであり、<strong>インストールだけで同じ通信が起こるかは原文で確認できていません</strong>。導入済みで呼び出し状況が不明な場合も、保守的に確認対象としてください。IP由来の推定地理情報でありGPSの精密な現在地とは別です。</p>
+<p><strong>安全な確認：</strong> <code>requirements*.txt</code>・lockfile・仮想環境の<code>dist-info</code>、保存済みビルド・ネットワーク監査・Webhookへの通信証跡を読み取ってください。「import履歴」が必ず残るとは仮定しません。検証のために悪性モジュールをimportしません。</p>
+<p><strong>復旧：</strong> 該当依存を除去し、信頼できる依存に固定して清浄な環境で再構築。IPと推定所在地の共有可能性を評価し、実際の通信と受信範囲は環境ごとの証拠に基づいて判定します。</p>
+<p><strong>未確定：</strong> この原本だけで秘密鍵・ファイルの流出、任意コード実行、正確な位置情報へのアクセスが成立したとは断定できず、修正版も確認できていません。</p>
 <h2 id="reading-section-3">対象と検証範囲</h2>
-<p>掲載した公式Advisoryは各パッケージの個別警告です。すべてのnpm/PyPI製品やJunの端末が影響を受けたことを意味しません。後追い調査時点の証拠による記事であり、既に実施された検収を作りません。</p>
-<h2 id="reading-section-4">この日報の更新履歴</h2>
-<p>調査日に原稿を作成。公開後、実際の初回公開日と必要な訂正を追記します。</p>
+<p>2026-11-10に上記2つのGitHub Advisoryの個別本文・影響版・公開時刻を確認しました。それ以外の全npm/PyPI、CISA KEV、全開発ツールの更新を網羅していません。本稿は特定の個人・端末・CI環境を調査した結果ではありません。</p>
+<h2 id="reading-section-4">初回公開と更新履歴</h2>
+<p>2026-11-10 JST：11月10日号を当日初回公開。2026-11-10 JST：公開後の独立Claude OpusレビューとGitHub Advisoryの照合に基づき、正確な配布名・対象版の範囲、優先度、導入のみのケースと確認手順、出典と公開履歴を訂正しました。初回公開の分単位時刻は確認できる記録がないため記載していません。</p>
     <aside class="source-note">
-      <h2 id="reading-section-5">出典・更新履歴</h2>
+      <h2 id="reading-section-5">一次資料</h2>
       <ul><li><a href="https://github.com/advisories/GHSA-547v-q874-636x" target="_blank" rel="noopener noreferrer">GHSA-547v-q874-636x</a></li><li><a href="https://github.com/advisories/GHSA-pc5x-m587-83hh" target="_blank" rel="noopener noreferrer">GHSA-pc5x-m587-83hh</a></li></ul>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
