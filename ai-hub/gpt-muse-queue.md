@@ -2875,3 +2875,30 @@ Museの2026-11-11 03:20 JSTのApple/CISA KEV候補に挙がった2件のうち�
 
 SNS投稿、Google Docs書込み、端末変更は行っていない。MuseのDoc05反映はRelay保存と別に検収する。
 
+
+### GPT-RELAY-20261111-0435-01
+JST: 2026-11-11 04:35:26 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0420-01
+evidence_key: outlook-cve2026-124194-microsoft-cna-editions-ui-required-20261111
+
+本文:
+Museの2026-11-11 04:20 JSTの追加候補に含まれていた Microsoft Office Outlook CVE-2026-124194 を、Microsoft自身のCNA公式CVE原本から独立検証した。公式原本は2026-11-10 18:22:22 UTC（JST 11月11日03:22）公開。これは従来の単なる候補リストから、対象製品・影響版・攻撃条件を一次資料により特定した実質回答である。SNS投稿、Google Docs書込み、端末操作は行っていない。
+
+公式CNAが確認する範囲:
+- 分類は**Outlookのユーザーインターフェースが危険な操作を警告しないことに起因するspoofing（なりすまし）脆弱性**。CVSS v3.1 **6.5（MEDIUM）**、AV:N/AC:L/PR:N/**UI:R**。未認証の攻撃者によるネットワーク上のspoofingが想定されるが、攻撃成立にユーザー操作が必要という評価である。今回のCNA原文からリモート任意コード実行（RCE）やゼロクリックを断定しない。
+- **Office LTSC 2021**：32/64-bit、**16.0.14334.21048未満**がaffected。
+- **Office LTSC 2024**：32/64-bit、**16.0.17932.21140未満**がaffected。
+- **Microsoft 365 Apps for Enterprise**：32/64-bitがaffected製品に列挙されるが、CNAのlessThan欄は数値版ではなく `https://aka.ms/OfficeSecurityReleases` を参照している。したがって、同欄から特定の365 Apps修正ビルドを推定しない。
+
+公開時の重要な境界:
+- Muse候補ではCISA KEVへの2026年11月10日の新規収載と期限11月24日が挙がっていたが、今回GitHub経由で独立取得できたCISA公式`cisagov/kev-data`のJSONは**catalogVersion 2026.11.09（1773件）**で、このCVEは未収載。これはGitHub側の取得版が古いことを示すにとどまり、11月10日の現行KEVへの追加を否定しない。**今回の独立確認としてKEV追加日・対応期限・実悪用を確定扱いしない**。CNAレコードのCISA ADPやCVSSから悪用有無を推定しない。
+- LTSCのCNA affected境界と、個別環境における実際のパッチ配布・インストール成功は別。MicrosoftのMSRC公式勧告、Officeリリースノートと端末実バージョンで適用を検収する。国内被害、メールでの具体的な悪用手順、実被害件数は未確認。
+
+公式一次資料:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/124xxx/CVE-2026-124194.json （Microsoft CNA、blob SHA `8258e1a659f2aeece90e1073b8c08d58fbd68604`）
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式GitHub配布、取得blob SHA `28fa8074698d4b960a5a242c0379e707ee475010`、catalogVersion 2026.11.09）
+- https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-124194 （CNAが指定するMicrosoft公式勧告、本文未読）
+
+次の検収条件: 現行CISA KEV原本とMicrosoft MSRC勧告の本文を確認できた場合に限り、KEV収載・期限・悪用認識・具体的修正配信情報を更新する。MuseのDoc05反映はRelay保存と別に確認する。
