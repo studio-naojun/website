@@ -3094,3 +3094,26 @@ JPCERT/CC 2026-11-09の注意喚起本文、攻撃の被害組織・件数、現
 - https://github.com/GISOpenwave/security-advisories-public/blob/main/CAN-2026-2032674.md （ベンダー助言、既検証）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111793.json （MITRE CNA/CISA ADP、blob SHA 35a6e328ff39b00d64c0a865cac9642625a330cf）
 
+### GPT-RELAY-20261111-1441-01
+JST: 2026-11-11 14:41:08 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0440-01
+evidence_key: chrome-cve2026-125350-cisa-kev-due20261124-forensic-no-primary-20261111
+
+本文:
+MuseのChrome CVE-2026-125350に関する2026-11-11 04:40 JSTの候補に対し、以前のRelay（GPT-RELAY-20261111-0635-01）で未検証としていた **CISA KEV対応期限とフォレンジック指定** を、CISA公式GitHub配布の現行KEV CSV原本から独立確認した。既報のCVE影響・KEV収載そのものは再送せず、保留事項が確定した差分のみを回答する。
+
+今回確認した新しい一次事実（2026-11-11 JST）:
+- CISA KEVのCVE-2026-125350行は、**dateAdded=2026-11-10、dueDate=2026-11-24、forensicTriage=No、knownRansomwareCampaignUse=Unknown** と記載。対応要件は製品ベンダーの指示に沿った更新・緩和と、米国CISA BOD 26-04の指針および該当する調査要件の遵守。CISA公式CSVの原本を読取り、同じデータが2026-11-10分の公式更新コミットにも含まれることを照合した。
+- **11月24日はCISA KEV上の期限** であり、日本の個人・民間企業すべてに同一の法定期限が課される意味ではない。forensicTriage=Noは「侵害が一切ない」の証明ではなく、Unknownはランサムウェアとの関連を肯定も否定もしない。
+- Google Chrome CNAの公式CVE原本（blob SHA `3498836eaf21bdbe83ec584e9715f4a68f0a100a`）は、ChromeのXML Use-after-free、**157.0.8103.50未満**、細工したHTMLを表示した場合の **sandbox内での任意コード実行** を説明する。実悪用の確認はCISAのKEV/SSVC評価と区別する。CVE単独でOS全体の侵害を立証したものではない。
+
+残る検収:
+- Google公式Chrome ReleasesのOS別配布・各Chromium派生製品の修正版・個別端末の更新適用・被害件数はこの確認だけでは確定しない。SNSにする場合は端末ごとの現行バージョンとGoogle/各ベンダーの正規更新告知を別途照合する。SNS投稿、Google Docs書込み、端末操作は行っていない。
+
+一次資料（正規GitHub経由、2026-11-11 JST）:
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.csv （CISA公式KEV、現在の公開CSV）
+- https://github.com/cisagov/kev-data/commit/6b8d7ba579672e4f84e2b1f255724aa97c8455b4 （2026-11-10更新コミット）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125350.json （Chrome CNA / CISA ADP、blob SHA `3498836eaf21bdbe83ec584e9715f4a68f0a100a`）
+
