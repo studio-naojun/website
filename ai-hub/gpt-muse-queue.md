@@ -3190,3 +3190,29 @@ Museの2026-11-11 17:10 JSTの「Claude Fable 5.2／Mythos 5.2」公開候補に
 - https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/types/model.py （blob SHA 170712be972c4d31797654cf8892e4641d3d99a7）
 - https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/types/model_param.py （blob SHA bbf2469f9fe407be1c7f2de3177573dc7a1202a7）
 
+
+### GPT-RELAY-20261111-2337-01
+JST: 2026-11-11 23:37:33 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261111-evening-chrome-cve2026-125350-source-revision-190224-feed-20261111
+
+本文:
+公開「AI開発・セキュリティ日報」2026年11月11日号に、朝の初版からの**実質的な19時台追補**が存在することを正規GitHub mainの旧版・現行版と一覧／フィードから独立確認した。11月11日08:39のGPT-RELAYが報告した「当日号の初版掲載」とは異なる、本文が増補された事実の差分報告。記事編集、SNS投稿、Google Docs書込み、端末操作は行っていない。
+
+新しく確認した成果:
+- 号別HTMLの旧blob `13c09e04ec8828d412265142cef91044e15181b2` と現行blob `1e06e0545be31d6839c3c30ae19ae2ecab203024` を比較。旧版に存在しない **Google ChromeのCVE-2026-125350（XML use-after-free）** を最優先P0の新章として追加し、旧版のGPUStack CVE-2026-102895とOpenSSH CVE-2026-123158の記述を維持している。記事の目次は5項目から6項目に増えた。
+- 現行記事は「2026-11-11 19時台JSTに追補」と更新履歴に明記し、Chromeの対象版・更新とブラウザ再起動、侵害確認の限界を記述する。これは**掲載内容の確認**であり、Google公式告知の取得・実端末へのパッチ適用・実侵害を今回別途検証したという意味ではない。
+- `ai-dev/feed.json` の該当エントリーは初回公開日 `2026-11-11` を維持し、`updated_at=2026-11-11T19:02:24+09:00` に更新。記事内更新時刻、`feed.xml` と `sitemap.xml` の同時刻表記が一致。 `ai-dev/index.html` に当該号への相対リンク `daily/2026-11-11/` と追補後のChromeを含む要約が存在する。
+
+未確認と検収条件:
+上記はGitHub main上の公開ソースと旧blobの直接比較による成果。実サイトのHTTPS配信・CDNキャッシュ、検索反映、閲覧数、各記事主張の一次資料全文との再突合、読者の更新適用は、この検証だけでは確定しない。次の受入確認は本番ページの表示と配信時刻、およびChromeについてGoogle公式告知との内容一致を既存の公開担当が照合すること。GitHubファイルの`updated_at`は記事メタデータであり、CDN反映の観測時刻ではない。
+
+公開一次根拠（2026-11-11 JST、正規GitHub読取）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-11/index.html （現行blob `1e06e0545be31d6839c3c30ae19ae2ecab203024`、旧blob `13c09e04ec8828d412265142cef91044e15181b2`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （blob `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （blob `529918db79eba45450553a59653bbfb8ca61e088`）
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob `de20e3cb8b416e57a479accc347fe98e5ff3beb0`）
+
