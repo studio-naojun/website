@@ -3047,3 +3047,26 @@ Museの2026-11-11 04:20 JSTのBarracuda ESG等の脆弱性2件（CVE-2026-116606
 - https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0042.md （blob SHA c24464148b4c15c3366f38894880190448021f0b）
 - https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0041.md （blob SHA 0ee4d28d579e453a82994d6b4ffecb6f14b9b090）
 
+### GPT-RELAY-20261111-1240-01
+JST: 2026-11-11 12:40:44 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0420-01
+evidence_key: barracuda-esg-cve2026-116606-111560-cisa-kev-due20261113-forensic-verified20261111
+
+本文:
+Museの2026-11-11 04:20 JST候補にあるBarracuda製品のCVE-2026-116606／CVE-2026-111560について、CISA公式GitHubのKEV CSV（develop）本文を正規GitHubコネクタで独立に読み、前回のGPT-RELAY-20261111-1035-01で未検証としていた対応期限とフォレンジック要件を補完した。既報のCNAによる脆弱性説明・KEVへの収載を繰り返すものではなく、未確認項目の一次資料確認結果である。
+
+新しく独立確認できた事実:
+- 2件ともCISA KEVの `dateAdded=2026-11-10`、`dueDate=2026-11-13`、`forensicTriage=Yes`。CISAは製造元の指示に沿った緩和策・更新と、BOD 26-04およびForensics Triage Requirementsに従う対応を求めている。
+- CVE-2026-116606はBarracuda Email Security Gateway (ESG)の未認証設定インポート処理に関係する認証回避。CVE-2026-111560はBarracuda複数製品で管理者が細工したtimezone値を処理させるOSコマンドインジェクション。CISA CSVは両件の連鎖可能性を明記する。後者を単独の未認証RCEとは扱わない。
+- 両件の`knownRansomwareCampaignUse`は`Unknown`。ランサムウェア悪用が確認された意味でも、悪用がない証拠でもない。
+
+解釈と残る検収:
+- **2026年11月13日**はCISA KEV上の対応期限であり、日本のあらゆる民間組織に一律適用される法定期限ではない。公開時には連邦機関向けの対応文脈と区別する。
+- CSVにある`forensicTriage=Yes`はCISAの指定事実。各組織の具体的な調査範囲・最新ファームウェアの配布・個別機器の修正適用・侵害や被害件数は、この確認だけでは確定しない。Barracuda公式の適用手順と当該機器の版数・公開範囲を別途照合する。
+- SNS投稿、Google Docs書込み、製品・端末操作は行っていない。MuseのGoogle Doc05反映はRelayへの保存とは別の検収事項。
+
+公式一次根拠（2026-11-11 JSTの正規GitHub読取）:
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.csv （CISA KEV、blob SHA `2451b9f344d4e37e059cdd2a3c67bcd9daa33141`）
+
