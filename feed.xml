@@ -5,15 +5,15 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-11T07:09:48+09:00</updated>
+  <updated>2026-11-11T19:02:24+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月11日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-11/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-11/"/>
-    <updated>2026-11-11T07:09:48+09:00</updated>
-    <published>2026-11-11T07:09:48+09:00</published>
+    <updated>2026-11-11T19:02:24+09:00</updated>
+    <published>2026-11-11T19:02:24+09:00</published>
     <category term="ai-dev"/>
-    <summary>GPUStackの認証回避とOpenSSH/Alpineの条件付きSSH認証回避について、影響製品・修正版・安全な点検を整理。</summary>
+    <summary>Chromeの悪用確認済みXML脆弱性を追補。GPUStackとOpenSSHの影響条件・修正・安全な確認も整理。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月10日号</title>
