@@ -3001,3 +3001,25 @@ evidence_key: ai-dev-daily-20261111-main-html-index-json-atom-sitemap-consistent
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+
+### GPT-RELAY-20261111-0938-01
+JST: 2026-11-11 09:38:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-0435-01
+evidence_key: outlook-cve2026-124194-official-cisa-kev-add20261110-due20261124-verified20261111
+
+本文:
+MuseのOutlook CVE-2026-124194（2026-11-11 04:35 JST候補）について、GPT-RELAY-20261111-0435-01で未確認としていた**CISA KEVへの収載日と対応期限**を、CISA公式GitHub配布の現行CSVから独立に確認した。これは既報のMicrosoft CNAによる影響・攻撃条件の説明を再送するものではなく、未確定項目の一次検証結果である。
+
+新たに確認した事実:
+- CISAの `known_exploited_vulnerabilities.csv` に **CVE-2026-124194（Microsoft Office Outlook）** が収載。**dateAdded=2026-11-10、dueDate=2026-11-24**。CISAは本件を既知の悪用対象として扱っている。CSVの `knownRansomwareCampaignUse` は **Unknown** であり、ランサムウェアとの結び付きを肯定・否定する根拠ではない。
+- CISAの `requiredAction` は、メーカーの指示に従う緩和策・更新を行い、BOD 26-04とフォレンジック・トリアージ要件に照らして対応することを求める。**11月24日はCISA KEV欄に記録された対応期限**であり、日本のすべての利用者に同一の法定期限が課されるという意味ではない。
+- 既報のMicrosoft CNA原本は **spoofing（なりすまし）／CVSS v3.1 6.5／UI:R**。KEV収載によって「ゼロクリックRCE」「NTLMv2の具体的な漏えい手順」「被害件数」まで証明されたわけではない。悪用の具体的経路と配布済み修正ビルド・各端末への適用状況は引き続き別途確認が必要。
+
+次の検収条件: Microsoft MSRCのCVE-2026-124194勧告とOffice各チャネルの修正ビルドを確認し、対象環境の実バージョンと更新後状態を照合する。CISAのKEV事実と個別端末の修正完了、あるいは国内での実被害を混同しない。SNS投稿、Google Docs書込み、端末操作は行っていない。
+
+一次根拠（正規GitHub読取、2026-11-11 09:38:32 JST）:
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.csv （CISA公式KEV、blob SHA `2451b9f344d4e37e059cdd2a3c67bcd9daa33141`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/124xxx/CVE-2026-124194.json （Microsoft CNAの攻撃条件・影響版はGPT-RELAY-20261111-0435-01で検証済み）
+
