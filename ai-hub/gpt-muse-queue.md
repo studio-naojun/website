@@ -3323,3 +3323,27 @@ Muse案の製品修正版 **6.9.2（stable）／6.10.1（latest）** の実配�
 - https://github.com/vatesfr/xen-orchestra/blob/master/packages/xo-server/src/xo-mixins/authentication.mjs （現行master、上記blob SHA）
 - https://github.com/vatesfr/xen-orchestra/blob/master/CHANGELOG.unreleased.md （現行master、上記blob SHA）
 
+### GPT-RELAY-20261112-0739-01
+JST: 2026-11-12 07:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0735-01
+evidence_key: google-python-genai-v3-1-0-gemini-4-carbon-model-enum-20261112
+
+本文:
+Gemini 4 Carbonについて、Google公式Python GenAI SDKのリリース履歴、現行モデル型定義、およびGoogle公式サンプルを正規GitHubで独立確認した。新しく確定できたのは「公式開発者向けコードにモデルIDが実装されている」という事実であり、全ユーザー・全地域への提供、料金、性能を確認したという意味ではない。
+
+一次資料で確認した実質差分:
+- Google公式 `googleapis/python-genai` の CHANGELOG.md は、**v3.1.0（2026-11-10）** の機能追加として、Interactions API の Model enum に **`gemini-4-carbon`** と `gemini-omni-1.2-flash` を追加したことを明記する。これはSDK側のモデル識別子追加の公開記録。
+- 同SDKの現行 `google/genai/_gaos/types/interactions/model.py` には、文字列リテラル **`gemini-4-carbon`** が存在する。Googleはコード内コメントで、長時間のエージェント型コーディング、マルチモーダル知識業務、科学研究、サイバー防御を用途として説明している。これらの用途説明はGoogle自身の主張であり、独立ベンチマークではない。
+- Google公式 `google-gemini/cookbook` のコード監査サンプルでも、モデル選択候補に `gemini-4-carbon` を含む。ただしノートブックの設定値および記録された実行出力は `gemini-4-argon` であり、Carbonを使ったAPI実行の成功実績とは扱わない。
+
+確認できていない事項と公開判定:
+- Google公式ブログ本文・モデルカード・価格表をこの許可経路では独立取得していない。**11月10日の一般提供範囲、無料枠の有無、対象国・契約プラン、11月30日／12月1日の価格変更、トークン単価の単位**は本回答では確定しない。特に単価は100万／200万トークンの基準を原本で統一してから記述する必要がある。
+- 「Carbon for cyber」の別途利用条件、libsignalの形式検証実績、他社モデルとの優劣は未検証。SDKのenum収録だけを「誰でも利用可能」「最強性能が証明済み」と解釈しない。
+- 検収条件はGoogle公式の提供案内・価格原本・対象地域を公開担当が突合し、その範囲に限定して投稿候補を更新すること。今回の確定成果は公式SDKに存在するモデルIDとv3.1.0での追加履歴。API課金、投稿、Google Docs書込み、実アカウントでのモデル呼出しは実施していない。Muse側のDoc05受信反映は別検収。
+
+公開一次根拠（正規GitHub、2026-11-12 JST取得）:
+- https://github.com/googleapis/python-genai/blob/main/CHANGELOG.md （blob SHA `0feeeeb260635c36830cd35d1a5523d978663534`、v3.1.0 2026-11-10）
+- https://github.com/googleapis/python-genai/blob/main/google/genai/_gaos/types/interactions/model.py （blob SHA `0fd49b6e339eec51fc2e7055f67e9bbfb5dff121`）
+- https://github.com/google-gemini/cookbook/blob/main/examples/Deep_Reasoning_and_Code_Auditing_with_Gemini_4_Argon.ipynb （blob SHA `2274bbda0c22916f85fdc5ac6a911fc7fc1ee9c5`）
