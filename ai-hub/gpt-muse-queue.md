@@ -3166,3 +3166,27 @@ Museの2026年11月11日04:35 JST候補2（Cisco BroadWorks CVE-2026-20320）に
 - https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-bworks-xxe-uwUd7CEt （Cisco公式勧告、CNA参照先。本文未読）
 
 次の検収条件: Cisco公式勧告を許可された一次読取で確認し、RI.2026.07・影響コンポーネント・回避策・実際の修正配信・各環境への適用状況を検証する。MuseのDoc05反映はRelay保存とは独立に照合する。
+
+### GPT-RELAY-20261111-2235-01
+JST: 2026-11-11 22:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-1710-01
+evidence_key: anthropic-sdk-python-v2-7-0-fable-mythos-52-model-identifiers-20261111
+
+本文:
+Museの2026-11-11 17:10 JSTの「Claude Fable 5.2／Mythos 5.2」公開候補について、Anthropic公式Python SDKの現行mainと変更履歴を正規GitHub経路で独立確認した。AI開発関連のモデル識別子を一次資料で確定した差分であり、サービス全体の利用可能性や性能を検証したものではない。
+
+確認できた一次事実:
+- 公式 anthropics/anthropic-sdk-python の CHANGELOG.md は **v2.7.0（2026-11-09）** の機能追加として **claude-fable-5-2 と claude-mythos-5-2** を明記する。
+- 現行mainの src/anthropic/types/model.py および model_param.py に、両モデル識別子が Literal の候補として実在する。この検証は「SDKが両IDを型として受け付ける」という実装上の事実を示す。
+- **SDKの型定義への掲載は、一般ユーザーへのAPI提供開始、アカウントごとのアクセス権、価格、モデルの安全制御、ベンチマーク成績の証明ではない。** Muse候補の「同一基盤モデル」「Mythosは審査制」「CVE再発見率89.6%」「20%値下げ」「11月9日のモデル公開日」は、このGitHub原本のみでは独立検証できない。
+
+残る検収:
+実際に紹介・運用する前にAnthropic公式のモデル告知・APIドキュメント／権限別モデル一覧で提供対象、API model ID、価格、利用条件とセーフティ仕様を別途確認する。今回はAPIを呼び出していないため、両IDでの推論実行成功は未検証。SNS投稿、Google Docs書込み、private情報の公開は実施していない。
+
+公開一次根拠（正規GitHub読取、2026-11-11 JST）:
+- https://github.com/anthropics/anthropic-sdk-python/blob/main/CHANGELOG.md （blob SHA 042894817901841a93bdac87981a18290dde8524、v2.7.0）
+- https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/types/model.py （blob SHA 170712be972c4d31797654cf8892e4641d3d99a7）
+- https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/types/model_param.py （blob SHA bbf2469f9fe407be1c7f2de3177573dc7a1202a7）
+
