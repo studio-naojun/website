@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="GPUStackの認証回避とOpenSSH/Alpineの条件付きSSH認証回避について、影響製品・修正版・安全な点検を整理。">
+  <meta name="description" content="Chromeの悪用確認済みXML脆弱性を追補。GPUStackとOpenSSHの影響条件・修正・安全な確認も整理。">
   <title>AI開発・セキュリティ日報｜2026年11月11日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
@@ -13,10 +13,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月11日号">
-  <meta property="og:description" content="GPUStackの認証回避とOpenSSH/Alpineの条件付きSSH認証回避について、影響製品・修正版・安全な点検を整理。">
+  <meta property="og:description" content="Chromeの悪用確認済みXML脆弱性を追補。GPUStackとOpenSSHの影響条件・修正・安全な確認も整理。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-11/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月11日号","description":"GPUStackの認証回避とOpenSSH/Alpineの条件付きSSH認証回避について、影響製品・修正版・安全な点検を整理。","datePublished":"2026-11-11","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-11/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-11T07:09:48+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月11日号","description":"Chromeの悪用確認済みXML脆弱性を追補。GPUStackとOpenSSHの影響条件・修正・安全な確認も整理。","datePublished":"2026-11-11","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-11/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-11T19:02:24+09:00"}</script>
 <!-- naojun-discovery:end -->
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
@@ -32,20 +32,27 @@
   <header class="ai-dev-article-hero">
 <!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[11.11]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
-      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-11 / 2026-11-11T07:09:48+09:00</span></div>
+      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-11 / 2026-11-11T19:02:24+09:00</span></div>
 <h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年11月11日号</h1>
-      <p class="ai-dev-lead">GPUStackの認証回避とOpenSSH/Alpineの条件付きSSH認証回避について、影響製品・修正版・安全な点検を整理。</p>
+      <p class="ai-dev-lead">Chromeの悪用確認済みXML脆弱性を追補。GPUStackとOpenSSHの影響条件・修正・安全な確認も整理。</p>
       <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-11 07時台JST（初回公開2026-11-11）</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P0｜GPUStackの認証回避：AI推論サーバーの管理者権限へ到達（CVE-2026-102895）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P0（該当するSSHサーバーのみ）｜OpenSSHとAlpineのパスワード認証回避（CVE-2026-123158）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">調査範囲・未確定事項</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">更新履歴</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全6章</span></p><ol><li><a href="#chrome-cve-2026-125350"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P0（未更新Chrome利用時）｜実悪用が確認されたXML use-after-free（CVE-2026-125350）</span></a></li><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P0｜GPUStackの認証回避：AI推論サーバーの管理者権限へ到達（CVE-2026-102895）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P0（該当するSSHサーバーのみ）｜OpenSSHとAlpineのパスワード認証回避（CVE-2026-123158）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">調査範囲・未確定事項</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全6章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P0｜GPUStackの認証回避：AI推論サーバーの管理者権限へ到達（CVE-2026-102895）</a></li><li><a href="#reading-section-2">P0（該当するSSHサーバーのみ）｜OpenSSHとAlpineのパスワード認証回避（CVE-2026-123158）</a></li><li><a href="#reading-section-3">調査範囲・未確定事項</a></li><li><a href="#reading-section-4">更新履歴</a></li><li><a href="#reading-section-5">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">6項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#chrome-cve-2026-125350">P0（未更新Chrome利用時）｜実悪用が確認されたXML use-after-free（CVE-2026-125350）</a></li><li><a href="#reading-section-1">P0｜GPUStackの認証回避：AI推論サーバーの管理者権限へ到達（CVE-2026-102895）</a></li><li><a href="#reading-section-2">P0（該当するSSHサーバーのみ）｜OpenSSHとAlpineのパスワード認証回避（CVE-2026-123158）</a></li><li><a href="#reading-section-3">調査範囲・未確定事項</a></li><li><a href="#reading-section-4">更新履歴</a></li><li><a href="#reading-section-5">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
-<p><strong>対象日：2026-11-11／一次資料確認：2026-11-11 07時台JST／初回公開：2026-11-11（当日）。</strong></p>
+<p><strong>対象日：2026-11-11／一次資料確認：07時台・19時台JST／初回公開：2026-11-11（当日）／19時台訂正追補。</strong></p>
+<p>11月11日19時台の訂正では、Googleが実悪用を確認したChrome CVE-2026-125350を先頭へ追加しました。朝の初版はGPUStackとOpenSSHを優先し、両件の本文は維持しています。</p>
 <p>11月9日のCISA KEV追加を受け、個人AI開発者や自前の推論サーバー・Linux開発環境に直接関係する2件を優先しました。<strong>CISAへの追加日は11月9日であり、本日新たに侵害が始まったという意味ではありません。</strong> 該当版・構成を使用していない環境に一律の侵害を認定しません。</p>
+<h2 id="chrome-cve-2026-125350">P0（未更新Chrome利用時）｜実悪用が確認されたXML use-after-free（CVE-2026-125350）</h2>
+<p><strong>確認と時系列：</strong> Googleの<a href="https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_018223192.html" target="_blank" rel="noopener noreferrer">Chrome Stable公式告知</a>（2026年11月9日）は、XML処理のuse-after-freeをHighと評価し、<strong>実際の悪用コードの存在</strong>を明示しました。2026年11月11日19時台JSTに公式告知を再確認。新たな感染が本日始まったという意味ではありません。CISA KEVへの11月10日追加との公開情報はありますが、本枠では公式KEV JSON全件を直接検証できていません。</p>
+<p><strong>対象製品・修正版：</strong> Google ChromeのWindows/macOS Stableは<strong>157.0.8103.50/.51</strong>、Linux Stableは<strong>157.0.8103.50</strong>。それより古い未修正版のChrome利用者は速やかに更新し、<strong>ブラウザーを完全に再起動</strong>します。Edge・Brave・Opera等のChromium派生製品は、Chromeの番号で修正済みと決めず、各提供元の公式配布情報で判定してください。</p>
+<p><strong>影響・限界：</strong> 脆弱なXML処理経路に対する悪用が実際に存在しますが、Googleの公開告知は攻撃者、標的、端末ごとの感染、サンドボックス突破の有無を特定していません。脆弱版を使っていることと実侵害の証明は異なります。</p>
+<p><strong>安全な確認・修復・復旧：</strong> Chromeの設定「Chromeについて」（<code>chrome://settings/help</code>）で製品・バージョンを確認し、更新完了後に完全再起動して修正版が実行されていることを確かめます。企業管理下なら配布ポリシーと更新状況も確認します。攻撃用ページを開いて再現試験をしません。更新が業務を妨げる場合でも脆弱版へ戻さず、確認済み修正版の代替環境を使用します。疑わしい挙動があれば既存のログ等を保全し、個別の証拠に基づき対処してください。</p>
+<p><strong>出典・時点：</strong> <a href="https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_018223192.html" target="_blank" rel="noopener noreferrer">Google公式Stable（2026-11-09）</a> ／ <a href="https://digital.nhs.uk/cyber-alerts/2026/cc-4887" target="_blank" rel="noopener noreferrer">NHS England CC-4887（2026-11-10）</a>。2026-11-11 19時台JST確認。</p>
 <h2 id="reading-section-1">P0｜GPUStackの認証回避：AI推論サーバーの管理者権限へ到達（CVE-2026-102895）</h2>
 <p><strong>対象：GPUStack 2.2.0未満。</strong> 開発元の<a href="https://github.com/gpustack/gpustack/security/advisories/GHSA-gj9m-f8ph-pmhr" target="_blank" rel="noopener noreferrer">GHSA-gj9m-f8ph-pmhr</a>（2026-07-31初出、11月9日更新）によると、既定の<code>force_auth_localhost=false</code>環境で、同一ホストのreverse proxy経由のリクエストがloopback扱いになる構成、または信頼できない<code>X-GPUStack-Real-IP</code>を受け付ける構成では、遠隔から認証を受けず管理者として扱われる可能性があります。</p>
 <p><strong>影響と悪用事実：</strong> 設定・モデル・worker変更、管理APIキー発行、worker認証情報やクラウド資格情報の閲覧、特定の管理機能を通じたコード実行につながります。開発元は<strong>GPUStack 2.1.1への実環境での悪用観測</strong>を掲載。CISA KEVへの追加は2026年11月9日です。ただし利用者の個別サーバーが侵害された証拠にはなりません。</p>
@@ -61,9 +68,9 @@
 <h2 id="reading-section-3">調査範囲・未確定事項</h2>
 <p>上記のGPUStack・OpenSSH・Alpine・CERT-FRの一次資料を直接確認しました。CISAのKEV JSON直接取得はHTTP403で、この枠では全件の独立JSON照合は未完了です。11月9日に4件のKEVが追加されたとの一致した公開情報から、この2件をAI開発者向けに選定しましたが、他の2件（FreeSWITCH・IBM Aspera Faspex）を今回十分な根拠で詳説したという意味ではありません。全ベンダー・全GHSA・個々の端末の設定・実被害件数は調べ尽くしていません。該当の証拠がない個別端末について侵害を推測しません。</p>
 <h2 id="reading-section-4">更新履歴</h2>
-<p>2026-11-11：一次資料を再照合し本号を公開。公開検収の結果はPrivate記録に保存します。</p>
+<p>2026-11-11 07時台：初版を実公開（同日／Website PR#135）。</p><p>2026-11-11 19時台：Google公式で悪用が確認されているChrome CVE-2026-125350について、対象版、修正、確認方法、影響の限界を追記。GPUStack/OpenSSHの記述は維持。</p>
     <aside class="source-note">
-      <h2 id="reading-section-5">一次資料</h2><ul><li><a href="https://github.com/gpustack/gpustack/security/advisories/GHSA-gj9m-f8ph-pmhr" target="_blank" rel="noopener noreferrer">GPUStack開発元 GHSA</a></li><li><a href="https://github.com/gpustack/gpustack/releases/tag/v2.2.0" target="_blank" rel="noopener noreferrer">GPUStack v2.2.0</a></li><li><a href="https://www.openssh.com/txt/release-10.6p2" target="_blank" rel="noopener noreferrer">OpenSSH 10.6p2</a></li><li><a href="https://www.alpinelinux.org/posts/2026-11-05-openssh-password-authentication-bypass/" target="_blank" rel="noopener noreferrer">Alpine Linux公式Advisory</a></li><li><a href="https://cert.cyber.gouv.fr/avis/CERTFR-2026-AVI-1468/" target="_blank" rel="noopener noreferrer">CERT-FR</a></li></ul><p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
+      <h2 id="reading-section-5">一次資料</h2><ul><li><a href="https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_018223192.html" target="_blank" rel="noopener noreferrer">Google Chrome Stable 2026-11-09</a></li><li><a href="https://github.com/gpustack/gpustack/security/advisories/GHSA-gj9m-f8ph-pmhr" target="_blank" rel="noopener noreferrer">GPUStack開発元 GHSA</a></li><li><a href="https://github.com/gpustack/gpustack/releases/tag/v2.2.0" target="_blank" rel="noopener noreferrer">GPUStack v2.2.0</a></li><li><a href="https://www.openssh.com/txt/release-10.6p2" target="_blank" rel="noopener noreferrer">OpenSSH 10.6p2</a></li><li><a href="https://www.alpinelinux.org/posts/2026-11-05-openssh-password-authentication-bypass/" target="_blank" rel="noopener noreferrer">Alpine Linux公式Advisory</a></li><li><a href="https://cert.cyber.gouv.fr/avis/CERTFR-2026-AVI-1468/" target="_blank" rel="noopener noreferrer">CERT-FR</a></li></ul><p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
   </article>
 <!-- studio:reading:tail -->
