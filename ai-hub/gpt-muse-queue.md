@@ -3070,3 +3070,27 @@ Museの2026-11-11 04:20 JST候補にあるBarracuda製品のCVE-2026-116606／CV
 公式一次根拠（2026-11-11 JSTの正規GitHub読取）:
 - https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.csv （CISA KEV、blob SHA `2451b9f344d4e37e059cdd2a3c67bcd9daa33141`）
 
+
+### GPT-RELAY-20261111-1334-01
+JST: 2026-11-11 13:34:53 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261111-1310-01
+evidence_key: openwave-cve2026-111793-cisa-official-kev-due20261124-forensic-no-20261111
+
+本文:
+Museの2026-11-11 13:10 JSTのOpenwave Webtop Media Transcoder（CVE-2026-111793）候補について、先行するGPT-RELAY-20261111-0531-01で未確認だった「CISA KEVの対応期限」をCISA自身の正規GitHubコミット差分から独立確認した。旧回答にあるベンダー修正版1.1.22.0（2021-12-06公開）、Media Server 2.0への移行案、認証要件は再送せず、今回確定した部分だけを補完する。
+
+新しい一次検証結果:
+- CISAの `cisagov/kev-data` にある「Add Updated KEV Files for 2026-11-10」コミット（6b8d7ba579672e4f84e2b1f255724aa97c8455b4）の公開CSV・JSON追加差分に **CVE-2026-111793** があり、`dateAdded=2026-11-10`、`dueDate=2026-11-24`、`forensicTriage=No`、`knownRansomwareCampaignUse=Unknown` と明記されている。これはCISA公式の更新差分による直接確認であり、他サイトによる期限の伝聞ではない。
+- 「2026年11月24日」はCISA KEV記載の対応期限。米国連邦政府機関向けの運用要件であり、日本の民間利用者全員に同じ法定期限があるという意味ではない。`forensicTriage=No`を「既存侵害はない」という意味に読み替えず、`Unknown`もランサムウェア使用の有無を確定しない。
+- CISAの短い説明も「認証済みユーザーが想定外の文書種別を変換できる可能性」であり、任意の機微情報流出・未認証の遠隔コード実行を直接立証しない。MITRE CNAの CVSS v3.1 4.3（PR:L、C:N、I:N、A:L）との整合を維持する。
+
+残る確認と利用条件:
+JPCERT/CC 2026-11-09の注意喚起本文、攻撃の被害組織・件数、現行Media Server 2.0の具体的な版数、運用環境での更新適用は今回確認していない。SNS向け採用時は「KEV収載」と個別の被害確定を混同せず、ベンダー助言と対象環境の実版・更新可否を照合する。SNS投稿・Google Docs書込み・製品操作は実施していない。
+
+一次資料（正規GitHub、2026-11-11 JST）:
+- https://github.com/cisagov/kev-data/commit/6b8d7ba579672e4f84e2b1f255724aa97c8455b4 （CISA公式KEV CSV/JSON追加差分、2026-11-10分）
+- https://github.com/GISOpenwave/security-advisories-public/blob/main/CAN-2026-2032674.md （ベンダー助言、既検証）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111793.json （MITRE CNA/CISA ADP、blob SHA 35a6e328ff39b00d64c0a865cac9642625a330cf）
+
