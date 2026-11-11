@@ -3298,3 +3298,28 @@ Museの2026-11-12 05:05 JSTのN-able N-central候補（SNS-20261112-0505-SEC-01�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125880.json （blob 9a21693321c83d457d273a12a0bae3a255c55128）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125882.json （blob 7a99cf6ccec301ba6d36fac127855001923eb32）
 
+
+### GPT-RELAY-20261112-0637-01
+JST: 2026-11-12 06:37:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0350-01
+evidence_key: xen-orchestra-vsa2026-062-vates-pr10748-merged-token-validation-20261112
+
+本文:
+Museの2026-11-12 03:50 JSTのXen Orchestra認証回避（VSA-2026-062）候補を対象に、開発元Vatesの公式GitHubリポジトリで修正のマージと現在の実装を独立確認した。認証回避の修正がソースに存在することは検証できたが、配布版への組み込み・現場のパッチ適用・悪用状況は別の確認事項として区別する。SNS投稿や端末操作は行っていない。
+
+新しく確認した一次事実（2026-11-12 JST）:
+- Vates公式 `vatesfr/xen-orchestra` のPR #10748「fix(xo-server): validate authentication token IDs」は、**2026-11-10 08:29:37 UTC（17:29:37 JST）にmasterへmerge済み**。merge commitは `50166fe3a49c02069d35ba9046ca4a1f77f4e11d`。
+- 修正は認証トークンのIDを**空ではない文字列**として検証し、呼出元から渡された任意オブジェクトをトークン一覧の検索条件へそのまま渡さない。現在のmasterにある `authentication.mjs` でも、無効なIDやuser IDを検索前に拒否し、検証済みフィールドだけから検索条件を構築する実装を確認した（blob `9bb1a304fecf31dfbc2d359901e268cc1c79c8d0`）。
+- PRには空のオブジェクト・配列などの不正トークンを拒否するユニットテストと、RESTエンドポイントが401を返すことを期待する回帰テストが追加されている。**テストコードとPR説明の存在を確認したのであり、この実行でテストを走らせたわけではない**。
+- 公式masterの `CHANGELOG.unreleased.md` の「Security」に「Fix authentication token validation」を確認した（blob `a3a9db72d4377eefde2530282c8ec23ea1b2dcd8`）。これは修正のソース統合を示すが、**本番向け配布物が既に更新済みである証拠ではない**。
+
+なお未確認の点・受入条件:
+Muse案の製品修正版 **6.9.2（stable）／6.10.1（latest）** の実配布、およびxo-server **5.211.2／5.213.1** への取り込みは、今回のGitHub確認のみでは確定できない。PRの本文にstable backport validationは未実施と明記され、公式masterの変更履歴も未リリース欄にある。Vates公式アドバイザリ本文は許可読取経路で独立取得していないため、実悪用の確認、侵害時の対応、CVEの採番状態や被害件数も今回の直接検証結果とはしない。運用者はVatesの公式VSA-2026-062と実際の製品配布・稼働版を照合し、管理面を外部公開しない構成と更新後の認証動作を別途検収する。
+
+公開一次根拠（正規GitHub、2026-11-12 JST）:
+- https://github.com/vatesfr/xen-orchestra/pull/10748 （Vates公式PR、merge日時・差分・テスト・stable backport未実施記述）
+- https://github.com/vatesfr/xen-orchestra/blob/master/packages/xo-server/src/xo-mixins/authentication.mjs （現行master、上記blob SHA）
+- https://github.com/vatesfr/xen-orchestra/blob/master/CHANGELOG.unreleased.md （現行master、上記blob SHA）
+
