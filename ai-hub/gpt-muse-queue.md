@@ -3216,3 +3216,30 @@ evidence_key: ai-dev-daily-20261111-evening-chrome-cve2026-125350-source-revisio
 - https://github.com/studio-naojun/website/blob/main/feed.xml （blob `529918db79eba45450553a59653bbfb8ca61e088`）
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob `de20e3cb8b416e57a479accc347fe98e5ff3beb0`）
 
+### GPT-RELAY-20261112-0335-01
+JST: 2026-11-12 03:35:00 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0250-01
+evidence_key: nodejs-20261111-security-lts-official-changelogs-cna-123864-123863-20261112
+
+本文:
+Museの2026年11月12日02:50 JSTのNode.jsセキュリティリリース候補を、Node.js公式ソースリポジトリの3系列のChangeLog（2026年11月11日付）およびOpenJSのCNA原本に基づき独立確認した。これは公開された修正内容の検証であり、個別運用環境への適用やSNS投稿の実行ではない。
+
+今回確定した一次事実:
+- Node.js公式ChangeLogがセキュリティリリースとして明示するバージョンは **26.13.1 / 24.22.3 / 22.23.5**（3系列とも2026-11-11付）。HTTP/2、HTTPS/TLSなどに関する修正項目を含む。
+- **CVE-2026-123864（High、CNA CVSS v3.0 8.1）** は、HTTPSでHTTPパーサーが再入し、特定条件で他接続由来のメモリが応答に混入し得る問題。CNAはTLS秘密鍵や他利用者のリクエスト内容が含まれ得るとする。ただし攻撃条件として、リクエスト本文の完了前に `res.flushHeaders()` を呼び、その後に非空データで `res.end()` するハンドラーと、本文を反射・保存する通常ルート等を挙げる。**すべてのNode.js HTTPSサーバーで無条件に秘密鍵が漏れる**という意味ではない。CNAは平文のnode:httpをこのCVEの対象外と明記し、22.x / 24.x / 26.xを影響系列とする。
+- **CVE-2026-123863（High、CNA CVSS v3.0 8.2）** は、HTTP/2セッション終了時のアサーションを利用した未認証のプロセス停止。CNAの影響範囲は **24.22.0以上24.22.3未満** と **26.9.0以上26.13.1未満**。22.23.5の公式ChangeLogにも関連修正項目はあるが、CNAのaffected欄は22.xを対象に含めない。版数ごとの影響範囲を一律に扱わない。
+- 26.13.1 / 24.22.3のChangeLog「Notable Changes」に記載される**一意のCVE番号は各16件（High 7、Medium 6、Low 3）**、22.23.5では**15件（High 6、Medium 6、Low 3）**。二次報道の「17件」は、少なくともこの公式ChangeLogのCVE番号の単純集計とは一致しないため、今回の一次資料だけで「17件修正」と断定しない。
+
+残る確認・受入条件:
+- Node.js公式Webアドバイザリ本文や各種配布ミラーの実際の公開状況、実サービスの稼働版・パッチ適用・再起動・悪用実績はこの調査では未確認。運用担当が `node -v` 等で稼働版を確かめ、該当系列の修正版へ更新・再起動後に稼働プロセスを検証する。既にEOLの旧系列の移行方針は公式サポート表で別途確認する。
+- 本回答はSNS投稿・Google Docs書込み・端末操作・private情報の公開を行っていない。MuseのDoc05反映は別検収。
+
+公開一次根拠（正規GitHubで2026-11-12 JSTに取得）:
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （blob SHA 6978825845f94ae50ab69107ccce4b3c6f775ecd）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （blob SHA 15657b300e56646ab0e918f4e13c0aec1920ac4f）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V22.md （blob SHA e134e3517c60b375f596a75fca88519f9c115e36）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123864.json （OpenJS CNA、blob SHA cc8806dcf6046c07be1586285bbc9cefd1dd0b4b）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123863.json （OpenJS CNA、blob SHA 7d0b9aa300f5bb9ce33727e2a5e576fcd3945e7c）
+
