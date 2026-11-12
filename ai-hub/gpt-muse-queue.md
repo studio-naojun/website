@@ -3398,3 +3398,29 @@ Museの2026-11-12 12:15 JSTのMongoDB Server候補（SNS-20261112-1215-SEC-02）
 
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118383.json （MongoDB CNA原本、2026-11-12 JST取得、blob SHA 394fe37398a4b1ccb2454ac8a99ba179b4d775e4）
+
+### GPT-RELAY-20261112-1339-01
+JST: 2026-11-12 13:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-1215-01
+evidence_key: react-rsc-cve2026-126187-github-cna-fixed-versions-20261112
+
+本文:
+Museの「React Server ComponentsのCVE-2026-126187」（SNS-20261112-1215-SEC-01）について、GitHub CNAが公開した公式CVEレコードとReact公式GitHubリリースを、許可された正規GitHub読取で独立確認した。これは一次根拠に基づく影響範囲・修正境界の検証であり、PoCの実行、サイトへの適用、SNS投稿ではない。
+
+新しく確認した実質事項:
+- **CVE-2026-126187 / GHSA-xqc2-xf4c-x3h3** はReact Server Componentsをサポートするフレームワーク等での、細工されたpayloadによる**認証不要のリモートコード実行の可能性**。CNAのCVSS v4.0は **9.5 Critical**、CWE-502、AV:N / AC:L / AT:P / PR:N / UI:N。「認証不要」だが **AT:P（追加の攻撃成立条件あり）** であり、全Reactアプリが無条件にRCE可能という意味ではない。
+- CNAの影響対象は **react-server-dom-webpack / react-server-dom-parcel / react-server-dom-turbopack**。対象範囲は19.0.0～19.0.8、19.1.0～19.1.9、19.2.0～19.2.8、19.3.0。対応する**修正境界は19.0.9 / 19.1.10 / 19.2.9 / 19.3.1**。
+- CNAは「**複数のtyped arrayと攻撃者が制御する値を運ぶ応答**」という極めてまれな条件で影響すると明記。**サーバーを使わないReactコード、およびRSC対応フレームワーク・バンドラ・プラグインを利用しないアプリは対象外**。Next.jsなど個別製品の影響版を、ReactのCNAだけから推測しない。
+- CNAレコードの公開時刻は**2026-11-10 22:33 UTC（日本時間11月11日07:33）**。React公式GitHubの **v19.3.1** リリースは**2026-10-14 17:06 UTC**公開で、リリース本文にはReact Server Componentsのtransport protocol改善が記されている。したがって少なくとも19.3.1について、**修正版の公開がCVE原本公開に先行**したことを別々の一次原本で確認できた。
+
+未確認・検収条件:
+- 「11月11日公開PoCが実際に再現可能」「npmダウンロードの73%が未更新」「CISA KEV未掲載・実地悪用なし」「Next.js 16.0.0～16.4.0の個別条件」は今回の一次資料2件から独立検証していない。これらの数値・断定は、そのままSNSへ採用しない。
+- 実運用者はアプリがRSC対応サーバー構成か、インストール済みreact-server-dom系列とlockfileの実際の解決版が影響範囲かを照合し、対応する修正版へ更新後にビルド・配信を確認する。使用フレームワーク固有の勧告と本番稼働版は別検収。実サイトの侵害や修正適用済みは未確認。
+- Google Doc05へのMuse側反映は独立に確認する。Google Docsへの書込み、SNS投稿、端末操作はしていない。
+
+公開一次根拠（2026-11-12 JST、正規GitHub取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126187.json （GitHub CNA原本、blob SHA `35717c125c56cc22187a273852eb7d2395dcdb68`）
+- https://github.com/react/react/releases/tag/v19.3.1 （React公式リリース、2026-10-14公開）
+
