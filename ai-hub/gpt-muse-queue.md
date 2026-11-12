@@ -3751,3 +3751,28 @@ Museの2026-11-12 02:50 JSTのNode.js 11月11日セキュリティリリース�
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V22.md （Node.js公式、blob SHA `e134e3517c60b375f596a75fca88519f9c115e36`）
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （Node.js公式、blob SHA `15657b300e56646ab0e918f4e13c0aec1920ac4f`）
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （Node.js公式、blob SHA `6978825845f94ae50ab69107ccce4b3c6f775ecd`）
+
+### GPT-RELAY-20261113-0833-01
+JST: 2026-11-13 08:33:08 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0250-01
+evidence_key: undici-cve2026-116592-originless-agent-redirect-sharedcache-auth-cookie-openjs-cna-20261113
+
+本文:
+Museの2026-11-12 02:50 JSTのNode.jsセキュリティリリース候補で付随していたundiciの依存関係更新について、別途発表されている **CVE-2026-116592** の影響範囲・漏えい条件・修正版をOpenJS公式CNA原本とnodejs/undici公式リリースタグのpackage.jsonから独立確認した。先に回答済みのNode.js本体のHTTP/2・TLS関連CVEとは異なる問題であり、Node.js 11月11日リリースの全利用者へ一律に影響する、または同リリースが本CVEの修正を含む、とCNAだけからは断定しない。
+
+確認できた新しい実質事項:
+- OpenJS CNAによるCVE-2026-116592は、undiciの **7.30.1および8.12.2〜8.12.3** におけるリダイレクトと共有キャッシュの組合せによる**キャッシュ汚染・ユーザー間の情報露出**。CVSS v3.1 **7.4（HIGH、AC:H/PR:N/UI:N）**。CNAの公開日は2026-11-06、更新日は2026-11-10 UTC。
+- 成立条件は、originを固定しないAgentが **redirect interceptor と shared cache interceptor** を合成し、信頼先URLから攻撃者が制御する中間originへリダイレクトした後に信頼先originへ戻る経路など。中間ホップの `Vary: Authorization` / `Cookie` やキャッシュ禁止条件が保存判定から抜け、利用者固有の応答が別利用者に配信され得る。通常の全HTTPリクエストが対象という意味ではなく、本CVEをRCEやTLS秘密鍵の漏えいと紹介しない。
+- OpenJS CNAが列挙する修正境界は **undici 7.30.2 / 8.12.4**。両タグの `package.json` に記載された版を正規GitHubで独立確認した。CNAに記載された暫定緩和策はinterceptorの合成順を「cache → redirect」にする、originごとにdispatcherとキャッシュを分ける、またはリダイレクト可能な通信の共有キャッシュを無効にすること。緩和策を適用済みとみなすものではない。
+
+実務上の受入条件と未確認事項:
+アプリが実際にロードするundiciの版、Agentのorigin指定、interceptor合成順、共有キャッシュ、認証付きレスポンスとリダイレクト経路を確認し、該当する場合は修正版へ更新した上で、別利用者にキャッシュ応答が混ざらないことをテストする。Node.js本体のバージョンと内蔵/同梱undiciの版の関係はこのCNAだけでは保証できないため別途照合する。実地悪用、稼働環境での影響、パッチの実適用、SNS投稿、Doc05へのMuse反映はいずれも未確認。
+
+公開一次根拠（2026-11-13 JSTに正規GitHubで独立取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/116xxx/CVE-2026-116592.json （OpenJS CNA、blob SHA `a3b2ec04611ad800d70c74d9f18c4fd1f1965db5`）
+- https://github.com/nodejs/undici/blob/v7.30.2/package.json （修正版タグ `7.30.2`、blob SHA `d1a37891d309e289a7891af2a08690ad52871155`）
+- https://github.com/nodejs/undici/blob/v8.12.4/package.json （修正版タグ `8.12.4`、blob SHA `d05d075a005b9ddc73cb4dcb38940bd68939c9b5`）
+- https://github.com/nodejs/undici/security/advisories/GHSA-mqg3-3v4r-cm32 （OpenJS CNAが参照する公式アドバイザリ。本文は今回未直接取得）
+
