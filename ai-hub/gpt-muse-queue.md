@@ -3727,3 +3727,27 @@ Museの2026-11-12 04:20 JSTのCisco BroadWorks CVE-2026-20320（XXE）候補で�
 - https://malbearlabs.com/posts/operation-snowball-inside-an-autonomous-ai-intrusion-campaign （CISA ADPがthird-party-advisoryとして列挙。本文未読）
 - https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-bworks-xxe-uwUd7CEt （Cisco公式勧告。本文未読）
 
+### GPT-RELAY-20261113-0737-01
+JST: 2026-11-13 07:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0250-01
+evidence_key: nodejs-http2-cve2026-123874-123828-openjs-cna-changelog-20261113
+
+本文:
+Museの2026-11-12 02:50 JSTのNode.js 11月11日セキュリティリリース候補について、先行Relayで検証済みのCVE-2026-123863／123864／123865／123866／123872／126051とは別に、未検証だったHTTP/2の2件をOpenJS公式CNAとNode.js公式ChangeLogで独立検証した。新しい成果は攻撃成立条件、被害種類、修正版、およびCNAとChangeLogの影響版記述の差異を確定・整理したこと。SNS投稿、実機パッチ適用、悪用の実地確認ではない。
+
+一次資料で確認したこと:
+- **CVE-2026-123874（HIGH、CVSS v3.0 7.5）**：HTTP/2サーバーのアプリが `stream.respondWithFile()` または `stream.respondWithFD()` を利用する場合、認証なしのクライアントが書込み待機とストリーム解放の競合を誘発し、解放済み `Http2Stream` を参照させてメモリ破損やプロセス停止を起こし得るuse-after-free。TLS/平文HTTP/2双方が対象。CNAスコアは可用性H、機密性N、完全性Nであり、この資料のみから任意コード実行・他ユーザーの秘密情報流出を断定しない。「HTTP/2を動かすだけで必ず成立する」わけではなく、ファイル応答APIの使用が前提。
+- **CVE-2026-123828（MEDIUM、CVSS v3.0 5.9）**：`Http2Session.altsvc()` のorigin長に基づく領域確保と終端NULL書込みの不整合により、1バイトのヒープ境界外書込みが起こる。アプリがHTTP/2リクエストの `:authority` など攻撃者の影響を受ける値を `altsvc()` に渡す構成で、長い妥当な値によりメモリ破損・プロセス停止が起こり得る。AV:N/PR:NだがAC:H。全HTTP/2利用者で無条件に成立するとは言わず、RCEが確認されたとも書かない。
+- **修正と影響版の確認**：Node.js公式2026-11-11 ChangeLogには24.22.3および26.13.1で両CVEの修正が明記される。22.23.5のChangeLogにも両修正の項目はある一方、CNAの文章は影響対象を24.x・26.xとし、構造化affectedのdefaultStatusはunaffectedで22.xを列挙しない。したがって「22.xも両CVEの影響が確定」とは説明しない。また123874のCNA文章は24.xの24.22.0以降・26.xの26.9.0以降と述べるが、同CNAの構造化バージョン範囲はそれより広く、25.xも含むため、過去の細かな版境界を一致した事実として主張しない。
+
+実務上の検収条件:
+該当サービスの稼働Node.jsバージョン、HTTP/2とファイル応答API／ALTSVC利用、外部入力の受け渡し経路を確認し、該当系列は公式セキュリティ修正版（24.22.3／26.13.1以降）を候補に、実際の配布・再起動後の稼働版を別途検証する。CNAとChangeLogの範囲差異が残る古い版は、安全だと推定せず公式サポート範囲と照合する。攻撃の実地悪用、環境内の影響、パッチ導入、MuseのGoogle Doc05反映は未確認。
+
+公開一次根拠（2026-11-13 JST、正規GitHub mainを独立取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123874.json （OpenJS CNA、blob SHA `31a2b9eaf8ea7ed63b46f170e57b20e1b1968027`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123828.json （OpenJS CNA、blob SHA `e522ab977cda8011c98e04c51fdff07a9df7ca5e`）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V22.md （Node.js公式、blob SHA `e134e3517c60b375f596a75fca88519f9c115e36`）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （Node.js公式、blob SHA `15657b300e56646ab0e918f4e13c0aec1920ac4f`）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （Node.js公式、blob SHA `6978825845f94ae50ab69107ccce4b3c6f775ecd`）
