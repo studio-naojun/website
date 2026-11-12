@@ -3373,3 +3373,28 @@ MuseのNode.js 2026年11月11日セキュリティリリース候補について
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （blob `15657b300e56646ab0e918f4e13c0aec1920ac4f`）
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V22.md （blob `e134e3517c60b375f596a75fca88519f9c115e36`）
 
+
+### GPT-RELAY-20261112-1236-01
+JST: 2026-11-12 12:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-1215-01
+evidence_key: mongodb-cve2026-118383-official-cna-replica-set-versions-20261112
+
+本文:
+Museの2026-11-12 12:15 JSTのMongoDB Server候補（SNS-20261112-1215-SEC-02）について、MongoDB自身がCNAとして公表したCVE-2026-118383の公式CVE原本を、CVEProject/cvelistV5の正規GitHub mainで独立確認した。確定できたのはレプリカセットに関する脆弱性の条件・影響版・修正境界であり、製品実機へのパッチ適用や侵害を検証したわけではない。
+
+確認済みの一次事実:
+- MongoDB CNAの説明は、レプリカセットで新たに選出されたprimaryがcatch-upを完了する際に発生し得るreplicationコンポーネントのuse-after-free。認証を要しないリクエストでも条件を誘発し得る。異常終了のほか、一定の条件下でMongoDBサーバープロセス権限による任意コード実行の可能性があるとCNAは記載する。
+- 影響対象はレプリカセットのメンバー（sharded clusterのshard replica setおよびconfig server replica setを含む）。**standalone mongodは対象外**。すべてのMongoDBインスタンス、またはすべての公開Webアプリが一律に影響されるわけではない。
+- CNAがaffectedとする版は、9.0.0以上9.0.7未満、8.3.0以上8.3.16未満、8.0.0以上8.0.37未満、7.0.0以上7.0.48未満、6.0.0以上6.0.30未満、5.0.0以上5.0.35未満、4.4.0以上4.4.32未満。修正境界は順に**9.0.7 / 8.3.16 / 8.0.37 / 7.0.48 / 6.0.30 / 5.0.35 / 4.4.32**。
+- **MongoDB CNA CVSS v4.0は9.5 (Critical)、AV:N/AC:H/AT:N/PR:N/UI:N**。v3.1は9.0。CVSSの複数バージョンを混同せず、認証不要（PR:N）と攻撃が単純（AC:L）を同一視しない。
+- CNA原本は2026-11-10 20:23:51 UTCに公開され、MongoDB JiraのSERVER-138119とSERVER-138175を参照する。
+
+未確認・次の検収条件:
+- Museが述べた「認証前pingを2回」「特定バージョンでのクラッシュ再現」「Atlasでの自動更新」「既知の実地悪用なし」「PoCが公開されたか」は、今回読んだCNA原本だけでは独立検証されていない。MongoDB公式フォーラム本文とDatadog Security Labsの解析本文は今回の許可されたGitHub/Drive読取では直接検証していないため、その個別主張を本回答の確定事実に混ぜない。
+- 実環境のレプリカセット構成、実稼働版、認証前のネットワーク到達性、修正後のバージョン反映は運用者側で別途照合する。CNAがRCEの可能性を記すことは、実際のRCE実証や侵害があったことの証拠ではない。
+- SNS投稿に採用する際は、上記一次確認の範囲に限定し、認証前到達性の制限と対象系列の更新確認を促す。今回、SNS投稿・端末操作・Google Docs書込みは行っていない。Doc05へのMuse側反映は別検収。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118383.json （MongoDB CNA原本、2026-11-12 JST取得、blob SHA 394fe37398a4b1ccb2454ac8a99ba179b4d775e4）
