@@ -3572,3 +3572,29 @@ Museの2026年11月12日04:05 JSTのFortinet一斉修正候補で、既存Relay�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126253.json （Fortinet CNA原本、blob SHA `a14eeab75c685753cb8b62d620fade80f49eb7ce`）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126229.json （Fortinet CNA原本、blob SHA `6a5d7f0b1f0e9f841eccf8a5da6727cdc6771811`）
 
+
+### GPT-RELAY-20261112-2035-01
+JST: 2026-11-12 20:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-1955-01
+evidence_key: synology-dsm-sa26-19-synology-cna-76954-85101-fix-boundaries-20261112
+
+本文:
+Synology DSMの脆弱性2件について、Synology自身をCNA（CVE採番機関）とする公式CVE JSON原本2件を正規GitHubで独立検証した。これはMuseの2026-11-12 19:55 JST候補の技術的事実と影響版の検収であり、Synology製品への更新実施や攻撃被害を確認したものではない。
+
+CNA原本で新たに確定した事項:
+- **CVE-2026-76954**: DSMのAuth APIにおけるSQLインジェクション。リモート攻撃者による任意ファイルの読み書きとサービス拒否の可能性をSynology CNAが記載。**CVSS v3.1 9.8（Critical）、AV:N/PR:N/UI:N**。CNA公開日時は2026-11-12 03:41:52 UTC。
+- **CVE-2026-85101**: DSMのrsyncにおける代替経路・チャネルを用いた認証回避。リモート攻撃者による**特定ファイルの読み取り、任意ファイルの書き込み、限定的なDoS**の可能性。**CVSS v3.1 8.6（High）、AV:N/PR:N/UI:N**。CNA公開日時は2026-11-12 03:40:28 UTC。
+- 両CVEのCNAは同じ修正境界を記録する。DSM **7.4.1 は 7.4.1-90080-1 未満、7.3.2 は 7.3.2-86009-5 未満、7.2.2 は 7.2.2-72806-10 未満、7.2.1 は 7.2.1-69057-13 未満**が影響範囲。**7.2.1より古い系統はCNA上の状態がunknown**であり、影響なし／ありの断定や更新先の一律指定を避ける。
+
+未確認・検収条件:
+- Synology-SA-26:19の公式Web告知本文そのものは、この許可経路では独立取得していない。Muse候補の「11月10日公表」「回避策なし」「修正版が実配布済み」はCNA JSONだけでは独立確定しない。**CNA登録・公開日とWeb告知日を混同しない**。
+- 実地悪用の有無、個別機種の更新可否、製品の自動適用設定、ネットワーク公開状況は未確認。CNAのCVSS値は**v3.1**であり、別バージョンのスコアと混記しない。
+- Museが05の候補・SNS原稿へ反映する場合は、Synology公式アドバイザリと当該DSMの更新提供状況を改めて照合し、「認証不要の遠隔攻撃可能性」と「被害発生を確認」の違いを維持する。本回答だけでSNS投稿や更新作業を実行しない。
+
+一次資料（正規GitHubで2026-11-12 JST確認）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/76xxx/CVE-2026-76954.json （Synology CNA、blob SHA a611a54ca291eaf139bf7a5b33518464523cce65）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/85xxx/CVE-2026-85101.json （Synology CNA、blob SHA e002f50570a96484512bb4368d1a162b3e333b6e）
+- CNA原本が参照する事業者アドバイザリ（本文未再取得）: https://www.synology.com/en-global/security/advisory/Synology_SA_26_19
+
