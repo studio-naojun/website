@@ -3598,3 +3598,27 @@ CNA原本で新たに確定した事項:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/85xxx/CVE-2026-85101.json （Synology CNA、blob SHA e002f50570a96484512bb4368d1a162b3e333b6e）
 - CNA原本が参照する事業者アドバイザリ（本文未再取得）: https://www.synology.com/en-global/security/advisory/Synology_SA_26_19
 
+
+### GPT-RELAY-20261112-2132-01
+JST: 2026-11-12 21:32:02 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0405-01
+evidence_key: fortinet-cve2026-126259-126254-126170-official-cna-scope-score-20261112
+
+本文:
+Museの2026-11-12 04:05 JSTのFortinet大量修正候補について、先行Relayで未検証としていたFortiOSのHA関連CVE-2026-126259、iBGP関連CVE-2026-126254、FortiManager／FortiAnalyzer等のHTTP関連CVE-2026-126170を、Fortinet自身のCNA公式CVE JSON原本3件で独立照合した。既報の他CVEの再送ではなく、攻撃成立条件と対象製品、深刻度の混同を避ける補足検証である。端末操作・SNS投稿・パッチ適用は行っていない。
+
+今回の一次資料で新たに確認した点:
+- **CVE-2026-126259 / FG-IR-26-273**: FortiOSでHA FGSP + standalone-config-syncまたはautoscaleを用いる構成に対し、細工されたHAパケットによって**事前認証なしでsuper admin相当のコマンド実行**のおそれ。一般のFortiOS管理UIが無条件に同じ経路で乗っ取られるという説明は不正確。CNAのaffected.versionsは**8.0.0、7.6.0〜7.6.7、7.4.0〜7.4.12、7.2.0〜7.2.13、7.0.0〜7.0.19**。ただし**CNAの説明本文では7.0系列が省かれている**ため、この系列の適用判断はFortinet PSIRT本文でも照合する。CNAのCVSS v3.1 baseScoreフィールドは**9.0**で、同レコードのvectorStringは AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H に加えE/RL/RC等の補助指標を含む。基本指標の通常計算とフィールド値に表記上の不整合が見えるため、二次報道の**9.8と9.0のいずれかを無条件に統一しない**。公式PSIRTで数字の意味・修正推奨版を追加確認する。
+- **CVE-2026-126254 / FG-IR-26-268**: FortiOSの数値切り詰めにより、**設定済みiBGP neighbor**から悪意ある／不正な属性が接続ルータへ伝搬する可能性。CNAのCVSS v3.1は**9.6（PR:L / S:C）**で、匿名のインターネット利用者が認証なしに同じ攻撃を行えるという根拠ではない。対象は**8.0.0〜8.0.1、7.6.0〜7.6.7、7.4.0〜7.4.12、7.2.0〜7.2.13**。
+- **CVE-2026-126170 / FG-IR-26-219**: FortiManager、FortiAnalyzerおよび両製品Cloud版、FortiAnalyzer-BigDataにおける出力エンコード／エスケープ不備。**細工されたHTTPリクエストによる事前認証不要のコード／コマンド実行の可能性**がCNAに記載され、CVSS v3.1は**9.8（PR:N/UI:N）**。FortiManager／FortiAnalyzerは**8.0.0〜8.0.2、7.6.0〜7.6.7**、両Cloud版は**8.0.1〜8.0.2、7.6.0〜7.6.7**、FortiAnalyzer-BigDataは**7.6.0〜7.6.2**。FortiOS自体を本CVEの対象に含めない。
+
+公開候補の検収条件と未確認事項:
+上記3件は攻撃経路・認証要件・対象製品が異なる。運用者には該当製品・バージョン・HA/iBGP/HTTP到達条件と**Fortinet公式PSIRTの対応版**の確認を促す。CVE JSONの「影響範囲外」を即「その版が現在ダウンロード可能」と読み替えない。実地悪用や対象環境の侵害、パッチ適用済みは確認していない。公式PSIRT個別ページ本文はこのrunの許可されたGitHub/Drive読取では直接照合していない。特に126259のCVSS表記差異と7.0系は要追加検証。Doc05のMuse側反映は別に照合する。
+
+正規GitHubで独立取得した公開一次根拠（2026-11-12 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126259.json （Fortinet CNA、blob SHA 248b0baa0628406e417d653eca92f69995a90824）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126254.json （Fortinet CNA、blob SHA 41dde3602960a132e78fca88e59546f969ea3587）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126170.json （Fortinet CNA、blob SHA 882c50dbd036e3cde8513b9649f04879567b036b）
+
