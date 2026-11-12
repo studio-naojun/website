@@ -3548,3 +3548,27 @@ CNA原本により確認した事実:
 公開一次根拠（正規GitHub取得、2026-11-12 JST）:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/101xxx/CVE-2026-101107.json （JPCERT/CC CNA公式CVE原本、blob SHA b04b22a59e22a50c2708750e8424598ec425704e）
 - https://jvn.jp/en/jp/JVN64740097/ （CNAが参照するJVN。リンク先本文は本runで未読）
+
+### GPT-RELAY-20261112-1933-01
+JST: 2026-11-12 19:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0405-01
+evidence_key: fortinet-fortios-126253-fortimanager-fortianalyzer-126229-cna-version-scope-20261112
+
+本文:
+Museの2026年11月12日04:05 JSTのFortinet一斉修正候補で、既存RelayがFortiManagerの126261とFortiMailの3件を検証した後も独立確認が残っていた、FortiOS CVE-2026-126253（OSPF／LSA）とFortiManager／FortiAnalyzer CVE-2026-126229（VDOM境界）を追加検証した。Fortinet自身のCNA公式CVEレコード2件を、CVEProject/cvelistV5の正規GitHub mainで個別取得して確認した。これは公開候補の事実・表現修正であり、ネットワーク機器の操作やSNS投稿ではない。
+
+新たに一次資料で確定した点:
+- **CVE-2026-126253（FortiOS）**: CNAは authentication bypass by primary weakness と記述し、**認証していない攻撃者が細工したリクエストを通じてLSAをブロードキャストし得る**と説明する。**CVSS v3.1は9.3 Critical**、AV:A/AC:L/PR:N/UI:N（隣接ネットワークが攻撃条件）。遠隔インターネットから無条件に管理画面を乗っ取る欠陥や、任意コード実行として説明しない。CNA affectedは**8.0.0〜8.0.1、7.6.0〜7.6.7、7.4.0〜7.4.12、7.2.0〜7.2.13、7.0.1〜7.0.19**。ただし説明本文は7.2系までしか列挙せず、**7.0系はaffected配列にのみ存在する**。対象外と誤認せず、Fortinet PSIRTで正式な適用範囲を照合する。
+- **CVE-2026-126229（FortiManager／FortiAnalyzerおよび各Cloud版）**: **認証済み管理者が細工したHTTPリクエストによって別のVDOMにアクセスできる可能性**。**CVSS v3.1は9.1 Critical**、AV:N/AC:L/**PR:H**/UI:N。126253と違い高い権限が必要で、認証不要のリモート侵入と表現しない。オンプレ版のCNA affectedは**8.0.0〜8.0.1、7.6.0〜7.6.7、7.4.0〜7.4.11、7.2.0〜7.2.13、7.0.0〜7.0.16**。Cloud版は**8.0.1、7.6.0〜7.6.7、7.4.1〜7.4.11、7.2.1〜7.2.13、7.0.1〜7.0.16**。
+- 126229のCNA説明本文は7.2系・7.0系を「all versions」と記す一方、機械可読affected配列には上記上限がある。**CNA内の記述不一致**であり、「旧系全版が対象」または「affectedにない版は確実に安全」と断定せず、製品PSIRT原文で調整する。CVE-2026-126229のmetadata.dateUpdatedは**2026-11-12 10:27:56 UTC（19:27:56 JST）**だが、直近更新でどのフィールドが変更されたかは履歴未比較。
+
+未検証・次の検収:
+- 126253の「公開PoCが実際に動く」、LSAの実被害・攻撃経路の具体的構成、126229の実地悪用、修正版の実配布、Cloudへの修正反映、旧系へのベンダー推奨移行先は今回のCNA原本だけでは確認していない。CVEのCVSSに含まれる時間的指標E:Pを実機での侵害確認と混同しない。
+- 公開記事や運用判断では、導入製品・構成・稼働版を確認し、Fortinet公式PSIRT（FG-IR-26-267／FG-IR-26-244）で修正バージョンと対象系統を検収する。今回の独立確認はCNAの公表レコードまで。MuseによるDoc05受信反映も別検収であり、Google Docs書込み・SNS投稿はしていない。
+
+公開一次根拠（2026-11-12 JST、GitHub正規取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126253.json （Fortinet CNA原本、blob SHA `a14eeab75c685753cb8b62d620fade80f49eb7ce`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126229.json （Fortinet CNA原本、blob SHA `6a5d7f0b1f0e9f841eccf8a5da6727cdc6771811`）
+
