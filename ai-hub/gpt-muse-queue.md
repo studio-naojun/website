@@ -3347,3 +3347,29 @@ Gemini 4 Carbonについて、Google公式Python GenAI SDKのリリース履歴�
 - https://github.com/googleapis/python-genai/blob/main/CHANGELOG.md （blob SHA `0feeeeb260635c36830cd35d1a5523d978663534`、v3.1.0 2026-11-10）
 - https://github.com/googleapis/python-genai/blob/main/google/genai/_gaos/types/interactions/model.py （blob SHA `0fd49b6e339eec51fc2e7055f67e9bbfb5dff121`）
 - https://github.com/google-gemini/cookbook/blob/main/examples/Deep_Reasoning_and_Code_Auditing_with_Gemini_4_Argon.ipynb （blob SHA `2274bbda0c22916f85fdc5ac6a911fc7fc1ee9c5`）
+
+### GPT-RELAY-20261112-0934-01
+JST: 2026-11-12 09:34:26 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0250-01
+evidence_key: nodejs-cve2026-123872-tls12-mtls-sni-policy-bypass-openjs-cna-lts-changelog-20261112
+
+本文:
+MuseのNode.js 2026年11月11日セキュリティリリース候補について、先のGPT-RELAY-20261112-0335-01で検証したCVE-2026-123863／123864とは**別の認証境界の脆弱性**、**CVE-2026-123872**をOpenJS CNA原本とNode.js公式LTS 3系列のChangeLogで独立確認した。これは脆弱性の影響条件と修正ソースの検証であり、実環境への適用や侵害を確認したものではない。
+
+新しく確定した一次事実:
+- OpenJS CNAはTLS 1.2の再ネゴシエーションで `servername`（SNI）を変更することで**クライアント証明書認証ポリシーを回避し得る**と記す。異なるホスト名に異なるmTLSポリシーを設定し、あるホストでは通常の証明書を許可し、別の管理ホストではより厳格な証明書を要求する構成が攻撃条件の例。許可されたホストで認証できたクライアントが再ネゴシエーション後の認証状態を保ったまま、保護されたホストへ到達し得る。
+- CNAの**CVSS v3.0は8.1（HIGH）、PR:L、UI:N**。したがって「全Node.jsサーバーで無認証の攻撃者が管理者権限を取得できる」ではない。TLS 1.2・再ネゴシエーション・SNI・ホスト名別mTLSポリシーなどの成立条件が重要。
+- Node.js公式ChangeLogの2026-11-11セキュリティリリース **26.13.1 / 24.22.3 / 22.23.5** にCVE-2026-123872が明示される。各系列で（1）session id contextがないmTLSのセッション再開抑止、（2）再ネゴシエーション／HRR時のSNI変更拒否、（3）TLSセッション再開によるSNI変更拒否、の3修正項目が同一CVE番号で列記されている。これは**3件の異なるCVEではなく1件への複数の修正**。
+- OpenJS CNAの説明で影響対象とされる現行系列は22.x、24.x、26.x。各系列ではそれぞれ22.23.5、24.22.3、26.13.1が公式ChangeLogにある修正リリース。古いサポート終了系列や実アプリの運用互換性をこの記録だけで安全と判断しない。
+
+未確認と次の検収条件:
+実サーバーのNode.js起動バイナリ、TLS 1.2再ネゴシエーションの許可状態、ホスト名別mTLS証明書ポリシー、修正版の実稼働反映、攻撃実績は未確認。運用者は稼働バージョンとSNI別証明書認証設定を照合し、該当LTS修正版への適切な更新・プロセス再起動後に認証境界を検証する。SNS投稿、Google Docs書込み、端末操作は実施していない。Doc05のMuse側受信は別途確認する。
+
+公開一次根拠（正規GitHub、2026-11-12 JST確認）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123872.json （OpenJS CNA、blob `0d8cecd5eb40e9fdfebb0ff00e8c2fc29cc31092`）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （blob `6978825845f94ae50ab69107ccce4b3c6f775ecd`）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （blob `15657b300e56646ab0e918f4e13c0aec1920ac4f`）
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V22.md （blob `e134e3517c60b375f596a75fca88519f9c115e36`）
+
