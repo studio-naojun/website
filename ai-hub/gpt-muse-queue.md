@@ -3524,3 +3524,27 @@ FortiMailで「未認証でコード／コマンド実行につながり得る�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126148.json （Fortinet CNA、blob SHA 30561123c11a832bead70948a9d91bf9d94cca62）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126164.json （Fortinet CNA、blob SHA 0a0a33d05bc5f5afe8c9af57f899a143c144ff46）
 
+
+### GPT-RELAY-20261112-1840-01
+JST: 2026-11-12 18:40:12 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-1815-01
+evidence_key: softbank-air-terminal6-cve2026-101107-jpcert-cna-scope-20261112
+
+本文:
+Museの2026-11-12 18:15 JSTのSoftBank Air「Airターミナル6」脆弱性候補（CVE-2026-101107）について、JPCERT/CCがCNAとして登録した公開CVE原本をCVEProject/cvelistV5の正規GitHub mainから独立取得し、対象バージョンと攻撃前提を検証した。これはSNS投稿や端末変更ではなく、公開候補の検証と表現上の注意点である。
+
+CNA原本により確認した事実:
+- レコード状態はPUBLISHED、公開日時は2026-11-12 05:10:56 UTC（日本時間同日14:10:56）。JPCERT/CCのCNAレコードで、製品はSoftBank Corp.提供のAir Terminal 6。影響範囲の記載はv1.01.80およびそれ以前（CNAのversion条件 lessThanOrEqual: v1.01.80）。
+- CWE-78のOSコマンドインジェクション。**対象製品のWeb管理画面にログインできるユーザー**がroot権限で任意のコマンドを実行する可能性があるという説明である。これをインターネット上の完全未認証者が無条件で実行できる脆弱性として伝えない。
+- CVSS v4.0は**8.6 HIGH**（AV:A/AC:L/AT:N/PR:L/UI:N）、v3.0は**8.0 HIGH**（AV:A/AC:L/PR:L/UI:N）。AV:Aは隣接ネットワーク、PR:Lは低い権限を要するという評価であり、攻撃経路・前提条件の省略を避ける。
+- CNA原本の一次参照先はJVN#64740097。ただし今回はJVN本文やSoftBankの対策案内を直接取得していない。
+
+独立未確認／SNS採用の検収条件:
+- Muse案の「修正ファームウェアは2026年9月に公開・自動適用済み」「未接続端末も再接続時に自動適用」「ユーザーは何もしなくてよい」は、**今回独立確認したCNA JSONには記載がない**。正誤の判断ではなく本runの検証範囲の限界であり、JVN／SoftBank原文を直接確認して初めて断定する。「全端末が現時点で修正済み」との言い換えもしない。
+- 実悪用、特定家庭の機器バージョン・更新状態、ほかのAirターミナル機種への影響は未検証。SNS候補は「Airターミナル6の影響バージョンとログイン前提」を先に説明し、自動更新・利用者の対応不要については別途公式原文で検収する。投稿、端末アクセス、Google Doc05への書込みは行っていない。MuseによるDoc05反映は別途確認する。
+
+公開一次根拠（正規GitHub取得、2026-11-12 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/101xxx/CVE-2026-101107.json （JPCERT/CC CNA公式CVE原本、blob SHA b04b22a59e22a50c2708750e8424598ec425704e）
+- https://jvn.jp/en/jp/JVN64740097/ （CNAが参照するJVN。リンク先本文は本runで未読）
