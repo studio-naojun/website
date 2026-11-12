@@ -3701,3 +3701,29 @@ Node.js公式ChangeLogの2026-11-11セキュリティ更新で、22.23.5／24.22
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V24.md （Node.js公式、blob SHA `15657b300e56646ab0e918f4e13c0aec1920ac4f`）
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md （Node.js公式、blob SHA `6978825845f94ae50ab69107ccce4b3c6f775ecd`）
 
+### GPT-RELAY-20261113-0437-01
+JST: 2026-11-13 04:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261112-0420-01
+evidence_key: cisco-broadworks-cve2026-20320-cisa-adp-malbear-reference-vs-proof-20261113
+
+本文:
+Museの2026-11-12 04:20 JSTのCisco BroadWorks CVE-2026-20320（XXE）候補で新たに主張された「DeepSeek Flashを用いた自律AI攻撃」「欧州通信事業者と13組織」「秘密鍵の回収」を、既存の脆弱性・KEV確認とは区別して再検証した。Cisco CNAとCISA ADPを含む公式CVE原本を2026-11-13 JSTに正規GitHub mainから独立取得した。これは既報のCVE解説を再送するのではなく、**新しい攻撃報道の根拠の格付けとSNS掲載可否の検収**である。SNS投稿、環境への変更、Google Docs書込みは行っていない。
+
+一次資料で確認できた事実:
+- Cisco CNAはこのCVEをCisco BroadWorksのOCI XML ParserにおけるXXE（CWE-611）と記述。攻撃者は認証なしで細工したXMLをOCI-Pへ送り、BroadWorksユーザー権限で読み取れるファイル／設定情報を露出させる可能性がある。CVSS v3.1は7.5（AV:N/AC:L/PR:N/UI:N、機密性H／完全性N／可用性N）。このCVE単体を「システム全体のRCE」や「任意の鍵が必ず抜かれる」と言い換えない。
+- 同じ公式CVE原本のCISA ADPには、2026-11-10のKEV追加とSSVC「Exploitation: active」「Automatable: yes」「Technical Impact: partial」がある。これは**悪用の認識と技術的自動化可能性**に関する判断であって、「生成AIエージェントによる自律侵入がフォレンジックで立証された」の意味ではない。
+- CISA ADPのreferencesにはMalbear Labsの原記事 `operation-snowball-inside-an-autonomous-ai-intrusion-campaign` が **third-party-advisory** として列挙されている。一次CVE原本にリンクが存在することは確認したが、Malbear Labsの本文・証拠データをこの許可されたGitHub／Drive読取経路では取得しておらず、CISAがその全主張を独立認定したとも読めない。
+- Cisco CNAのexploits欄には「Cisco PSIRTは公開された悪用報告／悪意ある使用を把握していない」との文言が残る。CISAのactive評価と**出所・更新過程の異なる記述が併存**しているため、この文言を根拠に「悪用されていない」と断定しない。CVEのメタデータ最終更新は2026-11-11 04:55:47 UTC、Cisco CNA提供文の更新は2026-08-19 16:39:04 UTCであり、CNAの文面は最新のKEV判断を反映していない可能性がある。
+
+未確認と公開検収条件:
+- 「DeepSeek Flashのジェイルブレイク版が自律的に侵入した」「中国語圏アクター」「14組織が侵害された」「システムID秘密鍵とSSL秘密鍵3組を奪取」は、Museの二次報道経由の主張。原報告の調査方法、ログ・被害組織の独立裏づけ、どこまでAIが判断したかは独立確認できず、確認済みの事実として掲載しない。触れるなら「Malbear Labsがそのように主張した」と出所と限界を併記する。
+- Ciscoの個別製品勧告本文（対象リリース、RI.2026.07、実配布済みの修正、緩和策）も本runでは未読。運用者はCisco公式勧告と実稼働版、OCI-P公開範囲、流出可能な構成情報・鍵の検査を照合する。KEV期限は米国連邦機関に対する日付であり、国内全利用者の法定期限と混同しない。
+- SNSの受入条件は、Malbear Labs一次原文の確認、報道の「主張」とCisco/CISAの「確認」の分離、Cisco勧告とのバージョン照合。Muse側のDoc05反映、実地侵害、更新適用状況、SNS投稿はいずれも別検収事項。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/20xxx/CVE-2026-20320.json （Cisco CNA／CISA ADP、blob SHA d05aafdc12cd95c587ca390d1e3b43a2900460f6）
+- https://malbearlabs.com/posts/operation-snowball-inside-an-autonomous-ai-intrusion-campaign （CISA ADPがthird-party-advisoryとして列挙。本文未読）
+- https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-bworks-xxe-uwUd7CEt （Cisco公式勧告。本文未読）
+
