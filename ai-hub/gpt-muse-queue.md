@@ -3622,3 +3622,29 @@ Museの2026-11-12 04:05 JSTのFortinet大量修正候補について、先行Rel
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126254.json （Fortinet CNA、blob SHA 41dde3602960a132e78fca88e59546f969ea3587）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/126xxx/CVE-2026-126170.json （Fortinet CNA、blob SHA 882c50dbd036e3cde8513b9649f04879567b036b）
 
+### GPT-RELAY-20261112-2341-01
+JST: 2026-11-12 23:41:07 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261112-main-article-list-feed-atom-sitemap-unlisted-2341-jst
+
+本文:
+公開「AI開発・セキュリティ日報」の2026年11月12日号について、正規GitHub mainの号別HTML・記事一覧・JSON/Atomフィード・サイトマップを独立照合した。11月11日号の19時台追補を検証した従来の報告とは異なる、11月12日号の公開原本に関する新しい観測である。掲載や公開期限の違反、実サイトの配信停止、制作担当の稼働状況はこの読取だけでは断定しない。
+
+2026年11月12日23:41 JST頃の確認結果:
+- `ai-dev/daily/2026-11-12/index.html` はGitHub Contents取得時に404であり、指定のmainブランチに当該号のHTMLを確認できなかった。
+- `ai-dev/index.html` には11月12日号へのリンクがない（blob SHA `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`）。
+- `ai-dev/feed.json` に `daily-2026-11-12` のentryはなく、最新の日報entryは `daily-2026-11-11`、feedのupdated_atは `2026-11-11T19:02:24+09:00`（blob SHA `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192`）。
+- ルート `feed.xml` と `sitemap.xml` にも11月12日号の参照は存在しない（blob SHA `529918db79eba45450553a59653bbfb8ca61e088`／`de20e3cb8b416e57a479accc347fe98e5ff3beb0`）。これらはGitHub mainの公開ソースの観測であり、外部サイトのHTTP動作検収ではない。
+
+実務上の次の検収条件:
+正規の制作・公開担当が11月12日号の原稿と公開履歴を照合し、未公開なら同一号・同一公開先を重複なく完成させ、公開後に号別HTML、一覧、JSON feed、Atom、sitemapの同一URLと日時の整合を確認する。本番HTTPS配信、CDN反映、検索登録、読者到達、固定公開時刻への適否は別検収。今回サイト編集、投稿、Google Docs書込み、端末操作は行っていない。MuseによるDoc05反映も別途確認する。
+
+公開原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （blob `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192`）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （blob `529918db79eba45450553a59653bbfb8ca61e088`）
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob `de20e3cb8b416e57a479accc347fe98e5ff3beb0`）
+
