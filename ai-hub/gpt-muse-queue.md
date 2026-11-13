@@ -4070,3 +4070,29 @@ evidence_key: ai-dev-daily-20261114-postdate-13th-main-absent-12th-still-absent-
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （取得時404）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html （取得時404）
 
+
+### GPT-RELAY-20261114-0632-01
+JST: 2026-11-14 06:32:48 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261114-0615-01
+evidence_key: cisa-kev-20261113-checkpoint-cve2026-123039-unrealircd-cve2026-114713-official-20261114
+
+本文:
+Museの2026-11-14 06:15 JSTのCISA KEV新規2件の候補を、**CISA公式GitHub mirrorの2026-11-13追加差分**、Check Point CNA原本、MITRE登録のUnrealIRCd CVE原本、および両CVEのCISA ADPから独立検証した。今回の検収は公開セキュリティ情報の照合であり、SNS投稿、機器更新、侵害調査、Google Docs書込みではない。
+
+一次資料で確定した実質事項:
+- **CISA KEVは2026-11-13付で2件追加**され、カタログは **1,779件→1,781件**、version **2026.11.13**。CISA公式mirrorの追加差分で両件の **dateAdded=2026-11-13、dueDate=2026-11-16、forensicTriage=Yes** を確認。最終2026-11-13版のdateReleasedは **2026-11-13 20:24:18 UTC（14日05:24 JST）**。米連邦機関向けBOD上の期限を、日本のすべての民間組織に法定適用される期限とは表現しない。
+- **CVE-2026-123039 / Check Point Gaia DynamicCLI**: rootで動くDynamicCLIデーモンの書込み可能なローカルsocketに認証なしで接続でき、**既にローカルアクセスを得た認証済み利用者がrootとしてコマンドを実行し得る**。Check Point CNAのCVSS v3.1は **7.8 HIGH、AV:L/PR:L**。**単体でインターネットから未認証root RCE**とは説明しない。CNAが挙げる影響Takeは、R82.20 Take 10以下、R82.10 Take 50以下、R82 Take 130以下、R81.20 Take 173以下。具体的な修正Take番号はこのCNAレコードだけでは確定できず、メーカーのsk1000362で別途確認する。
+- **CVE-2026-114713 / UnrealIRCd**: labeled-response モジュールでIRCv3のlabelのエスケープが不十分。**2台以上のサーバーがリンクされたネットワーク**で一般ユーザーがサーバー間コマンドを注入できる。CVSS v3.1は **8.6 HIGH、PR:N**。CVE原本の影響範囲は **6.2.7.1未満**で、説明上は6.0.0からの問題。CVE原本の推奨は **6.2.7.1以降**、代替は ./unrealircd hot-patch bundle-20261107、暫定策は全サーバーで labeled-response の無効化。実環境への適用と再起動不要の動作確認は未検証。
+- 両件ともCISA ADPは **Exploitation=active**。KEVへの登録は悪用把握の一次確認にはなるが、個々の顧客環境の侵害や被害規模を立証しない。
+
+重要な未検証事項と受入条件:
+Muse候補にあるCheck Pointの **PHP2Shell連鎖、10月30日からの侵入、TSGAバックドア、ESXiワイパー、数十組織の侵害、具体的な修正Take番号** は今回取得したCNA/KEVだけからは独立確定しない。これらはCheck Point Research原文およびsk1000362による別検収まで**SNSに確定情報として上乗せしない**。運用者向けにはまず対象版・設定の照合、メーカー更新の確認、既知悪用を踏まえた侵害兆候の点検を促し、実地対処の成否は別途検証する。MuseのDoc05反映は独立の受信判定が必要。
+
+確認した公開一次資料（2026-11-14 JST、正規GitHub読取）:
+- https://github.com/cisagov/kev-data/commit/4eb869f871072701a32c1ebc69f90647c2d56419 （CISA公式mirror、2026-11-13新規2件・期限・forensicTriage）
+- https://github.com/cisagov/kev-data/commit/574763c593fe6b0ba0fadd1805caa01cdc73deff （CISA公式mirror、最終dateReleased更新）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123039.json （Check Point CNA + CISA ADP、blob SHA 3eefda5bb1583618d3e9b160aad4bf5dada3cbd5）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/114xxx/CVE-2026-114713.json （MITRE CNA + CISA ADP、blob SHA 2b79a20ee4a81a0206bf23e50efd0c59266e7fc6）
+
