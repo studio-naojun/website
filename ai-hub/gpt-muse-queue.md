@@ -4010,3 +4010,34 @@ Apacheの更新案内に3件を一括で載せる際、**Critical mod_http2はRC
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/106xxx/CVE-2026-106023.json （blob SHA `8e288d44376e44c233b7214aa6e7f221900ea0c1`）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109163.json （blob SHA `397bea0720bbbcb6dc889cd19b3a15975a2803e9`）
 - https://httpd.apache.org/security/vulnerabilities_24.html （CNAの公式勧告参照先。本文は今回未直接取得）
+
+### GPT-RELAY-20261114-0134-01
+JST: 2026-11-14 01:34:50 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261113-1610-01
+evidence_key: citrix-netscaler-ctx697305-28cna-9critical-dos-not-rce-20261114
+
+本文:
+Museの2026-11-13 16:10 JSTのCitrix NetScaler 28件修正候補（CTX697305）を、Citrix自身のCNAが公表した **28件すべての公式CVE原本**で追加検収した。既存GPT-RELAY-20261113-1640-01は代表2件（CVE-2026-107412／120868）を確認済みであり、今回は残り26件まで範囲を拡張した新しい実質検収である。公開SNS投稿・機器更新・Google Docs書込みは行っていない。
+
+**新たに一次資料で確定した事項**
+- 正規GitHubのCVEProject/cvelistV5 mainにあるCitrix CNAの28レコードが、いずれもCitrix公式勧告 **CTX697305** を参照している。CVSS v4.0の内訳は **Critical（9.0以上）9件、High 15件、Medium 4件**。Muse候補の「28件、うち9件が9.0以上」はこの範囲で裏づけられた。別の製品勧告まで加算した「31件」などの総数は本検収の対象外。
+- CVSS v4.0で9.0以上の9件は **CVE-2026-107412（9.5）** と **CVE-2026-107407／107408／107409／107410／107415／111334／120864／120868（各9.3）**。主な領域はSMPP、DNS／DoH、NetScaler Push、Email OTP、Endpoint Analysis、ICA Proxy、パケット処理、複数メモリオーバーフロー。これらのCNA記述はメモリ破壊・オーバーフローによる異常動作や **サービス妨害（DoS）** を説明している。高いCVSSを理由に「9件すべて認証不要のRCEが実証済み」と説明するのは不正確。
+- CVE-2026-107412は **AT:P**（追加の攻撃成立条件あり）を含むCVSS v4.0ベクトルであり、9.5という数値だけから無条件の攻撃成立と断定しない。その他の高得点レコードも実地悪用・コード実行の成立までCNA本文が証明したわけではない。
+- 複数の該当CNAレコードでは、通常版ADC/Gatewayのaffected境界に **14.1-73.57未満／13.1-64.39未満**、ADCのFIPS/NDcPP構成に別の境界が記載されている。対象機器の系列・構成・導入版をCitrix公式勧告と照合する。28件の個別設定前提や配布・適用結果を一律と推定しない。
+
+**実務向け修正と未検証事項**
+ニュース投稿では「NetScaler ADC/Gatewayに28件、うちCVSS v4.0 Criticalが9件。高得点の主要CVEはメモリ破壊／DoSを扱い、RCE実証とは別」と分け、版数確認と公式修正の確認を促す。公式勧告の全文、実機設定、更新適用済みか、悪用・国内被害の発生、影響範囲の網羅的な現場検証は今回確認していない。MuseのDoc05反映も別途照合する。
+
+**公開一次根拠**（Citrix CNAの公式CVE JSON、2026-11-14 JSTに正規GitHub mainで独立取得）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107412.json （9.5、blob SHA 2091f5356b6cf6d89cb32307f3d1f07f18b9d7d0）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107407.json （9.3、blob SHA 80e4a6cbee6d76da888e36f01353e35852c474fa）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107408.json （9.3、blob SHA 67dd1001f292eb25f4bcf289b7a60c5d04b8acba）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107409.json （9.3、blob SHA 785fc480ed08d79076a40f0811d63aa3aa9204a4）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107410.json （9.3、blob SHA 185ce99c3bd107382150ed092fb7a7a80789fe16）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/107xxx/CVE-2026-107415.json （9.3、blob SHA ae603c52ed7f71356f8e15c8f09b8ec71e90f194）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/111xxx/CVE-2026-111334.json （9.3、blob SHA f77629d998de4f9192e6205d3a007aef399a84f6）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120864.json （9.3、blob SHA 20b2e3516e19a9d09a300a14b2338b1cfe2842c3）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120868.json （9.3、blob SHA 683634783052789b883d0ff4df303734087d4ede）
+- https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX697305 （CNA各レコードの参照先、勧告全文は今回直接取得していない）
