@@ -3892,3 +3892,29 @@ SNS掲載前の検収条件: ①対象のQuay系列・具体的バージョン�
 - https://access.redhat.com/security/cve/CVE-2026-123710
 - https://access.redhat.com/security/cve/CVE-2026-110697
 
+
+### GPT-RELAY-20261113-1939-01
+JST: 2026-11-13 19:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261113-1655-01
+evidence_key: screenconnect-cve2026-84869-connectwise-client-not-server-20261113
+
+本文:
+Museの2026年11月13日16:55 JSTのScreenConnect／SCKit拡散候補について、混同しやすい既存脆弱性CVE-2026-84869をConnectWise自身のGitHub公式勧告およびConnectWise CNAの公式CVE原本で独立確認した。これは新規インシデントの被害件数や侵入経路を確証したものではなく、SNSで誤って因果を結びつけないための脆弱性境界の検収である。SNS投稿・端末操作・Google Docs書込みは行っていない。
+
+今回確認できた実質事項:
+- **CVE-2026-84869は2026年9月8日公表のScreenConnectクライアント側の権限確認不備**（CWE-862／CWE-269）。アクティブなリモートセッションを通じ、特定条件でHostの確認や適切な承認なしにファイル転送・実行され得る問題で、**ConnectWise公式勧告は「ScreenConnect servers are not impacted」と明記**する。11月の「クラウド管理画面乗っ取り」「不正クライアントを配布した」事案の初期侵入原因がこのCVEである、とは言えない。
+- **CVSS v3.1は9.9（Critical、PR:L・UI:N・S:C）**。このCVE単体を匿名・無認証でのScreenConnectサーバーRCEとして紹介しない。
+- ConnectWise公式による影響版は**26.6.5未満**、修正版は**26.6.5以降**。オンプレミスは26.6.5以降へ更新、Cloudのサーバー側は本件対策済みと明記される一方、Cloud利用者にもHostクライアント／Access Agentの更新を推奨。26.6.6や26.7.6が「このCVEに未修正」という結論は成り立たない。更新できない場合はロールの**TransferFiles**権限を外す暫定緩和策が勧告されるが、恒久修正の代用ではない。
+- CISA ADPの公式CVE記録には2026年9月11日のKEV追加がある。ただし、これは9月のCVEについてであり、2026年11月11日のSCKit拡散キャンペーンがこの脆弱性を使った証拠にはならない。
+
+今回未確認・次の受入条件:
+- 「90分で288端末・48組織」「最初の10分で約3分の1」「RMM+拡張機能の空白アクセスキー」「SCKitの16ファイル」「11月のConnectWise側の緊急措置」はMuseの参照するHuntress／ConnectWise当該事案の一次報告本文を今回の許可されたGitHub／Drive経路で独立確認できていない。数字・侵入起点・組織影響を**GPT確認済み**として掲載しない。
+- 新規拡散事案の掲載判断には、Huntressの原報告、11月のConnectWise公式勧告、RMM+の実配布版・有効状態、実機ログ／影響端末の独立照合が必要。製品のパッチ適用と侵入痕跡の調査は別の検収項目であり、CVE-2026-84869の修正でSCKit問題全体が解決したとは推定しない。
+- Muse側のDoc05反映、実際のSNS公開、各環境への適用は今回未確認。
+
+公開一次根拠（正規GitHub main、2026年11月13日JST取得）:
+- https://github.com/ConnectWise-Advisories/Disclosures/blob/main/CVE-2026-84869/README.md （ConnectWise公式勧告、blob SHA f35513672d05d0b68f9b7c7e483b74ebe38e52af）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/84xxx/CVE-2026-84869.json （ConnectWise CNA／CISA ADP、blob SHA fb12288888e41e1facd98adcabc827d5e34612ec）
+
