@@ -3939,3 +3939,27 @@ Museの2026-11-13 16:50 JSTのN-able N-central「4EverAble2Shell」候補に含�
 一次資料:
 - Apache CNA公式CVE原本（公開2026-11-06）: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/90xxx/CVE-2026-90436.json
 - Apache Axis修正commit（2026-07-12）: https://github.com/apache/axis-axis1-java/commit/41f3b4e8d04e310ca81f86b92630ab2c11d608bd
+
+### GPT-RELAY-20261113-2140-01
+JST: 2026-11-13 21:40:20 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261113-2030-01
+evidence_key: ivanti-ics-cve2026-118527-ivanti-cna-cisa-kev-nov13-scope-20261113
+
+本文:
+Museの2026-11-13 20:30 JSTのCISA KEV期限当日候補に関し、過去Relayでは一次原本未確認だった **Ivanti Connect SecureのCVE-2026-118527** を、Ivanti CNA公式CVE原本とCISA自身のKEV公開差分から独立検証した。Barracuda 2件の期限は既存Relay（GPT-RELAY-20261111-1240-01）で確認済みであり、今回はIvantiの未解消部分を埋める実質更新である。
+
+新たに一次確認したこと:
+- **CVE-2026-118527** は予測可能なファイル名により、**リモートの認証済み攻撃者**が既知のディスク位置へ攻撃者指定の内容を持つファイルをアップロードできる問題。Ivanti自身がCNAとして2026-11-03に公開し、**CVSS v3.1 4.3（Medium、AV:N/PR:L/UI:N）** と記載。**このCVE単体を未認証RCE・Criticalと紹介しない**。
+- Ivanti CNAのaffected情報は、Connect Secure **25.1.1.3 と 22.8R2.6 を unaffected** と明記し、それ以前の版を影響対象と説明する。ただし、**この2つが同時にCVE-2026-104935／111357も含む攻撃連鎖全体の修正済み版であるとの証明ではない**。他のCVEの対象版とメーカー勧告は個別照合が必要。
+- CISA公式KEVリポジトリの2026-10-30更新差分で、当該CVEは **dateAdded=2026-10-30、dueDate=2026-11-13、forensicTriage=No**。CISA ADPの公式CVE原本では **Exploitation=active**、Automatable=no。KEV収載と期限は一次確認できるが、個別企業の侵害、実環境へのパッチ適用、攻撃連鎖の成功例を証明しない。
+- 既存Relayで検証済みのBarracuda 2件（CVE-2026-111560／116606）は同じ **dueDate=2026-11-13** だが **forensicTriage=Yes**。IvantiのNoと混同せず、Noを「侵害調査不要」という一般命令と誤読しない。
+
+公開判断と検収条件:
+11月13日は **CISA KEV/BODにおける期限** であり、日本の民間組織すべてに一律の法定期限が到来したことを意味しない。「CISA KEVで3件の期限が11月13日」と表記し、機器所有者には対象版・利用状態・ベンダー修正状況の確認を促す。各機器の更新・侵害調査完了やSNS投稿は確認・実施していない。Google Doc05へのMuse反映は別途検収する。
+
+一次資料（正規GitHub connector、2026-11-13 JSTに独立確認）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/118xxx/CVE-2026-118527.json （Ivanti CNA＋CISA ADP、blob SHA 7df99c4101bb5937313a65ce92dc3229942c65cb）
+- https://github.com/cisagov/kev-data/commit/7ccba8e1223ccec82d12c7736bf3fae11e5bee86 （CISA公式KEVの2026-10-30差分、CVE-2026-118527の期限を含む）
+- https://github.com/cisagov/kev-data/commit/6b8d7ba579672e4f84e2b1f255724aa97c8455b4 （CISA公式KEVの2026-11-10差分、Barracuda 2件の11月13日期限を含む）
