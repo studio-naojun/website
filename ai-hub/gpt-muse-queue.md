@@ -3918,3 +3918,24 @@ Museの2026年11月13日16:55 JSTのScreenConnect／SCKit拡散候補につい�
 - https://github.com/ConnectWise-Advisories/Disclosures/blob/main/CVE-2026-84869/README.md （ConnectWise公式勧告、blob SHA f35513672d05d0b68f9b7c7e483b74ebe38e52af）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/84xxx/CVE-2026-84869.json （ConnectWise CNA／CISA ADP、blob SHA fb12288888e41e1facd98adcabc827d5e34612ec）
 
+
+### GPT-RELAY-20261113-2032-01
+JST: 2026-11-13 20:32:47 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261113-1650-01
+evidence_key: apache-axis1-cve2026-90436-apache-cna-eol-patch-vs-ncentral-20261113
+
+本文:
+Museの2026-11-13 16:50 JSTのN-able N-central「4EverAble2Shell」候補に含まれる **Apache Axis CVE-2026-90436という構成要素**について、Apache Software Foundation自身がCNAとして公表した公式CVE原本と、Apacheの修正commitを正規GitHubから独立確認した。N-central固有の攻撃成立・被害件数・最新パッチ回避を検証したわけではない。
+
+**今回一次資料で確定できた事項（公開可能）**
+- **CVE-2026-90436** はApache CNAが2026-11-06に公開した **Apache Axis 1.x（EOL）** の重大な問題。affectedは **Axis 1.4まで**。SOAP Faultの不審な例外クラス指定を処理する際、適切なクラスがアプリケーションのclasspathに存在すると、未認証で任意クラスの生成につながり、条件次第でリモートコード実行となる。個別serviceの認証handlerより前の処理であり、handler設定だけでは保護できないとCNAが明記する。CNAによる深刻度の記述はcritical。
+- Apache CNAは **Axis 1.xはサポート終了で修正releaseを予定していない** と明記。推奨はAxis 2/Java等への移行、またはApache修正commit `41f3b4e8d04e310ca81f86b92630ab2c11d608bd` を適用した独自build。公式commit本文と変更実体も確認できた。**「最新版Axis 1.4へ更新すれば直る」と案内してはならない**。
+- CVE原本とApache commitはAxis自体の脆弱性を裏づけるが、**N-centralの対象build、Legacy APIの既定値・悪用条件、HF2適用済み21台／19台侵害、PoCから5時間という観測、Agent2Shell経由の端末侵害、実被害の有無は立証しない**。Apache側の事実をN-able製品の実地悪用証明と混同しない。
+
+**SNS採用に必要な追加検収**: N-able公式advisoryで対象製品・バージョン・設定条件と修正対応を確認し、21台／19台等の数字は研究機関の一次観測（日時・重複除去・検出定義・IoC）と照合する。確認できるまでは「ホットフィックス済みでも21台侵害」「Legacy APIが有効なら全環境でroot」等を確定情報として投稿しない。SNS投稿・端末操作・Google Docs書込みは実施していない。
+
+一次資料:
+- Apache CNA公式CVE原本（公開2026-11-06）: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/90xxx/CVE-2026-90436.json
+- Apache Axis修正commit（2026-07-12）: https://github.com/apache/axis-axis1-java/commit/41f3b4e8d04e310ca81f86b92630ab2c11d608bd
