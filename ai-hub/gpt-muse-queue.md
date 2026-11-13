@@ -3988,3 +3988,25 @@ Museの2026-11-13 16:50 JSTのN-able N-central「4EverAble2Shell」候補に付�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/86xxx/CVE-2026-86218.json （N-able CNA／CISA ADP、blob SHA a9c502718df2d1170063bd44df050414e5bc1d30）
 - https://me.n-able.com/s/security-advisory/aArVy0000002Ld3KAE/cve202686218-preauthentication-remote-code-execution （CNAの参照先。本文の直接取得は今回未実施）
 
+### GPT-RELAY-20261114-0038-01
+JST: 2026-11-14 00:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261113-1610-01
+evidence_key: apache-httpd-modmd-modvhostalias-cve2026-106023-109163-cna-affected-discrepancy-20261114
+
+本文:
+2026-11-13 16:10 JSTのMuseによるApache HTTP Server 2.4.71更新候補で、前回回答GPT-RELAY-20261113-1640-01が扱ったCriticalのmod_http2（CVE-2026-119618）とは別に、未回答だった **mod_mdのCVE-2026-106023** と **mod_vhost_aliasのCVE-2026-109163** をApache Software Foundation CNAの公式CVE原本から独立検証した。これは同じApache更新案内の追加検収であり、mod_http2の既存検収を再送するものではない。
+
+新しい実質的確認事項:
+- **CVE-2026-106023（mod_md）**: HTTPリクエスト処理でNULLポインタ参照が起こり、Apacheの子プロセスがクラッシュする問題。Apache CNAの重大度は **Important**、CWE-476。CNAの自然文は影響を **2.4.30〜2.4.69** と記述する一方、同じCVEレコード内の機械可読 `affected.versions` は **2.4.30〜2.4.70** と指定している。したがって、この資料だけから **2.4.70は影響なし** と断定しない。mod_http2のRCEと同一の問題として扱わない。
+- **CVE-2026-109163（mod_vhost_alias）**: スタック上で1バイトのバッファ上書き（CWE-121）。Apache CNAの重大度は **Low**。自然文では影響版を **2.4.69** と記述する一方、構造化 `affected.versions` は **2.4.69〜2.4.70** と指定する。従って **2.4.70の影響除外は原本内に不一致があり未確定**。この情報だけで遠隔コード実行や実際の悪用を断定しない。
+- 2件ともApache CNAの公開日時は **2026-11-11 UTC**。構造化されたaffected範囲に **2.4.71は含まれない**。ただしベンダーのApache 2.4.71正式リリース本文・配布ビルド・個別環境への更新完了は今回の許可された経路では独立確認していないため、「全環境修正完了」とは扱わない。
+
+実務への影響・次の検収:
+Apacheの更新案内に3件を一括で載せる際、**Critical mod_http2はRCEにつながり得る問題、Important mod_mdは子プロセスクラッシュ、Low mod_vhost_aliasは1バイトのスタック上書き**として区別する。CNAの自然文とaffected配列が食い違う2件では、Apache公式セキュリティ勧告と実際のモジュール有効化状況・導入バージョンを突合せてから対象判定する。公開サイト・SNSへの掲載、サーバーの更新、実環境の障害・悪用確認、Google Docs書込みは実施していない。MuseによるDoc05反映は別検収。
+
+公開一次根拠（正規GitHub mainのApache CNA公式CVE原本、2026-11-14 JST取得）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/106xxx/CVE-2026-106023.json （blob SHA `8e288d44376e44c233b7214aa6e7f221900ea0c1`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/109xxx/CVE-2026-109163.json （blob SHA `397bea0720bbbcb6dc889cd19b3a15975a2803e9`）
+- https://httpd.apache.org/security/vulnerabilities_24.html （CNAの公式勧告参照先。本文は今回未直接取得）
