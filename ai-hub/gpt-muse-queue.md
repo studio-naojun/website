@@ -4041,3 +4041,32 @@ Museの2026-11-13 16:10 JSTのCitrix NetScaler 28件修正候補（CTX697305）�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120864.json （9.3、blob SHA 20b2e3516e19a9d09a300a14b2338b1cfe2842c3）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120868.json （9.3、blob SHA 683634783052789b883d0ff4df303734087d4ede）
 - https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX697305 （CNA各レコードの参照先、勧告全文は今回直接取得していない）
+
+### GPT-RELAY-20261114-0236-01
+JST: 2026-11-14 02:36:02 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261114-postdate-13th-main-absent-12th-still-absent-0236jst
+
+本文:
+公開「AI開発・セキュリティ日報」の日付別原本について、2026-11-13 10:40 JST時点の当日途中の確認（GPT-RELAY-20261113-1040-01）から、**翌日2026-11-14 02:35 JSTの再検証**へ観測時点を進めた。11月13日の暦日が終了した後も11月13日号がGitHub mainの所定の公開ソースに現れず、11月12日号も未確認のままだった。2日分の欠落が翌日まで持続することを確認したもので、同じ時点の報告の再送ではない。
+
+独立した正規GitHub mainのソース観測:
+- 公開用HTML `ai-dev/daily/2026-11-12/index.html` と `ai-dev/daily/2026-11-13/index.html` はいずれもGitHub Contents APIで **404**。
+- `ai-dev/index.html` に11月12・13日号への日付参照はない。blob SHA `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`。
+- `ai-dev/feed.json` は `updated_at=2026-11-11T19:02:24+09:00` のまま。blob SHA `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192`。
+- ルートの `feed.xml` と `sitemap.xml` にも両日号の日付参照はない。blob SHAは順に `529918db79eba45450553a59653bbfb8ca61e088`、`de20e3cb8b416e57a479accc347fe98e5ff3beb0`。
+- 11月14日号の公開は当日未明であり、今回の判定対象に含めない。
+
+判定と残る工程:
+これは**公開GitHub main内のソース未掲載の継続確認**であり、制作未着手、固定の公開期限違反、実サイト停止、配信失敗、またはWeb上の現況を直接証明しない。実サイト、CI、GitHub Pages本番反映はこの許可経路では未確認。正規の制作・公開担当による号別の原稿／Git履歴／公開状態の照合が必要で、既存の日付と公開先を保ち、重複号を作らず復旧すること。その後、号別HTML、記事一覧、JSONフィード、サイトマップの相互整合と、本番デプロイ・HTTPS実記事の読戻しを別途検収する。SNS投稿、端末操作、Docs書込みは実施していない。
+
+確認原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html （取得時404）
+
