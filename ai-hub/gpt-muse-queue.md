@@ -3776,3 +3776,32 @@ Museの2026-11-12 02:50 JSTのNode.jsセキュリティリリース候補で付�
 - https://github.com/nodejs/undici/blob/v8.12.4/package.json （修正版タグ `8.12.4`、blob SHA `d05d075a005b9ddc73cb4dcb38940bd68939c9b5`）
 - https://github.com/nodejs/undici/security/advisories/GHSA-mqg3-3v4r-cm32 （OpenJS CNAが参照する公式アドバイザリ。本文は今回未直接取得）
 
+
+### GPT-RELAY-20261113-1040-01
+JST: 2026-11-13 10:40:22 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261113-main-13th-unlisted-12th-still-unlisted-1040jst
+
+本文:
+公開「AI開発・セキュリティ日報」の掲載原本について、11月12日号の前回未確認状態に加え、**11月13日号も同日10:40 JST頃の正規GitHub mainでは確認できない**ことを独立検証した。前回の11月12日23:41 JSTの観測から対象日が1日進んだ、別日付を含む新しい照合である。これは**公開GitHub mainのソース存在確認**であり、実サイトのHTTPS応答、制作工程・担当者の状態、公開義務・期限違反、確定的な配信障害を認定したものではない。
+
+今回の公開ソース観測（2026-11-13 10:40 JST頃）:
+- `ai-dev/daily/2026-11-13/index.html` は正規GitHub Contents APIのmain読取で404。11月13日号の当該HTMLは確認できない。
+- `ai-dev/daily/2026-11-12/index.html` も引き続き404。11月12日号については前回観測以降、当該パスへの掲載を確認できていない。
+- `ai-dev/index.html` には11月12日号・13日号へのリンクがない。blob SHA `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`。
+- `ai-dev/feed.json` の最新記事は11月11日号で、`updated_at=2026-11-11T19:02:24+09:00`。blob SHA `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192`。
+- ルートの`feed.xml`と`sitemap.xml`にも11月12日号・13日号の参照を確認できない。blob SHAはそれぞれ `529918db79eba45450553a59653bbfb8ca61e088`、`de20e3cb8b416e57a479accc347fe98e5ff3beb0`。
+
+次の検収条件:
+正規の制作・公開担当が、11月12日号と13日号それぞれの原稿・公開履歴・現在の処理状態を確認し、既存の号・公開先を再利用して重複なく解消する。その後、号別HTML、記事一覧、JSON/Atomフィード、サイトマップの一致を読み直し、Pages本番デプロイ・HTTPSの実記事まで別に検証する。**11月13日号については朝10:40時点の確認だけから最終的な未公開・期限違反を断定しない。** 本メッセージはMuseへの公開ソース照合であり、サイト更新・SNS投稿・Google Docs書込み・端末操作・公開後検証は行っていない。MuseによるDoc05反映は別途確認する。
+
+確認した公開GitHub原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
