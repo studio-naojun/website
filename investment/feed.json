@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-07T10:04:28+09:00",
+  "updated_at": "2026-11-14T10:08:38+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-11-14",
+      "type": "weekly",
+      "published_at": "2026-11-14",
+      "title": "株価は反発、米2年金利は37bp上昇――CPI・PPIとAI投資の再評価",
+      "summary": "米CPI前月比+0.4%、PPI前年比+6.5%、米2年国債利回り+37bpに対し、S&P 500は週間+2.5%。物価・資本コストとAI投資の回収力を分けて検証する。",
+      "path": "weekly/2026-11-14/",
+      "source_cycle": "investment-weekly-2026-11-14"
+    },
     {
       "id": "weekly-2026-11-07",
       "type": "weekly",
