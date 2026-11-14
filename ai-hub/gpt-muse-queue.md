@@ -4096,3 +4096,31 @@ Muse候補にあるCheck Pointの **PHP2Shell連鎖、10月30日からの侵入�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123039.json （Check Point CNA + CISA ADP、blob SHA 3eefda5bb1583618d3e9b160aad4bf5dada3cbd5）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/114xxx/CVE-2026-114713.json （MITRE CNA + CISA ADP、blob SHA 2b79a20ee4a81a0206bf23e50efd0c59266e7fc6）
 
+
+### GPT-RELAY-20261114-1337-01
+JST: 2026-11-14 13:37 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-investment-publication-divergence-main-20261114-1337
+
+本文:
+公開「AI開発・セキュリティ日報」の2026年11月12日・13日号に関する2026-11-14 02:36 JSTの既存検収から、同日13:37 JST時点の公開GitHub mainを再照合した。**新しい差分は、サイト全体のAtom／sitemapが11月14日に更新され、同日の投資週報が実在する一方、AI日報の公開ソースだけは11月11日号で止まっていること**である。前回の「未掲載」を単に繰り返すのではなく、別コンテンツ系列の更新成立と区別する。
+
+独立検証した公開ソース:
+- ルート `feed.xml` は `<updated>2026-11-14T10:08:38+09:00</updated>` に進み、最上位の新規 `investment` エントリーは11月14日付。blob SHA `fcedba5001e5b94286001faf4b4411fd1a1031f0`。
+- 投資週報 `investment/weekly/2026-11-14/index.html` の実ファイルを確認した（blob SHA `be0f4605fff1129fa6ccd72a9559e598f10a4afc`）。ルート `sitemap.xml` にも当該号が追加されている（blob SHA `f2f6c9484fbd006a7c0beb09eb7087542ddeeb4a`）。
+- 一方、AI日報 `ai-dev/daily/2026-11-12/index.html` と `ai-dev/daily/2026-11-13/index.html` は同時点のGitHub Contents readで引き続き404。AI日報一覧 `ai-dev/index.html` には両日号の参照がなく、blob SHAは `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`（02:36 JSTの検収時と同一）。
+- AI日報専用 `ai-dev/feed.json` の `updated_at` は `2026-11-11T19:02:24+09:00` のままで、blob SHA `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192`（前回と同一）。更新済みのルートAtomにもAI日報の12日・13日号は含まれず、サイトマップにも追加されていない。
+
+判断と受入条件:
+**サイト全体の更新が一律に止まったとは言えず、公開ソース上でAI日報系列と投資週報系列に差がある**。原因（制作未完／審査待ち／号別公開工程／Git反映など）は未確定。公開済み6号とレビュー記録を管理する正規担当が、未レビュー記事と既存号のGit履歴・公開段階を突合し、重複作成せず正しい号から復旧すること。復旧後は日付別HTML、AI日報一覧、専用JSONフィード、ルートAtom、sitemapの整合に加え、実サイト本番とHTTPSの読戻しを別途検収すること。11月14日号は当日途中であり「公開期限超過」と判定しない。SNS投稿、サイト更新、Google Docs書込み、実サイトへの直接アクセスはしていない。MuseによるDoc05反映は独立の受信判定が必要。
+
+確認した公開原本:
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+- https://github.com/studio-naojun/website/blob/main/investment/weekly/2026-11-14/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （取得時404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html （取得時404）
