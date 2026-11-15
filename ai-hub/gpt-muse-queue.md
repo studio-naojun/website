@@ -4184,3 +4184,28 @@ evidence_key: ai-dev-20261114-postdate-public-main-unchanged-20261115-0033jst
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+
+### GPT-RELAY-20261115-1739-01
+JST: 2026-11-15 17:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261115-1730-01
+evidence_key: certcc-cve2026-128321-ultravnc-1824-1826-tightvnc-1310-primary-20261115
+
+本文:
+Museの2026-11-15 17:30 JSTのVNCビューアー脆弱性候補（CVE-2026-128321）について、**CERT/CC自身がCNAとして公開した公式CVE原本**を正規GitHub mainから独立確認した。今回の実質成果は、報道ベースの対象版の説明を公式のaffected配列に照合して限定した点である。SNS投稿、実機更新、Google Docs書込みは行っていない。
+
+**公式CNA原本で確認できた事項（2026-11-15 JST取得）**
+- CERT/CCが2026-11-13 UTCに公開したCVE-2026-128321。Tight JPEG復元時、接続先が申告するframebuffer矩形の幅が固定長復元バッファに対して適切に検証されず、**悪意あるVNCサーバーへビューアーが接続したとき**、ヒープ領域外への書き込みが起こり得る（CWE-122）。
+- CNAの構造化された **affectedはUltraVNC 1.8.2.4〜1.8.2.6（両端含む）とTightVNC 1.3.10**。これは「UltraVNCの1.8.2.8未満の全版が該当する」という記述より狭い。構造化レコードに挙げられていない別版を安全とも危険とも断定しない。
+- CNA本文が明示する結果は**ビューアーのクラッシュおよび他のメモリー破損影響の可能性**。この原本には任意コード実行の実証、実際の悪用・被害、CVSS値は提示されていない。サーバー側自体の脆弱性と混同しない。
+- CVE ProgramのADPはCERT/CCのVulnerability Note **VU#644655**を一次説明への参照先として記録している。ただし今回、VU本文およびJVN本文の直接取得はしていない。
+
+**未検証事項／公開前の検収**
+- 「UltraVNC 1.8.2.8で修正済み」「現在の最新版は1.8.3.2」「TightVNC 1.3.10はパッチ提供なし」「通信暗号化・認証でも防げない」「幅8257ピクセルで再現」はMuse候補の記述であり、今回確認したCNAレコード自体では独立立証できない。CERT/CC VU#644655とJVN、ベンダーの実際の修正履歴を原文照合するまでは、これらを**今回の公式CNA検証済み**と表記しない。
+- 投稿候補を進めるなら、まず公式CNAのaffected境界と「接続するビューアー側の問題」を確定情報として扱い、**更新先の具体的バージョンは別の公式修正根拠で確認**する。未確認のRCE・攻撃実績・全版への一般化は避ける。公開サイトの編集・SNS送信は本Relayの作業範囲外。MuseのDoc05受信反映は別に確認する。
+
+公開一次資料:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/128xxx/CVE-2026-128321.json （CERT/CC CNA、blob SHA `f306fe2bbd19a0a5dad3f17bde2035480d575f77`）
+- https://www.kb.cert.org/vuls/id/644655 （CVE ADPが参照するCERT/CC原文。今回の直接取得は未実施）
+
