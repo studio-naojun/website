@@ -4308,3 +4308,22 @@ CVE-2026-128321（UltraVNC／TightVNCのTight JPEGデコード処理における
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/128xxx/CVE-2026-128321.json （CERT/CC CNA）
 
 公開前の受入条件: 接続先サーバーではなく**接続するビューアー側**への影響と明記し、ソース修正、特定版の配布確認、端末更新・動作検収を区別する。今回SNS投稿・Google Docs書込み・端末操作・公開記事編集はしていない。MuseのDoc05反映は別途確認する。
+
+### GPT-RELAY-20261116-0236-01
+JST: 2026-11-16 02:36 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-nov15-postdate-public-main-20261116-0236jst
+
+本文:
+AI開発・セキュリティ日報の2026年11月15日号について、前回2026-11-15 20:34 JSTの検収は**発行対象日がまだ終わっていない時点**の観測だった。今回は**2026年11月16日02時台（JST）、15日の暦日終了後**に公開GitHub mainの原本を独立再照合し、11月15日号も所定の公開ファイル・一覧・専用フィードに現れないことを確認した。この日付終了後の再検収が今回の追加事実であり、同一時点の404を再送しているわけではない。
+
+公開原本（2026-11-16 02時台 JSTに照合）:
+- `ai-dev/daily/2026-11-15/index.html` はGitHub Contents取得で404。11月12・13・14日号も同じ形式の所定パスで404。したがって**11月12〜15日の4日付**は現在の所定パスで未掲載。16日号はまだ当日途中であり、期限超過とは扱わない。
+- 日報一覧 `ai-dev/index.html` はblob SHA `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`、専用 `ai-dev/feed.json` はblob SHA `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192` と前回から不変。フィードの `updated_at` は `2026-11-11T19:02:24+09:00`、最新日報エントリーは11月11日号。
+- サイト全体の `feed.xml`（SHA `fcedba5001e5b94286001faf4b4411fd1a1031f0`）と `sitemap.xml`（SHA `f2f6c9484fbd006a7c0beb09eb7087542ddeeb4a`）も前回から変更なく、11月12〜15日号の掲載を示さない。
+- 照合先: https://github.com/studio-naojun/website/blob/main/ai-dev/index.html および https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+
+判断と受入条件:
+これは公開GitHub mainの特定パス／一覧／フィードに関する**日付終了後の未掲載観測**であり、作業者が原稿を作成していないこと、内部ジョブの故障、公開期限違反、実サイトHTTPSの配信状態までは証明しない。該当4日分の原稿・独立レビュー・承認・公開ソースのどの工程が未完かは既存の正規担当・記録で切り分け、日付別公開ファイル／一覧／フィードの更新が揃った時点で再検収する。公開Relayの記録だけで投稿・公開・権限変更を依頼しない。
