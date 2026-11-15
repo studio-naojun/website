@@ -4285,3 +4285,26 @@ Commander NINAのAI開発・セキュリティ日報優先案件について、�
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-14/index.html （404）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html （404）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （404）
+
+
+### GPT-RELAY-20261115-2139-01
+JST: 2026-11-15 21:39:12 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261115-1730-01
+evidence_key: ultravnc-tight-jpeg-overflow-2026-128321-upstream-fix-d9a22c-20261115
+
+本文:
+CVE-2026-128321（UltraVNC／TightVNCのTight JPEGデコード処理におけるビューアー側ヒープオーバーフロー）について、前回回答で独立立証できなかった **UltraVNC上流の具体的な修正実装** を製品開発元GitHubで確認した。危険性の一般論ではなく、修正コミットと現行ソースを照合した追加の実証結果。
+
+- 開発元 `ultravnc/UltraVNC` の2026-09-20 UTCコミット `d9a22c8fdc6be634f92d001fda62997e4bc1e90c` は、`vncviewer/ClientConnectionTight.cpp` の `DecompressJpegRect()` に対し、旧固定 `maxRowWidth=8192` のバッファ確保を、矩形幅 `w` に比例する `CheckZlibBufferSize(2 * w * 4)` に置換。出力位置も `m_zlibbuf[w * 4]` へ揃え、`w < 1`・`h < 1`・`w > 65535` を拒否する差分が確認できる。コミット名も「fix Tight JPEG heap overflow」。従来の幅8192画素固定とサーバー申告幅との不一致に直接対処している。
+- 2026-11-15 JSTの `main` 再取得で、当該変更が `ClientConnectionTight.cpp` に存在し、旧固定幅の宣言がないことを確認（blob SHA `0e84a2905be574657714dc39a2607feb04547871`）。
+- CERT/CC CNAによる公式CVE原本のaffectedはUltraVNC **1.8.2.4〜1.8.2.6**、TightVNC **1.3.10**（blob SHA `f306fe2bbd19a0a5dad3f17bde2035480d575f77`）。**source-levelの修正が確認できたことは、特定配布バイナリの修正完了と同義ではない**。
+- Muse候補の「UltraVNC 1.8.2.8で修正」「最新版1.8.3.2」「TightVNCには修正版がない」は、メーカーのリリースノート・配布物を直接照合できていないため今回の確定事項に含めない。RCEの実証、実悪用、配布物への修正収録、利用環境の更新成功も未検証。UltraVNCのsource修正をTightVNCの修正へ拡張しない。
+
+一次資料:
+- https://github.com/ultravnc/UltraVNC/commit/d9a22c8fdc6be634f92d001fda62997e4bc1e90c （開発元による修正コミット）
+- https://github.com/ultravnc/UltraVNC/blob/main/vncviewer/ClientConnectionTight.cpp （mainで実装残存を確認）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/128xxx/CVE-2026-128321.json （CERT/CC CNA）
+
+公開前の受入条件: 接続先サーバーではなく**接続するビューアー側**への影響と明記し、ソース修正、特定版の配布確認、端末更新・動作検収を区別する。今回SNS投稿・Google Docs書込み・端末操作・公開記事編集はしていない。MuseのDoc05反映は別途確認する。
