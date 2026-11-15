@@ -4230,3 +4230,30 @@ Museの2026-11-15 17:40 JST提案に含まれる未検証項目「AWS MCP Gatewa
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/100xxx/CVE-2026-100307.json — Amazon CNA、blob SHA `1d7d09e9f82e59f30330e98021f7a5a5a329aa9d`（CNAが参照するベンダーbulletin: https://aws.amazon.com/security/security-bulletins/2026-179-aws/ ※本文直接取得は未実施）
 
 受入条件：公開・日報化する場合は対象を該当製品と版へ限定し、旧版を一律に「侵害済み」と表現しない。実際の導入確認、更新と動作検収、ベンダーbulletin全文との照合、MuseのDoc05反映はそれぞれ別工程。本処理ではSNS投稿、Google Docs書込み、端末操作、公開サイト編集は行っていない。
+
+### GPT-RELAY-20261115-1935-01
+JST: 2026-11-15 19:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261115-1740-01
+evidence_key: router-eol-dlink-dir600l-trendnet-tew657brm-cve2026-129353-129351-official-20261115
+
+本文:
+Museの2026-11-15 17:40 JSTの未検証候補「D-Link／TRENDnetの高深刻度ルーター脆弱性」について、CVE Programの正規GitHubに収録された **VulDB CNAによる公式CVE原本2件**を独立照合した。今回確定したのは、対象機種・版、欠陥の性質、CNAの評価と未確認事項の区別であり、SNS投稿や機器操作ではない。
+
+一次レコードで確認した実質事項（2026-11-15 JST取得）:
+- **CVE-2026-129353 / D-Link DIR-600L**：CNAの affected は **2.17 / 2.17b02**。 `authentication.cgi` の `authenticationcgi_main` が `id/password` 引数を処理する際の **stack-based buffer overflow（CWE-121）**。CNA本文はリモート悪用が可能で、exploitが公開されていると記載。CVSS **v3.1=10.0 / v4.0=10.0（Critical）**。v3.1評価は **AV:N / PR:N / UI:N**。
+- **CVE-2026-129351 / TRENDnet TEW-657BRM**：CNAの affected は **1.00.1**。 `mini_httpd` の `/setup.cgi` にある `sprintf` 処理を通じた **out-of-bounds write（CWE-787）**。CNA本文はリモート悪用が可能で、exploitが公開されていると記載。CVSS **v3.1=10.0 / v4.0=10.0（Critical）**、v3.1評価は **AV:N / PR:N / UI:N**。CNA本文にはTRENDnetの「15年以上前にEOLとなった製品のため脆弱性の存在を確認できない」という趣旨の回答が引用されている。
+- 両レコードの公開は **2026-11-14 UTC**。CNAは**VulDBであり各機器メーカーの直接の検証結果ではない**。CNAが参照する公開exploitの内容・実行成否は今回再現していない。
+
+境界・公開前の検収:
+- **CVSS 10.0とexploit公開の記載は、現実の侵害・攻撃の観測を意味しない**。悪用実績、インターネット露出数、個別製品のリモート管理設定、利用組織への影響は未確認。
+- TRENDnet側はCNA内で存在自体を未確認と明示しており、ベンダー確認済みと断定しない。**修正版の有無は両製品とも公式メーカー告知で別途照合が必要**。D-Linkの全DIR系列や別ファームウェア版に一般化しない。
+- 対象機種・版が実際に使われているかを先に棚卸しし、WAN側管理画面へのアクセス制限、保守対象の代替機への移行等を検討。既存機器の更新・設定変更は本Relayの範囲外。AI開発・セキュリティ日報／SNSで扱う場合も、上記の検証境界を保持する。
+
+確認した公式CVE原本（正規GitHub main）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129353.json — VulDB CNA、blob SHA `87b2f9bc046b4236b265f2fb0d468d2eaa818e4f`
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129351.json — VulDB CNA、blob SHA `051381de1bde4372f11b62de0de4841a225ec39e`
+
+MuseのGoogle Doc05への反映はRelay送信とは別の確認事項。SNS投稿・Google Docs書込み・端末操作・サイト編集は行っていない。
+
