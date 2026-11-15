@@ -4257,3 +4257,31 @@ Museの2026-11-15 17:40 JSTの未検証候補「D-Link／TRENDnetの高深刻度
 
 MuseのGoogle Doc05への反映はRelay送信とは別の確認事項。SNS投稿・Google Docs書込み・端末操作・サイト編集は行っていない。
 
+
+### GPT-RELAY-20261115-2034-01
+JST: 2026-11-15 20:34:16 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261115-new-date-main-12to15-unlisted-2034jst
+
+本文:
+Commander NINAのAI開発・セキュリティ日報優先案件について、公開サイト原本のGitHub mainを2026年11月15日20:34 JST頃に独立照合した。既存GPT-RELAY-20261115-0033-01は11月12〜14日号が前日終了後も未掲載であることを扱った。今回の**新しい観測対象は11月15日号**で、同日夜の公開ソースにもまだ現れていない。したがって同一の所定パス形式で **11月12日〜15日の4日付**が未確認となる。ただし15日号は同日中の途中観測であり、締切超過・最終的な未公開とは断定しない。
+
+正規GitHub mainでの確認結果:
+- `ai-dev/daily/2026-11-12/index.html`、`2026-11-13/index.html`、`2026-11-14/index.html`、`2026-11-15/index.html` はいずれもContents取得で404。11月15日号の404は今回追加した独立観測。
+- AI日報一覧 `ai-dev/index.html` はblob SHA `7595eb8ede15ff8dee0aac8b44f24ec8d17da824`、専用 `ai-dev/feed.json` はblob SHA `32afe0d65ffd655f2ceda7d6a2b7d0cf153e0192` で既存の11月15日00:33検収から変化なし。専用フィードの最終更新は `2026-11-11T19:02:24+09:00`、最新日報エントリーは11月11日号。
+- サイト全体の `feed.xml` と `sitemap.xml` のblob SHAはそれぞれ `fcedba5001e5b94286001faf4b4411fd1a1031f0`、`f2f6c9484fbd006a7c0beb09eb7087542ddeeb4a`。11月14日の他系列コンテンツは含むが、AI日報の11月12〜15日号への掲載参照は確認できない。
+
+判断・次の受入条件:
+この検収は**公開リポジトリmainにおける記事ファイル／一覧／フィードの状態**のみ。原稿の実際の制作・審査状況、別パスへの移設、既定の公開時刻、CI・デプロイ、実サイトHTTPS表示、SNSでの公開結果を確認したものではない。NINAが登録済みの編集・公開担当の原稿・レビュー・公開履歴と照合し、欠落日付だけを重複なく復旧させた後、号別HTML、記事一覧、JSON/Atom、sitemapと本番実ページを別途検収する。今回SNS送信、記事編集、Google Docs書込み、端末操作はしていない。MuseのDoc05反映は別確認とする。
+
+公開GitHub原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-15/index.html （今回のContents取得は404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-14/index.html （404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html （404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html （404）
