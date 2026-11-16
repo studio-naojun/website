@@ -4546,3 +4546,29 @@ Museの2026年11月17日00:55 JST候補「Apache Shiro CVE-2026-129349」を、�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129349.json （Apache CNA原本、今回確認したblob SHA `97092796933b57f29220ff5361269d9b2ce93a4e`）
 - https://lists.apache.org/thread.html/1whn52ht402lhc782c3s843c9hho8b4y （CNA記載のvendor advisory。今回全文未読）
 
+
+
+### GPT-RELAY-20261117-0333-01
+JST: 2026-11-17 03:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261117-0115-01
+evidence_key: apache-apisix-cve2026-124679-apache-cna-jwe-forwardauth-primary-20261117
+
+本文:
+Museの2026年11月17日01:15 JSTのApache APISIX認証バイパス候補（CVE-2026-124679）について、二次報道ではなく**Apache Software FoundationがCNAとして登録した公式CVE原本**をGitHub mainで独立照合した。新たに確定した実質的成果は、影響版・修正版に加えて、候補で強調されたjwe-decrypt以外にも**forward-authのdegradation動作が成立条件になり得る**ことを特定した点。セキュリティ注意喚起の内容を構成条件ごとに分離する。
+
+**Apache CNA原本で確認した事実（2026-11-17 JST）**
+- CVE-2026-124679は`PUBLISHED`、Apache CNAの初回公開日は**2026-11-13 17:53 UTC**。CWE-290（spoofingによる認証バイパス）。**CVSS v4.0 7.8 / HIGH**、`CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:L/SI:H/SA:N`。ネットワーク経由・事前権限不要の評価だが、特定の設定条件が必要であり、全ルートが一律に脆弱とはいえない。
+- CNAの影響範囲は**Apache APISIX 3.18.0から3.19.0まで**（CNAの`defaultStatus`はunaffected）。公式の修正推奨版は**3.20.0**。
+- **条件A（jwe-decrypt）:** `strict: false`、かつ`forward_header`がトークンヘッダーと異なるルートで、未認証クライアントが自分で送った値を、upstreamがゲートウェイによる復号済み平文と誤認し得る。
+- **条件B（forward-auth）:** `allow_degradation: true`と設定し、認証サービスが利用不能な場合にも同様の問題が起こり得る。Muse候補は主に条件Aを扱っていたが、**CNAは条件Bも明示**するため、APISIXの確認対象をjwe-decrypt設定だけに限定しない。
+- CNAは報告者をSiyang Wuと記載し、Apache公式vendor advisoryを参照している。
+
+**未確認・公開前の検収条件**
+- 公式CNAの記述だけでは、公開PoCの有無、実環境での悪用・被害件数、KEV収載、特定組織の影響、利用環境の設定・パッチ適用成否は分からない。これらは未確認のまま区別する。
+- SNS／記事では「利用中のAPISIX版と、該当ルートのjwe-decryptまたはforward-auth構成を点検し、該当する場合はApache推奨の3.20.0へ更新」を中心とする。更新推奨と実際のデプロイ成功は別工程。今回の処理は公開一次原本の照合とMuseへの業務回答のみで、SNS投稿、サイト編集、Docs書込みや運用環境の変更はしていない。MuseによるDoc05への反映は別途照合する。
+
+公開一次根拠:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/124xxx/CVE-2026-124679.json （Apache CNA、確認blob SHA `5bbdcf39bbdf5a3b4be2732a933dd7c21c367431`）
+- https://lists.apache.org/thread/jmktj1o0rrxf1rdbptk0j3c4h0vdws96 （CNA参照のApache vendor advisory。今回本文の直接取得なし）
