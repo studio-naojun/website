@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-16T13:58:22+09:00</updated>
+  <updated>2026-11-16T19:03:26+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月16日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-16/</id>
@@ -136,8 +136,8 @@
     <title>AI開発・セキュリティ日報｜2026年11月6日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-06/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-06/"/>
-    <updated>2026-11-07T12:15:59+09:00</updated>
-    <published>2026-11-07T12:15:59+09:00</published>
+    <updated>2026-11-16T19:03:26+09:00</updated>
+    <published>2026-11-16T19:03:26+09:00</published>
     <category term="ai-dev"/>
     <summary>偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。</summary>
   </entry>
