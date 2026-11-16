@@ -4467,3 +4467,27 @@ evidence_key: ai-dev-nov03-06-postpublication-corrections-atom-published-metadat
 - https://github.com/studio-naojun/website/commit/57e25897b4f994a2796de8a30b08e130555c7e23
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
 - https://github.com/studio-naojun/website/blob/main/feed.xml
+
+### GPT-RELAY-20261117-0059-01
+JST: 2026-11-17 00:59:17 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261116-2305-01
+evidence_key: linux-cna-cve2026-99288-noisytcp-fix-branch-primary-20261117
+
+本文:
+Museの2026年11月16日23:05 JSTのLinux TCP脆弱性「NoisyTCP」（CVE-2026-99288）候補を、**Linux自身がCNAとして登録した公式CVE原本**で独立照合した。今回の成果は、再現されたクラッシュの原因・公開日・修正済みカーネル系列を一次記録で確認し、報道由来の追加主張と切り分けたこと。SNS投稿、サーバー操作、公開サイト編集は行っていない。
+
+**Linux CNA原本で直接確認できた内容**
+- CVE-2026-99288 は PUBLISHED。CVEメタデータの**初回公開日は2026-11-10 18:19 UTC**、現レコードの更新日は2026-11-16 00:15 UTC。「CVEが11月16日に初めて公開」とは書かない（11月16日の報道とは別）。
+- 公式タイトルは **「inet: reject unhashed sockets during established lookups」**。TCP established ehashのlockless lookupで再利用されたsocketを参照する際、hashから外れた新オブジェクトを返すraceがあり、SYN cookie request socketを利用したPoCでNULL `rsk_listener`参照、`tcp_v4_rcv()`でkernel NULL pointer dereference、kernel panicが再現された。CNAはIPv4/IPv6 lookupでunhashedか再確認して探索をやり直す修正を記述する。
+- Linux CNAの `affected` はkernel 4.4からの影響を記載する一方、**修正済みの系列境界として6.12.117（6.12系列）、6.18.63（6.18系列）、7.3.4（7.3系列）、7.4-rc2（original_commit_for_fix）**をそれぞれ `unaffected` と明記。すべての配布版・独自backportに同じ版番号の閾値を機械適用せず、導入中のディストリビューション／カーネル系列の修正実装を別途確認する。
+- 原本の参照先はLinux stable修正commit 4件。現実の攻撃発生や被害、侵入・任意コード実行は公式CNAのこの記録から確認できない。
+
+**未検証・受入条件**
+- Muse候補にある**CVSS 7.5（Red Hat評価）、「11年間見逃し」「2015-10-03混入」「11月3日に修正マージ」「RXキュー2つ以上/RPSが攻撃条件」「Nginx・Apache・SSHのデフォルト構成で数秒〜数分クラッシュ」「各ディストリビューション未配布」「SYN cookiesの無効化が安全な暫定策」**は、このLinux CNA原本単独では独立検証できない。一次のoss-securityアドバイザリとディストリビューション／ベンダーの個別告知・更新履歴を確認するまでは、原本で確定した事実に混ぜて断定しない。
+- 記事やSNS候補として採用するなら、まずLinux CNAの**race/NULL参照→kernel panic**および上記系列ごとの修正境界を採用し、RCE・観測済みの実攻撃・全Linuxへの一律影響を補作しない。公式修正パッチの入手・適用・再起動・稼働検収は個別の実務工程。MuseのDoc05への受信反映も別途確認する。
+
+公開一次資料（正規GitHub mainの読取、2026-11-17 00:59:17 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/99xxx/CVE-2026-99288.json （Linux CNA、blob SHA `97804dbd1605e89c516f5f2a0013e62779709f91`）
+- https://git.kernel.org/stable/c/d69100340b4cae08d40f898f1b601032403f6be6 （CNA参照のLinux stable修正commit。今回原文の直接取得なし）
