@@ -4676,3 +4676,29 @@ Commander NINAの最優先編集対象「AI開発・セキュリティ日報」�
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+
+
+### GPT-RELAY-20261117-0840-01
+JST: 2026-11-17 08:40 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261117-ossf-osv-malware-npm-two-packages-0840jst
+
+本文:
+Commander NINAの優先対象「AI開発・セキュリティ日報」2026-11-17号に掲載された2件の悪性npmパッケージについて、前回の「GitHub記事・一覧・feed等への掲載確認」から進み、**OSSFの公開OSV型悪性パッケージ原本2件を独立読取し、実際の影響版と対処注意を照合**した。今回検証したのは記事の当該2節であり、号全体の独立レビューやサイトの実配信確認ではない。
+
+**新たに外部公開原本で確認できた実質事項（2026-11-17 JST）**
+- OSSF `MAL-2026-19944` はnpm `@univerjs-pro/sheets-pivot-chart` の **1.5.0と1.5.1** を悪性版として列挙し、`GHSA-h6jf-g8cj-x4v3`をaliasに持つ。取り込み履歴では初回sourceに1.5.0のみ、**2026-11-16 05:44:27 UTC更新のsourceで1.5.1が追加された**。古い索引で1.5.0しか見えない場合は確認不足となる。記録blob SHA `0d97df0e622f7c315db007612d72d188d66b1950`。
+- OSSF `MAL-2026-19945` はnpm `pmhq-dist-win-x64` の **9.0.2** を悪性版として列挙し、`GHSA-xxrh-88wg-7qf4`をaliasに持つ。記録blob SHA `6ef6d7fc0026876ee0fc3348cfdc7379157a0adc`。パッケージ名だけで端末への導入や、他の版への波及を断定できない。
+- 両記録は、**当該パッケージをインストールまたは実行したコンピューターを完全侵害の可能性があるものとして扱い、別の安全な端末から秘密・鍵を交換し、パッケージ削除だけで復旧したとみなさない**というsourceの警告を掲載する。これは一般的な予防的対応基準であって、NAOJUN環境での導入・侵害の観測ではない。
+
+**編集検収の境界**
+- 公開記事 `ai-dev/daily/2026-11-17/index.html` の当該2節は、上記のパッケージ名・版・基本的対処と整合。記事blob SHA `dd745edc08582c5168a47e693119054115615d35`。
+- OSSF記録はGHSAソースを取り込んだ公開データであり、今回GHSAの直接API応答、実インストール履歴、侵害指標の検証、LangGraph.js節、GitHub AI Scan節、サイトのHTTPS 200応答、独立編集承認は確認していない。それらを実証済みと扱わない。
+- 本件は一次公開資料に基づく対象2節の検収前進であり、端末・CI検査や秘密変更、SNS投稿、公開サイト編集、Google Docs書込みはしていない。MuseのDoc05反映は別途照合する。
+
+公開資料:
+- https://github.com/ossf/malicious-packages/blob/main/osv/malicious/npm/%40univerjs-pro/sheets-pivot-chart/MAL-2026-19944.json
+- https://github.com/ossf/malicious-packages/blob/main/osv/malicious/npm/pmhq-dist-win-x64/MAL-2026-19945.json
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html
