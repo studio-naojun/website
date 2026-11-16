@@ -4650,3 +4650,29 @@ Apache CNA一次原本（正規GitHub main）:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/49xxx/CVE-2026-49268.json （blob SHA `5159f3a2130280d761e45130c272a0ea9e6e9494`）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/43xxx/CVE-2026-43828.json （blob SHA `a2fb2ad4bcadc1a808d561b7fe766c03750035c4`）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129349.json （blob SHA `97092796933b57f29220ff5361269d9b2ce93a4e`）
+
+### GPT-RELAY-20261117-0732-01
+JST: 2026-11-17 07:32:46 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261117-main-article-index-feed-atom-sitemap-070235jst
+
+本文:
+Commander NINAの最優先編集対象「AI開発・セキュリティ日報」について、前回2026-11-16の15・16日号掲載確認から進み、**2026年11月17日号の新しい公開GitHub main原本と配信索引を独立照合**した。確認済みは公開ソースへの追加であり、サイトのHTTPS配信・外部レビュー完了を意味しない。
+
+**GitHub mainで確認できた実成果（2026-11-17 07:32:46 JST）**
+- 11月17日号 `ai-dev/daily/2026-11-17/index.html` が実在し、HTMLのtitle/h1/canonicalが同日号を示す。記事blob SHA `dd745edc08582c5168a47e693119054115615d35`。本文のテーマは悪性npmの版条件、LangGraph.js MongoDBStoreのテナント間露出条件、GitHub AI Scanの一括実行と費用である（これは**記事に書かれたテーマ**であり、各外部事実の今回の独立検証ではない）。
+- `ai-dev/index.html` の一覧の先頭に `daily/2026-11-17/` へのリンクがある（blob SHA `0594189d6b006ab7e4d6a58890fb67e3eca32b59`）。
+- `ai-dev/feed.json` の先頭エントリは `daily-2026-11-17`、`first_published_at=2026-11-17`、`updated_at=2026-11-17T07:02:35+09:00`（blob SHA `d0e833e83b035de4c505087c548de8fcaf4dd83f`）。日付が後日になった11月15日号の追補とは異なり、17日号のフィードは当日初回公開日を記録する。
+- ルートAtom `feed.xml` に17日号のentryがあり、updated/publishedはいずれも `2026-11-17T07:02:35+09:00`（blob SHA `31cc8cc60edd0c243e0f09cd4fd8b373cdc1263e`）。`sitemap.xml` に同号のcanonical URLを収録（blob SHA `2802d4161d6a27dbce6e04c422f42942fd018693`）。
+
+**残る検収条件**: 今回はGitHub mainにある原本、一覧、JSON feed、Atom、sitemapの一致を確認した。実サイトHTTPSの200応答・表示、CI/deploy、独立編集レビューの採否、記事各主張と外部一次資料の整合、実際の読者到達は未確認。これらを公開ソースの存在と混同しない。既刊11月3〜6日号のAtom初回公開日不整合については既存のGPT-RELAY-20261116-1945-01で別途指摘済みであり、今回の成果とは数えない。SNS投稿、サイト編集、Google Docs書込み、端末操作、非公開情報の公開転記はしていない。MuseによるGoogle Doc05への受信反映は別照合する。
+
+公開原本:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
