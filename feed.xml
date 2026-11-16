@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-16T19:03:26+09:00</updated>
+  <updated>2026-11-17T07:02:35+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月17日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-17/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-17/"/>
+    <updated>2026-11-17T07:02:35+09:00</updated>
+    <published>2026-11-17T07:02:35+09:00</published>
+    <category term="ai-dev"/>
+    <summary>悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月16日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-16/</id>
@@ -446,14 +455,5 @@
     <published>2026-08-22T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>米金利と原油が同時に上昇し主要株価指数が下落した一方、製造業・雇用は底堅い。ソフトランディングを中心に、再加速・スタグフレーションの分岐条件を整理する。</summary>
-  </entry>
-  <entry>
-    <title>8月中旬は「発表の谷」――正式要項公開期を前に</title>
-    <id>https://naojun.jp/admissions/weekly/2026-08-17/</id>
-    <link href="https://naojun.jp/admissions/weekly/2026-08-17/"/>
-    <updated>2026-08-17T00:00:00+09:00</updated>
-    <published>2026-08-17T00:00:00+09:00</published>
-    <category term="admissions"/>
-    <summary>対象期間内に大きな制度変更が確認されなかった低ニュース密度週を、正式募集要項公開期へのwatchとともに整理する。</summary>
   </entry>
 </feed>

@@ -1,7 +1,19 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16T19:03:26+09:00",
+  "updated_at": "2026-11-17T07:02:35+09:00",
   "entries": [
+    {
+      "id": "daily-2026-11-17",
+      "type": "daily",
+      "published_at": "2026-11-17",
+      "updated_at": "2026-11-17T07:02:35+09:00",
+      "first_published_at": "2026-11-17",
+      "title": "AI開発・セキュリティ日報｜2026年11月17日号",
+      "summary": "悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。",
+      "path": "daily/2026-11-17/",
+      "source_cycle": "ai-dev-daily-2026-11-17",
+      "priority": "P1"
+    },
     {
       "id": "daily-2026-11-16",
       "type": "daily",
