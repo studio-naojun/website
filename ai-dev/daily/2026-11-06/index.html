@@ -16,7 +16,7 @@
   <meta property="og:description" content="偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-06/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月6日号","description":"偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。","datePublished":"2026-11-07","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-06/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-07T12:15:59+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月6日号","description":"偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。","datePublished":"2026-11-07","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-06/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-16T19:03:26+09:00"}</script>
 <!-- naojun-discovery:end -->
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
@@ -32,39 +32,40 @@
   <header class="ai-dev-article-hero">
 <!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[11.06]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
-      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-06 / 2026-11-07T12:15:59+09:00</span></div>
+      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-06 / 2026-11-16T19:03:26+09:00</span></div>
 <h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年11月6日号</h1>
       <p class="ai-dev-lead">偽TeamViewer MCP連携PyPI 2種、npm itc-actors-api、WhatsApp forkの悪性挙動と安全な確認を整理。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-07 12:15 JST（初回実公開は2026-11-07）</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E. ／ 原稿確認：2026-11-07 12:15 JST ／ 公式再確認・訂正：2026-11-16 19時台JST ／ 初回公開：2026-11-07</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全6章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">偽MCP連携PyPI 2種：正規TeamViewerの侵害ではない（P1）</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">npm itc-actors-apiのMalware告知（条件付きP1）</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">WhatsApp向け非公式fork oktz-baileys（P2）</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">確認範囲と限界</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全6章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全6章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">条件付きP1｜偽TeamViewer MCP連携PyPI 2種：正規製品の侵害ではない</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">条件付きP1｜npm itc-actors-api：Advisoryの全版Malware警告</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P2｜非公式WhatsApp fork oktz-baileys：Channel自動Follow</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">調査範囲・未確認事項</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全6章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">6項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">偽MCP連携PyPI 2種：正規TeamViewerの侵害ではない（P1）</a></li><li><a href="#reading-section-2">npm itc-actors-apiのMalware告知（条件付きP1）</a></li><li><a href="#reading-section-3">WhatsApp向け非公式fork oktz-baileys（P2）</a></li><li><a href="#reading-section-4">確認範囲と限界</a></li><li><a href="#reading-section-5">この日報の更新履歴</a></li><li><a href="#reading-section-6">出典・更新履歴</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">6項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">条件付きP1｜偽TeamViewer MCP連携PyPI 2種：正規製品の侵害ではない</a></li><li><a href="#reading-section-2">条件付きP1｜npm itc-actors-api：Advisoryの全版Malware警告</a></li><li><a href="#reading-section-3">P2｜非公式WhatsApp fork oktz-baileys：Channel自動Follow</a></li><li><a href="#reading-section-4">調査範囲・未確認事項</a></li><li><a href="#reading-section-5">更新履歴</a></li><li><a href="#reading-section-6">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
-    <p><strong>対象日：2026-11-06 ／ 調査確認：2026-11-07 12:15 JST。</strong> 掲載の脆弱性・悪性パッケージは、名称・版・実行条件に該当する場合の警告です。今回の号は遅延復旧であり初回公開日が対象日とは異なります。</p>
-<h2 id="reading-section-1">偽MCP連携PyPI 2種：正規TeamViewerの侵害ではない（P1）</h2>
-<p>GitHub Advisory Databaseは<code>teamviewer-mcp-server</code> <strong>0.0.1</strong>を11月5日21:32 JST、<code>mcp-teamviewer</code> <strong>0.0.1</strong>を11月6日00:31 JSTにMalwareとして掲載しました。<a href="https://github.com/advisories/GHSA-v98v-h2h9-7j3h" target="_blank" rel="noopener noreferrer">前者</a>と<a href="https://github.com/advisories/GHSA-w2mh-fxh2-j425" target="_blank" rel="noopener noreferrer">後者</a>のOpenSSF解析は、悪意ある活動に関連するドメインへの通信を理由としています。</p>
-<p><strong>条件・限界：</strong> 上記と同名・同版のPyPIパッケージを実際に導入した場合のリスクです。公式TeamViewer製品や、別の正規MCP実装まで侵害されたと示す根拠ではありません。通信の事実だけから、実際に秘密情報が盗まれた件数は断定できません。</p>
-<p><strong>対応：</strong> 使用環境のlockfile・パッケージ一覧・CI取得履歴を、疑わしいパッケージを再実行せず確認。該当時は隔離、実行権限や資格情報の到達範囲を調査し、必要に応じ別端末から失効・再発行。正規配布元と依存名を検証したクリーンな環境に戻して通信を再確認します。Advisoryに修正版の記載はありません。</p>
-<h2 id="reading-section-2">npm <code>itc-actors-api</code>のMalware告知（条件付きP1）</h2>
-<p>11月6日08:59 JST公表の<a href="https://github.com/advisories/GHSA-w2fv-53fr-6qwg" target="_blank" rel="noopener noreferrer">GHSA-w2fv-53fr-6qwg</a>はnpm <code>itc-actors-api</code>を全版Malwareとして扱い、インストール済み端末は全面侵害を想定して別端末で資格情報を変更し、クリーン再構築するよう強く警告しています。一方、このAdvisory本文には悪性処理の具体的なコード経路や、現実の侵害件数はありません。</p>
-<p><strong>実務：</strong> 該当パッケージの導入事実が確認できる場合に警告の重さに応じた隔離・鍵のローテーション・再構築を行います。名前が似た別パッケージを利用しているだけ、または導入自体がない場合に端末侵害と決めつけません。</p>
-<h2 id="reading-section-3">WhatsApp向け非公式fork <code>oktz-baileys</code>（P2）</h2>
-<p>11月6日09:31 JST公開の<a href="https://github.com/advisories/GHSA-wmf5-rghr-gxcf" target="_blank" rel="noopener noreferrer">GHSA-wmf5-rghr-gxcf</a>は、<code>oktz-baileys</code>の配布版<strong>9.1.6</strong>を静的に調べ、接続後に認証済みWhatsAppアカウントが指定Channelを自動Followする挙動を記録しています。2026年10月16日の静的解析に基づく所見であり、今回の記録から資格情報の流出や全利用者の実害は推認できません。</p>
-<p><strong>確認・対処：</strong> 利用していないなら操作不要。該当forkを導入している場合は使用停止・正規依存への移行を検討し、WhatsAppのChannel購読状態とアカウント接続権限を確認します。ロールバックは既知の安全な依存のみ使用し、不審な版へ戻さないでください。</p>
-<h2 id="reading-section-4">確認範囲と限界</h2>
-<p>掲載した一次資料を確認しました。すべてのベンダー、CISA KEV全件、実被害件数、個別の導入環境を網羅調査したものではありません。重大事象の不存在や、特定端末の感染を断定しません。</p>
-<h2 id="reading-section-5">この日報の更新履歴</h2>
-<p>対象日：2026-11-06。初回実公開：2026-11-07（欠号の事後復旧）。一次資料の公表日と公開日を区別しています。</p>
-    <aside class="source-note">
-      <h2 id="reading-section-6">出典・更新履歴</h2>
-      <p>対象日：2026-11-06。初回実公開日：2026-11-07。遅延号は過去日付に遡って公開したとは表示しません。一次出典は本文の各節に掲載しています。</p>
-      <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
-    </aside>
-  </article>
+<p><strong>対象日：2026年11月6日（JST 00:00〜23:59）／初回実公開：2026年11月7日／一次資料再確認：2026年11月16日19時台JST。</strong></p>
+<p>公式GitHub Advisory DatabaseのMalware指定4件です。<strong>P0</strong>は実悪用など直ちに防護が必要な確認済み事案、<strong>P1</strong>は導入等の条件に該当すると重大な対応が必要、<strong>P2</strong>は限定的な運用上の注意を意味します。Malware分類だけで特定端末の侵害を認定しません。</p>
+<h2 id="reading-section-1">条件付きP1｜偽TeamViewer MCP連携PyPI 2種：正規製品の侵害ではない</h2>
+<p><a href="https://github.com/advisories/GHSA-v98v-h2h9-7j3h" target="_blank" rel="noopener noreferrer">GHSA-v98v-h2h9-7j3h</a> のPyPI <code>teamviewer-mcp-server</code> <strong>=0.0.1</strong>は11月5日21:32 JST公表で、本号より前の情報です。11月5日号に同項目は掲載されていないため、<strong>前日分の補遺</strong>として収録します。<a href="https://github.com/advisories/GHSA-w2mh-fxh2-j425" target="_blank" rel="noopener noreferrer">GHSA-w2mh-fxh2-j425</a> の別名 <code>mcp-teamviewer</code> <strong>=0.0.1</strong>は11月6日00:31 JST公表。どちらもOpenSSFが悪意ある活動に関連するドメインへの通信を検出したためMalware指定しました。正規TeamViewerの侵害を裏付ける資料ではありません。</p>
+<p><strong>版・対象条件：</strong> GHSAのaffected範囲は各<code>= 0.0.1</code>で、修正版は提示されていません。名前・版が完全一致するものを実際に取得・実行した場合の調査です。他の版や他社の正規実装の安全性はこの記録から判定しません。GHSA本文は具体的な通信先ドメインを公表しておらず、IOCを作りません。</p>
+<p><strong>安全な確認・復旧：</strong> requirements/lockfile、仮想・global・pipx環境、<strong>MCPクライアントのサーバー設定、uvx/pipx起動履歴とキャッシュ</strong>、CI・通信ログを読み取りで確認し、疑わしい依存を再実行しません。該当パッケージの実行や権限到達を確認した場合は隔離し、到達可能だった認証情報を安全な別端末から失効・再発行した上で、信頼できる依存のみでクリーン再構築し、再混入を確認します。実際の漏えい件数は未確認。悪性版へロールバックしません。</p>
+<h2 id="reading-section-2">条件付きP1｜npm <code>itc-actors-api</code>：Advisoryの全版Malware警告</h2>
+<p><a href="https://github.com/advisories/GHSA-w2fv-53fr-6qwg" target="_blank" rel="noopener noreferrer">GHSA-w2fv-53fr-6qwg</a> は11月6日08:59 JST公表、影響範囲は<strong><code>&gt;= 0</code>（掲載上は全版）</strong>で修正版の記載はありません。公式Advisoryは導入端末を全面侵害とみなして、別端末で資格情報をローテーションしクリーン再構築する慎重な対応を推奨しています。ただし同Advisoryに具体的なコード経路や被害件数の裏付けはありません。</p>
+<p><strong>適用条件・安全な対応：</strong> npm lockfile、依存グラフ、CI・コンテナの記録から同名パッケージの導入・実行を調査。該当すれば公式の強い注意に従い隔離、到達可能な秘密の失効・再発行、信頼できる依存からの再構築と再混入点検を実施します。名前が似た別製品まで侵害とみなさず、疑わしい依存を動かして調査しません。</p>
+<h2 id="reading-section-3">P2｜非公式WhatsApp fork <code>oktz-baileys</code>：Channel自動Follow</h2>
+<p><a href="https://github.com/advisories/GHSA-wmf5-rghr-gxcf" target="_blank" rel="noopener noreferrer">GHSA-wmf5-rghr-gxcf</a> は11月6日09:31 JSTに公表。affected欄は <strong><code>&gt; 0</code></strong>ですが、具体的な悪性処理が記録されたのは<strong>2026年10月16日の9.1.6 tarball静的解析</strong>です。認証済みWhatsAppアカウントの接続時に特定Channelへ自動Followする処理を記録。他版まで同じコードを実証したわけではなく、資格情報流出・実被害数も未確認です。</p>
+<p><strong>安全な確認・対応：</strong> 導入の有無と版を読み取りで確認し、該当時はforkを停止して信頼できる実装へ切替。Channel購読・リンク済みデバイスを正規WhatsApp設定から点検し、不審な連携を解除。forkのセッション・認証状態は機密として扱い、必要なバックアップと再ペアリングを確保して旧状態を無効化してください。調査なしに動作中セッションを一律削除しません。</p>
+<h2 id="reading-section-4">調査範囲・未確認事項</h2>
+<p>上記4件のGHSAを2026年11月16日19時台JSTにGitHub公式APIで再照合。対象日の当時に網羅調査を行ったとは主張しません。CISA KEV/NVD全件、全ベンダー、端末実版、実被害は未確認です。P0を本号に掲載していないことは新規P0の不存在を証明しません。</p>
+<h2 id="reading-section-5">更新履歴</h2>
+<ul><li><strong>2026年11月7日：</strong> 対象日11月6日号を遅延初回公開。分単位の初回公開時刻は補作しません。</li><li><strong>2026年11月16日19時台JST：</strong> 既存Claude Opus 5.5レビューのF1〜F6を一次資料と照合。前日分補遺、affected範囲、MCP実行経路、条件付き対応、WhatsAppセッション、初公開と訂正履歴を修正。</li></ul>
+<aside class="source-note">
+<h2 id="reading-section-6">一次資料</h2>
+<ul><li><a href="https://github.com/advisories/GHSA-v98v-h2h9-7j3h" target="_blank" rel="noopener noreferrer">GHSA-v98v-h2h9-7j3h</a></li><li><a href="https://github.com/advisories/GHSA-w2mh-fxh2-j425" target="_blank" rel="noopener noreferrer">GHSA-w2mh-fxh2-j425</a></li><li><a href="https://github.com/advisories/GHSA-w2fv-53fr-6qwg" target="_blank" rel="noopener noreferrer">GHSA-w2fv-53fr-6qwg</a></li><li><a href="https://github.com/advisories/GHSA-wmf5-rghr-gxcf" target="_blank" rel="noopener noreferrer">GHSA-wmf5-rghr-gxcf</a></li></ul>
+<p>各項目の影響と対処は確認済みの公式情報と明示した条件に基づきます。最新の公式情報を優先してください。</p>
+</aside>
+</article>
 <!-- studio:reading:tail -->
 <footer class="reading-footer"><p class="reading-end">読み終えたら、もうひとつ。</p><a class="reading-entry" href="/ai-dev/daily/2026-11-05/"><time datetime="2026-11-05">2026-11-05</time><h3>AI開発・セキュリティ日報｜2026年11月5日号</h3><span class="entry-arrow" aria-hidden="true">↗</span></a><a class="arrow-link" href="/ai-dev/">AI開発・セキュリティ日報一覧へ <span aria-hidden="true">↗</span></a></footer></div>
 <!-- studio:reading:end -->
