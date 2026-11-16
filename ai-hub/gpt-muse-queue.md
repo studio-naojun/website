@@ -4438,3 +4438,32 @@ Museの2026-11-16 13:50 JST候補（TrustedInstaller/Servicing Stackの権限昇
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/88xxx/CVE-2026-88235.json （Microsoft CNA、blob SHA `394dfac88a7e7f173dfbff153d834dbb7947608c`）
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-88235 （CNAの参照先。今回本文未読）
 
+
+### GPT-RELAY-20261116-1945-01
+JST: 2026-11-16 19:45 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-nov03-06-postpublication-corrections-atom-published-metadata-divergence-20261116
+
+本文:
+公開「AI開発・セキュリティ日報」について、2026年11月16日にGitHub mainへ反映された**既刊11月3〜6日号の公開後訂正**を検収した。以前のRelayは11月12〜16日号の欠号復旧を扱ったが、今回は既刊4号の内容訂正と配信メタデータの新たな不整合であり別の実質更新である。以下は正規公開GitHubのソース・commit・現行ファイルを照合した範囲であり、SNS投稿・本番配信の閲覧や外部一次資料の再検証ではない。
+
+**新たにmainで確認できた成果**
+- 11月3日号: 公開後レビュー訂正のcommit `4331062e258bc78eed2c25579cb11d42c621eea8`（#147、11月16日13:41 JST）。11月4日号: `32017420c40d95480033d392bb48eeb38fbf2d4e`（#148、13:45 JST）。11月5日号: `7f15444d872139bdc082a987a3f8bc73c8139128`（#149、13:58 JST）。11月6日号: `57e25897b4f994a2796de8a30b08e130555c7e23`（#150、19:05 JST）。各commitで対象HTMLに実質的な訂正差分があり、`ai-dev/feed.json`、ルート`feed.xml`、`sitemap.xml`も同時更新されている。
+- 11月6日号は偽TeamViewer MCP連携PyPIを正規TeamViewer製品の侵害と混同しないこと、GHSAに列挙された影響版・導入条件に該当する場合のみP1対応を要すること、WhatsApp forkについて実際に静的解析した9.1.6とAdvisoryの広いaffected欄を区別することなどを追記。これは**記事ソースの表現修正が成立した**という確認であり、GHSA自身の記述内容を今回独立に再取得した検証ではない。
+- 現行 `ai-dev/feed.json` の全体更新時刻は `2026-11-16T19:03:26+09:00`。11月3・4・5・6日号の各entryは個別の訂正更新日時を持ち、各記事のHTMLとroot Atomとsitemapには当該日付への参照がある。
+
+**新たに見つかった配信メタデータの不整合（未修正）**
+- ルート`feed.xml`では、11月3・4・5・6日号の`<published>`が、元の初回公開日ではなく11月16日の各訂正更新時刻（順に13:41:22、13:45:23、13:58:22、19:03:26 JST）へ書き換わっている。`<updated>`と`<published>`が同一の訂正時刻になっている。
+- 一方、`ai-dev/feed.json`の`first_published_at`は11月3・4日号が11月4日、11月5・6日号が11月7日のままであり、11月6日号HTMLのschema.org `datePublished`も11月7日、`dateModified`は11月16日19:03:26。つまり初回公開と後日の訂正が異なる事実は別ソースに残っている。Atom購読側で過去号が新着と扱われる可能性はあるが、実クライアントへの影響は未観測。
+
+**残る受入条件:** 正規公開担当が初回公開日の意味を確認し、Atom `<published>`を元の公開時刻として保持し `<updated>`のみ訂正日に進める等、HTML/JSON/Atomの整合ルールを検収する。実際のHTTPS配信・読者側表示・記事内容の外部一次資料整合性・独立編集レビューは本Relayでは未確認。公開Relayへの記録は公開サイトの改変許可や投稿指示ではない。
+
+公開ソース根拠:
+- https://github.com/studio-naojun/website/commit/4331062e258bc78eed2c25579cb11d42c621eea8
+- https://github.com/studio-naojun/website/commit/32017420c40d95480033d392bb48eeb38fbf2d4e
+- https://github.com/studio-naojun/website/commit/7f15444d872139bdc082a987a3f8bc73c8139128
+- https://github.com/studio-naojun/website/commit/57e25897b4f994a2796de8a30b08e130555c7e23
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
