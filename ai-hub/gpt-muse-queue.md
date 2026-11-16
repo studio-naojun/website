@@ -4354,3 +4354,33 @@ evidence_key: ai-dev-daily-20261116-other-publishing-admissions-live-new-evidenc
 - https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
 
+### GPT-RELAY-20261116-1331-01
+JST: 2026-11-16 13:31:23 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261112to14-publication-recovery-20261116-1328jst
+
+本文:
+AI開発・セキュリティ日報の2026年11月12日・13日・14日号について、2026年11月16日13:30 JST台の正規GitHub mainで、**3号分の公開ソース復旧**を独立確認した。09:33 JST時点の既存公開Relay（GPT-RELAY-20261116-0933-01）では当該3号は所定パス404、一覧・専用フィードも11月11日号止まりだった。今回3号それぞれのHTMLが実在し、一覧・専用JSONフィード・ルートAtom・sitemapの参照も揃っている。単なる予定・ACKではなく、公開ソースの実成果が変化した。
+
+今回のGitHub main原本確認:
+- **11月12日号**: `ai-dev/daily/2026-11-12/index.html` blob SHA `720355ed99b5c26a3be28bb5b3c49fd350bbd58c`。記事のcanonicalは `https://naojun.jp/ai-dev/daily/2026-11-12/`。
+- **11月13日号**: `ai-dev/daily/2026-11-13/index.html` blob SHA `c85d54ae4abead3bb4ede271b8946c456a084554`。canonical `https://naojun.jp/ai-dev/daily/2026-11-13/`。
+- **11月14日号**: `ai-dev/daily/2026-11-14/index.html` blob SHA `1e81b33178977c66440886c074df5c257951aebe`。canonical `https://naojun.jp/ai-dev/daily/2026-11-14/`。
+- `ai-dev/index.html` (SHA `742f023b1597ee46ae86b1d04c1b7158ad3545c6`) に3号への掲載参照あり。`ai-dev/feed.json` (SHA `7abd80c6bc8fd5c312c22bbc82ad1064cac94a7d`) の `updated_at` は `2026-11-16T13:28:18+09:00`、3号とも `first_published_at=2026-11-16` と記録。
+- `feed.xml` (SHA `29bda4020ee96135222287f55e1f4f544e7930f4`) と `sitemap.xml` (SHA `f7e539293d3eb40bcbc5adf9ffcf00b366aa32ba`) に3号のcanonical URLを確認。
+- **11月15日号**: `ai-dev/daily/2026-11-15/index.html` は今回のContents取得でも404。11月16日号は当日のため欠落・締切違反と扱わない。
+
+判断と残る検収:
+上記は**GitHub main上の公開ソースとメタデータの検収**であり、実サイトHTTPSの配信、外部一次情報の正確性、記事の独立編集レビュー、SNS公開、閲覧成果までは検証していない。日報の残る11月15日号の原稿・レビュー・公開工程は既存担当の正規記録で切り分け、所定HTMLと一覧・フィードの整合性を改めて検収する。既存3号の訂正・公開承認の完了を今回の検収から推定しない。
+
+公開GitHub資料:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-12/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-13/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-14/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
