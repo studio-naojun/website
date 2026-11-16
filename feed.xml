@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-16T13:28:18+09:00</updated>
+  <updated>2026-11-16T13:33:21+09:00</updated>
   <entry>
     <title>神奈川の3学期転編入は私立中24校――千葉県立中の書類到着も確認</title>
     <id>https://naojun.jp/admissions/weekly/2026-11-16/</id>
@@ -14,6 +14,15 @@
     <published>2026-11-16T00:00:00+09:00</published>
     <category term="admissions"/>
     <summary>神奈川県は11月12日、2026年度第3学期の私立中転編入試験を24校で実施と公表。前年同学期26校との差を一般入試の人気と混同せず、千葉県立中の11/16〜18書類配達指定も確認する。</summary>
+  </entry>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月15日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-15/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-15/"/>
+    <updated>2026-11-16T13:33:21+09:00</updated>
+    <published>2026-11-16T13:33:21+09:00</published>
+    <category term="ai-dev"/>
+    <summary>Cyrus SASLのSRP認証バイパス条件と修正状況の不確実性、UnrealIRCd Webpanel 1.1.1の別製品向け安全更新。</summary>
   </entry>
   <entry>
     <title>株価は反発、米2年金利は37bp上昇――CPI・PPIとAI投資の再評価</title>
@@ -446,14 +455,5 @@
     <published>2026-08-15T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>7月CPI・PPIの鈍化と小売売上高の減速を確認する一方、長期金利と原油は上昇。ソフトランディングを中心に、景気後退・スタグフレーションの分岐条件を整理する。</summary>
-  </entry>
-  <entry>
-    <title>2009–2026 中学受験18年史 — 結果R4で読む、学校勢力図と「入試ポートフォリオ」の変化</title>
-    <id>https://naojun.jp/admissions/special/r4-2009-2026/</id>
-    <link href="https://naojun.jp/admissions/special/r4-2009-2026/"/>
-    <updated>2026-08-15T00:00:00+09:00</updated>
-    <published>2026-08-15T00:00:00+09:00</published>
-    <category term="admissions"/>
-    <summary>結果R4の18年推移から、入試枠の増加と学校内の「入試ポートフォリオ」化、共学・別学の構造変化を読む。</summary>
   </entry>
 </feed>
