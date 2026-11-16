@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-16T13:00:15+09:00</updated>
+  <updated>2026-11-16T13:06:58+09:00</updated>
   <entry>
     <title>神奈川の3学期転編入は私立中24校――千葉県立中の書類到着も確認</title>
     <id>https://naojun.jp/admissions/weekly/2026-11-16/</id>
@@ -136,8 +136,8 @@
     <title>AI開発・セキュリティ日報｜2026年11月2日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-02/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-02/"/>
-    <updated>2026-11-04T08:44:05+09:00</updated>
-    <published>2026-11-04T08:44:05+09:00</published>
+    <updated>2026-11-16T13:06:58+09:00</updated>
+    <published>2026-11-16T13:06:58+09:00</published>
     <category term="ai-dev"/>
     <summary>悪性PyPI・npmパッケージの正確な影響版と、該当環境での安全な確認・秘密失効・クリーン再構築を整理。</summary>
   </entry>
