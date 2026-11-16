@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-16T13:06:58+09:00</updated>
+  <updated>2026-11-16T13:15:28+09:00</updated>
   <entry>
     <title>神奈川の3学期転編入は私立中24校――千葉県立中の書類到着も確認</title>
     <id>https://naojun.jp/admissions/weekly/2026-11-16/</id>
@@ -23,6 +23,15 @@
     <published>2026-11-14T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>米CPI前月比+0.4%、PPI前年比+6.5%、米2年国債利回り+37bpに対し、S&amp;P 500は週間+2.5%。物価・資本コストとAI投資の回収力を分けて検証する。</summary>
+  </entry>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月13日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-13/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-13/"/>
+    <updated>2026-11-16T13:15:28+09:00</updated>
+    <published>2026-11-16T13:15:28+09:00</published>
+    <category term="ai-dev"/>
+    <summary>Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月12日号</title>
