@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-16T13:33:21+09:00</updated>
+  <updated>2026-11-16T13:37:02+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月16日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-16/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-16/"/>
+    <updated>2026-11-16T13:37:02+09:00</updated>
+    <published>2026-11-16T13:37:02+09:00</published>
+    <category term="ai-dev"/>
+    <summary>Copilot 3モデルの11月16日廃止予定、GitHub Actionsの11月17日深夜JST brownout、Cloudflare service token検出追加。</summary>
+  </entry>
   <entry>
     <title>神奈川の3学期転編入は私立中24校――千葉県立中の書類到着も確認</title>
     <id>https://naojun.jp/admissions/weekly/2026-11-16/</id>
@@ -446,14 +455,5 @@
     <published>2026-08-17T00:00:00+09:00</published>
     <category term="admissions"/>
     <summary>対象期間内に大きな制度変更が確認されなかった低ニュース密度週を、正式募集要項公開期へのwatchとともに整理する。</summary>
-  </entry>
-  <entry>
-    <title>インフレは鈍化、消費は減速。それでも長期金利は上がった</title>
-    <id>https://naojun.jp/investment/weekly/2026-08-15/</id>
-    <link href="https://naojun.jp/investment/weekly/2026-08-15/"/>
-    <updated>2026-08-15T00:00:00+09:00</updated>
-    <published>2026-08-15T00:00:00+09:00</published>
-    <category term="investment"/>
-    <summary>7月CPI・PPIの鈍化と小売売上高の減速を確認する一方、長期金利と原油は上昇。ソフトランディングを中心に、景気後退・スタグフレーションの分岐条件を整理する。</summary>
   </entry>
 </feed>
