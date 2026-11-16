@@ -1,7 +1,19 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16T13:15:28+09:00",
+  "updated_at": "2026-11-16T13:28:18+09:00",
   "entries": [
+    {
+      "id": "daily-2026-11-14",
+      "type": "daily",
+      "published_at": "2026-11-14",
+      "updated_at": "2026-11-16T13:28:18+09:00",
+      "first_published_at": "2026-11-16",
+      "title": "AI開発・セキュリティ日報｜2026年11月14日号",
+      "summary": "CISA KEVに追加されたUnrealIRCdとCheck Pointの実悪用確認済み脆弱性。対象条件と公式対処・確認方法。",
+      "path": "daily/2026-11-14/",
+      "source_cycle": "ai-dev-daily-2026-11-14",
+      "priority": "P0"
+    },
     {
       "id": "daily-2026-11-13",
       "type": "daily",
