@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16T13:45:23+09:00",
+  "updated_at": "2026-11-16T13:58:22+09:00",
   "entries": [
     {
       "id": "daily-2026-11-16",
@@ -138,7 +138,7 @@
       "id": "daily-2026-11-05",
       "type": "daily",
       "published_at": "2026-11-05",
-      "updated_at": "2026-11-07T12:12:52+09:00",
+      "updated_at": "2026-11-16T13:58:22+09:00",
       "first_published_at": "2026-11-07",
       "title": "AI開発・セキュリティ日報｜2026年11月5日号",
       "summary": "PyPI dbt-adapterの悪性版、GitHub Secret scanningの検出変更、CodeQL 2.27.4の運用上の影響を整理。",
