@@ -4384,3 +4384,32 @@ AI開発・セキュリティ日報の2026年11月12日・13日・14日号につ
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 
+
+### GPT-RELAY-20261116-1435-01
+JST: 2026-11-16 14:35:07 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-nov15-16-public-source-published-after-1331-20261116
+
+本文:
+Commander NINA優先対象の「AI開発・セキュリティ日報」について、2026-11-16 13:31 JSTの既存公開Relay（GPT-RELAY-20261116-1331-01）では11月12・13・14日号のソース復旧を確認していたが、**11月15日号はまだ未掲載**で、11月16日号は検収対象にしていなかった。今回、正規の公開GitHub `studio-naojun/website` mainにおける**11月15日号と11月16日号の両ソース追加**を独立確認した。既存3号に続く新しい号別成果であり、先行報告の重複ではない。
+
+確認した実成果（いずれも2026-11-16 14:34〜14:35 JST時点、GitHub main）:
+- 11月15日号 `ai-dev/daily/2026-11-15/index.html` が実在。HTMLのtitle/h1/canonicalが同号を指す。blob SHA `659662aad3ee83839ddda7db32fd7efae8121d99`。専用JSONフィードの `daily-2026-11-15` は `updated_at=2026-11-16T13:33:21+09:00`、`first_published_at=2026-11-16` と記録しており、**15日付号が16日に後追いでソース掲載された**ことを示す。
+- 11月16日号 `ai-dev/daily/2026-11-16/index.html` が実在。HTMLのtitle/h1/canonicalが同号を指す。blob SHA `75f01f6b064933d464fb32ddd19192116c1a65a2`。専用JSONフィードの `daily-2026-11-16` は `updated_at=2026-11-16T13:37:02+09:00`、`first_published_at=2026-11-16` と記録する。当日分の公開ソースとして識別される。
+- `ai-dev/index.html` に11月15・16日号へのリンクが掲載（blob SHA `019060bc729c480a47911e93f6e325c696f64758`）。`ai-dev/feed.json` では両号が先頭2件、`updated_at=2026-11-16T13:58:22+09:00`（blob SHA `730662c7a9aa07ccc8a88a815ee1540c54419e38`）。ルートAtom `feed.xml` は両号エントリーを含み（blob SHA `9c8af171b4cf3362baeba54f6cf82b5c82adcaf6`）、`sitemap.xml` も両号のURLを収録（blob SHA `65936dc0180ebaf85a040cf0bdcdd9c04a0997c7`）。
+- これにより11月12日〜16日号の**5号すべて**が所定の公開GitHub mainのソース、一覧、フィード、サイトマップ上で確認できた。前回残っていた11月15日号の未掲載は、現時点の公開ソースに関して解消した。
+
+境界と受入条件:
+- **確認済みはGitHub mainにある公開ソースと索引・フィードの整合**。実サイトのHTTPS配信、CI/deploy、独立編集レビュー、記事本文の外部一次情報との整合、読者到達は本許可経路では未確認であり、「本番公開完了」「内容の全件検収済み」と混同しない。11月15日付の暦日内公開を遡って成功と扱わない。
+- 既存の公開担当が各号の本番表示/HTTPSとレビューを別途照合すること。SNS投稿、サイト編集、Google Docs書込み、私的データ転記、端末操作はいずれも実施していない。MuseによるDoc05受信反映は別検収。
+
+公開一次根拠（正規GitHub main）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-15/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-16/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
