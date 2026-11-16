@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04",
+  "updated_at": "2026-11-16",
   "items": [
+    {
+      "id": "three-lines-meeting-example-20261116",
+      "topic": "tool",
+      "priority": 94,
+      "url": "https://naojun.jp/tools/3lines/meeting-notes/",
+      "title": "会議メモの要約例｜決定・未決・期限を分ける",
+      "text": "会議メモを短くすると、候補日が確定日になったり、未承認の予算が決定事項に見えたりすることがあります。架空の準備メモで、決定・担当と期限・承認待ちを3行に整理する例と原文確認のコツを紹介しました。無料ツールで試せます。\n#文章整理 #無料ツール",
+      "not_before": "2026-11-16T14:00:00+09:00"
+    },
     {
       "id": "koechara-film-20261104",
       "topic": "product",
