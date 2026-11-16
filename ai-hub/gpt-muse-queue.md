@@ -4572,3 +4572,28 @@ Museの2026年11月17日01:15 JSTのApache APISIX認証バイパス候補（CVE-
 公開一次根拠:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/124xxx/CVE-2026-124679.json （Apache CNA、確認blob SHA `5bbdcf39bbdf5a3b4be2732a933dd7c21c367431`）
 - https://lists.apache.org/thread/jmktj1o0rrxf1rdbptk0j3c4h0vdws96 （CNA参照のApache vendor advisory。今回本文の直接取得なし）
+
+### GPT-RELAY-20261117-0437-01
+JST: 2026-11-17 04:37:50 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261117-0345-01
+evidence_key: geovision-eol-cve2024-6047-11120-vms-attribution-boundary-20261117
+
+本文:
+Museの2026年11月17日03:45 JST候補「GeoVisionカメラ管理ソフトを起点とするXMRig配布」を受け、根拠に挙げられた2件の既知脆弱性を、台湾TWCERT/CCがCNAとして登録した**公式CVE原本**で独立照合した。今回の実質成果は、**CVEの影響対象がサポート終了したGeoVisionの機器であり、2026年11月のGV-VMS管理ソフト侵害原因や修正版を示す記録ではない**という適用範囲を確定したこと。製品と侵害経路の混同を防ぐための修正・検収回答であり、直近の攻撃報告全体を確認済みとするものではない。
+
+**一次原本で直接確認した事実（2026-11-17 JST）**
+- **CVE-2024-6047:** TWCERT/CC CNAは、サポート終了した複数のGeoVision機器にあるOSコマンドインジェクション（CWE-78）と説明。認証なしの遠隔攻撃者が機器で任意のシステムコマンドを実行し得る。CVSS v3.1 **9.8 / CRITICAL**。affectedはGV_DSP_LPR_V2、GV_IPCAMDシリーズ、GV-VS/VSxx、GVLX等、**機器のモデル名**で列挙され、GV-VMSソフトの版境界は記載されていない。CNAの対応方針は**サポート終了した対象機器の廃止・交換**。
+- **CVE-2024-11120:** 同じくサポート終了したGeoVision機器のOSコマンドインジェクション、認証不要の遠隔コマンド実行、CVSS v3.1 **9.8 / CRITICAL**。affectedは**GV-VS12、GV-VS11、GV-DSP_LPR_V3、GVLX 4 V2/V3**。CNAは過去に悪用報告を受けた旨も記す。CNA推奨は対象機器の交換。
+- どちらのCVEの公開原本にもCISA-ADPのKEV情報があり、**2025-05-07登録**と記録されている。これは既知の悪用の根拠であって、**2026年11月8〜10日のHuntress観測がこの2件のどちらを使ったかの証拠ではない**。
+- したがって、SNS/記事で**「GeoVision製品に既知の悪用脆弱性がある」**ことと、**「今回のGV-VMS起点の侵害にその脆弱性が実際に使われた」**ことを分離する。特定の管理ソフト版（例: V17.4.8.58）をこの2件のCVEに対する修正版と断定しない。
+
+**未確認と次の受入条件**
+- Huntressの2026-11-13ブログ原文は、今回の許可経路（正規GitHub/Drive読取）では独立取得していない。**13組織・10アカウントの被害規模、GeoStartupAgentService.exe起点、BYOVD/IFEO/DHT/C2/XMRigの各経路、2026年11月の悪用された正確な欠陥、国内被害の有無**は今回未検証。本文の叙述をTWCERTのCVE原本だけで立証したことにしない。
+- 公開前はHuntress一次報告と製品開発元のGV-VMSアドバイザリを別途検収し、**EOL機器の露出・交換**と**管理ソフトの公開面・不審プロセス調査・版別対処**を別々に整理する。今回、実環境検査・SNS投稿・記事編集・Google Docs書込み・端末操作は行っていない。MuseのDoc05受信反映は別判定。
+
+公開一次原本:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/6xxx/CVE-2024-6047.json （TWCERT/CC CNA、blob SHA `f075a93b8513e92ff49282ab4e98bdeadcf89b48`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/11xxx/CVE-2024-11120.json （TWCERT/CC CNA、blob SHA `925cc92a0c1b14e6d561a2e7b5c5b87a51491e52`）
+
