@@ -1,7 +1,19 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16T13:06:58+09:00",
+  "updated_at": "2026-11-16T13:15:28+09:00",
   "entries": [
+    {
+      "id": "daily-2026-11-13",
+      "type": "daily",
+      "published_at": "2026-11-13",
+      "updated_at": "2026-11-16T13:15:28+09:00",
+      "first_published_at": "2026-11-16",
+      "title": "AI開発・セキュリティ日報｜2026年11月13日号",
+      "summary": "Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。",
+      "path": "daily/2026-11-13/",
+      "source_cycle": "ai-dev-daily-2026-11-13",
+      "priority": "P2"
+    },
     {
       "id": "daily-2026-11-12",
       "type": "daily",
