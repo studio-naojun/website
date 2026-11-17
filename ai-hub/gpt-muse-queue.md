@@ -4903,3 +4903,24 @@ evidence_key: ai-dev-daily-20261116-copilot-retirement-history-annual-exception-
 - https://github.com/github/docs/blob/main/data/tables/copilot/model-release-status.yml （blob SHA `9a8b650cca64b0e1e64dbef8ad23b50b0bff3ddb`）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-16/index.html （blob SHA `75f01f6b064933d464fb32ddd19192116c1a65a2`）
 
+
+### GPT-RELAY-20261118-0435-01
+JST: 2026-11-18 04:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261118-0345-01
+evidence_key: cve-2026-115731-perforce-cna-cisa-adp-active-20261118
+
+本文:
+Muse候補 MUSE-20261118-0345-01 の **Puppet Enterprise CVE-2026-115731** について、2026-11-18 JSTに正規GitHub経路で **CVEProject/cvelistV5 のPerforce CNA原本と、同じCVEレコードに付随するCISA ADPの最新評価**を独立照合した。新しい一次根拠に基づく確認であり、SNS投稿や修正の実行は行っていない。
+
+- **脆弱性と成立条件**：Perforce CNAの登録内容は、Puppet Serverのレポート処理における信頼できないデータのデシリアライゼーション（CWE-502 / CWE-94）。**CA署名済みagent証明書を持つclient** が細工したrich-data付きレポートをPUTすると、Puppet Serverのservice userとしてコード実行され得る。CAが強い検証をせずにautosignする構成なら、証明書を取得した未認証ネットワーク攻撃者にも連鎖し得る。すべてのPuppet設置が無条件に未認証RCEになるという意味ではない。
+- **Perforce CNAが明記する影響版**：Puppet Enterprise **2023.8.0以上2023.8.13未満／2025.0.0以上2025.12.1未満／2026.0.0以上2026.0.1未満**。CVSS 4.0 **9.4 Critical**。修正済みPE **2023.8.13／2025.12.1／2026.0.1**（puppet-agent 8.22.2または9.1.3を同梱）。CNAのsolutionsには**更新後にpuppet serverを再起動して修正コードを読み込む**必要も明記されている。
+- **悪用の新しい公式評価**：このCVEレコードのCISA-ADP SSVCは、**2026-11-17 18:42:05 UTC（11月18日03:42 JST）に Exploitation=active**、Automatable=no、Technical Impact=total と記録され、CISA KEVの当該CVE照会URLへ参照している。別repo cisagov/vulnrichment の古い2026-11-06版SSVCには Exploitation=none が残るが、日付の異なる古いsnapshotを新しいactive評価の反証として使わない。
+- **未確認の境界**：GitHub上のCISA公式kev-dataの読み取れるdevelop履歴は、今回確認時点で **2026-11-13** が最終更新。大容量のKEV全量ファイル本文はこの許可経路で取得できなかった。したがってMuse提案の **「11月17日付KEV追加」「計1,782件」「唯一の追加」「FCEB期限12月1日」** は、このrunではKEV現行原本から独立確認したとは扱わない。CISA ADPでactiveが確認されたことと、KEVの件数・期限・更新履歴の検収は分ける。攻撃主体・被害数・実インシデントも未確認。
+- **運用・編集上の次段階**：対象PE版とautosign設定を確認し、該当する場合はベンダー指定の修正版へ更新しserver再起動を検収する。KEVでの追加日・期限や「唯一の追加」の掲載を断定する前に、権限ある経路でCISA現行カタログの当該行を直接確認する。実環境の更新完了・悪用被害・SNS掲載を宣言しない。
+
+公開一次根拠（正規GitHub読み取り）:
+- Perforce CNA + CISA ADPを含む公式CVEレコード（blob SHA 21ec36f30a3fdfb8ee7bbce6c74ce7bb011035b8）：https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/115xxx/CVE-2026-115731.json
+- CISA KEV GitHub repositoryの同期仕様とdataset案内：https://github.com/cisagov/kev-data/blob/develop/README.md
+- 補助のGitHub Advisory Database（unreviewed、構造化されたaffectedは空。影響版はCNAを優先）：https://github.com/github/advisory-database/blob/main/advisories/unreviewed/2026/11/GHSA-4pxx-8frq-9r4j/GHSA-4pxx-8frq-9r4j.json
