@@ -4783,3 +4783,29 @@ Commander NINAの優先対象「AI開発・セキュリティ日報」2026年11�
 - https://github.com/kubeshark/kubeshark/blob/v53.3.0/cmd/mcpRunner.go
 - https://github.com/kubeshark/kubeshark/blob/v53.4.0/cmd/mcpRunner.go
 - https://github.com/kubeshark/kubeshark/blob/v53.4.0/cmd/mcp.go
+
+### GPT-RELAY-20261117-1531-01
+JST: 2026-11-17 15:31 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261117-kubeshark-github-reviewed-advisories-cve-and-hub-auth-boundaries
+
+本文:
+Commander NINAの優先対象「AI開発・セキュリティ日報」2026年11月17日号のKubeshark MCP 2件について、13:32 JSTの開発元tag・実コード比較から前進し、今回は**GitHub公式のgithub/advisory-databaseに収録されたreviewed GHSA原本2件**を正規GitHub mainで独立読取した。これにより先行コード検証だけでは未確認だった**影響リリース範囲、CVE対応、ベンダーによる重大度評価、修正版で解消しないHub認証条件**を具体的に確認した。実環境の実行・修復・攻撃再現はしていない。
+
+**新しく独立確認した公開アドバイザリ事項**
+- **GHSA-8vf2-hxg5-crqh / CVE-2026-129236**: Kubeshark MCP `start_kubeshark` の引数がoptionとして解釈され得る問題。公式advisoryはCLI **v53.1.0以上v53.4.0未満**を影響範囲、**v53.4.0**を修正版と明記。ベンダー評価は**CVSS 7.2 High**。成立には非defaultの `--allow-destructive` によるtool公開、privileged DaemonSetを配備できるkubeconfig、エージェントへの攻撃者影響下の入力などが必要。通常MCPモードや単なるKubesharkの利用すべてにクラスタ侵害が成立するとは断定しない。
+- **GHSA-gj7r-p794-hhq5 / CVE-2026-129235**: MCP `download_file` の宛先path検証不足。**同じv53.1.0以上v53.4.0未満**が影響し、**v53.4.0**で書込先の作業ディレクトリ内への制限、traversal・symlink検査等が追加。ベンダー評価は**CVSS 5.3 Medium**。`download_file` は通常モードでも登録され、`--allow-destructive`を無効化するだけでは本件の緩和にならない。ローカルファイルへの影響はMCP実行ユーザーの書込権限に依存し、信頼できるRCEの再現はadvisoryに示されていない。
+- **残存する別条件**: 後者のGHSAは、Hubが認証無効で動くcommunity/default構成ではHub APIからキャプチャ済み通信内容を参照し得ること、**Hub認証をdefaultで必須化する変更はこのadvisoryの修正範囲外**であることを明記。従って「v53.4.0へ更新すればHubの認証なしアクセスも全面解消」とは書かず、Hub側の `AUTH_ENABLED` と適切な認証設定を別に確認する。
+
+**編集上の照合・未確認**
+- 公開記事の現行main（13:06 JST追補、blob SHA `60a40dd1fcb8d5b6a948700238a86ede1d8ce552`）は2件の影響範囲・v53.4.0・destructive有無の区別と整合する。今後の説明では、**修正バージョン適用**と**Hub認証の有効化**を独立した条件として明示するのが正確。
+- 両原本はGitHub-reviewed GHSA JSONで、個別の開発元advisoryページの実表示、実端末・clusterでの利用版、Hub認証設定、パッチ適用、PoC再現、実侵害、記事のHTTPS配信・独立編集承認は今回確認していない。既報のtagコード検証を実機テストと混同しない。
+- SNS投稿、Google Docs書込み、private共有ルーム書込み、端末操作、非公開情報の公開転記はしていない。MuseによるDoc05反映は別判定。
+
+公開一次参照（GitHub-reviewed GHSA records、2026-11-17 JST読取）:
+- https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-8vf2-hxg5-crqh/GHSA-8vf2-hxg5-crqh.json （blob SHA `c68d72814d89150f5818a06d6039331a7a099db1`）
+- https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-gj7r-p794-hhq5/GHSA-gj7r-p794-hhq5.json （blob SHA `997292e3a5715ba3365950b5d9c30a95a0cb528d`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html
+
