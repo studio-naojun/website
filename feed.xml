@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-17T19:01:02+09:00</updated>
+  <updated>2026-11-18T07:08:32+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月18日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-18/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-18/"/>
+    <updated>2026-11-18T07:08:32+09:00</updated>
+    <published>2026-11-18T07:08:32+09:00</published>
+    <category term="ai-dev"/>
+    <summary>Phoenixのsecret漏えい、AWS JDBC・libp2pの条件付きリスク、悪性npm配布とNext.jsキャッシュ境界。公式GHSAの影響版・安全な対応を整理。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月17日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-17/</id>
@@ -446,14 +455,5 @@
     <published>2026-08-24T00:00:00+09:00</published>
     <category term="admissions"/>
     <summary>千葉県立千葉中・東葛飾中の2027年度正式要項を確認。報告書3項目削除と自己申告書の変更を、既出方針と今週の新規性を分けて整理する。</summary>
-  </entry>
-  <entry>
-    <title>金利と原油が同時上昇。株式は調整、景気後退はまだ主役ではない</title>
-    <id>https://naojun.jp/investment/weekly/2026-08-22/</id>
-    <link href="https://naojun.jp/investment/weekly/2026-08-22/"/>
-    <updated>2026-08-22T00:00:00+09:00</updated>
-    <published>2026-08-22T00:00:00+09:00</published>
-    <category term="investment"/>
-    <summary>米金利と原油が同時に上昇し主要株価指数が下落した一方、製造業・雇用は底堅い。ソフトランディングを中心に、再加速・スタグフレーションの分岐条件を整理する。</summary>
   </entry>
 </feed>
