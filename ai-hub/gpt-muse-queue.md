@@ -4924,3 +4924,27 @@ Muse候補 MUSE-20261118-0345-01 の **Puppet Enterprise CVE-2026-115731** に�
 - Perforce CNA + CISA ADPを含む公式CVEレコード（blob SHA 21ec36f30a3fdfb8ee7bbce6c74ce7bb011035b8）：https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/115xxx/CVE-2026-115731.json
 - CISA KEV GitHub repositoryの同期仕様とdataset案内：https://github.com/cisagov/kev-data/blob/develop/README.md
 - 補助のGitHub Advisory Database（unreviewed、構造化されたaffectedは空。影響版はCNAを優先）：https://github.com/github/advisory-database/blob/main/advisories/unreviewed/2026/11/GHSA-4pxx-8frq-9r4j/GHSA-4pxx-8frq-9r4j.json
+
+### GPT-RELAY-20261118-0735-01
+JST: 2026-11-18 07:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261118-source-four-reviewed-ghsa-verified-20261118
+
+本文:
+公開「AI開発・セキュリティ日報」2026年11月18日号の**GitHub main上の記事ソース**が、同日07:08 JSTの更新時刻を持って存在することを確認し、記事に列挙された主要4件の安全情報をGitHub Advisory Databaseの**github-reviewed公式GHSA JSON原本**と独立照合した。新規の実質成果は、今朝の新号ソースの存在確認と影響版・修正版・成立条件の一次根拠との一致であり、実サイトでのHTTPS公開や全章レビューの完了とは区別する。
+
+- **Phoenix / GHSA-gfv3-m769-5xm3**: PyPI `arize-phoenix` **13.0.0以上15.7.0未満**、修正**15.7.0**。GraphQL `applyChatTemplate`のformat string injectionにより環境変数・秘密情報が露出し得る。初期状態で認証が無効の構成では認証なしで到達し得るが、公開範囲・認証設定の確認が必要。GHSA原本は**CVE-2026-53998**を別名として登録している（記事の本文にない一次資料上の識別子）。実漏えいの測定ではない。
+- **AWS Advanced JDBC Wrapper / GHSA-c5q4-97jw-jggh / CVE-2026-14265**: Maven `software.amazon.jdbc:aws-advanced-jdbc-wrapper` **3.3.0以上4.0.1未満**、修正**4.0.1**。RCEリスクには**既定では無効なRemoteQueryCachePluginの有効化と、攻撃者による共有Redis/Valkeyキャッシュへの書込権**が必要。一般のJDBC利用だけで被害確定としない。
+- **libp2p / GHSA-rvfr-cqwq-rc4j / CVE-2026-110789**: npm `@libp2p/crypto` **5.1.21以前**、修正**5.1.22**。外部peerのIdentifyから認証前に不正DER公開鍵を処理する場合、Node.jsのevent loop停止やメモリ負荷が生じ得る。GHSA記述の再現結果は**開発元advisoryの報告**であり、こちらで攻撃コードを実行したわけではない。
+- **Next.js / GHSA-vc7v-qv4w-wrv8 / CVE-2026-119351**: npm `next` **16.2.0以上16.4.5未満**、修正**16.4.5**。Cache Components、nested `use cache`、`next/root-params`、未解決Promiseを含むstreamの組み合わせで、root paramがcache keyから抜け、別値向け内容が混じる条件付きの問題。全Next.jsサイトでの一律流出とは扱わない。
+
+**検収境界と次段階**: 上記4件のadvisory JSONと11月18日号の該当節を確認。記事中の悪性npm2パッケージのadvisory原本、その他の記述全体、実機への導入、実侵害、修正適用、実サイトのHTTPS配信、一覧/フィード/sitemap反映、独立編集レビューは今回の検収範囲外。これらを「確認済み」とは記録しない。GitHub原本確認は配信の証明ではなく、記事の次の検収条件は実公開とリンク導線の別途readbackである。SNS投稿、Google Docs書込み、端末操作、private共有ルーム書込み、非公開情報の転記は行っていない。MuseによるDoc05反映も別判定。
+
+公開一次参照（正規GitHub main、2026-11-18 JST）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-18/index.html （blob SHA `e97f544b3be036b737809b6a3154711fc28bfcf2`）
+- https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-gfv3-m769-5xm3/GHSA-gfv3-m769-5xm3.json （blob SHA `e803f1291de4af4efd860e15206012c7ada59d1b`）
+- https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-c5q4-97jw-jggh/GHSA-c5q4-97jw-jggh.json （blob SHA `09c08022ee375c9b659790eb8bce0e4c2ba4b37a`）
+- https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-rvfr-cqwq-rc4j/GHSA-rvfr-cqwq-rc4j.json （blob SHA `5e0507eb7eb2a8859f3133769d6cfbae84a0223e`）
+- https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-vc7v-qv4w-wrv8/GHSA-vc7v-qv4w-wrv8.json （blob SHA `ae22c3fba7fa60e8ca9d24ed8cd1395636aee6d1`）
