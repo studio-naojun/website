@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。">
+  <meta name="description" content="悪性npmとLangGraph.jsの安全情報に加え、Kubeshark MCPの条件付き権限侵害リスクと修正版v53.4.0を13時追補。">
   <title>AI開発・セキュリティ日報｜2026年11月17日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
@@ -13,10 +13,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月17日号">
-  <meta property="og:description" content="悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。">
+  <meta property="og:description" content="悪性npmとLangGraph.jsの安全情報に加え、Kubeshark MCPの条件付き権限侵害リスクと修正版v53.4.0を13時追補。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-17/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月17日号","description":"悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。","datePublished":"2026-11-17","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-17/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-17T07:02:35+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月17日号","description":"悪性npmとLangGraph.jsの安全情報に加え、Kubeshark MCPの条件付き権限侵害リスクと修正版v53.4.0を13時追補。","datePublished":"2026-11-17","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-17/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-17T13:06:50+09:00"}</script>
 <!-- naojun-discovery:end -->
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
@@ -34,17 +34,17 @@
     <div class="container">
       <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-17 / 2026-11-17T07:01:42+09:00</span></div>
 <h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年11月17日号</h1>
-      <p class="ai-dev-lead">悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-17 07:01 JST</p>
+      <p class="ai-dev-lead">悪性npmとLangGraph.jsの安全情報に加え、Kubeshark MCPの条件付き権限侵害リスクと修正版v53.4.0を13時追補。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-17 07:01 JST／13時追補：2026-11-17T13:06 JST</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全6章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P1｜npm @univerjs-pro/sheets-pivot-chartの2版にMalware警告</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P1｜npm pmhq-dist-win-x64 9.0.2にMalware警告</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P1（条件付き）｜LangGraph.js MongoDBStoreの問い合わせ式注入</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">P2｜GitHub AI Scanは最大20リポジトリを一括起動可能に</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全6章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全7章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P1｜npm @univerjs-pro/sheets-pivot-chartの2版にMalware警告</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P1｜npm pmhq-dist-win-x64 9.0.2にMalware警告</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P1（条件付き）｜LangGraph.js MongoDBStoreの問い合わせ式注入</span></a></li><li><a href="#reading-section-7"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">P1（条件付き）｜Kubeshark MCPの引数注入とクラスタ侵害リスク</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全7章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">6項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P1｜npm @univerjs-pro/sheets-pivot-chartの2版にMalware警告</a></li><li><a href="#reading-section-2">P1｜npm pmhq-dist-win-x64 9.0.2にMalware警告</a></li><li><a href="#reading-section-3">P1（条件付き）｜LangGraph.js MongoDBStoreの問い合わせ式注入</a></li><li><a href="#reading-section-4">P2｜GitHub AI Scanは最大20リポジトリを一括起動可能に</a></li><li><a href="#reading-section-5">既報・未確認事項・更新履歴</a></li><li><a href="#reading-section-6">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">7項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P1｜npm @univerjs-pro/sheets-pivot-chartの2版にMalware警告</a></li><li><a href="#reading-section-2">P1｜npm pmhq-dist-win-x64 9.0.2にMalware警告</a></li><li><a href="#reading-section-3">P1（条件付き）｜LangGraph.js MongoDBStoreの問い合わせ式注入</a></li><li><a href="#reading-section-7">P1（条件付き）｜Kubeshark MCPの引数注入とクラスタ侵害リスク</a></li><li><a href="#reading-section-4">P2｜GitHub AI Scanは最大20リポジトリを一括起動可能に</a></li><li><a href="#reading-section-5">既報・未確認事項・更新履歴</a></li><li><a href="#reading-section-6">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
-    <p><strong>対象日：2026年11月17日／一次情報確認：2026-11-17 07:01 JST。</strong> 悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。 重大度は利用条件で判定し、端末・アカウントへの影響を見出しだけで推測しません。</p>
+    <p><strong>対象日：2026年11月17日／一次情報確認：2026-11-17 07:01 JST。</strong> 悪性npmとLangGraph.jsの安全情報に加え、Kubeshark MCPの条件付き権限侵害リスクと修正版v53.4.0を13時追補。 重大度は利用条件で判定し、端末・アカウントへの影響を見出しだけで推測しません。</p>
 <h2 id="reading-section-1">P1｜npm @univerjs-pro/sheets-pivot-chartの2版にMalware警告</h2>
 <p><strong>GitHubの一次情報：</strong> <a href="https://github.com/advisories/GHSA-h6jf-g8cj-x4v3" target="_blank" rel="noopener noreferrer">GHSA-h6jf-g8cj-x4v3</a>はnpm <strong>@univerjs-pro/sheets-pivot-chart</strong> の <strong>1.5.0と1.5.1</strong> をMalwareとして登録。2026年11月16日00:14 UTCに公開、同日05:44 UTCに更新されました。修正版は提示されていません。古い検索結果には1.5.0だけが表示されますが、11月17日確認の公式REST APIには2つの版が掲載されています。</p>
 <p><strong>影響する条件：</strong> 指定配布名・版がlockfile、推移的依存、実際のインストール、CIコンテナにある場合は調査対象です。類似の名前を見た、またはアラートを読んだだけで侵害を証明できません。ただしAdvisoryはインストール・実行した機器を侵害された可能性のあるものとして扱い、すべての秘密・鍵の交換を求めています。個別の侵入経路や実被害は未確認です。</p>
@@ -56,16 +56,24 @@
 <p><strong>公式保守元のAdvisory：</strong> 2026年11月16日13:34:22 UTC公開の<a href="https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-p874-xggm-73rv" target="_blank" rel="noopener noreferrer">GHSA-p874-xggm-73rv</a>はnpm <strong>@langchain/langgraph-checkpoint-mongodb</strong> の <strong>1.3.0以上1.5.1未満</strong> を影響範囲とし、<strong>1.5.1</strong> で修正済みとします。GHSA severityはModerateですが、共有テナント間の情報境界に影響する条件が成立した場合に限り本誌では運用上のP1とします。</p>
 <p><strong>必要条件・影響：</strong> 呼び出し元が制御する値を適切に検証せずMongoDBStoreのstore操作へ渡し、共有・マルチテナントstoreで実行すると、値がMongoDB問い合わせ式として解釈され、異なるnamespaceのデータが取得され得ます。DBでserver-side JavaScriptが有効ならその実行可能性にも公式が言及します。単一テナントや入力が適切に制限された利用まで被害と断定しません。実悪用の確認は本Advisoryにありません。</p>
 <p><strong>修正・検収：</strong> 依存版と入力経路を読み取り確認して<strong>1.5.1以降に更新</strong>し、代表的なテナント境界テスト・デプロイと依存ロックを確認。更新できない場合はstore操作前のユーザー制御値をプレーンな文字列・数値に制限。テスト用データだけで確認し、実データの越境試行や脆弱版へのrollbackを行いません。</p>
+<h2 id="reading-section-7">P1（条件付き）｜Kubeshark MCPの引数注入とクラスタ侵害リスク</h2>
+<p><strong>公表・修正版：</strong> Kubeshark公式<a href="https://github.com/kubeshark/kubeshark/security/advisories/GHSA-8vf2-hxg5-crqh" target="_blank" rel="noopener noreferrer">GHSA-8vf2-hxg5-crqh</a>は、2026年11月16日22:17:32 UTC（17日07:17 JST）にMCPツール§start_kubeshark§の引数注入を公表。Kubeshark CLI <strong>v53.1.0以上v53.4.0未満</strong>が対象、<strong>v53.4.0</strong>で修正済み。§pod_regex§がoptionとして解釈され、Helm設定の上書きにつながる問題です。</p>
+<p><strong>成立条件・実際の影響：</strong> §kubeshark mcp --allow-destructive§を明示的に使用し、そのホストがprivileged DaemonSetを配備できるKubernetes認証情報を持ち、エージェントが攻撃者の影響を受けた内容をMCP引数に取り込む場合、意図しないイメージ配備からクラスタ管理者権限に達し得ます。通常モードでは§start_kubeshark§は登録されません。重大度Highの公式評価ですが、全利用者への侵害や実悪用を示すものではありません。</p>
+<p><strong>修正と安全な確認：</strong> CLIの起動引数、版、kubeconfig権限を読み取りで点検し、<strong>v53.4.0以降</strong>へ更新。必要がなければ§--allow-destructive§を有効にせず、未信頼のエージェント入力を遮断し、MCPホストの権限を最小化します。更新後にCLI版と許可ツール・正規配備履歴を確認。攻撃用引数や悪性イメージの再現は行わず、脆弱版への巻戻しを避けます。</p>
+<p><strong>同時公表の別件（条件付きP2）：</strong> 公式<a href="https://github.com/kubeshark/kubeshark/security/advisories/GHSA-gj7r-p794-hhq5" target="_blank" rel="noopener noreferrer">GHSA-gj7r-p794-hhq5</a>は2026年11月16日22:18:58 UTCに、同じ版範囲のMCP§download_file§に書込先制限の不備があると公表しました。<strong>こちらは通常のMCP起動でも使用可能</strong>で、実行ユーザーが書けるローカルファイルや、Hub認証が無効な構成でのトラフィック情報が対象です。<strong>v53.4.0</strong>に更新し、更新前は低権限ユーザーと隔離した作業ディレクトリ、Hub認証・保存先制限を確認します。確認：2026-11-17 13:06 JST。両件とも実被害・実悪用は未確認です。</p>
 <h2 id="reading-section-4">P2｜GitHub AI Scanは最大20リポジトリを一括起動可能に</h2>
 <p><strong>GitHubの<a href="https://github.blog/changelog/2026-11-16-bulk-start-ai-scan-for-repositories/" target="_blank" rel="noopener noreferrer">11月16日公式Changelog</a></strong> によると、組織のcode scanning画面などから最大20件のrepositoryでAI Scanを一括開始できるようになりました。default branchを対象とするpublic previewで、結果は既存code scanning backlogに入ります。GitHub.comとGitHub Enterprise Cloud with data residencyが対象で、Copilotライセンスは必須ではありません。</p>
 <p><strong>費用・条件：</strong> GitHubの<a href="https://github.blog/changelog/2026-10-28-ai-scan-for-repositories-in-public-preview/" target="_blank" rel="noopener noreferrer">10月28日の公式提供・課金説明</a>では、AI Scanは<strong>Code Security AI credits</strong>を消費し、個人public repositoryでも請求先が生じ得ます。組織のprivate/internal repositoryではCode SecurityまたはAdvanced Security等の利用条件があります。追加費用の承認なしにscanを起動・機能を有効化せず、既存設定と過去のalertsを読み取り確認するにとどめます。</p>
 <h2 id="reading-section-5">既報・未確認事項・更新履歴</h2>
 <p>11月16日号ではCopilotのモデル提供変更および11月17日01時～03時JST予定のGitHub Actions public repo向けbrownoutを案内済みです。個々のworkflowのrunを照合していないため、brownoutが実際に起きたとは断定しません。GHSAのMalware警告は端末の侵害測定ではありません。CISA KEV/NVD全件と各端末・CIの実インストール・被害の有無は網羅的に確認しておらず、新規P0の不存在は断定しません。</p>
+<p><strong>13時追補：</strong> 2026-11-17T13:06 JST。公式GHSA 2件の影響条件とv53.4.0修正版を追記。11月17日の初回公開日を変更せず、未確認の悪用や端末への影響を断定しません。</p>
 <p><strong>調査・初版編集：</strong> 2026-11-17 07:01 JST。11月16日公表のGHSA三件とGitHub公式Changelog二件を一次資料として確認。対象日は11月17日、初回実公開日はLIVE検収後に記録し、以後訂正は同一URLに追記します。</p>
 
     <aside class="source-note">
       <h2 id="reading-section-6">一次資料</h2>
       <ul>
+<li><a href="https://github.com/kubeshark/kubeshark/security/advisories/GHSA-8vf2-hxg5-crqh" target="_blank" rel="noopener noreferrer">Kubeshark start_kubeshark GHSA-8vf2-hxg5-crqh</a></li>
+<li><a href="https://github.com/kubeshark/kubeshark/security/advisories/GHSA-gj7r-p794-hhq5" target="_blank" rel="noopener noreferrer">Kubeshark download_file GHSA-gj7r-p794-hhq5</a></li>
 <li><a href="https://github.com/advisories/GHSA-h6jf-g8cj-x4v3" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-h6jf-g8cj-x4v3</a></li>
 <li><a href="https://github.com/advisories/GHSA-xxrh-88wg-7qf4" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-xxrh-88wg-7qf4</a></li>
 <li><a href="https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-p874-xggm-73rv" target="_blank" rel="noopener noreferrer">langchain-ai LangGraph.js GHSA-p874-xggm-73rv</a></li>

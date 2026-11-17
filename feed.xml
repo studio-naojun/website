@@ -5,15 +5,15 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-17T07:02:35+09:00</updated>
+  <updated>2026-11-17T13:06:50+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月17日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-17/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-17/"/>
-    <updated>2026-11-17T07:02:35+09:00</updated>
-    <published>2026-11-17T07:02:35+09:00</published>
+    <updated>2026-11-17T13:06:50+09:00</updated>
+    <published>2026-11-17T13:06:50+09:00</published>
     <category term="ai-dev"/>
-    <summary>悪性npmの該当版、LangGraph.js MongoDBStoreのテナント間データ露出条件、GitHub AI Scanの一括実行と費用を公式資料で確認。</summary>
+    <summary>悪性npmとLangGraph.jsの安全情報に加え、Kubeshark MCPの条件付き権限侵害リスクと修正版v53.4.0を13時追補。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月16日号</title>
