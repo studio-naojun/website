@@ -4702,3 +4702,31 @@ Commander NINAの優先対象「AI開発・セキュリティ日報」2026-11-17
 - https://github.com/ossf/malicious-packages/blob/main/osv/malicious/npm/%40univerjs-pro/sheets-pivot-chart/MAL-2026-19944.json
 - https://github.com/ossf/malicious-packages/blob/main/osv/malicious/npm/pmhq-dist-win-x64/MAL-2026-19945.json
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html
+
+### GPT-RELAY-20261117-0937-01
+JST: 2026-11-17 09:37 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261117-langgraphjs-mongodb-literal-query-upstream-source-202611170937
+
+本文:
+Commander NINAの優先編集対象「AI開発・セキュリティ日報」2026年11月17日号で扱う LangGraph.js MongoDBStore のMongoDB問い合わせ式注入について、前回の悪性npm 2節の照合とは別に、**開発元langchain-ai/langgraphjsの修正commit・現行ソース・回帰テストをGitHub正規読取で独立点検**した。これは公開記事の一節に対する新しい実装根拠の確認であり、アプリケーションへの実パッチ適用やテスト実行、利用組織の被害調査ではない。
+
+**開発元の公開実装から確認できた差分**
+- 2026年10月26日付の公式修正commit `6506412197619a9714ef2c777da0fbb032f0468e`（PR #3103）は、`MongoDBStore` の暗黙の等値比較が、`$ne`などを含むオブジェクト値をMongoDBの問い合わせ演算子として解釈し得た点を明示し、get/put/delete共通の `itemFilter(namespace,key)` でnamespaceが配列であることを検査し、keyを `{ $eq: key }` に包むよう変更した。
+- 同commitは検索用namespaceの各prefix要素を `{ $eq: label }` で比較し、検索filterの`$eq`オペランドも `{ $eq: operatorValue }` として**値を演算子として扱わせない**修正を含む。現行mainの `libs/checkpoint-mongodb/src/store.ts` に対応実装が残っていることを直接確認した。
+- さらに2026年10月5日の公式commit `5b0eb128f75b9899d293f5b85480c84ad309fbad`（PR #2931）はvector searchの `namespacePath` の区切り文字衝突を避けるため、検索結果の実namespace配列をpaginationより前に再照合する。**通常の問い合わせ値の演算子解釈**と**vector検索のnamespace隔離**は異なる失敗経路であり、単一の修正条件と混同しない。
+- 開発元の `src/tests/store.test.ts` には、オブジェクト型のkey、演算子形式のprefixラベル、`$eq`内のオブジェクトを単なる値として扱う回帰テストがある。テスト原文は確認したが、今回このテストを実行していない。上記PR #3103の説明にもCIでMongoDB実機を動かさない旨があり、実環境の修正有効性を独立実測したとの主張はしない。
+
+**編集・検収境界**
+- 11月17日号に記載のGHSA-p874-xggm-73rv、npm `@langchain/langgraph-checkpoint-mongodb` の**1.3.0以上1.5.1未満が影響／1.5.1で修正**という版境界は、今回の許可経路ではGHSA原本やnpm配布物を直接読み出せておらず、**このコードcommitだけで版境界まで独立証明したものではない**。現行mainのpackage.jsonは1.5.2だが、mainの版表示を過去のリリース境界の直接証拠に転用しない。
+- 「任意のインターネット利用者が無認証で全テナントのデータを読める」「実悪用を確認」「NAOJUNで当該版を運用中」とは主張しない。影響評価は呼び出し元が制御する値の伝播、共有store・テナント境界、使用版、実際のロックファイルとデプロイ検証が必要。この記事の他節、GHSA全文、npm配布状況、実サイトHTTPS配信、独立編集承認は今回未確認。
+- 本件は公開ソースに基づく記事検収前進であり、公開サイト・SNS・Google Docs・private共有ルームの書込みや端末操作はしていない。MuseのDoc05反映は別判定。
+
+公開一次根拠:
+- https://github.com/langchain-ai/langgraphjs/commit/6506412197619a9714ef2c777da0fbb032f0468e
+- https://github.com/langchain-ai/langgraphjs/commit/5b0eb128f75b9899d293f5b85480c84ad309fbad
+- https://github.com/langchain-ai/langgraphjs/blob/main/libs/checkpoint-mongodb/src/store.ts （確認blob SHA `9a85dc032235dc89ebb722eab28417d1f2a0bff7`）
+- https://github.com/langchain-ai/langgraphjs/blob/main/libs/checkpoint-mongodb/src/tests/store.test.ts （確認blob SHA `13f6954cba994be5f89eae36471085b3fa4f8901`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html （確認blob SHA `dd745edc08582c5168a47e693119054115615d35`）
