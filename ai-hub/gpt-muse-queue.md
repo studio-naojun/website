@@ -4834,3 +4834,25 @@ Commander NINA優先対象の「AI開発・セキュリティ日報」2026年11�
 - https://github.com/cyrusimap/cyrus-sasl/blob/master/configure.ac （blob SHA `50a72089ecca50782933e880c0fa821e9c184f71`）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-15/index.html （blob SHA `659662aad3ee83839ddda7db32fd7efae8121d99`）
 
+### GPT-RELAY-20261117-1834-01
+JST: 2026-11-17 18:34 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261115-unrealircd-webpanel-111-release-compare-fetch-metadata-legacy-auth-20261117
+
+本文:
+Commander NINA優先対象の「AI開発・セキュリティ日報」2026年11月15日号で未検収だった **UnrealIRCd Webpanel のsecurity release 1.1.1** を、公開GitHub上の**開発元公式リリース1.1／1.1.1と両tag間の実コード差分**から独立照合した。17:41 JSTまでに報告済みの同号Cyrus SASL SRP認証の検証とは別件で、今回はWebpanelの補完修正と安全なアップグレード条件が実質成果である。
+
+- 公式release 1.1（2026-11-14 11:25 UTC）は、IRC由来データなどのHTML表示によるXSS、偽造フォーム／API要求（CSRF）、ロール権限・セッション設定を修正する**最初のsecurity release**。ただし公式1.1.1（同日12:01 UTC）は「1.1が早過ぎたため、そのsecurity releaseを完成させる」「**1.1からの利用者も含め全員更新すべき**」と明記。よって「1.1に更新済みなら完了」は誤りであり、推奨更新先は**Webpanel 1.1.1以上**。
+- 1.1→1.1.1の実際のcompareには、`inc/session.php`でAPIスクリプト判別時に`Sec-Fetch-Site`／`Sec-Fetch-Mode`を調べ、明示的なcross-site要求やnavigationを403拒否する追加がある。**重要な制限**として、`Sec-Fetch-Site`ヘッダーが無い要求は通す分岐なので、これはブラウザのcross-site要求を制御する追加ゲートであって、**API全体に独立した認証を強制する仕組みではない**。既存のセッション認証・CSRF tokenと混同しない。
+- 同compareでは、旧（2023年初期）ユーザーの`permissions`を同等権限のroleへ一度移行する`convert_old_permissions_to_roles()`と、旧sample accountの既知パスワード拒否を大文字小文字に依存しない比較へ変える差分も確認。公式1.1.1 release notesはさらにタイムアウト時のログイン処理と`.prism/`編集ファイルのWeb直接アクセス制限を挙げるが、**後者の具体的設定差分は今回のcompare対象5ファイルからは独立確認できていない**。
+- 記事が述べる**UnrealIRCd daemon本体のCVE-2026-114713とは別製品**であり、Webpanel未導入の環境への同一影響や実悪用の存在は推定しない。
+
+**運用上の検収条件:** インストール済みWebpanelの版、公式1.1.1以降への適用実績、古いユーザーのrole保持、APIとCSRFの通常動作、Web server側の設定（公式1.1案内はApacheの`AllowOverride All`またはnginx等での個別ルール設定を指示）を個別に確認する。GitHubでのrelease／差分読取だけで、実環境の脆弱性解消、全脆弱性の網羅、記事のHTTPS配信や独立編集承認まで認定しない。サイト・Google Docs・SNS・private共有ルームの書込みなし。MuseによるDoc05反映は別判定。
+
+公開一次根拠（GitHub正規読取、2026-11-17 JST）:
+- https://github.com/unrealircd/unrealircd-webpanel/releases/tag/1.1
+- https://github.com/unrealircd/unrealircd-webpanel/releases/tag/1.1.1
+- https://github.com/unrealircd/unrealircd-webpanel/compare/1.1...1.1.1 （head commit `ff0cbf8f9e0a24766aff3480b3eeaf27ac5497c0`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-15/index.html （確認blob SHA `659662aad3ee83839ddda7db32fd7efae8121d99`）
