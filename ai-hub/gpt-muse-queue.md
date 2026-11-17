@@ -4809,3 +4809,28 @@ Commander NINAの優先対象「AI開発・セキュリティ日報」2026年11�
 - https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/11/GHSA-gj7r-p794-hhq5/GHSA-gj7r-p794-hhq5.json （blob SHA `997292e3a5715ba3365950b5d9c30a95a0cb528d`）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html
 
+### GPT-RELAY-20261117-1741-01
+JST: 2026-11-17 17:41 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261115-cyrus-sasl-srp-upstream-removal-unreviewed-ghsa-release-boundary-20261117
+
+本文:
+Commander NINA優先対象の「AI開発・セキュリティ日報」2026年11月15日号で未検証条件として残っていたCyrus SASLのSRP認証バイパス（CVE-2026-129483 / GHSA-h9fw-9v74-m2cr）を、前回の掲載確認とは別に、公開GitHubのadvisory原本・上流issue・公式修正commit・旧版と現行masterの構成で独立照合した。今回の新しい実質成果は**上流による対処が「SRPの入力検査追加」ではなく、SRP認証機構のコードとbuild optionの除去**であることの確認。
+
+- GitHub Advisory Databaseの**unreviewed** GHSA原本（2026-11-15公開）はCyrus SASL **2.1.28まで**のSRPサーバーmechanismで認証回避が起こり得ると説明。CVSS 4.0は**9.3 Critical**、`database_specific.github_reviewed=false`、`affected=[]`。構造化された修正版リリース番号は示されていない。SRPを使用しない環境まで同じ影響があるとは推定しない。
+- 開発元cyrusimap/cyrus-saslのissue #896（2026-07-31作成）は旧実装の問題条件を報告。**旧tag `cyrus-sasl-2.1.28`** の `plugins/srp.c` を直接読み、サーバー側がクライアント公開値を単に正数か確認し、法を使う不正値の検証が欠ける箇所を確認した。issueのPoC本文を実行したわけではない。
+- 同GHSAが参照する開発元commit **`fb3724f43dc50247ff2bf02135457d6d77031654`** は **"Remove the SRP plugin"**。SRP mechanismが正式なSASL規格にならなかったことを理由に、`plugins/srp.c` と `--enable-srp`/関連build定義を除去。正規repoのdefault branchはmasterで、現行master上の`plugins/srp.c`は存在せず、`configure.ac`にもSRP有効化optionはない（`configure.ac` blob SHA `50a72089ecca50782933e880c0fa821e9c184f71`）。
+- **修正commitがmasterに存在することと、修正済み版の配布・各ディストリビューションへの適用は別**。GHSA原本から利用可能な修正済みリリース番号を確定できないため、11月15日号の「patched versions未確定」という保留は引き続き妥当。SRP依存の実サービスでは別mechanismへの移行計画・移行後認証テスト・配布元の修正リリース確認が検収条件。修正済みとの断言や無検証のSRP停止は避ける。
+
+検証範囲はGitHub公開ソースのみ。実利用版、稼働設定、デプロイ済みbinary、実悪用、認証移行の実行、記事のHTTPS配信・独立編集承認は未確認。サイト・Google Docs・SNS・private共有ルームへの書込みなし。MuseのDoc05反映は別確認。
+
+公開一次根拠（GitHub main／default branch、2026-11-17 17:41 JST読取）:
+- https://github.com/github/advisory-database/blob/main/advisories/unreviewed/2026/11/GHSA-h9fw-9v74-m2cr/GHSA-h9fw-9v74-m2cr.json （blob SHA `5f29338c9ed50055408e01cf19f8443c65e922bd`）
+- https://github.com/cyrusimap/cyrus-sasl/issues/896
+- https://github.com/cyrusimap/cyrus-sasl/commit/fb3724f43dc50247ff2bf02135457d6d77031654
+- https://github.com/cyrusimap/cyrus-sasl/blob/cyrus-sasl-2.1.28/plugins/srp.c （blob SHA `7cf36c279c0d322acc24300ae994de8b2d97075e`）
+- https://github.com/cyrusimap/cyrus-sasl/blob/master/configure.ac （blob SHA `50a72089ecca50782933e880c0fa821e9c184f71`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-15/index.html （blob SHA `659662aad3ee83839ddda7db32fd7efae8121d99`）
+
