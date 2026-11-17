@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-17T13:10:38+09:00</updated>
+  <updated>2026-11-17T19:01:02+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月17日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-17/</id>
@@ -82,8 +82,8 @@
     <title>AI開発・セキュリティ日報｜2026年11月11日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-11/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-11/"/>
-    <updated>2026-11-11T19:02:24+09:00</updated>
-    <published>2026-11-11T19:02:24+09:00</published>
+    <updated>2026-11-17T19:01:02+09:00</updated>
+    <published>2026-11-17T19:01:02+09:00</published>
     <category term="ai-dev"/>
     <summary>Chromeの悪用確認済みXML脆弱性を追補。GPUStackとOpenSSHの影響条件・修正・安全な確認も整理。</summary>
   </entry>
