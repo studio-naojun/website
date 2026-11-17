@@ -4877,3 +4877,29 @@ evidence_key: ai-dev-20261116-cloudflare-access-service-token-detect-without-pus
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-16/index.html （記事blob SHA 75f01f6b064933d464fb32ddd19192116c1a65a2）
 
 検収の次段階: 対象環境のsecret scanningの有効状態と既存alertを権限ある担当が正規画面で照合する。push protectionや自動有効性検証を前提としたリスク低減は未成立として扱う。
+
+### GPT-RELAY-20261117-2237-01
+JST: 2026-11-17 22:37 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261116-copilot-retirement-history-annual-exception-gpt-terra-20261117
+
+本文:
+「AI開発・セキュリティ日報」2026年11月16日号のGitHub Copilotモデル提供終了予定を、日付経過後に**GitHub公式docs mainの「Model retirement history」と現行モデル一覧**で独立検収した。11月16日13時台に書かれた記事では「同日中の予定・選択画面での実適用は未確認」とされていたが、現時点でGitHubが公開する退役履歴には次の3モデルが**retirement_date=2026-11-16**として実際に登録されている。これはGitHub公式の退役記録の確認であり、すべてのユーザーのUIから消えたことを実測したものではない。
+
+**新しく確認した事実・運用上の補正**
+- 退役履歴の対象は **Claude Opus 4.8 / Claude Opus 5 / GPT-5.6 Terra**。Copilot以外のモデル提供元APIや外部サービスまで停止した根拠にはならない。
+- GitHub公式の退役履歴で推奨される移行先は、それぞれ**「Latest Claude Opus model」**、**「Latest GPT Terra model」**と記載される。11月16日号がGPT-5.6 Terraの候補として挙げる「GPT-6.1 SolまたはGPT-6 Luna」は、現行公式の退役履歴が示す**Terra系への移行案とは異なる**。Sol/Lunaが利用不能という意味ではないが、公式の系統内代替を案内する場合はTerra系を優先して記載・再確認する必要がある。現行GitHub model-release-statusには**GPT-6.1 Terra = GA**、**Claude Opus 5.5 = GA**が存在する。
+- **Claude Opus 4.8の退役には例外がある**。GitHub公式のretirement history脚注およびplan表の脚注は、**個人GitHub Copilotの年間契約者は継続利用可能、月額契約者には継続提供しない**と明記。現行のモデル一覧に4.8が残ることだけをもって一般ユーザー全員で提供継続と誤読しない。
+- 移行時の検収条件は、使用プラン・クライアント・組織のモデル許可設定、既存workflow/agentの固定モデル指定、代表タスクの再実行である。GitHub文書を読んだだけで、個別アカウントの選択画面、組織ポリシー、実行結果まで確認したことにはしない。
+
+**編集結果と境界**: 現行公開記事の「11月16日に終了予定」「年額個人契約の4.8例外」「Copilot内の変更であり外部APIの一律終了ではない」は公式記録と整合。一方、GPT-5.6 Terraの案内は**最新のGitHub退役履歴のTerra系推奨と表現を合わせる余地**がある。今回は検収と公開可能な注記のみで、記事編集・実機/IDE確認・契約変更・SNS投稿・Doc05書込みは行っていない。MuseによるDoc05反映は別判定。
+
+公開一次根拠（GitHub github/docs main、2026-11-17 JST読取）:
+- https://github.com/github/docs/blob/main/data/tables/copilot/model-deprecation-history.yml （blob SHA `6608315b8f8c1b3adcbaf1ec12ac761ef0086aff`）
+- https://github.com/github/docs/blob/main/content/copilot/reference/ai-models/supported-models.md （blob SHA `859b9a6714e07581a73df22f1425a892d63ca977`）
+- https://github.com/github/docs/blob/main/data/reusables/copilot/available-models-per-plan.md （blob SHA `3adee0da53a26ab0fc41be02456625c694fb54d8`）
+- https://github.com/github/docs/blob/main/data/tables/copilot/model-release-status.yml （blob SHA `9a8b650cca64b0e1e64dbef8ad23b50b0bff3ddb`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-16/index.html （blob SHA `75f01f6b064933d464fb32ddd19192116c1a65a2`）
+
