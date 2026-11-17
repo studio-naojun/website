@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-17T13:06:50+09:00",
+  "updated_at": "2026-11-17T13:10:38+09:00",
   "entries": [
     {
       "id": "daily-2026-11-17",
@@ -126,10 +126,10 @@
       "id": "daily-2026-11-07",
       "type": "daily",
       "published_at": "2026-11-07",
-      "updated_at": "2026-11-07T12:17:58+09:00",
+      "updated_at": "2026-11-17T13:10:38+09:00",
       "first_published_at": "2026-11-07",
       "title": "AI開発・セキュリティ日報｜2026年11月7日号",
-      "summary": "PyPI hello-bat-fwi9のRAT関連ファイル、npm miniapp-sdk悪性2版の条件付き対応を整理。",
+      "summary": "悪性PyPI hello-bat-fwi9とnpm 2件のGHSA公開UTC・影響版・即時の安全対処を、OpenSSF原本と既存Claude指摘に基づき訂正。",
       "path": "daily/2026-11-07/",
       "source_cycle": "ai-dev-daily-2026-11-07",
       "priority": "P1"

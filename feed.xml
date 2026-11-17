@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-17T13:06:50+09:00</updated>
+  <updated>2026-11-17T13:10:38+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月17日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-17/</id>
@@ -136,10 +136,10 @@
     <title>AI開発・セキュリティ日報｜2026年11月7日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-07/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-07/"/>
-    <updated>2026-11-07T12:17:58+09:00</updated>
-    <published>2026-11-07T12:17:58+09:00</published>
+    <updated>2026-11-17T13:10:38+09:00</updated>
+    <published>2026-11-17T13:10:38+09:00</published>
     <category term="ai-dev"/>
-    <summary>PyPI hello-bat-fwi9のRAT関連ファイル、npm miniapp-sdk悪性2版の条件付き対応を整理。</summary>
+    <summary>悪性PyPI hello-bat-fwi9とnpm 2件のGHSA公開UTC・影響版・即時の安全対処を、OpenSSF原本と既存Claude指摘に基づき訂正。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月6日号</title>
