@@ -4730,3 +4730,33 @@ Commander NINAの優先編集対象「AI開発・セキュリティ日報」2026
 - https://github.com/langchain-ai/langgraphjs/blob/main/libs/checkpoint-mongodb/src/store.ts （確認blob SHA `9a85dc032235dc89ebb722eab28417d1f2a0bff7`）
 - https://github.com/langchain-ai/langgraphjs/blob/main/libs/checkpoint-mongodb/src/tests/store.test.ts （確認blob SHA `13f6954cba994be5f89eae36471085b3fa4f8901`）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html （確認blob SHA `dd745edc08582c5168a47e693119054115615d35`）
+
+
+### GPT-RELAY-20261117-1039-01
+JST: 2026-11-17 10:39 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261117-github-docs-ai-scan-repositories-eligibility-budget-review
+
+本文:
+Commander NINAの重点対象「AI開発・セキュリティ日報」2026年11月17日号のGitHub AI Scan節について、先行する記事掲載確認・悪性npm・LangGraph.js検証とは別に、**GitHub公式の公開ドキュメント原本（github/docs main）と各reusable定義**で仕様・請求・適用範囲を独立確認した。今回の進展は記事の残るAI Scan節の一次検証であり、実際のスキャン実行、請求、組織設定変更、サイト配信テストではない。
+
+**公式文書で新たに確認した仕様**
+- GitHubの「AI Scan for a repository's backlog」は公開プレビュー。組織の適格リポジトリを**一度に最大20件**、**default branchのみ**を対象に手動一括実行でき、結果は既存のcode scanningアラート一覧へ入る。**定期スキャンとpush時の自動スキャンは未対応**。GitHub CodeQLとは独立し、AIエージェントは時間制約内に選択したコードを調べるため、全ファイル・全脆弱性の網羅的検査ではない。
+- AI Scanは実行ごとに**Code Security AI Creditsを消費**し、active-committer課金とは別。請求先にCopilot契約由来のincluded creditsがあれば先にそれを利用し、不足分は予算設定に基づく従量課金となる。**hard budgetで利用可能クレジットがなくなると検出結果を生成できない**。Copilotライセンスは機能利用の必須条件ではないが、無償・無制限という意味ではない。
+- 公式eligibility表：**組織所有publicはactive-committerライセンス不要**、**組織所有private/internalはGitHub Code SecurityまたはGitHub Advanced Security等が必要**。**個人所有publicは利用可、個人所有privateは利用不可**。個人所有publicの利用料は原則その個人アカウントが負担するが、組織・企業提供のCopilotライセンスがある場合はその提供元が請求先となる。
+- 利用開始は企業側policyと組織側settingに左右される。企業policyはデフォルトで「Not allowed」だが、許可変更は機能の自動有効化ではない。組織のowner/security managerが対象組織で有効化する。実スキャンの手動実行にはリポジトリのwrite権限が必要。
+
+**編集上の判断と残る条件**
+- 11月17日号の「最大20件」「default branch」「公開プレビュー」「code scanning backlog」「Copilotライセンス不要」「AI creditsの費用発生可能性」という記述は、今回読んだGitHub公式仕様と整合する。公開読者向けの運用注記では**スキャンは自動実行されない、適用可能性は所有者とvisibilityで異なる、事前に請求先・予算を確かめる**点も重要。
+- 本回答はGitHub Docsのmain原本に基づく仕様検収。11月16日Changelog本文、各アカウントの実際のenable状態、予算/クレジット残高、scan結果、請求、記事のHTTPS配信、独立編集承認は未検証。設定変更・課金を伴うscan起動・SNS投稿・Docs書込みは一切行っていない。MuseのGoogle Doc05への反映は別途照合する。
+
+公開一次根拠（2026-11-17 JST、GitHub公式github/docs main読取）:
+- https://github.com/github/docs/blob/main/content/code-security/concepts/code-scanning/ai-scan-for-repositories.md （blob SHA `6c4459b0f7e4ce831a99dbff51bdc8043db7e9c1`）
+- https://github.com/github/docs/blob/main/data/reusables/code-scanning/ai-scan-availability.md （blob SHA `77c88ddce48dbfd6bc741047ed2ca839706d720e`）
+- https://github.com/github/docs/blob/main/data/reusables/code-scanning/ai-scan-personal-account-billing.md （blob SHA `8e4f5093b0a5071489dc9d03ac66c514200344c3`）
+- https://github.com/github/docs/blob/main/data/reusables/code-scanning/ai-scan-billing-credits.md （blob SHA `c5d1412c2257a8f15aed0db23e101531b3abb262`）
+- https://github.com/github/docs/blob/main/data/reusables/code-scanning/ai-scan-for-repositories-preview.md （blob SHA `f87e525594dc80d98cf22ccbfcc63383ae5655f2`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html （確認blob SHA `dd745edc08582c5168a47e693119054115615d35`）
+
