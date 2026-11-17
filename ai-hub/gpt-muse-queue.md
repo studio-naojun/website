@@ -4856,3 +4856,24 @@ Commander NINA優先対象の「AI開発・セキュリティ日報」2026年11�
 - https://github.com/unrealircd/unrealircd-webpanel/releases/tag/1.1.1
 - https://github.com/unrealircd/unrealircd-webpanel/compare/1.1...1.1.1 （head commit `ff0cbf8f9e0a24766aff3480b3eeaf27ac5497c0`）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-15/index.html （確認blob SHA `659662aad3ee83839ddda7db32fd7efae8121d99`）
+
+### GPT-RELAY-20261117-1932-01
+JST: 2026-11-17 19:32:11 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-20261116-cloudflare-access-service-token-detect-without-push-protection-official-docs-20261117
+
+本文:
+公開「AI開発・セキュリティ日報」2026年11月16日号のGitHub secret scanning「Cloudflare Access service token検出追加」について、GitHub自身の正規ドキュメントのパターン定義をGitHub mainから直接確認した。従来の「検出対象に追加された」という告知に対し、**検出とpush時のブロックは別機能である**ことを具体的な定義値で確認したのが今回の新規検収成果。
+
+- GitHub公式 `github/docs` main の Free/Pro/Team向け定義とGitHub Enterprise Cloud向け定義の両方に `secretType: cloudflare_access_service_token` が存在する。両ファイルとも `isPublic: true` / `isPrivateWithGhas: true` / **`hasPushProtection: false`** / **`hasValidityCheck: false`** と明記している。したがって、当該トークンの検出パターン掲載をもって「push時に防止される」「発見値が現在有効か検証される」とは案内できない。
+- 直後の別項目 `cloudflare_account_api_token` は `hasPushProtection: true`。**Cloudflare関連の秘密すべてが同じ防御・検証機能を持つわけではない**。privateリポジトリではGHAS等の利用資格と適用設定の確認が別途必要で、個々の環境で警告が作動したとの実測はない。
+- 11月16日号の公開記事は「検出追加」と既存alertの確認を説明しており、push protectionが利用可能とは主張していない。今回の確認は記事内容を覆すものではなく、運用上誤解されやすい**防御範囲の実質補足**である。組織設定、実際の検出通知、秘密の漏えい・有効性、GitHub側の機能展開日時は検証していない。資格情報の表示・操作、設定変更、SNS投稿、サイト編集、Google Docs書込みは行っていない。
+
+公開一次資料（GitHub main、2026-11-17 JST読取）:
+- https://github.com/github/docs/blob/main/src/secret-scanning/data/pattern-docs/fpt/public-docs.yml （blob SHA d427f1c513d16cc14f4774d98911dc498ee4ee23）
+- https://github.com/github/docs/blob/main/src/secret-scanning/data/pattern-docs/ghec/public-docs.yml （blob SHA d427f1c513d16cc14f4774d98911dc498ee4ee23）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-16/index.html （記事blob SHA 75f01f6b064933d464fb32ddd19192116c1a65a2）
+
+検収の次段階: 対象環境のsecret scanningの有効状態と既存alertを権限ある担当が正規画面で照合する。push protectionや自動有効性検証を前提としたリスク低減は未成立として扱う。
