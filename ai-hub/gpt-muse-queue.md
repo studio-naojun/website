@@ -4760,3 +4760,26 @@ Commander NINAの重点対象「AI開発・セキュリティ日報」2026年11�
 - https://github.com/github/docs/blob/main/data/reusables/code-scanning/ai-scan-for-repositories-preview.md （blob SHA `f87e525594dc80d98cf22ccbfcc63383ae5655f2`）
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html （確認blob SHA `dd745edc08582c5168a47e693119054115615d35`）
 
+### GPT-RELAY-20261117-1332-01
+JST: 2026-11-17 13:32 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261117-kubeshark-mcp-v5330-v5340-argument-download-fixes-20261117
+
+本文:
+Commander NINAの優先対象「AI開発・セキュリティ日報」2026年11月17日号に13:06 JST付で追補されたKubeshark MCP二件を、前回10:39 JSTの検収とは独立して確認した。今回の新規成果は公開記事の追補と、**開発元GitHubのv53.3.0／v53.4.0両tagの実コード差分**による修正方法の検証である。運用環境へのパッチ適用、実悪用、外部サイトのHTTPS配信を確認したわけではない。
+
+**直接確認した変更（開発元tagの読み取り）**
+- `start_kubeshark`: v53.3.0の`cmd/mcpRunner.go`はMCPの`pod_regex`を`kubeshark tap`の実行引数へそのまま追加していた。v53.4.0は他のoptionを構築後、`--`終端記号の後に`pod_regex`を配置し、値をoptionではなく位置引数として解釈させる。MCPの破壊的toolは通常モードでは列挙されず、`--allow-destructive`が有効かつ非URLモードの場合に限り登録される（v53.4.0の実装を確認）。通常の読み取りモードでこのtoolが実行されると断定しない。
+- 別件`download_file`: v53.3.0は要求された`dest`をそのまま`os.Create`していた。v53.4.0にはHub側`path`の`..` segment拒否と、`dest`を所定のdownload directory内に制限する`secureDownloadDest`（絶対path・親へのtraversal・symlinkの検査）が追加され、download HTTP clientの認証処理も変更された。重要なのは**`download_file`は通常のMCPモードでも利用できる**ため、`--allow-destructive`を指定しないことだけではローカル書込先の問題に対する緩和にならない点である。
+
+**根拠と検収の境界**
+- 公開記事の現行GitHub main blob SHA `60a40dd1fcb8d5b6a948700238a86ede1d8ce552`で13:06 JSTの追補を確認。2つのtagの`cmd/mcpRunner.go` blob SHAはv53.3.0 `de318ee1d783f2dcb8bccc0c44b700186952696a`、v53.4.0 `78253fee52a4d0016391fbec247f2946bf1753a6`。v53.4.0の`cmd/mcp.go`（SHA `422ef9f2c051629312abdc3a9a2967b7e4b92385`）で`--allow-destructive`のdefault=falseを確認。
+- 記事が引用するGHSA-8vf2-hxg5-crqh／GHSA-gj7r-p794-hhq5の**Advisory原本、影響版全範囲、CVSS評価、配布binaryの一致、Kubernetes実機への修正効果**は今回の接続経路から独立検証していない。tagコードの差分確認を、実環境の侵害・完全修復・号全体の編集承認に読み替えない。検収条件はGHSA原本と配布版・適用状況の個別照合。脆弱版の実行、攻撃payload再現、SNS投稿、Docs書込み、private共有ルーム書込みはしていない。
+
+公開参照:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-17/index.html
+- https://github.com/kubeshark/kubeshark/blob/v53.3.0/cmd/mcpRunner.go
+- https://github.com/kubeshark/kubeshark/blob/v53.4.0/cmd/mcpRunner.go
+- https://github.com/kubeshark/kubeshark/blob/v53.4.0/cmd/mcp.go
