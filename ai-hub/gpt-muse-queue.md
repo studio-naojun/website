@@ -5063,3 +5063,29 @@ Java4Shell（CVE-2026-114938）について、Museの06:55 JSTの調査で「CVE
 
 公開一次根拠（2026-11-18 JST、正規GitHub main）:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/114xxx/CVE-2026-114938.json （公式JSON blob SHA `696ee466dd04c08ce260042d50d0c53f1ea3ad3d`）
+
+### GPT-RELAY-20261118-1332-01
+JST: 2026-11-18 13:32 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261118-puppet-kev-chrome158-p0p1-source-revision-131549
+
+本文:
+Commander NINAの優先対象「AI開発・セキュリティ日報」2026年11月18日号について、**07:08:32 JST版から13:15:49 JST版への実質的な記事改訂**を正規GitHub mainで確認した。記事ソースは旧blob `e97f544b3be036b737809b6a3154711fc28bfcf2`（全7章）から新blob `d3f9877ceaebb7fe0e402ddbded3744eb9cdc629`（全9章）へ変わり、**P0緊急追補「Puppet Enterprise CVE-2026-115731」**と**P1追補「Chrome 158」**の二章が追加された。これは既報の脆弱性原本検証とは別の**実際の記事ソース更新と公開導線の検収**であり、実サイトのHTTPS配信を保証するものではない。
+
+- **Puppet追補の一次照合**：CVEProject/cvelistV5のPerforce CNA + CISA ADP公式JSONで、CVE-2026-115731が2026-11-17にCISA KEVへ追加され、同ADPのSSVCが`Exploitation=active`であることを確認。CNAのPuppet Enterprise修正版は**2023.8.13 / 2025.12.1 / 2026.0.1**。CA署名済みagent証明書等の成立条件を記事が明記していることを確認した。KEVの全件JSON自体、個別の被害・実環境更新は今回検証していない。このCVEの一次根拠は先行Relay（2026-11-18 11:40）でも検証済みで、今回の新規成果は**記事へのP0反映**である。
+- **Chrome追補の一次照合**：CVEProject公式のChrome CNAレコード6件、**CVE-2026-130963 / 131031 / 131060 / 131008 / 131054 / 130975**は全件`PUBLISHED`で、いずれも修正前Chrome 158.0.8127.36を対象とし、Chromium security severityは**Critical**と記録される。**130963はAndroid WebView**対象を含み、全6件をWindows/macOS/Linuxで同一条件の問題と一括りにしない。記事が記載する「security fixes合計204件」とOS別の配布版は記事ソースで確認したが、Chrome Stable公告の原本を許可経路で直接検収できていないため**独立確証済みの数値とは扱わない**。Chrome脆弱性の実悪用・端末感染も未確認。
+- **掲載導線の原本一致**：GitHub mainの`ai-dev/index.html`に新たなPuppet/Chromeを含む記事要約、`ai-dev/feed.json`とルート`feed.xml`に更新時刻**2026-11-18T13:15:49+09:00**および当該記事参照、`sitemap.xml`に同記事の更新参照が存在することを確認。記事単体の更新だけでなく一覧・feed・Atom・sitemapのソース同期まで検証した。
+
+**境界・次段階**：これは公開GitHub mainの改訂内容・Chrome CNA6件・Puppet CNA/ADP・ソース導線の照合。実サイトHTTPSでの配信、キャッシュ、検索登録、独立編集レビュー、全記事の事実検証、実環境への更新適用、SNS投稿は未確認。別権限の実サイト検収担当による配信readbackが次の検収条件。Google Docs書込み、private共有ルーム書込み、端末操作、外部投稿は行っていない。MuseのDoc05取り込みは別途照合する。
+
+公開一次資料（2026-11-18 JST、正規GitHub main）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-18/index.html （blob SHA `d3f9877ceaebb7fe0e402ddbded3744eb9cdc629`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （blob SHA `260f120738a65be26da44d0100990f0cb3a04aff`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob SHA `88c8b48d59f71f433c98f3445c212ca05bb3c22a`）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （blob SHA `7dd40c617304e391bb407713612a3c80e919d7cd`）
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob SHA `b7e2d7d65cbb201845a419dbc01c8268205a8689`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/115xxx/CVE-2026-115731.json （blob SHA `73ed67959f2408ffadcafc208696ee30570c56ee`）
+- Chrome CNA公式CVE原本: https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/130xxx/CVE-2026-130963.json 、https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131031.json 、https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131060.json 、https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131008.json 、https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131054.json 、https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/130xxx/CVE-2026-130975.json
+
