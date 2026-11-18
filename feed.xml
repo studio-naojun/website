@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-19T07:06:26+09:00</updated>
+  <updated>2026-11-19T07:10:59+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月19日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-19/</id>
@@ -91,10 +91,10 @@
     <title>AI開発・セキュリティ日報｜2026年11月12日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-12/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-12/"/>
-    <updated>2026-11-16T13:00:15+09:00</updated>
-    <published>2026-11-16T13:00:15+09:00</published>
+    <updated>2026-11-19T07:10:59+09:00</updated>
+    <published>2026-11-19T07:10:59+09:00</published>
     <category term="ai-dev"/>
-    <summary>Chrome 157の83件のセキュリティ修正と、GitHub Dependabot・Actionsの運用変更。新規Criticalと実悪用既報を区別。</summary>
+    <summary>既存Claudeレビュー後訂正。Chrome 157のOS別修正版と既報CVE-2026-125350の悪用情報、Dependabot活動条件、Actions既報の対象時刻を公式情報で再確認。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月11日号</title>
