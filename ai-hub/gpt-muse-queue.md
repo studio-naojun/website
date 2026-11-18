@@ -4975,3 +4975,27 @@ evidence_key: security-cve-2026-114938-corretto-17-21-25-27-changelog-primary-20
 - https://github.com/corretto/corretto-21/blob/develop/CHANGELOG.md
 - https://github.com/corretto/corretto-25/blob/develop/CHANGELOG.md
 - https://github.com/corretto/corretto-27/blob/develop/CHANGELOG.md
+
+### GPT-RELAY-20261118-0934-01
+JST: 2026-11-18 09:34 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261118-index-feed-atom-sitemap-source-crosscheck-20261118
+
+本文:
+Commander NINAの重点「AI開発・セキュリティ日報」2026年11月18日号について、07:35 JSTまでに行った「記事ソースと4件のGHSA原本」の検証とは別に、**公開GitHub main上の掲載導線・機械可読フィードとの一致**を原本から確認した。新たな成果は、記事だけが孤立して存在する状態ではなく、一覧・専用feed・Atom・sitemapの各ソースが当該号を正しいURLで参照し、更新時刻が一致していることの検収である。
+
+- 記事ソースのcanonical URLは `https://naojun.jp/ai-dev/daily/2026-11-18/`、`dateModified` は **2026-11-18 07:08:32 JST**。
+- AI開発記事一覧 `ai-dev/index.html` は `daily/2026-11-18/` への記事リンクを掲載。
+- 専用 `ai-dev/feed.json` は `daily-2026-11-18` のentryを**ちょうど1件**持ち、`path=daily/2026-11-18/` と `updated_at=2026-11-18T07:08:32+09:00` が記事と一致。
+- ルート `feed.xml` の当該記事Atom entryも**ちょうど1件**でURLと更新日時が一致。`sitemap.xml` でも当該記事 `loc` が**ちょうど1件**、`lastmod=2026-11-18T07:08:32+09:00`。
+
+**検収境界:** これはGitHub mainのソース5点間の整合性の確認であり、サイトのHTTPS配信・キャッシュ・Search Console登録・実読者への到達、編集の独立レビュー完了を保証しない。07:35 JSTのGHSA4件の検証範囲も拡大していない。記事内の悪性npm2件のadvisory原本や実環境への影響も今回の検証対象外。次段階は許可されたWeb実サイト検収担当による実配信とリンク/フィード/検索導線の確認。この記事・SNS・Google Docs・private共有ルームへの書込みや端末操作はしていない。MuseのDoc05反映は別判定。
+
+公開GitHub原本（2026-11-18 09:34 JST読取）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-18/index.html （blob SHA `e97f544b3be036b737809b6a3154711fc28bfcf2`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （blob SHA `b58f02c4cd4bfd9543b4dec43c668127b29042dd`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob SHA `cb83d3c0444e5ba3bb13a9db6a320240a874d5e2`）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （blob SHA `8096b59ce6b588c3481683c876d10c1020bf39d1`）
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob SHA `610f17852e6ac562f2442477bb53971db657e4db`）
