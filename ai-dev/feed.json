@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-18T07:08:32+09:00",
+  "updated_at": "2026-11-18T13:06:21+09:00",
   "entries": [
     {
       "id": "daily-2026-11-18",
       "type": "daily",
       "published_at": "2026-11-18",
-      "updated_at": "2026-11-18T07:08:32+09:00",
+      "updated_at": "2026-11-18T13:06:21+09:00",
       "first_published_at": "2026-11-18",
       "title": "AI開発・セキュリティ日報｜2026年11月18日号",
-      "summary": "Phoenixのsecret漏えい、AWS JDBC・libp2pの条件付きリスク、悪性npm配布とNext.jsキャッシュ境界。公式GHSAの影響版・安全な対応を整理。",
+      "summary": "Chrome 158の204件の修正とCritical 6件を13時追補。Phoenix・AWS JDBC・libp2p・悪性npmとNext.jsの条件付きリスクも整理。",
       "path": "daily/2026-11-18/",
       "source_cycle": "ai-dev-daily-2026-11-18",
       "priority": "P1"

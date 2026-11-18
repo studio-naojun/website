@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Phoenixのsecret漏えい、AWS JDBC・libp2pの条件付きリスク、悪性npm配布とNext.jsキャッシュ境界。公式GHSAの影響版・安全な対応を整理。">
+  <meta name="description" content="Chrome 158の204件の修正とCritical 6件を13時追補。Phoenix・AWS JDBC・libp2p・悪性npmとNext.jsの条件付きリスクも整理。">
   <title>AI開発・セキュリティ日報｜2026年11月18日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
@@ -13,10 +13,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月18日号">
-  <meta property="og:description" content="Phoenixのsecret漏えい、AWS JDBC・libp2pの条件付きリスク、悪性npm配布とNext.jsキャッシュ境界。公式GHSAの影響版・安全な対応を整理。">
+  <meta property="og:description" content="Chrome 158の204件の修正とCritical 6件を13時追補。Phoenix・AWS JDBC・libp2p・悪性npmとNext.jsの条件付きリスクも整理。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-18/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月18日号","description":"Phoenixのsecret漏えい、AWS JDBC・libp2pの条件付きリスク、悪性npm配布とNext.jsキャッシュ境界。公式GHSAの影響版・安全な対応を整理。","datePublished":"2026-11-18","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-18/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-18T07:08:32+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月18日号","description":"Chrome 158の204件の修正とCritical 6件を13時追補。Phoenix・AWS JDBC・libp2p・悪性npmとNext.jsの条件付きリスクも整理。","datePublished":"2026-11-18","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-18/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-18T13:06:21+09:00"}</script>
 <!-- naojun-discovery:end -->
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
@@ -32,19 +32,23 @@
   <header class="ai-dev-article-hero">
 <!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[11.18]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
-      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-18 / 2026-11-18T07:08:32+09:00</span></div>
+      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-18 / 2026-11-18T13:06:21+09:00</span></div>
 <h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年11月18日号</h1>
-      <p class="ai-dev-lead">Phoenixのsecret漏えい、AWS JDBC・libp2pの条件付きリスク、悪性npm配布とNext.jsキャッシュ境界。公式GHSAの影響版・安全な対応を整理。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-18 07:07 JST</p>
+      <p class="ai-dev-lead">Chrome 158の204件の修正とCritical 6件を13時追補。Phoenix・AWS JDBC・libp2p・悪性npmとNext.jsの条件付きリスクも整理。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-18 13:05 JST（初稿07:07）</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全7章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P1｜PhoenixのGraphQLテンプレート処理：環境変数・secret漏えいのおそれ</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P1｜AWS Advanced JDBC Wrapper：RemoteQueryCachePlugin利用時のRCE</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P1｜libp2p Identify：認証前のDER解析でサービス停止リスク</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">P1｜npm 2パッケージのMalware警告：導入の有無から判断</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全7章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全8章</span></p><ol><li><a href="#chrome158-20261118"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P1追補｜Chrome 158：204件のsecurity fixes、Critical 6件</span></a></li><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P1｜PhoenixのGraphQLテンプレート処理：環境変数・secret漏えいのおそれ</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P1｜AWS Advanced JDBC Wrapper：RemoteQueryCachePlugin利用時のRCE</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">P1｜libp2p Identify：認証前のDER解析でサービス停止リスク</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全8章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">7項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P1｜PhoenixのGraphQLテンプレート処理：環境変数・secret漏えいのおそれ</a></li><li><a href="#reading-section-2">P1｜AWS Advanced JDBC Wrapper：RemoteQueryCachePlugin利用時のRCE</a></li><li><a href="#reading-section-3">P1｜libp2p Identify：認証前のDER解析でサービス停止リスク</a></li><li><a href="#reading-section-4">P1｜npm 2パッケージのMalware警告：導入の有無から判断</a></li><li><a href="#reading-section-5">P2｜Next.jsのnested use cache：root paramsの別値が混ざる条件</a></li><li><a href="#reading-section-6">調査範囲と更新履歴</a></li><li><a href="#reading-section-7">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">8項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#chrome158-20261118">P1追補｜Chrome 158：204件のsecurity fixes、Critical 6件</a></li><li><a href="#reading-section-1">P1｜PhoenixのGraphQLテンプレート処理：環境変数・secret漏えいのおそれ</a></li><li><a href="#reading-section-2">P1｜AWS Advanced JDBC Wrapper：RemoteQueryCachePlugin利用時のRCE</a></li><li><a href="#reading-section-3">P1｜libp2p Identify：認証前のDER解析でサービス停止リスク</a></li><li><a href="#reading-section-4">P1｜npm 2パッケージのMalware警告：導入の有無から判断</a></li><li><a href="#reading-section-5">P2｜Next.jsのnested use cache：root paramsの別値が混ざる条件</a></li><li><a href="#reading-section-6">調査範囲と更新履歴</a></li><li><a href="#reading-section-7">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
     <p><strong>対象日：2026年11月18日／公式一次情報の確認：2026年11月18日07:07 JST。</strong> 昨夜から今朝に公開された開発用依存ライブラリの安全情報です。重大度ラベルやパッケージ名だけで実際の侵害を判定しません。</p>
+<h2 id="chrome158-20261118">P1追補｜Chrome 158：204件のsecurity fixes、Critical 6件</h2>
+<p><strong>公式発表：</strong> Googleは米国時間2026年11月17日の<a href="https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_01699533288.html" target="_blank" rel="noopener noreferrer">Chrome Stable公式公告</a>でChrome 158を公開。Windows/macOSは<strong>158.0.8127.36/.37</strong>、Linuxは<strong>158.0.8127.36</strong>。段階配信で計<strong>204件</strong>のsecurity fixesを含みます。Criticalは<strong>6件</strong>：CVE-2026-130963（WebView・use-after-free）、CVE-2026-131031（GPU・out-of-bounds write）、CVE-2026-131060（Media・buffer overflow）、CVE-2026-131008（GarbageCollection・use-after-free）、CVE-2026-131054（ANGLE・out-of-bounds write）、CVE-2026-130975（WebAudio・use-after-free）。</p>
+<p><strong>対象・影響と限界：</strong> 該当OSでChrome Stableの修正前版を利用する場合に更新が必要です。ただし、Googleのこの公告には六件の<strong>野外での実悪用は明記されておらず</strong>、Criticalの件数から個別環境の侵害を断定しません。11月12日号のChrome 157や11月11日号の別件の実悪用既報とは区別します。Edge・Braveなど派生ブラウザーは各ベンダーの公式修正版を別途確認してください。</p>
+<p><strong>修正・安全な確認：</strong> Chromeの「Chromeについて」（<code>chrome://settings/help</code>）で更新後、ブラウザーを完全再起動して実行中の版を確認。企業管理・段階配信中なら管理ポリシーと配布チャネルを照合し、必要なら公式修正済みの代替ブラウザーを一時使用します。攻撃再現は行わず、脆弱な旧版への巻戻しは避けます。<strong>一次情報確認：2026年11月18日13:05 JST。</strong></p>
 <h2 id="reading-section-1">P1｜PhoenixのGraphQLテンプレート処理：環境変数・secret漏えいのおそれ</h2>
 <p><strong>公表：</strong> 11月17日20:02 UTCの<a href="https://github.com/advisories/GHSA-gfv3-m769-5xm3" target="_blank" rel="noopener noreferrer">GHSA-gfv3-m769-5xm3</a>は、pip <strong><code>arize-phoenix</code> 13.0.0以上15.7.0未満</strong>の<code>applyChatTemplate</code> GraphQL処理で、外部由来のF_STRINGテンプレートが属性参照へ到達し、サーバーの環境変数や秘密情報を応答に露出し得ると説明します。<strong>修正版は15.7.0</strong>。GHSAはCritical/CVSS 10.0ですが、野外での実悪用が確認されたという証拠ではありません。</p>
 <p><strong>条件・影響：</strong> GraphQL APIにネットワーク到達し、当該resolverが利用可能な環境が対象。Phoenixで認証を無効化した既定構成では未認証アクセスが可能な場合があり、認証ありでもログイン済みの低権限利用者がリスクになります。仮に<code>PHOENIX_SECRET</code>などが露出すると署名済みトークンの偽造や保存資格情報の復号につながり得ます。未公開でアクセス制限された環境や修正済み版まで同じ露出と決めつけません。</p>
@@ -61,10 +65,12 @@
 <h2 id="reading-section-5">P2｜Next.jsのnested use cache：root paramsの別値が混ざる条件</h2>
 <p>11月17日16:13 UTCの<a href="https://github.com/advisories/GHSA-vc7v-qv4w-wrv8" target="_blank" rel="noopener noreferrer">GHSA-vc7v-qv4w-wrv8</a>（CVE-2026-119351）は、npm <strong><code>next</code> 16.2.0以上16.4.4以下</strong>で、Cache Components、nested <code>use cache</code>、<code>next/root-params</code>、内側の未解決Promiseを含むstreamが組み合わさると、外側cache keyからroot paramが落ち、異なる値向けのコンテンツが再利用される可能性があると公表。<strong>修正版16.4.5</strong>。全Next.jsサイトへの一律の漏えいではありません。依存版と該当機能を調査し、更新後は公開してよい<strong>テストデータ</strong>を使ってroot param間のキャッシュ分離と失効を確認します。</p>
 <h2 id="reading-section-6">調査範囲と更新履歴</h2>
+<p><strong>2026年11月18日13:05 JST追補：</strong> Chrome 158公式Stable公告を追加確認し、204件の修正、Critical 6件の対象条件、更新・確認方法を追補しました。実悪用の公式明記はありません。号の日付と初回公開日は2026年11月18日のままです。</p>
 <p>2026年11月18日07:07 JST：公式GitHub Security Advisory APIの対象パッケージ・影響範囲・公開UTC日時を確認して11月18日号を作成。個々のAdvisoryで実悪用の有無は確認されず、CISA KEV/NVDや全ベンダーの網羅監査、個別利用者のインストール・侵害調査は実施していません。<strong>「新規P0が存在しない」とは断定しません。</strong> 11月17日までの既刊は重複作成せず、11月12〜17日の独立レビューは公開後の既存工程で扱います。初回公開日は実サイト検収後の日時として別途記録します。</p>
     <aside class="source-note">
       <h2 id="reading-section-7">一次資料</h2>
       <ul>
+<li><a href="https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_01699533288.html" target="_blank" rel="noopener noreferrer">Google Chrome 158 Stable（2026-11-17公式公告）</a></li>
 <li><a href="https://github.com/advisories/GHSA-gfv3-m769-5xm3" target="_blank" rel="noopener noreferrer">Phoenix GHSA-gfv3-m769-5xm3</a></li>
 <li><a href="https://github.com/advisories/GHSA-c5q4-97jw-jggh" target="_blank" rel="noopener noreferrer">AWS Advanced JDBC Wrapper GHSA-c5q4-97jw-jggh</a></li>
 <li><a href="https://github.com/advisories/GHSA-rvfr-cqwq-rc4j" target="_blank" rel="noopener noreferrer">libp2p crypto GHSA-rvfr-cqwq-rc4j</a></li>
