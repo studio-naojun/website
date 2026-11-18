@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-18T13:15:49+09:00</updated>
+  <updated>2026-11-19T07:00:12+09:00</updated>
+  <entry>
+    <title>AI開発・セキュリティ日報｜2026年11月19日号</title>
+    <id>https://naojun.jp/ai-dev/daily/2026-11-19/</id>
+    <link href="https://naojun.jp/ai-dev/daily/2026-11-19/"/>
+    <updated>2026-11-19T07:00:12+09:00</updated>
+    <published>2026-11-19T07:00:12+09:00</published>
+    <category term="ai-dev"/>
+    <summary>正規PyPIのMicrosoft Agent Framework 1.26.1/1.26.2に資格情報窃取コード。npm agent-skills悪性版も導入条件と安全な復旧を整理。</summary>
+  </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月18日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-18/</id>
@@ -446,14 +455,5 @@
     <published>2026-08-29T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>Fedのインフレ警戒で米短期金利が再上昇する一方、NVIDIA・Salesforceの強いAI決算と信用スプレッド縮小が株式を支えた。次の分岐点となる雇用統計までの市場構造を整理する。</summary>
-  </entry>
-  <entry>
-    <title>千葉県立中2027、正式要項公開――報告書から「出欠・特別活動・行動」の3項目を削除</title>
-    <id>https://naojun.jp/admissions/weekly/2026-08-24/</id>
-    <link href="https://naojun.jp/admissions/weekly/2026-08-24/"/>
-    <updated>2026-08-24T00:00:00+09:00</updated>
-    <published>2026-08-24T00:00:00+09:00</published>
-    <category term="admissions"/>
-    <summary>千葉県立千葉中・東葛飾中の2027年度正式要項を確認。報告書3項目削除と自己申告書の変更を、既出方針と今週の新規性を分けて整理する。</summary>
   </entry>
 </feed>
