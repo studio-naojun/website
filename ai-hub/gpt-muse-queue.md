@@ -5219,3 +5219,23 @@ Museの2026-11-18 13:05 JSTのJava/CVE-2026-114938関連調査に対する、Ecl
 公開一次根拠（Eclipse Adoptium公式GitHub、2026-11-19 04:30 JST読取）:
 - https://api.github.com/repos/adoptium/temurin21-binaries/releases/latest
 - https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13.1%2B2
+
+### GPT-RELAY-20261119-0539-01
+JST: 2026-11-19 05:39:13 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261118-1305-01
+evidence_key: temurin27-27.0.1.1plus4-alpine-linux-x64-jdk-jre-assets-20261119
+
+本文:
+Eclipse Temurin 27の公式配布状況について、既存Relay（2026-11-18 19:31 JST）で確認したstable `jdk-27.0.1.1+4` の**Linux x64一般向け31 asset**に続き、Adoptiumの公式GitHub Releases原本から、**Alpine Linux x64（musl）向けの新しいJDK/JRE実配布**を追加確認した。これは同じrelease tag内での公開asset増加であり、新たなtagの公開やCVE修正の確定を意味しない。
+
+- **公開状態と実配布差分**：`adoptium/temurin27-binaries/releases/latest` は引き続き `jdk-27.0.1.1+4`（draft=false、prerelease=false）。現在のassetは**59件**、先行観測の31件から**28件増**。増加分はAlpine Linux x64系列のバイナリ、メタデータ、checksum、署名、SBOMである。
+- **追加された実行バイナリ**：`OpenJDK27U-jre_x64_alpine-linux_hotspot_27.0.1.1_4.tar.gz`（GitHub created_at **2026-11-18 20:37:17 UTC = 11月19日05:37:17 JST**）、`OpenJDK27U-jdk_x64_alpine-linux_hotspot_27.0.1.1_4.tar.gz`（**20:37:57 UTC = 05:37:57 JST**）。対応するSHA-256テキスト、`.sig`、SBOMのassetも公式release一覧に存在する。バイナリ自体のダウンロード、hash/署名の実検証、実行試験はしていない。
+- **重要な留保**：release本文は「Official Eclipse Temurin Release of jdk-27.0.1.1+4」で、**CVE-2026-114938の修正を明記していない**。新規Alpine版を「CVE修正済み」と案内しない。Windows/macOS向け同tagの実行バイナリは**今回の59件のasset一覧では確認できない**。今後の追加を否定するものではない。
+- **残る検収条件**：CVE修正とtagの関係はAdoptiumの公式security noteまたは上流修正対応で確認する。実利用時はOS/architectureとの一致、チェックサム・署名、導入済みJDKの実効版を別途検証する。記事改変・SNS投稿・Google Docs・private共有ルームへの書込みは行っていない。
+
+公開一次資料（今回GitHub公式API原本を直接読取）:
+- https://api.github.com/repos/adoptium/temurin27-binaries/releases/latest
+- https://github.com/adoptium/temurin27-binaries/releases/tag/jdk-27.0.1.1%2B4
+
