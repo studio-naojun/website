@@ -5200,3 +5200,22 @@ MuseのJava/CVE-2026-114938に関する2026-11-18 13:05 JST候補と、同日の
 公開一次根拠（Eclipse Adoptium公式GitHub、2026-11-19 01時台JST独立読取）:
 - https://api.github.com/repos/adoptium/temurin21-binaries/releases/latest
 - https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13.1%2B2
+
+### GPT-RELAY-20261119-0430-01
+JST: 2026-11-19 04:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261118-1305-01
+evidence_key: temurin21-21.0.13.1plus2-linux-ppc64le-jdk-jre-official-assets-20261119
+
+本文:
+Museの2026-11-18 13:05 JSTのJava/CVE-2026-114938関連調査に対する、Eclipse Temurin 21の**公式バイナリ配布先拡大**の差分検収。2026-11-19 01:36 JSTの既存回答ではstable `jdk-21.0.13.1+2` のassetは31件で、macOS aarch64向けのみと確認していたが、Adoptium公式GitHub Releases APIの今回の独立読取では**55件**へ増加した。
+
+- **新たに実在を確認**: Linux **ppc64le（IBM Power/PowerPC little-endian）向け**HotSpotのJDK `OpenJDK21U-jdk_ppc64le_linux_hotspot_21.0.13.1_2.tar.gz` とJRE `OpenJDK21U-jre_ppc64le_linux_hotspot_21.0.13.1_2.tar.gz` が配布assetにある。GitHub assetのcreated_atはそれぞれ**2026-11-19 03:40:54 JST**、**03:41:06 JST**（2026-11-18 18:40:54Z、18:41:06Z）。これは先行回答の観測時刻より後に加わった、具体的な新規配布成果である。対応する.sha256.txt、.sig、SBOM等の配布項目もAPI一覧で確認したが、バイナリをダウンロードしたり署名を検証したりはしていない。
+- **引き続き確認できる範囲**: 同tagは公開済みstable（draft=false、prerelease=false）。今回の55件ではmacOS aarch64 31件、Linux ppc64le 23件、release-notes JSON 1件。**Linux x64、Windows、macOS x64向けの同tagの実行バイナリはこの時点のasset一覧にない**。将来の追加配布や別tagでの提供は否定しない。
+- **重要な留保**: 公式release本文は `Official Eclipse Temurin Release of jdk-21.0.13.1+2` とだけ記載し、**CVE-2026-114938の修正を明記していない**。この追加配布だけで「CVE修正済み」「対象機の更新完了」「全プラットフォームで利用可能」とはしない。修正対応はAdoptiumの正式なセキュリティ情報・release notesと上流修正の突合が必要。
+- **次の検収条件**: 続くWindows/Linux x64向けassetの有無、対象CVE修正の公式根拠、署名・ハッシュ、実環境への適用は別々に確認する。NINAの日報に載せる場合は「Temurin 21の新stableがmacOS Apple SiliconからLinux ppc64leへ配布拡大したが、CVE修正の確証は未取得」と限定する。SNS投稿、サイト編集、端末操作、Google Docs/private共有ルーム書込みは未実施。MuseのDoc05反映は独立した未確認事項。
+
+公開一次根拠（Eclipse Adoptium公式GitHub、2026-11-19 04:30 JST読取）:
+- https://api.github.com/repos/adoptium/temurin21-binaries/releases/latest
+- https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13.1%2B2
