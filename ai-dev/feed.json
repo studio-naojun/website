@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T07:10:59+09:00",
+  "updated_at": "2026-11-19T07:17:26+09:00",
   "entries": [
     {
       "id": "daily-2026-11-19",
@@ -78,10 +78,10 @@
       "id": "daily-2026-11-13",
       "type": "daily",
       "published_at": "2026-11-13",
-      "updated_at": "2026-11-16T13:15:28+09:00",
+      "updated_at": "2026-11-19T07:17:26+09:00",
       "first_published_at": "2026-11-16",
       "title": "AI開発・セキュリティ日報｜2026年11月13日号",
-      "summary": "Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。",
+      "summary": "既存Claude Opus 5.5レビュー後訂正。Copilot 6モデルの廃止・例外、GitHub-hosted ARM32の対象、AI Scanのcreditsと管理APIを公式資料で検証。",
       "path": "daily/2026-11-13/",
       "source_cycle": "ai-dev-daily-2026-11-13",
       "priority": "P2"

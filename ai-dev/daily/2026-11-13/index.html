@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。">
+  <meta name="description" content="既存Claude Opus 5.5レビュー後訂正。Copilot 6モデルの廃止・例外、GitHub-hosted ARM32の対象、AI Scanのcreditsと管理APIを公式資料で検証。">
   <title>AI開発・セキュリティ日報｜2026年11月13日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
@@ -13,10 +13,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月13日号">
-  <meta property="og:description" content="Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。">
+  <meta property="og:description" content="既存Claude Opus 5.5レビュー後訂正。Copilot 6モデルの廃止・例外、GitHub-hosted ARM32の対象、AI Scanのcreditsと管理APIを公式資料で検証。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-13/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月13日号","description":"Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。","datePublished":"2026-11-16","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-13/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-16T13:15:28+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月13日号","description":"既存Claude Opus 5.5レビュー後訂正。Copilot 6モデルの廃止・例外、GitHub-hosted ARM32の対象、AI Scanのcreditsと管理APIを公式資料で検証。","datePublished":"2026-11-16","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-13/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-19T07:17:26+09:00"}</script>
 <!-- naojun-discovery:end -->
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
@@ -32,38 +32,44 @@
   <header class="ai-dev-article-hero">
 <!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[11.13]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
-      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-13 / 2026-11-16T13:15:28+09:00</span></div>
+      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-13 / 2026-11-19T07:17:26+09:00</span></div>
 <h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年11月13日号</h1>
-      <p class="ai-dev-lead">Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-16 13時台 JST</p>
+      <p class="ai-dev-lead">11月13日号の公開後訂正。Chrome 157の条件と既報悪用を分離し、GitHub運用変更を公式資料で検証。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-19 07時台JST（公開後訂正）</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全6章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P2｜Copilotの6モデルが12月14日に廃止予定</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P2｜GitHub-hosted ActionsのARM32が12月8日までに終了予定</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P2｜AI ScanのREST管理APIはプレビュー、利用には credits 注意</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">既報との違い・未確認の範囲</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全6章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全7章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P2｜GitHub Copilotの6モデルは12月14日に廃止予定</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P2｜GitHub-hosted ActionsのARM32ジョブ実行は12月8日までに終了予定</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P2｜GitHub Code Security AI ScanのREST管理プレビュー、creditsとPR設定を分離</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">既報との違い・未確認の範囲</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全7章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">6項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P2｜Copilotの6モデルが12月14日に廃止予定</a></li><li><a href="#reading-section-2">P2｜GitHub-hosted ActionsのARM32が12月8日までに終了予定</a></li><li><a href="#reading-section-3">P2｜AI ScanのREST管理APIはプレビュー、利用には credits 注意</a></li><li><a href="#reading-section-4">既報との違い・未確認の範囲</a></li><li><a href="#reading-section-5">更新履歴</a></li><li><a href="#reading-section-6">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">7項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P2｜GitHub Copilotの6モデルは12月14日に廃止予定</a></li><li><a href="#reading-section-2">P2｜GitHub-hosted ActionsのARM32ジョブ実行は12月8日までに終了予定</a></li><li><a href="#reading-section-3">P2｜GitHub Code Security AI ScanのREST管理プレビュー、creditsとPR設定を分離</a></li><li><a href="#reading-section-4">既報との違い・未確認の範囲</a></li><li><a href="#reading-section-5">公開後の緊急情報再確認と残る留保</a></li><li><a href="#reading-section-6">更新履歴</a></li><li><a href="#reading-section-7">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
     <p><strong>対象日：2026年11月13日／一次情報の再確認：2026年11月16日13時台JST／初回公開実日：2026年11月16日。</strong> 遅延復旧号であり、11月13日に記事が公開済みだったと装わない。</p>
-<p>GitHub Copilotの廃止予定モデル、ActionsのARM32実行サポート終了、Code Security AI ScanのREST管理機能を整理します。いずれも利用条件のある開発運用変更であり、実際の侵害事案や個別端末の被害を意味しません。</p>
-<h2 id="reading-section-1">P2｜Copilotの6モデルが12月14日に廃止予定</h2>
-<p><strong>発表・対象：</strong> <a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/" target="_blank" rel="noopener noreferrer">GitHub公式11/13 Changelog</a>によると、2026年12月14日にGitHub Copilot Chat、inline edits、ask/agent mode、コード補完などから6つのモデルを廃止する予定です。Copilot以外のモデル提供元のAPI停止と混同しません。</p>
-<p><strong>対象と移行候補：</strong> Claude Fable 5 → Claude Fable 5.2、Claude Haiku 4.5 → Claude Haiku 5.5、Gemini 3.8 Flash → Gemini 4 Hydrogen、Gemini 4 Argon → Gemini 4 Carbon、Grok 4.6 → Grok 4.7、Kimi K3 → 代替は未発表（11月13日時点）。<strong>例外：</strong> Claude Haiku 4.5を利用する年額の個人GitHub Copilot契約者には、この廃止は適用されないと公式に記載されています。</p>
-<p><strong>安全な確認と対応：</strong> Copilotの選択モデル、各自が明示したエージェント設定、管理者モデルポリシーを読み取りで確認し、対象モデルだけ切替計画を作ります。Enterprise/Businessのデフォルト有効化を止めている組織では、代替モデルが許可済みか確認する必要があります。実際に移行する場合は現行のテストケースで成果品質や動作を比較し、問題が出ればサポート中の元のモデル・手順へ戻します。追加契約・モデル許可の拡大を前提としません。</p>
-<h2 id="reading-section-2">P2｜GitHub-hosted ActionsのARM32が12月8日までに終了予定</h2>
-<p><strong>発表・対象：</strong> <a href="https://github.blog/changelog/2026-11-12-actions-for-arm32-linux-windows-retirement/" target="_blank" rel="noopener noreferrer">GitHub公式11/12 Changelog</a>は、GitHub-hosted runner上のWindows/Linuxで、ARM32（AArch32 user-space）のジョブ実行サポートを<strong>2026年12月8日までに終了</strong>すると予告。Node.js 20サポート終了およびNode.js 24のARM32非対応に関連する変更です。ARM64やx64のすべてのジョブを停止するものではありません。</p>
-<p><strong>確認・緩和：</strong> workflow定義と既存jobログからrunner OS・CPUアーキテクチャ・ARM32バイナリのネイティブ実行の有無を確認。該当する場合は代替runner・ARM64/x64への移行でテストを先に通し、依存ライブラリ互換性を見ます。self-hosted runnerの具体的な挙動はこの公告だけから断定しません。移行時は既知良好な構成へ戻す手順を残し、期限後のworkflow失敗を監視します。</p>
-<h2 id="reading-section-3">P2｜AI ScanのREST管理APIはプレビュー、利用には credits 注意</h2>
-<p><strong>発表・条件：</strong> <a href="https://github.blog/changelog/2026-11-13-manage-ai-scan-for-repositories-using-the-rest-api/" target="_blank" rel="noopener noreferrer">GitHub公式11/13 Changelog</a>は、Code Security AI Scan for repositoriesにorganization/repository REST API管理のpublic previewを追加。既存のorg/repoのAI Scan GET/PATCHエンドポイントでrepository_scanをenabled/disabledに設定でき、pr_scanと同時に更新できます。</p>
-<p><strong>ポリシーと費用：</strong> organizationで無効化した場合、下位repoは独自に有効化できません。Enterpriseポリシーが禁じる場合や同時変更の一部が拒否される場合は<strong>HTTP 422</strong>となり両設定が更新されません。対象は組織所有のpublic repositories等と適切なCode Security / Advanced Security契約があるprivate/internal repositories。GitHub Enterprise Serverは対象外です。設定をenabledにしてもscanは自動起動しませんが、<strong>ユーザーが実行するscanはGitHub Code Security AI creditsを消費</strong>します。</p>
-<p><strong>安全な確認：</strong> 許可済みread-only API/UIで現在のポリシー・利用権限・credits条件を確認するだけにとどめます。本号の調査では、有料スキャン、PATCHによる変更、権限変更、新規契約を実施・推奨していません。既存の静的解析・レビュー機能を廃止する根拠とも扱いません。</p>
-<h2 id="reading-section-4">既報との違い・未確認の範囲</h2>
-<p>11月9日Google公告で実悪用が言及されたChrome CVE-2026-125350は<a href="https://naojun.jp/ai-dev/daily/2026-11-11/" target="_blank" rel="noopener noreferrer">11月11日号</a>で既報。Chrome Stable 157の83修正とCritical 5件も<a href="https://naojun.jp/ai-dev/daily/2026-11-12/" target="_blank" rel="noopener noreferrer">11月12日号</a>で扱っています。本号の3件はそれらとは別の運用予告・管理機能です。CISA KEV/NVDや主要ベンダーの全件照合、個別開発環境のモデル・runner・料金状態は確認していないため、<strong>新しいP0の不存在や個別環境への非該当を保証しません</strong>。</p>
-<h2 id="reading-section-5">更新履歴</h2>
-<p>2026年11月16日13時台JST、11月13日号の遅延回収として上記GitHub公式一次資料を再確認。11月13日の対象日と11月16日の実初回公開日を区別し、今後の訂正は同一URLで更新時刻と根拠を記録します。</p>
+    <p>GitHub Copilotの廃止予定モデル、ActionsのARM32実行サポート終了、Code Security AI ScanのREST管理機能を整理します。いずれも利用条件のある開発運用変更であり、実際の侵害事案や個別端末の被害を意味しません。</p>
+    <h2 id="reading-section-1">P2｜GitHub Copilotの6モデルは12月14日に廃止予定</h2>
+    <p><a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/" target="_blank" rel="noopener noreferrer" aria-label="GitHub公式2026年11月13日発表（新しいタブ）">GitHub公式2026年11月13日発表</a>を11月19日07時台JSTに再確認。2026年12月14日にCopilot Chat、inline edits、ask/agent mode、code completionsを含むCopilotの体験で次の6モデルを廃止予定です。Copilot以外の提供元APIが同日終了する発表ではありません。</p>
+    <p><strong>対象と公式推奨先：</strong> Claude Fable 5→Claude Fable 5.2、Claude Haiku 4.5→Claude Haiku 5.5、Gemini 3.8 Flash→Gemini 4 Hydrogen、Gemini 4 Argon→Gemini 4 Carbon、Grok 4.6→Grok 4.7、Kimi K3→代替未発表（公式を11月19日に再確認）。既刊のモデル表は公式と一致しており、実在名や推奨先を推測変更しません。</p>
+    <p><strong>公式の例外：</strong> Claude Haiku 4.5に限り、個人GitHub Copilotの<strong>年額契約者</strong>には廃止が適用されないとGitHubは明記。他のモデルや全契約者を一律に例外と扱いません。Business/Enterpriseでは組織のモデルポリシーと代替モデルが現在許可されるかを個別確認します。</p>
+    <p><strong>安全な確認・切替：</strong> 12月14日までに対象のモデル設定と実際のワークフローを読み取り比較し、既存テストで代替を検証します。<strong>廃止後に元の廃止対象モデルへ戻すことはできない</strong>ため、期限後は許可済みの別のサポート中モデルか従来の開発手順を復旧先にします。権限・課金・契約を自動変更しません。</p>
+    <h2 id="reading-section-2">P2｜GitHub-hosted ActionsのARM32ジョブ実行は12月8日までに終了予定</h2>
+    <p><a href="https://github.blog/changelog/2026-11-12-actions-for-arm32-linux-windows-retirement/" target="_blank" rel="noopener noreferrer" aria-label="GitHub公式2026年11月12日発表（新しいタブ）">GitHub公式2026年11月12日発表</a>は、<strong>GitHub Actions hosted runnersのWindows/LinuxにおけるARM32ジョブ実行を2026年12月8日までに終了予定</strong>と明記。Node.js 20終了とNode.js 24のARM32非対応に伴い、hosted runnerでのnative AArch32 user-space実行のサポートが終了します。</p>
+    <p><strong>対象範囲は公式のGitHub-hostedが正確です。</strong> 既存Claudeレビューはself-hostedに影響する可能性を指摘しましたが、一次公告はhosted runnersを明記しており、対象をself-hostedへ逆転させる根拠はありません。ただしself-hosted ARM32の個別サポート期限は、この公告だけでは断定しません。ARM64やx64全体の終了でもありません。</p>
+    <p>workflowのrunner OS/CPUアーキテクチャと実際にARM32/AArch32を使うジョブを読み取りで照合し、必要なものだけARM64/x64またはサポートされるrunnerへ移行テスト。既知良好なビルドの復旧方法と期限後のCI結果を検収します。</p>
+    <h2 id="reading-section-3">P2｜GitHub Code Security AI ScanのREST管理プレビュー、creditsとPR設定を分離</h2>
+    <p><a href="https://github.blog/changelog/2026-11-13-manage-ai-scan-for-repositories-using-the-rest-api/" target="_blank" rel="noopener noreferrer" aria-label="GitHub公式2026年11月13日発表（新しいタブ）">GitHub公式2026年11月13日発表</a>を11月19日07時台に再確認。organization/repository向けのAI Scan for repositories設定（repository_scan）をGET/PATCHで管理するpublic previewです。既存のAI Scan for pull requests設定（pr_scan）と同じ要求で変更できます。</p>
+    <p><strong>HTTP 422とポリシー：</strong> enterprise policyがAI Scanを禁止する場合は有効化がHTTP 422で拒否され、同一リクエストのrepository_scanまたはpr_scanのどちらかが拒否された場合は<strong>両設定とも変更されません</strong>。これはGitHub公式説明に明記されており、当初記事の記述は正しかった点です。organization無効時はrepository側で有効化できず、organization有効時は個別repositoryでopt out可能です。</p>
+    <p><strong>費用条件：</strong> repository_scanをenabledにしただけでは<strong>オンデマンドのrepository scanは開始しません</strong>が、実際にユーザーが実行する各scanはGitHub Code Security AI creditsを消費します。別設定のpr_scanについて、今回の公告だけから<strong>PR契機の自動実行がない・無料である</strong>とは断定しません。自動PRスキャン条件とcredit発生は該当REST docs/課金条件を別に確認してください。</p>
+    <p><strong>対象と安全な確認：</strong> organization-owned public repositoriesと、GitHub Code SecurityまたはGitHub Advanced Security契約があるprivate/internal repositories。GitHub Enterprise Serverは対象外。今回、有料スキャンの実行、PATCH、権限や契約の変更はせず、利用条件の照合に限定します。</p>
+    <h2 id="reading-section-4">既報との違い・未確認の範囲</h2>
+    <p>11月9日Google公告で実悪用が言及されたChrome CVE-2026-125350は<a href="/ai-dev/daily/2026-11-11/">11月11日号</a>で既報。Chrome Stable 157の83修正とCritical 5件も<a href="/ai-dev/daily/2026-11-12/">11月12日号</a>で扱っています。本号の3件はそれらとは別の運用予告・管理機能です。CISA KEV/NVDや主要ベンダーの全件照合、個別開発環境のモデル・runner・料金状態は確認していないため、<strong>新しいP0の不存在や個別環境への非該当を保証しません</strong>。</p>
+    <h2 id="reading-section-5">公開後の緊急情報再確認と残る留保</h2>
+    <p><strong>2026年11月19日07時台JSTにCISA KEVを直接再取得。</strong> カタログ2026.11.18版で、dateAdded=11月13日は<strong>UnrealIRCd CVE-2026-114713とCheck Point CVE-2026-123039の2件</strong>、14〜16日の追加は0件。これは後日の検査であり、13日の当時の原稿が全ベンダーの緊急情報を網羅していたという意味ではありません。11月18日追加の4件は<a href="/ai-dev/daily/2026-11-19/">11月19日号</a>にP0として別掲。Chromeの安全更新は<a href="/ai-dev/daily/2026-11-12/">11月12日号</a>および<a href="/ai-dev/daily/2026-11-18/">11月18日号</a>を参照。GitHub Statusや全ベンダーの履歴を網羅検査したとは主張しません。</p>
+    <h2 id="reading-section-6">更新履歴</h2>
+    <p>2026年11月16日13時台JST、11月13日号の遅延回収として上記GitHub公式一次資料を再確認。11月13日の対象日と11月16日の実初回公開日を区別し、今後の訂正は同一URLで更新時刻と根拠を記録します。</p>
+    <p>2026-11-19T07:16+09:00：既存Claude Opus 5.5レビュー（11月18日23:01 JST）のF1〜F6を公式GitHub ChangelogとCISA KEVから再照合。hosted ARM32の原記述とCopilotの6モデル・年額例外は一次情報に一致するため維持。期限後の復旧先、pr_scanの未確認部分、後日のKEV追加2件、更新時刻と資料ラベルを同一URLへ追補。対象日11月13日、実際の初回公開日11月16日は維持。</p>
     <aside class="source-note">
-      <h2 id="reading-section-6">一次資料</h2>
-      <ul><li><a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/" target="_blank" rel="noopener noreferrer">GitHub: Copilot model retirement Nov13</a></li> <li><a href="https://github.blog/changelog/2026-11-12-actions-for-arm32-linux-windows-retirement/" target="_blank" rel="noopener noreferrer">GitHub: Actions ARM32 runner Nov12</a></li> <li><a href="https://github.blog/changelog/2026-11-13-manage-ai-scan-for-repositories-using-the-rest-api/" target="_blank" rel="noopener noreferrer">GitHub: AI Scan REST Nov13</a></li> <li><a href="https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_01744469280.html" target="_blank" rel="noopener noreferrer">Google: Chrome 157 prior coverage Nov11</a></li></ul>
+      <h2 id="reading-section-7">一次資料</h2>
+      <ul><li><a href="https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december/" target="_blank" rel="noopener noreferrer">GitHub Copilot 11/13（公式原本、新しいタブ）</a></li><li><a href="https://github.blog/changelog/2026-11-12-actions-for-arm32-linux-windows-retirement/" target="_blank" rel="noopener noreferrer">GitHub Actions ARM32 11/12（公式原本、新しいタブ）</a></li><li><a href="https://github.blog/changelog/2026-11-13-manage-ai-scan-for-repositories-using-the-rest-api/" target="_blank" rel="noopener noreferrer">GitHub AI Scan REST 11/13（公式原本、新しいタブ）</a></li><li><a href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer">CISA KEV（公式原本、新しいタブ）</a></li></ul>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
   </article>

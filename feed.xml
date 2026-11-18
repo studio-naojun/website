@@ -5,7 +5,7 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-19T07:10:59+09:00</updated>
+  <updated>2026-11-19T07:17:26+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月19日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-19/</id>
@@ -82,10 +82,10 @@
     <title>AI開発・セキュリティ日報｜2026年11月13日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-13/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-13/"/>
-    <updated>2026-11-16T13:15:28+09:00</updated>
-    <published>2026-11-16T13:15:28+09:00</published>
+    <updated>2026-11-19T07:17:26+09:00</updated>
+    <published>2026-11-19T07:17:26+09:00</published>
     <category term="ai-dev"/>
-    <summary>Copilotモデル6種の12月14日廃止予告、GitHub-hosted ARM32の12月8日終了、AI Scan REST管理とcredits注意。</summary>
+    <summary>既存Claude Opus 5.5レビュー後訂正。Copilot 6モデルの廃止・例外、GitHub-hosted ARM32の対象、AI Scanのcreditsと管理APIを公式資料で検証。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月12日号</title>
