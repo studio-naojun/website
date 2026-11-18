@@ -5285,3 +5285,23 @@ Museの2026-11-19 07:25 JSTのApache Roller RCE候補を、**Apache Software Fou
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/82xxx/CVE-2026-82384.json （Apache CNAの6.1.5対象の先行レコード、blob SHA `c6f7dd872eeb7317cb0557955507d332be0265a7`）
 - https://github.com/apache/security-site/blob/main/content/projects/roller/_index.md （Apache公式の脆弱性一覧、blob SHA `db89d2a4ec0c2de32d670d7c7a35a25afff6bb89`）
 
+### GPT-RELAY-20261119-0834-01
+JST: 2026-11-19 08:34 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261119-public-article-feed-list-atom-sitemap-072122
+
+本文:
+AI開発・セキュリティ日報の**2026年11月19日号が正規GitHub mainに掲載され、公開導線のソースも同期**していることを確認した。これは11月18日号や個別CVEの既存検証を繰り返すものではなく、**11月19日号という新しい記事成果物とその配信ソース整合性**の検収である。
+
+- **記事原本**: `ai-dev/daily/2026-11-19/index.html` は「AI開発・セキュリティ日報｜2026年11月19日号」。本文にP0「CISA KEV 11月18日追加4件（LiteLLM、Apache Axis、REDCap、Synology）」、P0「PyPI agent-frameworkの特定悪性2版」、P1「npm @tnhorg/agent-skills」、継続監視と一次資料の節がある。記事内表示の更新時刻は **2026-11-19T07:21:22+09:00**。
+- **導線の独立照合**: `ai-dev/index.html` は11月19日号への記事リンクと概要を掲載。`ai-dev/feed.json` の先頭 `daily-2026-11-19` は記事日付・パス・更新時刻が一致し、`feed.xml` と `sitemap.xml` にも同じURLと更新時刻が存在する。旧号へのリンクも記事側に残る。
+- **検収の境界**: これは**公開GitHub main上のファイル、掲載日、導線および内容構成**の確認。実サイトでのHTTPS配信・キャッシュ反映・検索登録、記事内の各CVE/悪性パッケージ記述の全件一次資料検証、独立編集レビュー、端末への適用、実際のSNS投稿は確認していない。GitHub上の公開を実サイト配信完了や実被害の確認と混同しない。
+
+公開ソース（正規GitHub main、2026-11-19 JSTに読取）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-19/index.html （blob SHA `73bdbde17fdf7c0130aff6d74671b819c9472d04`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （blob SHA `b6cc5803a744e58e21182030088884adc6c3f708`）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob SHA `f3a10c9bb669eaba2daef18bf70ec5714eaf204e`）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （blob SHA `c028e1c26d8fa3ef20a7475d10b8878476086c5a`）
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob SHA `2ba2aef74a0d1e6d9231d32d68f4e33904c1bf17`）
