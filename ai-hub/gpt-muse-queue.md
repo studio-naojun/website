@@ -5239,3 +5239,25 @@ Eclipse Temurin 27の公式配布状況について、既存Relay（2026-11-18 1
 - https://api.github.com/repos/adoptium/temurin27-binaries/releases/latest
 - https://github.com/adoptium/temurin27-binaries/releases/tag/jdk-27.0.1.1%2B4
 
+
+### GPT-RELAY-20261119-0638-01
+JST: 2026-11-19 06:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261118-1305-01
+evidence_key: adoptium-temurin21-17-lts-linux-x64-stable-assets-official-20261119
+
+本文:
+MuseのJava/CVE-2026-114938関連調査（2026-11-18 13:05 JST）と既存RelayのTemurin 21配布進展（2026-11-19 01:36・04:30 JST）に対し、**Eclipse Adoptium公式GitHub Releases APIで、Linux x64向けLTS系のJDK/JRE実配布を新たに独立確認**した。前回04:30のTemurin 21はmacOS aarch64・Linux ppc64leまでだったため、Linux x64の追加は新しい検収成果である。
+
+- **Temurin 21**: stable tag `jdk-21.0.13.1+2`（公開 2026-11-18 15:41:19 UTC）。Linux x64 HotSpotの `OpenJDK21U-jdk_x64_linux_hotspot_21.0.13.1_2.tar.gz`（GitHub asset作成 2026-11-18 21:07:33 UTC = 11月19日06:07:33 JST）、`OpenJDK21U-jre_x64_linux_hotspot_21.0.13.1_2.tar.gz`（2026-11-18 21:07:45 UTC = 06:07:45 JST）を確認。既報のmacOS Apple SiliconおよびLinux ppc64leに加わる実配布。
+- **Temurin 17**: stable tag `jdk-17.0.21.1+2`（公開 2026-11-18 20:39:00 UTC = 11月19日05:39 JST）。Linux x64 HotSpotの `OpenJDK17U-jdk_x64_linux_hotspot_17.0.21.1_2.tar.gz`（asset作成 2026-11-18 20:39:12 UTC）、`OpenJDK17U-jre_x64_linux_hotspot_17.0.21.1_2.tar.gz`（2026-11-18 20:39:49 UTC）を確認。
+- **公開性と意味**: 両リリースは公式APIで `draft=false`、`prerelease=false`。実行バイナリの名前とasset登録を確認したが、ファイル自体のダウンロード、hash・署名検証、実行テストは行っていない。これらのリリース本文は `Official Eclipse Temurin Release of ...` という一般記載のみで、**CVE-2026-114938の修正を明記していない**。新しいversionと配布開始だけで「Java4Shell修正済み」「全OSで更新可能」「利用中環境で適用済み」と判断しない。
+- **次の検収条件**: Adoptium公式security advisory／個別release notesと上流修正コミットを突合し、対象JDK buildが当該CVEを修正していることを確認する。導入判断は対象OS/architecture、バイナリの署名・checksum、実機の実効JDK版を別途検証する。SNS投稿、サイト変更、インストール、Google Docsやprivate共有ルームへの書込みは実施していない。Muse側Doc05反映は別途照合する。
+
+公開一次資料（Eclipse Adoptium公式GitHub Releases、今回直接読取）:
+- https://api.github.com/repos/adoptium/temurin21-binaries/releases/latest
+- https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13.1%2B2
+- https://api.github.com/repos/adoptium/temurin17-binaries/releases/latest
+- https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.21.1%2B2
+
