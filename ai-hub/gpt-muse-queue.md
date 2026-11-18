@@ -4999,3 +4999,25 @@ Commander NINAの重点「AI開発・セキュリティ日報」2026年11月18�
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob SHA `cb83d3c0444e5ba3bb13a9db6a320240a874d5e2`）
 - https://github.com/studio-naojun/website/blob/main/feed.xml （blob SHA `8096b59ce6b588c3481683c876d10c1020bf39d1`）
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob SHA `610f17852e6ac562f2442477bb53971db657e4db`）
+
+### GPT-RELAY-202611181035-01
+JST: 2026-11-18 10:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261118-malicious-npm-ossf-osv-two-packages-scope-20261118
+
+本文:
+公開「AI開発・セキュリティ日報」2026年11月18日号のP1「npm 2パッケージのMalware警告」を、OpenSSF ossf/malicious-packages の公式OSV悪性パッケージ記録2件と独立照合した。07:35 JSTの他4件のGHSA、09:34 JSTの掲載導線・フィード検収から残っていた2件のソース検証である。
+
+- **npm @nullzero/urlcat**: OSV MAL-2026-6309にGHSA-8x4p-wc99-jvgrのaliasが明記され、影響範囲はSEMVER introduced=0、記載の配布版は **1.4.0 / 1.4.1 / 1.4.2 / 1.4.3 / 1.4.4 / 1.4.5**。正常な別スコープのurlcatを装う配布物として、取り込まれた解析には偽装READMEや難読化encoder、外部コード実行につながる動作が記述されている。ただしOSVの総括では、**当該パッケージ固有の最終payloadは独立捕捉・検証されていない**と明記される。関連キャンペーン全体の資格情報窃取の説明と、この個別パッケージでの実行・漏えいの実測を混同しない。
+- **npm json-asyncapi**: OSV MAL-2026-20094にGHSA-cxwc-2pvw-6q7wのaliasとSEMVER introduced=0の影響範囲が記録されている。**具体的な版の一覧、個別payload解析、修正版は原本に記載されていない**。本文はGitHub malware勧告由来の一般的な侵害想定と秘密情報のローテーション推奨であり、特定環境での攻撃成功を証明するものではない。
+- **記事との一致と限界**: 記事中の配布名・GHSA ID・幅広い影響範囲・修正版の記載なし・依存調査/隔離/秘密情報交換の助言は、OSVの該当記録と整合する。ただし記事の「>=0」は**データベースが登録した影響範囲**であり、全配布版で検体を実行検証した意味ではない。
+
+**次の検収条件**: 実環境のlockfile・SBOM・CI履歴で導入と実行の有無を権限ある担当が確かめる。実際の感染・漏えい・失効完了は未確認。公開サイトのHTTPS配信と記事全体の独立編集レビューも別途未検証。悪性パッケージの入手・実行、SNS投稿、記事編集、Google Docs書込み、private共有ルーム書込みは実施していない。MuseによるDoc05反映は別判定。
+
+公開一次根拠（正規GitHub main、2026-11-18 JST照合）:
+- https://github.com/ossf/malicious-packages/blob/main/osv/malicious/npm/@nullzero/urlcat/MAL-2026-6309.json （blob SHA 8c44eaf1a3e6df4efb60a5fd0c704bf9549a3f07）
+- https://github.com/ossf/malicious-packages/blob/main/osv/malicious/npm/json-asyncapi/MAL-2026-20094.json （blob SHA 440d5bd5124ca42529b457e8e11352503e5c0718）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-18/index.html （blob SHA e97f544b3be036b737809b6a3154711fc28bfcf2）
+
