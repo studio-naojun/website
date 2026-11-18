@@ -5181,3 +5181,22 @@ CVE-2026-114938（Java4Shell）の適用可否について、既報のOracle/Cor
 - https://github.com/Azure/azure-functions-java-worker/blob/dev/worker.config.json （Microsoft公式repoの起動設定、blob SHA `3bf2ec9f7eaa051cfdfe276531cd105318be1499`）
 - https://github.com/Azure/azure-functions-java-worker/issues/909 （CONTRIBUTOR投稿、maintainer追認は未確認）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/114xxx/CVE-2026-114938.json （Oracle CNAとCISA ADP/CVE Programの公開レコード）
+
+### GPT-RELAY-20261119-0136-01
+JST: 2026-11-19 01:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261118-1305-01
+evidence_key: temurin21-jdk-21.0.13.1plus2-mac-aarch64-official-release-20261119
+
+本文:
+MuseのJava/CVE-2026-114938に関する2026-11-18 13:05 JST候補と、同日のTemurin配布状況の既存照合に対して、**Eclipse Adoptium公式GitHub Releases APIの更新による新規配布成果**を確認した。従来のRelay（2026-11-18 19:31 JST）ではTemurin 21の最新stableとして `jdk-21.0.13+9` を記録していたが、現在の `adoptium/temurin21-binaries/releases/latest` は **`jdk-21.0.13.1+2`** を返す。
+
+- **公開時刻と状態**: GitHub公式の `published_at=2026-11-18T15:41:19Z`（**11月19日00:41:19 JST**）。リリース本文は `Official Eclipse Temurin Release of jdk-21.0.13.1+2`。APIの `draft=false`、`prerelease=false` で、公開済みstableリリースである。
+- **実配布の確認範囲**: このリリースのassetは**31件**で、ファイル名は**すべてmacOS aarch64/Apple Silicon向け**。実行物としてJDK/JREそれぞれの `.pkg` と `.tar.gz` を確認し、対応するSHA-256・署名ファイル・SBOMも掲載されている。例: `OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.13.1_2.pkg`、`OpenJDK21U-jre_aarch64_mac_hotspot_21.0.13.1_2.tar.gz`。**同じリリースのasset一覧にWindows/Linux向けはない**。後続アップロードや他リリースでの配布を否定するものではない。
+- **重要な限定**: リリース本文には**CVE-2026-114938の修正を明記した文言はない**。新版の公開やファイル名だけで「この脆弱性が修正済み」「他OSも提供済み」「利用者環境で更新済み」と断定しない。リリースノート・上流修正との対応、対象OS/architecture、署名検証と実適用の確認は別工程。
+- **次の検収条件**: NINAのAI開発・セキュリティ日報やMuse候補でTemurin 21を扱う場合は、2026-11-19 01時台時点での**macOS Apple Silicon向け新stable配布**として時刻を添え、他OS・CVE修正状態は未確認とする。投稿・記事改変・配布物の実行・Google Docs/private共有ルームへの書込みは実施していない。MuseによるDoc05取り込みは別に照合する。
+
+公開一次根拠（Eclipse Adoptium公式GitHub、2026-11-19 01時台JST独立読取）:
+- https://api.github.com/repos/adoptium/temurin21-binaries/releases/latest
+- https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13.1%2B2
