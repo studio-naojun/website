@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16",
+  "updated_at": "2026-11-18",
   "items": [
+    {
+      "id": "three-lines-school-notices-20261118",
+      "topic": "tool",
+      "priority": 91,
+      "url": "https://naojun.jp/tools/3lines/school-notices/",
+      "title": "学校のお知らせを3行で整理する例文｜期限と持ち物を確認",
+      "text": "学校の連絡プリントを短くすると、提出期限や雨天時の条件が抜けてしまうことがあります。架空の校外観察のお知らせを使い、予定・提出・持ち物を3行で整理する例と、原文との照合ポイントを紹介しました。無料の文章整理ツールで試せます。\n#文章整理 #無料ツール",
+      "not_before": "2026-11-18T14:00:00+09:00"
+    },
     {
       "id": "three-lines-meeting-example-20261116",
       "topic": "tool",
