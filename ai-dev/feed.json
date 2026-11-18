@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T07:17:26+09:00",
+  "updated_at": "2026-11-19T07:21:22+09:00",
   "entries": [
     {
       "id": "daily-2026-11-19",
       "type": "daily",
       "published_at": "2026-11-19",
-      "updated_at": "2026-11-19T07:06:26+09:00",
+      "updated_at": "2026-11-19T07:21:22+09:00",
       "first_published_at": "2026-11-19",
       "title": "AI開発・セキュリティ日報｜2026年11月19日号",
       "summary": "CISA KEVが11/18に実悪用登録したLiteLLM・Apache Axis・REDCap・Synologyの4件をP0追補。正規PyPI agent-framework悪性2版の安全対策も整理。",
