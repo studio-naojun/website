@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="正規PyPIのMicrosoft Agent Framework 1.26.1/1.26.2に資格情報窃取コード。npm agent-skills悪性版も導入条件と安全な復旧を整理。">
+  <meta name="description" content="CISA KEVが11/18に実悪用登録したLiteLLM・Apache Axis・REDCap・Synologyの4件をP0追補。正規PyPI agent-framework悪性2版の安全対策も整理。">
   <title>AI開発・セキュリティ日報｜2026年11月19日号 | AI開発・セキュリティ日報</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/ai-dev/assets/ai-dev.css">
@@ -13,10 +13,10 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="NAOJUN STUDIOS">
   <meta property="og:title" content="AI開発・セキュリティ日報｜2026年11月19日号">
-  <meta property="og:description" content="正規PyPIのMicrosoft Agent Framework 1.26.1/1.26.2に資格情報窃取コード。npm agent-skills悪性版も導入条件と安全な復旧を整理。">
+  <meta property="og:description" content="CISA KEVが11/18に実悪用登録したLiteLLM・Apache Axis・REDCap・Synologyの4件をP0追補。正規PyPI agent-framework悪性2版の安全対策も整理。">
   <meta property="og:url" content="https://naojun.jp/ai-dev/daily/2026-11-19/">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月19日号","description":"正規PyPIのMicrosoft Agent Framework 1.26.1/1.26.2に資格情報窃取コード。npm agent-skills悪性版も導入条件と安全な復旧を整理。","datePublished":"2026-11-19","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-19/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-19T07:00:12+09:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI開発・セキュリティ日報｜2026年11月19日号","description":"CISA KEVが11/18に実悪用登録したLiteLLM・Apache Axis・REDCap・Synologyの4件をP0追補。正規PyPI agent-framework悪性2版の安全対策も整理。","datePublished":"2026-11-19","mainEntityOfPage":"https://naojun.jp/ai-dev/daily/2026-11-19/","publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"dateModified":"2026-11-19T07:06:26+09:00"}</script>
 <!-- naojun-discovery:end -->
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
 </head>
@@ -32,34 +32,47 @@
   <header class="ai-dev-article-hero">
 <!-- studio:coverart:start --><div class="cover-art cover-art-ai-dev" aria-hidden="true"><svg class="cover-figure cover-circuit" viewBox="0 0 300 300" focusable="false"><g class="circuit-lines"><path d="M0 60H140V20H260"/><path d="M0 140H90V200H300"/><path d="M60 300V240H200V120H300"/><path d="M140 0V60"/><path d="M200 300V250"/><path d="M260 20V90H300"/></g><g class="circuit-nodes"><circle cx="260" cy="20" r="7"/><circle cx="300" cy="200" r="7"/><circle cx="140" cy="60" r="7"/><circle cx="200" cy="120" r="7"/><circle cx="90" cy="200" r="7"/><circle cx="200" cy="250" r="7"/><circle cx="300" cy="90" r="7"/></g><rect class="circuit-chip" x="150" y="150" width="70" height="70"/></svg><span class="cover-numerals">[11.19]</span><span class="cover-word">AI-DEV<small>Security Daily</small></span></div><div class="cover-nameplate" aria-hidden="true"><span>AI-DEV</span><small>Security Daily / 日報</small></div><!-- studio:coverart:end -->
     <div class="container">
-      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-19 / 2026-11-19T07:00:12+09:00</span></div>
+      <div class="issue-masthead"><span>AI開発・セキュリティ日報</span><span>日報 / 2026-11-19 / 2026-11-19T07:06:26+09:00</span></div>
 <h1>AI開発・セキュリティ<span class="issue-title-unit">日報</span>｜2026年11月19日号</h1>
-      <p class="ai-dev-lead">正規のAIエージェント用PyPIパッケージに悪性の特定版。影響版の確認と秘密失効・再構築を優先。</p>
-      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-19 07:00 JST頃</p>
+      <p class="ai-dev-lead">CISA KEVでLiteLLMなど4件の実悪用を確認。正規PyPI agent-frameworkの悪性配布2版も対象版と安全な対処を整理。</p>
+      <p class="ai-dev-small">調査・編集：K.A.N.A.D.E.　／　確認時点：2026-11-19 07時台 JST</p>
     </div>
-  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全4章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P0｜正規PyPI「agent-framework」1.26.1・1.26.2に資格情報窃取コード</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P1｜npm「@tnhorg/agent-skills」Malware：導入済みの場合のみ隔離・再構築を優先</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">継続監視と確認範囲</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">一次資料</span></a></li></ol></nav><!-- studio:covernav:end -->
+  <!-- studio:covernav:start --><nav class="cover-chapters" aria-label="この号の章立て"><p class="cover-chapters-label"><span>IN THIS ISSUE</span><span>この号の内容・全5章</span></p><ol><li><a href="#reading-section-1"><span class="chapter-no" aria-hidden="true">01</span><span class="chapter-title">P0追補｜CISA KEVの2026年11月18日追加4件：LiteLLM、Apache Axis、REDCap、Synology</span></a></li><li><a href="#reading-section-2"><span class="chapter-no" aria-hidden="true">02</span><span class="chapter-title">P0｜正規PyPI「agent-framework」1.26.1・1.26.2に資格情報窃取コード</span></a></li><li><a href="#reading-section-3"><span class="chapter-no" aria-hidden="true">03</span><span class="chapter-title">P1｜npm「@tnhorg/agent-skills」Malware：導入済みの場合のみ隔離・再構築を優先</span></a></li><li><a href="#reading-section-4"><span class="chapter-no" aria-hidden="true">04</span><span class="chapter-title">継続監視と確認範囲</span></a></li></ol><a class="cover-chapters-all" href="#reading-toc">全5章の目次へ <span aria-hidden="true">↓</span></a></nav><!-- studio:covernav:end -->
 </header>
   <!-- sync_studio.py builds the reading rail from the rendered h2 headings. -->
   <!-- studio:reading:start -->
-<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">4項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P0｜正規PyPI「agent-framework」1.26.1・1.26.2に資格情報窃取コード</a></li><li><a href="#reading-section-2">P1｜npm「@tnhorg/agent-skills」Malware：導入済みの場合のみ隔離・再構築を優先</a></li><li><a href="#reading-section-3">継続監視と確認範囲</a></li><li><a href="#reading-section-4">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
+<div class="reading-layout container"><aside class="reading-rail"><details class="reading-toc" id="reading-toc" open><summary>このページの内容<span class="toc-count">5項目</span></summary><nav aria-label="記事の目次"><ol><li><a href="#reading-section-1">P0追補｜CISA KEVの2026年11月18日追加4件：LiteLLM、Apache Axis、REDCap、Synology</a></li><li><a href="#reading-section-2">P0｜正規PyPI「agent-framework」1.26.1・1.26.2に資格情報窃取コード</a></li><li><a href="#reading-section-3">P1｜npm「@tnhorg/agent-skills」Malware：導入済みの場合のみ隔離・再構築を優先</a></li><li><a href="#reading-section-4">継続監視と確認範囲</a></li><li><a href="#reading-section-5">一次資料</a></li></ol></nav></details><a class="rail-back" href="/ai-dev/">← AI開発・セキュリティ日報一覧</a></aside>
 <!-- studio:reading:body -->
 <article class="ai-dev-article">
     <p><strong>対象日：2026年11月19日。公式情報確認：同日07:00 JST前後。</strong> 今朝の優先事項は、Microsoft Agent Frameworkの正規PyPIパッケージに混入した悪性コードです。実際の導入版により対応は大きく異なります。見出しだけで端末の侵害を決めつけず、導入履歴から確認してください。</p>
-    <h2 id="reading-section-1">P0｜正規PyPI「agent-framework」1.26.1・1.26.2に資格情報窃取コード</h2>
+    <h2 id="reading-section-1">P0追補｜CISA KEVの2026年11月18日追加4件：LiteLLM、Apache Axis、REDCap、Synology</h2>
+    <p><strong>新たな確認：2026年11月19日07時台JST。</strong> CISAの<a href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer" aria-label="KEV公式カタログ（新しいタブ）">KEV公式カタログ</a>は2026.11.18版（公開11月18日19:17 UTC＝19日04:17 JST）で、4件を11月18日付で新たに登録しました。これは当該脆弱性の悪用が確認されたという意味で、すべての利用者の侵害を意味しません。昨日報告済みのPuppet Enterpriseとは別です。</p>
+    <h3>LiteLLM / CVE-2026-40217：custom-code guardrailのsandboxを越えるコード実行</h3>
+    <p><strong>対象条件：</strong> Python litellm 1.81.8以上1.83.10未満でLiteLLM Proxyのcustom-code guardrailテスト機能を使う場合に、細工された利用者PythonからProxyプロセス内のコード実行につながり得ます。デフォルトではProxy管理者の認証情報が必要なAPIで、全環境が無認証で攻撃可能とはいえません。CISAは11月18日付で実悪用をKEV登録しました。関連する<a href="https://github.com/BerriAI/litellm/security/advisories/GHSA-wxxx-gvqv-xp7p" target="_blank" rel="noopener noreferrer" aria-label="LiteLLM公式GHSA（新しいタブ）">LiteLLM公式GHSA</a>は2026年5月公表です。</p>
+    <p><strong>対処・安全な確認：</strong> GHSAの修正済み版には相違があります。版範囲メタデータは1.83.10以上を修正済みとしていますが、本文は1.83.11以降へ更新するよう案内します。<strong>保守的に1.83.11以降へ更新</strong>し、公式配布元と実際のProxy版を照合してください。更新までの暫定策はテストAPIへのアクセスをreverse proxy/API gatewayで拒否すること。復旧後は正常なguardrail利用と認証・アクセスログで確認し、悪用用bytecodeは実行しません。</p>
+    <h3>Apache Axis 1.x / CVE-2026-90436：SOAP Fault処理時の危険なclass読み込み</h3>
+    <p><strong>対象条件：</strong> CISAが11月18日付で実悪用を登録。旧Apache Axis 1.xで外部から受信するSOAP faultが任意のclassをロード・生成する問題。指定したclassがアプリケーションのclasspathで利用可能な場合などにRCEの条件が成立します。すべてのJavaアプリがこの旧SOAPエンジンを使うわけではありません。</p>
+    <p><strong>対処・安全な確認：</strong> Axis 1.xは保守終了系列。依存ライブラリと実稼働のSOAPエンドポイントを読み取り確認し、サポートされるSOAPエンジンへの移行、公開到達性の制限を優先します。現行の確定した公式リリース版を今回の一次資料で確認できていないため、修正版番号を推測しません。<a href="https://lists.apache.org/thread/8slf0j9gz35z56t0glt5h0ncwlbn4bdz" target="_blank" rel="noopener noreferrer" aria-label="Apache公式原本（新しいタブ）">Apache公式原本</a>とCISAを照合し、変更後は通常の正当なSOAP要求とログで検収。危険なfaultを送らないでください。</p>
+    <h3>REDCap / CVE-2026-90817 と Synology DSM・BSM / CVE-2024-10441</h3>
+    <p><strong>REDCap：</strong> CISAが11月18日付で実悪用を登録。公開surveyの有効なsurvey hashを攻撃者が知っているなど、特定のルーティングとData Importの処理条件が成立した際に、通常の管理者認証なしでRCEに至り得ます。実版・公開survey機能・インターネット到達性・公式更新通知を確認。必要な制限は研究データ収集への影響を評価して行います。修正版番号は今回直接確認できた<a href="https://github.com/advisories/GHSA-HG88-QG2R-C8MX" target="_blank" rel="noopener noreferrer" aria-label="一次CVE資料（新しいタブ）">一次CVE資料</a>に記載されないため推測しません。</p>
+    <p><strong>Synology：</strong> <a href="https://www.synology.com/zh-tw/security/advisory/Synology_SA_24_20" target="_blank" rel="noopener noreferrer" aria-label="公式Synology-SA-24:20（新しいタブ）">公式Synology-SA-24:20</a>が2024年に公表したCVE-2024-10441について、CISAが2026年11月18日に実悪用を新たに登録。DSMは製品系列で修正点が異なり、7.2.2系は<strong>7.2.2-72806-1以降</strong>、7.2.1系は<strong>7.2.1-69057-6以降</strong>、7.2系は<strong>7.2-64570-4以降</strong>、7.1系は<strong>7.1.1-42962-7以降</strong>、6.2系は<strong>6.2.4-25556-8以降</strong>を公式表と照合。BeeStation OSは1.1-65374未満がCVE記載の影響版。機器の実版、正規更新履歴と公開設定、正常なサービスを安全に確認します。未修正NAS全体を憶測で列挙しません。</p>
+    <p><strong>期限と留保：</strong> CISAの期限はLiteLLMが2026年12月2日、その他3件は11月21日で、米国の対象連邦機関の是正基準です。民間全利用者への一律法的期限ではありません。個々の利用者やJunの端末・サーバーに該当する証拠、被害主体はありません。</p>
+    <h2 id="reading-section-2">P0｜正規PyPI「agent-framework」1.26.1・1.26.2に資格情報窃取コード</h2>
     <p>2026年11月18日00:31 UTC（日本時間18日09:31）公開の<a href="https://github.com/advisories/GHSA-764m-3ppc-5m73" target="_blank" rel="noopener noreferrer" aria-label="GitHub公式 GHSA-764m-3ppc-5m73（新しいタブ）">GitHub公式 GHSA-764m-3ppc-5m73</a>は、Microsoft Agent Frameworkの正規配布名 <strong>agent-framework（pip/PyPI）</strong> の <strong>1.26.1および1.26.2</strong> をMalwareとしています。両版は17日UTCに配布され、その後PyPIから削除されました。これは似た名前の偽物ではなく、正規パッケージの特定2版に関する問題です。</p>
     <p><strong>成立条件・影響：</strong> 対象wheelをインストールしたPython環境には自動起動する「.pth」フックが含まれ、<strong>agent_frameworkをimportしなくてもPython起動時に処理が走り得ます</strong>。環境変数、各種トークン・資格情報ファイル、他プロセスの環境情報に加え、Azureのmanaged identityやAzure DevOps、GitHub ActionsのOIDCトークンを収集・外部送信するコードが確認されています。CI、クラウド実行環境では影響が大きくなり得ますが、<strong>実際の漏えい量、攻撃者、個別システムの侵害有無は現時点の公開Advisoryからは確定できません</strong>。</p>
     <p><strong>非該当条件：</strong> 同GHSAが最後のクリーン版とする <strong>1.26.0以前</strong> は、この2版の悪性コードを含みません。関連ライブラリの名前やMicrosoft製品を使っているというだけでは、当該wheelの導入とはいえません。</p>
     <p><strong>安全な確認・復旧：</strong> まずlockfile、SBOM、pip/uvのインストール履歴、CIログ、内部ミラー・wheelキャッシュで対象<strong>配布名と正確な版</strong>を照合します。対象環境内での安易な <strong>python、pipの起動は避けてください</strong>。フックを再実行しかねません。該当版が導入されていた場合は環境を隔離し、信頼できるシェル・管理経路で悪性フックとパッケージを除去し、クリーンな依存・イメージから再構築します。導入予定版は当面 <strong>agent-framework==1.26.0</strong> に固定し、キャッシュやCIミラーに残った悪性wheelの再投入を防ぎます。さらに<strong>到達可能だった秘密・クラウド認証・CIトークンを安全な別端末から失効・再発行</strong>し、正規のビルド・動作確認を行ってください。単純なアンインストールだけで漏えい済み秘密は回収できません。危険なコードを動かす攻撃再現や、悪性wheelの再インストールは不要です。</p>
     <p><strong>留保：</strong> GHSAに修正済みの新しい版は指定されていません。1.26.0は既知クリーン版への固定策であり、今後のリリース全般の安全保証ではありません。発見経緯やアップロード権限の侵害原因について断定しません。個別の利用環境に本パッケージが入っているという実測もありません。</p>
-    <h2 id="reading-section-2">P1｜npm「@tnhorg/agent-skills」Malware：導入済みの場合のみ隔離・再構築を優先</h2>
+    <h2 id="reading-section-3">P1｜npm「@tnhorg/agent-skills」Malware：導入済みの場合のみ隔離・再構築を優先</h2>
     <p><a href="https://github.com/advisories/GHSA-fv82-jh67-xx7q" target="_blank" rel="noopener noreferrer" aria-label="GitHub公式 GHSA-fv82-jh67-xx7q（新しいタブ）">GitHub公式 GHSA-fv82-jh67-xx7q</a>は2026年11月18日00:24 UTC（日本時間18日09:24）に、npm <strong>@tnhorg/agent-skills</strong> をMalwareと登録しました。影響範囲はAdvisory上 <strong>全版（&gt;=0）</strong>、修正版はありません。</p>
     <p><strong>成立条件と対応：</strong> 実際にこの正確なパッケージをインストールまたは実行した環境を対象に、GitHubは全面的な侵害の可能性を前提として、<strong>安全な別の端末から秘密・キーを交換</strong>し、隔離とクリーン再構築を行うよう警告しています。依存lockfile・導入記録・CI履歴で同名パッケージの有無を確認してください。削除しただけでは追加の悪性コードが残らないと保証できません。導入歴が確認できない端末や一般の「agent skills」を一括して感染扱いする根拠ではありません。更新できる修正版が指定されるまでは当該パッケージを使いません。</p>
-    <h2 id="reading-section-3">継続監視と確認範囲</h2>
+    <h2 id="reading-section-4">継続監視と確認範囲</h2>
     <p>前号の<a href="/ai-dev/daily/2026-11-18/">11月18日号</a>には、CISA KEVで実悪用が確認されたPuppet Enterpriseの問題とChrome 158の更新情報を既に掲載しています。本号では同じ報告を新規事故のように複製しません。</p>
     <p><strong>更新履歴：</strong> 2026年11月19日07:00 JST前後、上記GHSAの公表時刻・実際の対象版・安全な回復条件を確認して初稿を作成。初回公開日は本番HTTPSの検収後に別途確定し、当日の訂正は同じURLとfeed IDを維持します。11月12日以降のClaude独立レビューは公開後の別工程で、実施記録がない号をレビュー済みとは扱いません。</p>
+    <p>2026年11月19日07時台JST：CISA KEV 2026.11.18版の11/18新規4件を公式JSONで再確認し、同じURLへの追補原稿を作成。元号の初回公開日は変更しない。</p>
     <aside class="source-note">
-      <h2 id="reading-section-4">一次資料</h2>
-      <ul><li><a href="https://github.com/advisories/GHSA-764m-3ppc-5m73" target="_blank" rel="noopener noreferrer" aria-label="GitHub Advisory：agent-framework（新しいタブ）">GHSA-764m-3ppc-5m73：PyPI agent-frameworkの悪性版</a></li><li><a href="https://github.com/advisories/GHSA-fv82-jh67-xx7q" target="_blank" rel="noopener noreferrer" aria-label="GitHub Advisory：agent-skills（新しいタブ）">GHSA-fv82-jh67-xx7q：npm agent-skillsのMalware判定</a></li></ul>
+      <h2 id="reading-section-5">一次資料</h2>
+      <ul><li><a href="https://github.com/advisories/GHSA-764m-3ppc-5m73" target="_blank" rel="noopener noreferrer" aria-label="GitHub Advisory：agent-framework（新しいタブ）">GHSA-764m-3ppc-5m73：PyPI agent-frameworkの悪性版</a></li><li><a href="https://github.com/advisories/GHSA-fv82-jh67-xx7q" target="_blank" rel="noopener noreferrer" aria-label="GitHub Advisory：agent-skills（新しいタブ）">GHSA-fv82-jh67-xx7q：npm agent-skillsのMalware判定</a></li></ul><p>新規CISA KEV 2026.11.18: <a href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json" target="_blank" rel="noopener noreferrer" aria-label="CISA KEV公式カタログ（新しいタブ）">CISA公式JSON</a>。関連：<a href="https://github.com/BerriAI/litellm/security/advisories/GHSA-wxxx-gvqv-xp7p" target="_blank" rel="noopener noreferrer">LiteLLM公式GHSA</a>・<a href="https://lists.apache.org/thread/8slf0j9gz35z56t0glt5h0ncwlbn4bdz" target="_blank" rel="noopener noreferrer">Apache公式</a>・<a href="https://github.com/advisories/GHSA-HG88-QG2R-C8MX" target="_blank" rel="noopener noreferrer">REDCap CVE</a>・<a href="https://www.synology.com/zh-tw/security/advisory/Synology_SA_24_20" target="_blank" rel="noopener noreferrer">Synology公式</a>。</p>
       <p>本稿の影響と対処は、確認時点の公式情報と明示した条件に基づきます。各製品の最新の公式情報を優先してください。</p>
     </aside>
   </article>
