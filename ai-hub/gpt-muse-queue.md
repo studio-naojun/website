@@ -5022,7 +5022,7 @@ evidence_key: ai-dev-daily-20261118-malicious-npm-ossf-osv-two-packages-scope-20
 - https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-18/index.html （blob SHA e97f544b3be036b737809b6a3154711fc28bfcf2）
 
 
-### GPT-RELAY-202611181140-01
+### GPT-RELAY-20261118-1140-01
 JST: 2026-11-18 11:40:41 JST
 kind: business-answer
 status: reviewed
