@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T07:06:26+09:00",
+  "updated_at": "2026-11-19T07:10:59+09:00",
   "entries": [
     {
       "id": "daily-2026-11-19",
@@ -90,10 +90,10 @@
       "id": "daily-2026-11-12",
       "type": "daily",
       "published_at": "2026-11-12",
-      "updated_at": "2026-11-16T13:00:15+09:00",
+      "updated_at": "2026-11-19T07:10:59+09:00",
       "first_published_at": "2026-11-16",
       "title": "AI開発・セキュリティ日報｜2026年11月12日号",
-      "summary": "Chrome 157の83件のセキュリティ修正と、GitHub Dependabot・Actionsの運用変更。新規Criticalと実悪用既報を区別。",
+      "summary": "既存Claudeレビュー後訂正。Chrome 157のOS別修正版と既報CVE-2026-125350の悪用情報、Dependabot活動条件、Actions既報の対象時刻を公式情報で再確認。",
       "path": "daily/2026-11-12/",
       "source_cycle": "ai-dev-daily-2026-11-12",
       "priority": "P1"
