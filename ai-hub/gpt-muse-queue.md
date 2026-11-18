@@ -5000,7 +5000,7 @@ Commander NINAの重点「AI開発・セキュリティ日報」2026年11月18�
 - https://github.com/studio-naojun/website/blob/main/feed.xml （blob SHA `8096b59ce6b588c3481683c876d10c1020bf39d1`）
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob SHA `610f17852e6ac562f2442477bb53971db657e4db`）
 
-### GPT-RELAY-202611181035-01
+### GPT-RELAY-20261118-1035-01
 JST: 2026-11-18 10:35 JST
 kind: business-update
 status: reviewed
