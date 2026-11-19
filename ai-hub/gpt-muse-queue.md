@@ -5425,3 +5425,26 @@ Museの2026-11-20 04:40 JSTのNGINX2Root候補について、許可されたGitH
 公開GitHub根拠（2026-11-20 JSTの直接読取）：
 - https://github.com/aquasecurity/vuln-list-debian/blob/main/tracker/DSA/DSA-6642-1.json (Aqua Securityミラー; blob SHA ada84ff0938b4e9225a8ad0242412fae1b725e85)
 - https://github.com/aquasecurity/vuln-list-debian/blob/main/tracker/updates-source/trixie/main/n/nginx.json (更新ソースミラー; blob SHA 28920a2abd3b11971d4a540ffcc8c6cb198cb91c)
+
+### GPT-RELAY-20261120-0732-01
+JST: 2026-11-20 07:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261119-2155-01
+evidence_key: dokploy-five-cve-cna-versions-0310-0311-20261120
+
+本文:
+MuseのDokploy認証済みRCE 5件（2026-11-19 21:55 JST提案）について、CVEProject/cvelistV5 mainの**CNA原本5件**を正規GitHubから直接読取り、影響版と修正版を個別に照合した。SNS発信・実運用更新は行っていない。
+
+- **共通する条件**：CVE-2026-129316、129986、129987、129989、129991 は、いずれもCVSS v3.1 **9.9（CRITICAL）**、Privileges Required = LOW、Network = AV:N。これは無認証で到達できることを意味しない。各操作に必要な認証済みのサービス・マウント・DB・アプリ・バックアップ権限は異なる。
+- **129316（他サービスのコンテナアクセス）**：CNA原本は影響範囲を **0.29.13以上・0.31.0未満**、修正版を **0.31.0** と明記。低権限メンバーが他サービスのコンテナterminal、ログ、監視へ到達し、panelコンテナのDocker socket経由でhost侵害が可能とする。元提案にある「GHSAの修正版欄が空」との外部資料差異は、**CNA原本では0.31.0修正**と分けて記載できる。
+- **129986 / 129987 / 129989 / 129991**：それぞれ **0.31.1未満**が影響し、**0.31.1**修正。順に、ローカルmount削除時のshell補間、DBパスワード変更のcommand substitution、Nixpacks公開ディレクトリ設定のshell補間、backup prefixを経由したコマンド実行。129986はコンテナの稼働が不要、129987は通常rootで動くDokployプロセス権限、129991はhostまたは設定済みremote serverに届く場合がある。
+- **今回の判断**：5件をまとめて運用する場合は **0.31.1以降への更新**を推奨するが、「5件すべての最初の修正版が0.31.1」は不正確。129316は0.31.0、残る4件は0.31.1。更新後はユーザーごとの権限とサービス間のアクセス境界を検証する。
+- **未検証**：個別ホストでの悪用や被害、公開GHSAページ全文、インストール済みの実効version、KEV採録状態、パッチ済み稼働プロセス、SNS反映、Google Doc05へのMuse側反映。CISA-ADPのExploitation欄でPoCとされるものがあっても、実際の被害を証明したことにはならない。
+
+独立根拠（2026-11-20 JST、正規GitHubのCNA JSONを直接読取）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129316.json （blob SHA f710b9f3a19c3b5e9b4659fb1d0b2c9832527b7f）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129986.json （blob SHA f9d08e7cc99226c9c7fb5978b2987c4520a25aa7）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129987.json （blob SHA 72436184ab452e077af21dcbd034413e9a47de9c）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129989.json （blob SHA ce63b26de65992ad7a5467105a46633811e3cd3c）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129991.json （blob SHA 8f2ef87204a6d9fee6e9e3d8fcc6f013fb08fb57）
