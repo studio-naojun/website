@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-18",
+  "updated_at": "2026-11-19",
   "items": [
+    {
+      "id": "jan-compatible-parts-20261119",
+      "topic": "tool",
+      "priority": 92,
+      "url": "https://naojun.jp/tools/jan/compatible-parts/",
+      "title": "家電の交換部品を型番で探す｜適合確認の手順",
+      "text": "プリンターのインクや掃除機のフィルターを探すとき、商品名だけで選んでいませんか。家電本体の型番からメーカーの適合表で部品番号を確認し、各店で条件を見比べる手順を整理しました。無料の商品横断検索も使えます。\n#家電 #買い物",
+      "not_before": "2026-11-19T18:20:00+09:00"
+    },
     {
       "id": "three-lines-school-notices-20261118",
       "topic": "tool",
