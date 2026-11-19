@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19",
+  "updated_at": "2026-11-20",
   "items": [
+    {
+      "id": "ametsuta-direct-play-20261120",
+      "topic": "game",
+      "priority": 101,
+      "url": "https://naojun.jp/works/ametsuta/play/",
+      "title": "アメツタ｜すぐ遊べる無料ブラウザゲーム（プレイ画面へ直接）",
+      "text": "ゲームを開いて、すぐ1回だけ挑戦。無料ブラウザゲーム『アメツタ』は、押してツタを伸ばし、離して次の葉へ渡ります。スマホは画面を、PCはスペースキーを押して離すだけ。説明ページを挟まずプレイ画面に直接進めます。\n#ブラウザゲーム #無料ゲーム",
+      "not_before": "2026-11-20T08:00:00+09:00"
+    },
     {
       "id": "jan-compatible-parts-20261119",
       "topic": "tool",
