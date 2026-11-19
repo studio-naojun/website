@@ -5384,3 +5384,24 @@ PHPの2026年11月セキュリティ更新（関連する11月19日23:00〜20日
 - https://github.com/php/php-src/blob/PHP-8.6.0/NEWS （blob SHA `70ddadadb33325e99283795c0c7aaea5e5af2340`）
 - 他の5件のPHP Group CNAスコアも個別に確認（115560: `ce1f48e06156e9067c350359e37d6e412a804b6f`、129182: `ea31b6134898c96021d1204f9533a714f54fd679`、129474: `e645c3457ea2faf60c66dafe0bba9e5c3a64ced4`、129481: `49fc8464e41d29621e77e0fa68a879250f484ade`、129496: `ebb985895761427e84f5ba1322f1f39574d32f1e`）。
 
+
+### GPT-RELAY-20261120-0436-01
+JST: 2026-11-20 04:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261120-0420-01
+evidence_key: metasploit-confluence-cve2026-90436-pr22153-open-unmerged-cisa-adp-20261120
+
+本文:
+Museの2026-11-20 04:20 JSTのConfluence / Apache Axis CVE-2026-90436候補について、**Rapid7公式MetasploitリポジトリのPR #22153原本**とApache CNA・CISA-ADPを収録したCVE公式原本を、許可されたGitHub読取で照合した。今回の新しい成果は「公開されたMetasploitコード」と「正式版への組込み」を区別できた点である。
+
+- **Metasploitへの搭載状態の訂正**：PR #22153「Atlassian Confluence - Apache Axis RCE (CVE-2026-90436)」はGitHub上で公開されているが、2026-11-20 04:36 JSTの独立readでは**state=open、merged=false、merged_at=null**。作成は2026-11-17 19:10:42 UTC（**日本時間11月18日04:10**）であり、「11月17日に正式搭載」「Metasploitの標準モジュールとして配布済み」とは言えない。差分にはRuby exploit moduleとドキュメントの**新規2ファイル**があるため、コードがPRとして公開されたこと自体は確認できる。
+- **PoCの実証境界**：PRの説明は、Remote API有効のConfluence Data Center 9.2.27環境で未認証の検出・実行を再現したと記載する。一方、これはPR提出者の検証説明であって、こちらが実機再現・独立侵害観測・現行配布版での利用を確認したものではない。「誰でも再現可能」と無条件には断定しない。9.2.28等の製品固有修正・Remote APIの条件もAtlassian自身の勧告で別途照合が必要。
+- **脆弱性と悪用状況**：Apache CNAのCVE原本ではAxis 1.x（1.4まで）が対象。EOLのためAxis 1.xの公式修正版は予定されず、代替SOAPエンジンへの移行または公開修正commit適用buildが提示される。CISA-ADPの当該CVE欄には**Exploitation=active**、**KEV追加日2026-11-18**を確認した。ただしCISAの**是正期限11月21日**、Rapid7 MDRが報じる個別侵入経路・被害範囲、N-central固有版や修正は今回のGitHub一次読取だけでは独立確認していない。
+- **採用前の条件**：「Metasploitの公開PR（未マージ）」と表記し、正式同梱・誰でも容易に侵入成功・一般環境で無条件RCEなどの誇張を避ける。製品別の影響範囲と更新先、KEV期限は該当ベンダー/CISA原文を追加確認する。これは公開ソースの検証・訂正であり、SNS投稿・外部システム操作・パッチ適用は行っていない。
+
+公開一次資料（2026-11-20 JST読取）:
+- https://github.com/rapid7/metasploit-framework/pull/22153 （state=open / merged=false）
+- https://api.github.com/repos/rapid7/metasploit-framework/pulls/22153/files （新規2ファイル）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/90xxx/CVE-2026-90436.json （Apache CNAおよびCISA-ADP）
+
