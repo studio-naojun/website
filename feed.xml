@@ -5,15 +5,15 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-19T07:21:22+09:00</updated>
+  <updated>2026-11-19T13:06:19+09:00</updated>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月19日号</title>
     <id>https://naojun.jp/ai-dev/daily/2026-11-19/</id>
     <link href="https://naojun.jp/ai-dev/daily/2026-11-19/"/>
-    <updated>2026-11-19T07:21:22+09:00</updated>
-    <published>2026-11-19T07:21:22+09:00</published>
+    <updated>2026-11-19T13:06:19+09:00</updated>
+    <published>2026-11-19T13:06:19+09:00</published>
     <category term="ai-dev"/>
-    <summary>CISA KEVが11/18に実悪用登録したLiteLLM・Apache Axis・REDCap・Synologyの4件をP0追補。正規PyPI agent-framework悪性2版の安全対策も整理。</summary>
+    <summary>CISA KEVのLiteLLM等4件・agent-framework悪性2版に加え、Miren RPC、MSSQL MCP、LLMKubeの条件付き脆弱性と対策を追補。</summary>
   </entry>
   <entry>
     <title>AI開発・セキュリティ日報｜2026年11月18日号</title>
