@@ -5,6 +5,8 @@ document.querySelectorAll('[data-year]').forEach((el) => {
 (() => {
   const isProduction = location.hostname === 'naojun.jp' || location.hostname === 'www.naojun.jp';
   if (!isProduction) return;
+  // The standalone game is also embedded on its parent page. Count the top-level visit only.
+  if (typeof window !== 'undefined' && window.self !== window.top) return;
   // Do not count explicit test traffic or visitors who opted out.
   const requestedSource = new URLSearchParams(location.search).get('utm_source');
   if (navigator.webdriver || navigator.doNotTrack === '1' ||
