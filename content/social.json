@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-20",
+  "updated_at": "2026-11-21",
   "items": [
+    {
+      "id": "three-lines-travel-booking-20261121",
+      "topic": "tool",
+      "priority": 102,
+      "url": "https://naojun.jp/tools/3lines/travel-booking/",
+      "title": "旅行予約メールを3行に整理｜取消期限とチェックインを確認",
+      "text": "旅行の予約確認メール、宿泊日と無料取消期限を取り違えていませんか。架空の1泊予約を例に、チェックイン時刻・取消料・現地払い・遅延連絡を3行で整理する方法を公開しました。条件は最後に必ず原文で確認。無料ツールで試せます。\n#旅行準備 #文章整理",
+      "not_before": "2026-11-21T08:00:00+09:00"
+    },
     {
       "id": "ametsuta-direct-play-20261120",
       "topic": "game",
