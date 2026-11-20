@@ -6,16 +6,26 @@
   <meta name="description" content="Studio NaoJun IntegrationsがGoogleのユーザーデータを取得・利用・保存・削除する方法について。">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Google連携のプライバシーポリシー | Studio NaoJun Integrations</title>
-  <link rel="canonical" href="https://naojun.jp/integrations/privacy/">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/studio.css?v=20261103r">
+<!-- naojun-discovery:start -->
+  <link rel="canonical" href="https://naojun.jp/integrations/privacy/">
+  <link rel="alternate" type="application/atom+xml" title="NAOJUN STUDIOS updates" href="https://naojun.jp/feed.xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NAOJUN STUDIOS">
+  <meta property="og:title" content="Google連携のプライバシーポリシー | Studio NaoJun Integrations">
+  <meta property="og:description" content="Studio NaoJun IntegrationsがGoogleのユーザーデータを取得・利用・保存・削除する方法について。">
+  <meta property="og:url" content="https://naojun.jp/integrations/privacy/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Google連携のプライバシーポリシー | Studio NaoJun Integrations","description":"Studio NaoJun IntegrationsがGoogleのユーザーデータを取得・利用・保存・削除する方法について。","url":"https://naojun.jp/integrations/privacy/","isPartOf":{"@type":"WebSite","name":"NAOJUN STUDIOS","url":"https://naojun.jp/"},"publisher":{"@type":"Organization","@id":"https://naojun.jp/#organization","name":"NAOJUN STUDIOS","url":"https://naojun.jp/","sameAs":["https://www.youtube.com/@naojunjp","https://bsky.app/profile/naojun.jp","https://naojun-studios.stores.jp/"]},"inLanguage":"ja"}</script>
+<!-- naojun-discovery:end -->
 </head>
 <body class="studio-site studio-interior">
   <a class="skip-link" href="#main">本文へスキップ</a>
   <header class="site-header"><div class="container header-inner">
-    <a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム">NAOJUN STUDIOS</a>
-    <nav class="nav" aria-label="メインナビゲーション"><a href="/integrations/">Integrations</a><a href="/contact/">Contact</a></nav>
-  </div></header>
+<a class="logo" href="/" aria-label="NAOJUN STUDIOS ホーム"><svg class="brand-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>NAOJUN<span class="brand-small">STUDIOS</span></span></a>
+<button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="studio-nav">MENU <span class="menu-glyph" aria-hidden="true">＋</span></button>
+<nav class="nav" id="studio-nav" aria-label="メインナビゲーション"><a href="/works/">Works</a><a href="/#journal">Journal</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="nav-store" href="https://naojun-studios.stores.jp/" target="_blank" rel="noopener noreferrer" aria-label="NAOJUN STUDIOS Store（新しいタブ）"><svg class="nav-store-mark" viewBox="0 0 32 34" fill="none" aria-hidden="true"><path d="M3 29V6C3 1 12 1 12 6V24C12 32 29 33 29 22V4" stroke="currentColor" stroke-width="3"/><path d="M20 3V28" stroke="currentColor" stroke-width="3"/></svg><span>STORE</span><span aria-hidden="true">↗</span></a></nav></div></header>
   <main id="main">
     <section class="page-hero"><div class="container">
       <div class="eyebrow">PRIVACY / GOOGLE API</div>
@@ -35,14 +45,15 @@
       <p>Gmail APIの権限上はメール全体の読み取りが可能ですが、このアプリは予約情報の同期に必要なメールを検索・処理する目的に限定して利用します。将来新しいGoogleサービスや利用目的を追加する場合は、このポリシーを更新し、必要な権限を別途求めます。</p>
 
       <h2>3. 利用目的・保存するデータ</h2>
-      <p>EX予約の乗車予定を指定のGoogle Calendarへ反映し、同じ予約の二重登録や変更の取りこぼしを防ぐために利用します。WorkStylingの施設予約については、その予約サービスから取得した日時、場所、部屋、予約識別子を同じカレンダーに同期します。</p>
+      <p>EX予約の乗車予定を指定のGoogle Calendarへ反映し、同じ予約の二重登録や変更の取りこぼしを防ぐために利用します。WorkStylingの施設予約については、その予約サービスから取得した日時、場所、部屋、予約識別子を同じカレンダーに同期します。WorkStylingの予約申込みは別のWindowsプログラムが行い、Google APIを利用する同期機能そのものが予約申込みを行うわけではありません。</p>
       <p>Windows内のアプリケーション領域には、予約識別子、予約日時・区間・列車・座席または施設名・部屋名、CalendarイベントID、処理済みメールID、同期日時、処理結果やエラーの一部を保存します。メール本文全体やGmailの受信箱を同期履歴として保存する設計ではありません。</p>
 
       <h2>4. 保存場所と保護</h2>
-      <p>同期プログラムは所有者が管理するWindows環境で動きます。GoogleのOAuth更新トークンはWindowsのDPAPIで暗号化して保管し、設定ファイルへのアクセス権限も制限します。予約情報と同期履歴はローカルに保存し、予約予定は利用者が指定したGoogle Calendarに保存されます。管理画面は一般公開せず、認証された管理環境から利用します。</p>
+      <p>同期プログラムは所有者が管理するWindows環境で動きます。GoogleのOAuth更新トークンと別プログラムが利用するWorkStylingのログイン認証情報は、WindowsのDPAPIで暗号化して保管します。認証情報の保存先ファイルへのアクセス権限も制限します。予約情報と同期履歴はローカルに保存し、予約予定は所有者が指定したGoogle Calendarに保存されます。管理画面は一般公開せず、認証された管理環境から利用します。</p>
 
       <h2>5. 第三者提供・広告・AI学習</h2>
-      <p>Googleユーザーデータを広告配信、広告ターゲティング、データ販売、第三者のAIモデル学習のために利用しません。予約の同期に必要なGoogle APIを通じてGoogleサービスに情報を反映する場合を除き、取得したGmailデータを外部の企業やサービスへ提供しません。連携処理に関係しない人がメール内容を閲覧することも目的としていません。</p>
+      <p>Googleユーザーデータを広告配信、広告ターゲティング、データ販売、運営者自身または第三者による汎用的なAI・機械学習モデルの開発・改善・学習に利用しません。予約の同期に必要なGoogle APIを通じてGoogleサービスに情報を反映する場合を除き、取得したGmailデータを外部の企業やサービスへ提供しません。</p>
+      <p>所有者本人を除き、人がGmailデータを閲覧することはありません。例外は、所有者の明示的な同意がある場合、セキュリティ上の調査、法令遵守のために必要な場合に限ります。内部運用に必要な分析は集計・匿名化した情報の範囲で行います。</p>
       <p>Google APIから受け取る情報の取り扱いは<a class="text-link" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>（Limited Use要件を含む）に従います。</p>
 
       <h2>6. 保存期間・削除・アクセス権の取消</h2>
@@ -55,8 +66,12 @@
       <p><a class="text-link" href="/integrations/">Studio NaoJun Integrationsに戻る</a></p>
     </div></section>
   </main>
-  <footer class="site-footer studio-footer"><div class="container footer-inner"><span>© 2026 NAOJUN STUDIOS</span><a href="/integrations/">Integrations</a><a href="/privacy/">Site Privacy</a><a href="/contact/">Contact</a></div></footer>
-  <script src="/assets/js/main.js" defer></script>
+  <footer class="site-footer studio-footer"><div class="container">
+<div class="footer-top"><p>日々に、小さな発明を。<br>Small studio. Useful creations.</p><nav class="footer-links" aria-label="フッターナビゲーション"><a href="/works/">Works</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://bsky.app/profile/naojun.jp" target="_blank" rel="me noopener noreferrer">Bluesky <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="https://www.youtube.com/@naojunjp" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span><span class="sr-only">（新しいタブ）</span></a><a href="/feed.xml">RSS ↗</a></nav></div>
+<div class="footer-wordmark" aria-hidden="true">NAOJUN STUDIOS.</div>
+<div class="footer-inner"><span>© <span data-year>2026</span> NAOJUN STUDIOS</span><span>MADE WITH CURIOSITY.</span><a href="#main">ページの先頭へ ↑</a></div>
+</div></footer>
+  <script src="/assets/js/main.js?v=20261025a" defer></script>
   <script src="/assets/js/studio.js?v=20261103r" defer></script>
 </body>
 </html>
