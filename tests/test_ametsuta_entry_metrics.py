@@ -20,8 +20,8 @@ class AmetsutaEntryMetricsContract(unittest.TestCase):
 
     def test_iframe_cannot_double_count_parent_page(self):
         script = COLLECTOR.read_text(encoding="utf-8")
-        self.assertIn("if (window.self !== window.top) return;", script)
-        self.assertLess(script.index("if (window.self !== window.top) return;"),
+        self.assertIn("if (typeof window !== 'undefined' && window.self !== window.top) return;", script)
+        self.assertLess(script.index("if (typeof window !== 'undefined' && window.self !== window.top) return;"),
                         script.index("const payload = new URLSearchParams({"))
         self.assertIn('src="./play/?v=20261102-resultshare-a"', PARENT.read_text(encoding="utf-8"))
 
