@@ -4,10 +4,11 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 const code=readFileSync(new URL('../assets/js/main.js',import.meta.url),'utf8');
 function storage(map=new Map()){ return {getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,String(v)),removeItem:k=>map.delete(k),map}; }
-function visit({local=storage(),session=storage(),at='2026-10-30T14:59:00Z',navigator={},search='',host='naojun.jp'}={}){
+function visit({local=storage(),session=storage(),at='2026-10-30T14:59:00Z',navigator={},search='',host='naojun.jp',frame=false}={}){
  const requests=[];const NativeDate=Date;class FixedDate extends NativeDate{constructor(...args){super(...(args.length?args:[at]));} static now(){return NativeDate.parse(at);}}
  const nav={sendBeacon:(url,payload)=>{requests.push({url,data:Object.fromEntries(payload)});return true;},...navigator};
- const context={location:{hostname:host,pathname:'/',search},navigator:nav,document:{querySelectorAll:()=>[],querySelector:()=>null,referrer:'',addEventListener:()=>{}},sessionStorage:session,localStorage:local,URL,URLSearchParams,Date:FixedDate,fetch:()=>Promise.resolve({ok:true}),console};
+ const win={};win.self=win;win.top=frame?{}:win;
+ const context={window:win,location:{hostname:host,pathname:'/',search},navigator:nav,document:{querySelectorAll:()=>[],querySelector:()=>null,referrer:'',addEventListener:()=>{}},sessionStorage:session,localStorage:local,URL,URLSearchParams,Date:FixedDate,fetch:()=>Promise.resolve({ok:true}),console};
  runInNewContext(code,context);return {requests,local,session};
 }
 const daily=out=>out.requests.filter(x=>x.data.action==='daily_visit');
@@ -53,4 +54,10 @@ test('synchronous Web Lock error cannot suppress daily and campaign landing', ()
  const out=visit({navigator,search:'?utm_source=bluesky&utm_medium=organic_social&utm_campaign=demo'});
  assert.equal(daily(out).length,1);
  assert.equal(out.requests.filter(x=>x.data.action==='landing').length,1);
+});
+
+test('embedded Ametsuta iframe emits no duplicate PV, landing, or daily beacon',()=>{
+ const out=visit({frame:true,search:'?utm_source=bluesky&utm_campaign=ametsuta-direct-play-20261120'});
+ assert.equal(out.requests.length,0);
+ assert.equal(out.local.map.size,0);
 });
