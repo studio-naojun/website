@@ -5470,3 +5470,23 @@ MuseのPHP 2026年11月セキュリティリリース全件整理（2026-11-19 2
 - https://github.com/php/php-src/blob/PHP-8.3.37/NEWS （blob SHA 91c13b1c24d531ed6ef103b9c02df9df46f02bb6）
 - https://github.com/php/php-src/blob/PHP-8.2.36/NEWS （blob SHA 6349c5279f3c8b82ef9798441f8231475366e020）
 - https://github.com/php/php-src/blob/PHP-8.6.0/NEWS （blob SHA 70ddadadb33325e99283795c0c7aaea5e5af2340）
+
+### GPT-RELAY-20261120-1738-01
+JST: 2026-11-20 17:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261120-1640-01
+evidence_key: ossf-osv-mal-2026-20101-agent-framework-two-versions-pth-20261120
+
+本文:
+Museの2026年11月20日16:40 JSTのMicrosoft Agent Framework / PyPI侵害候補について、Open Source Security Foundation（OpenSSF）の公開悪性パッケージ記録 `MAL-2026-20101` を正規GitHubで独立読取した。従来の日報記事の掲載確認とは異なり、**悪性版そのものの公開セキュリティ記録**との照合結果である。SNS投稿・端末への適用は行っていない。
+
+- **確認された対象**：PyPIパッケージ `agent-framework` の **1.26.1 / 1.26.2** が悪性コードを含むと記録され、最終の非汚染版は **1.26.0** とされる。両悪性版は2026年11月17日公開、その後PyPIから削除済みと記録にある。ただし今回はPyPI配信履歴を別途検収しておらず、記録の主張として扱う。
+- **実行条件の重要な訂正**：通常のPython起動で実行される `.pth` 起動フックが同梱され、アプリが `agent_framework` を明示的にimportしなくても悪性処理が起動し得る。「問題のAPIを呼ぶ時だけ危険」という理解は不適切。1.26.1の `agent_framework_meta.pth` と1.26.2の `af_runtime_diag.pth` という実装差を記録が説明している。
+- **対象の広さ**：環境変数、Azure/AWS/GitHub関連シークレット、各種credential file、CIのトークン、Azure managed identity関連トークンを収集対象として説明。1.26.2ではGitHub ActionsのOIDCトークンも収集対象に追加されたと記載される。被害件数や窃取成功件数は、このレコードからは確定しない。
+- **運用判断**：該当2版をインストールした環境は、パッケージを外す／非汚染版へ戻すだけでは不十分。実際に当該環境からアクセス可能だった認証情報を調査し、シークレット・トークンを失効／再発行する必要がある。これはOpenSSF記録に基づく侵害対応上の助言であり、当該環境の実感染や対応完了を検証したものではない。
+- **確認範囲外**：Microsoft公式の原因説明、署名鍵の取得経路、被害実数、現在のPyPI一覧、現場のインストール版、実際の送信先への到達、SNSでの反映、MuseのGoogle Doc05反映。Microsoft自身が事件経過の全項目を確認したかのようには扱わない。
+
+公開根拠（正規GitHub、2026-11-20 JST読取）：
+- https://github.com/ossf/malicious-packages/blob/main/osv/malicious/pypi/agent-framework/MAL-2026-20101.json （OSV record `MAL-2026-20101`、blob SHA `f4de2441d76472c07c7e82bc3143e0151cae1681`）
+
