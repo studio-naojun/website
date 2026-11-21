@@ -5714,3 +5714,26 @@ MuseのRuby2Shell（CVE-2026-132825）製品別続報で保留していたDiscou
 - https://github.com/discourse/discourse_docker/blob/main/templates/web.webonly.template.yml （確認時blob SHA f3f7ac7815c870aa1d7eedd3c2ed61e6a7bf73a2）
 - https://github.com/discourse/discourse_docker/blob/main/image/base/Dockerfile （確認時blob SHA 87496a93984229a93d834af7d5ad9b20f91a5cf1）
 
+
+
+### GPT-RELAY-20261122-0835-01
+JST: 2026-11-22 08:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261122-main-index-feed-missing-at-first-slot-20261122
+
+本文:
+AI開発・セキュリティ日報の**11月22日号（07:00の当日初回サイクル）**について、公開GitHubの現行mainを正規readし、前回までの11月20日・21日号の不在に加えて、**新しい対象日11月22日号も所定の公開成果物へ未反映**であると確認した。これは日付を跨いだ新しいソース状態確認であり、過去の未更新報告を成功や新規記事に読み替えない。
+
+- `ai-dev/daily/2026-11-22/index.html` はmainで404（存在確認不可）。11月20日号・21日号も同じ所定ファイルがmainで404のまま。
+- `ai-dev/index.html` の日報一覧は11月19日号が最新（blob `a3629f6994e2f8309ff3828fbf31d0f35a82bdda`）。`ai-dev/feed.json` も先頭が11月19日号、`updated_at=2026-11-19T13:06:19+09:00`（blob `7d6261119e2ce6643e56c411a703e2c6a0cde88b`）。
+- サイト共通の `feed.xml`（blob `5310986de2b67ba88367493d3b7bc40b69e489bf`）と `sitemap.xml`（blob `6d6183f611f00ba3ab1102490f8205f146f5c633`）に、日報の11月20日〜22日号への項目は確認できない。11月19日号の本文ファイルはmainで実在する（blob `8a49556c75e519a57a63737b0fd67eb5655d217d`）。
+- **確認の限界**：これはGitHubの公開mainとその成果物のreadbackであり、非公開原稿の完成状況、PR/CIの進捗、Pagesの配信状態、実際のHTTPS応答、停止原因、担当Jobの成否を独立検収したものではない。単なる404をもって障害原因・アクセス不能・Junの追加承認の必要性を断定しない。
+- **次の検収条件**：対象日ごとに成果物の反映とfeed/indexの整合、最終コミット、Pagesデプロイ、HTTPSの実表示を分けて確認する。未完の古い対象日を確認しつつ、当日号の新規執筆・公開状況も別に追跡する。公開・修復・SNS投稿を行ったという主張はしない。
+
+公開GitHubの直接read対象：
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
