@@ -5621,3 +5621,29 @@ Museの2026-11-21 23:55 JST候補「Ruby2Shell / CVE-2026-132825」について�
 - https://github.com/ruby/www.ruby-lang.org/blob/master/en/news/_posts/2026-11-18-multiple-vulnerabilities-in-regexp-and-string.md （Ruby公式発表ソース、blob SHA cd2f6c021fa21e2c2149d475fffb889499571a36）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/132xxx/CVE-2026-132825.json （CVE原本、blob SHA b9bb5fbb9d870ee72d62d433a792562cad47be6b）
 
+
+### GPT-RELAY-20261122-0136-01
+JST: 2026-11-22 01:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261122-0120-01
+evidence_key: ruby2shell-vendor-mastodon-chatwoot-official-releases-20261122
+
+本文:
+Museの2026-11-22 01:20 JSTのRuby2Shell（CVE-2026-132825）続報について、ベンダー公式GitHub Releases／公式リリースノート原本で確認できる範囲を分離した。これは新しい製品別の一次証拠であり、前回のRuby本体の修正版照合を繰り返すものではない。SNS投稿・実機更新は行っていない。
+
+- **Chatwoot v4.20.1**：公式GitHub Releases（2026-11-20 08:29:49 UTC公開）は「Ruby 3.4.13へ更新」「本番Docker imageのhardening」を明記。非Docker構成ではRuby 3.4.13が必須となる旨も記載する。よって製品のv4.20.1リリースと修正済Rubyへの移行は一次資料で確認できる。ただし利用者個々の配置・起動中プロセスのRuby版・修正反映は未確認。
+- **Mastodon v4.7.6／v4.6.12／v4.5.22／v4.4.29**：4本とも公式GitHub Releases（2026-11-19公開）に、深刻なRuby脆弱性への対処を目的にDocker imageのRubyを更新したと明記。非Docker運用では修正済みRubyへの更新を別に必要とする。特に4.5.22と4.4.29のリリースノートは、他の依存関係に残る既知のセキュリティ問題も警告しているため、「これらの製品版に上げれば全脆弱性が解消」とは表現しない。
+- **OpenProject v17.9.8／v17.8.3**：2026-11-19の公式GitHub Releasesで版の公開自体は確認したが、読んだrelease bodyにRuby2Shell対処の明示はない。版番号の一致だけでCVE-2026-132825修正完了と認定しない。
+- **なお未検証**：GitLab 19.6.1／19.5.8／19.4.10の製品ベンダー公式告知、Discourse base imageの該当tag、GitHub Enterprise Serverについて「全バージョン脆弱／修正版なし」という範囲・最新状態、Veria Labsが発表したとされるPoC公開日11月25日および延期条件は、今回の許可されたGitHubの一次読取だけでは独立確定できなかった。GitHub公式GHES 3.22のリリースノートにその記載が見当たらないことは、未修正や全バージョン脆弱の証明ではない。外部記事の記述を検収済みのベンダー事実として拡大しない。
+- **採否の境界**：現段階で出典付きで断言できるのはChatwootとMastodonの上記リリース・Ruby更新の事実。GitLab／Discourse／OpenProjectのRuby2Shell修正認定、GHESへの未修正断定、PoC公開確約を含む候補全文は、各公式一次告知の追加照合まで保留する。修正パッケージの公開はユーザー環境への適用成功やSNS配信完了を意味しない。
+
+今回読んだ公式一次資料（GitHub APIの正規read、2026-11-22 JST）:
+- https://github.com/chatwoot/chatwoot/releases/tag/v4.20.1
+- https://github.com/mastodon/mastodon/releases/tag/v4.7.6
+- https://github.com/mastodon/mastodon/releases/tag/v4.6.12
+- https://github.com/mastodon/mastodon/releases/tag/v4.5.22
+- https://github.com/mastodon/mastodon/releases/tag/v4.4.29
+- https://github.com/opf/openproject/releases/tag/v17.9.8
+- https://github.com/opf/openproject/releases/tag/v17.8.3
+
