@@ -42,6 +42,10 @@ const SAMPLE_TEXTS = {
     label: '架空の比較メモ',
     text: '【架空の比較メモ】Aプランは月額800円で基本機能が使えますが、ファイルの保存は100件までです。Bプランは月額1,200円で保存件数の制限がなく、共有機能も利用できます。Cプランは無料ですが、共有機能はありません。週に数回だけ個人で使うならC、保存と共有が必要ならBが候補です。AとBの価格は架空の設定で、実在サービスの料金ではありません。',
   },
+  travel: {
+    label: '架空の旅行予約メール',
+    text: '【架空の宿泊予約メール】2026年12月12日（土）から1泊、チェックイン16〜21時、翌13日（日）10時にチェックアウトします。料金は1室9,000円（税込）で朝食なし・現地払い、無料取消期限は12月9日（水）18時で、それ以降は100％の取消料がかかります。20時を過ぎて到着する見込みなら事前に電話連絡が必要ですが、連絡しても21時以降のチェックインは保証されません。',
+  },
 };
 
 function setStatus(label, detail, mode = 'ready') {
@@ -231,4 +235,8 @@ styles.forEach((button) => button.addEventListener('click', () => {
   selectStyle(nextStyle);
   if (source.value.trim() && state.result) runSummary({ preserveResult: true, focus: true });
 }));
+const requestedSample = new URLSearchParams(window.location.search).get('sample');
+if (requestedSample && Object.prototype.hasOwnProperty.call(SAMPLE_TEXTS, requestedSample)) {
+  sampleButtons.find((button) => button.dataset.sample === requestedSample)?.click();
+}
 updateCount();

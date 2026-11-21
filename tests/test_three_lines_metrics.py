@@ -16,7 +16,7 @@ class ThreeLinesMetricsContract(unittest.TestCase):
     def test_standalone_tool_loads_existing_collector_once(self):
         html = TOOL_HTML.read_text(encoding="utf-8")
         self.assertEqual(html.count('src="/assets/js/main.js?v=20261025a"'), 1)
-        self.assertEqual(html.count('src="src/main.js?v=1.7.1"'), 1)
+        self.assertEqual(html.count('src="src/main.js?v=1.7.2"'), 1)
 
     def test_existing_collector_retains_privacy_exclusions(self):
         script = GLOBAL_COLLECTOR.read_text(encoding="utf-8")
