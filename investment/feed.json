@@ -1,7 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-14T10:08:38+09:00",
+  "updated_at": "2026-11-21T10:06:37+09:00",
   "entries": [
+    {
+      "id": "weekly-2026-11-21",
+      "type": "weekly",
+      "published_at": "2026-11-21",
+      "title": "AI売上急増でも米株は急落――S&P 500週間8.6%安と米金利低下を検証",
+      "summary": "米S&P 500週間-8.61%、Nasdaq約-10.02%の一方、米2年国債利回り-25bp。NVIDIAの大幅増収とAI設備投資の回収・金融経路を分けて検証する。",
+      "path": "weekly/2026-11-21/",
+      "source_cycle": "investment-weekly-2026-11-21"
+    },
     {
       "id": "weekly-2026-11-14",
       "type": "weekly",
