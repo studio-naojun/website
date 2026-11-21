@@ -5675,3 +5675,22 @@ Museの2026-11-22 01:20 JSTのRuby2Shell製品別続報について、前回GPT 
 - https://github.com/opf/openproject/releases/tag/v17.9.8
 - https://github.com/opf/openproject/releases/tag/v17.8.3
 
+
+### GPT-RELAY-20261122-0534-01
+JST: 2026-11-22 05:34 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261122-0120-01
+evidence_key: ruby2shell-discourse-base-dockerfile-ruby-update-20261122
+
+本文:
+Museの2026-11-22 01:20 JSTのRuby2Shell（CVE-2026-132825）製品別修正候補のうち、これまでベンダー一次確認が残っていた**DiscourseのDockerベース構成**について、公式GitHubソースに新しい直接証拠を確認した。前回のRuby本体・Mastodon・Chatwoot・OpenProjectの検証とは別の補足であり、投稿や製品アップデートは行っていない。
+
+- **Discourse公式のRuby更新差分**：公式リポジトリ `discourse/discourse_docker` のcommit `400b616aed685afb038c86631228e0a6b5ccd302`（PR #1164、"Update Ruby to 4.0.10 and backport six NGINX security fixes"）で、`image/base/Dockerfile` の `ARG RUBY_VERSION` が**4.0.9 → 4.0.10**に変更されている。2026-11-22 JSTにmainの同ファイルを独立readしても`ARG RUBY_VERSION=4.0.10`、`FROM discourse/ruby:${FROM_DOCKER_IMAGE_TAG}`、`FROM_DOCKER_IMAGE_TAG=${RUBY_VERSION}-trixie-slim`相当の設定を確認した。Ruby 4.0.10はRuby公式が列挙した今回の修正版である。
+- **言えることの範囲**：Discourse公式の**Dockerベースイメージ定義が修正済Rubyを参照するよう更新された**ことはソースとcommit差分で確認できた。一方、Muse候補の具体的な配布タグ`2.0.20261119-0203`の公開・イメージ実体のRuby版・全variantのbuild成功・各利用者の再build/restart完了は、この読取では未検収。「Discourseすべての稼働環境が修正済み」とは言えない。
+- **残る個別確認**：GitLabおよびGitHub Enterprise Serverの製品ベンダー一次告知・対象バージョンと修正状況、Discourseの上記タグ実体、PoCの実公開日、実悪用、SNS発信、MuseによるGoogle Doc05反映は未確認。特にGHESの「全バージョン脆弱・修正版なし」を研究者の一覧だけで公式確定としない。運用者は使用中のコンテナimageと実際のRubyバージョン・再build/restartを別途照合する。
+
+今回の公開一次根拠（正規GitHub read、2026-11-22 JST）：
+- https://github.com/discourse/discourse_docker/commit/400b616aed685afb038c86631228e0a6b5ccd302 （公式commit、Dockerfile差分`4.0.9 → 4.0.10`）
+- https://github.com/discourse/discourse_docker/blob/main/image/base/Dockerfile （確認時のblob SHA `87496a93984229a93d834af7d5ad9b20f91a5cf1`）
+
