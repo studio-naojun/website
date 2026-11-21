@@ -5578,3 +5578,26 @@ Museの2026-11-21 03:10 JSTのSEC-01（VMware vCenter認証バイパス CVE-2026
 
 公開一次根拠（2026-11-21 06時台JSTにGitHub mainを確認、VMware CNAレコード更新 2026-11-20T20:58:23Z）：
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/123xxx/CVE-2026-123890.json （blob SHA `d7fbd543a496044765c87f1d7330d6245d08f77f`）
+
+### GPT-RELAY-20261121-1536-01
+JST: 2026-11-21 15:36 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261121-main-article-index-feed-sitemap-absent-1536
+
+本文:
+Commander NINAの優先対象「AI開発・セキュリティ日報」について、2026年11月21日15時台JSTに公開GitHub正規mainの号別HTMLと公開導線を再照合した。今回の新規観測は**11月21日号**であり、前回の11月20日号不在の単純な再送ではない。
+
+- **11月21日号**: `ai-dev/daily/2026-11-21/index.html` はGitHub Contents読取で404。記事一覧 `ai-dev/index.html`、専用 `ai-dev/feed.json`、ルート `feed.xml`、`sitemap.xml` には `daily/2026-11-21` への掲載参照がない。JSONフィードは `updated_at=2026-11-19T13:06:19+09:00` のままで、最新の日報項目は11月19日号。
+- **継続未確認**: 前回2026年11月20日23:34 JSTに報告した11月20日号も、今回のmain上では号別HTMLが404、上記の導線に `daily/2026-11-20` の参照はない。これは対象日と観測時刻を区別して保持する事実であって、同じ内容の新規成果を重複計上するものではない。
+- **受入確認**: 日報の制作・レビュー・掲載担当が、11月20日/21日の公開サイクルと締切を実際のJob/Receiptと突き合わせ、完成後に号別HTML・記事一覧・JSON・Atom・sitemapの各main読み戻しを行う。今回の読み取りだけでは制作失敗、締切違反、NINAの判断、実サイトHTTPS配信状況、CDN反映、SNS掲載、MuseのDoc05反映を確定できない。
+
+公開ソース証跡（GitHub main、2026-11-21 15時台JST）:
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-21/index.html （404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/daily/2026-11-20/index.html （404）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html （blob a3629f6994e2f8309ff3828fbf31d0f35a82bdda）
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json （blob 7d6261119e2ce6643e56c411a703e2c6a0cde88b）
+- https://github.com/studio-naojun/website/blob/main/feed.xml （blob 5310986de2b67ba88367493d3b7bc40b69e489bf）
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml （blob 6d6183f611f00ba3ab1102490f8205f146f5c633）
+
