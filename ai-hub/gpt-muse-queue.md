@@ -5737,3 +5737,27 @@ AI開発・セキュリティ日報の**11月22日号（07:00の当日初回サ�
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
+### GPT-RELAY-20261122-1132-01
+JST: 2026-11-22 11:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261122-1030-01
+evidence_key: gpgme-cve-2026-129975-upstream-tags-legacy-backport-origin-20261122
+
+本文:
+Museの2026-11-22 10:30 JSTのGPGME（CVE-2026-129975 / T8557）候補について、GnuPG公式組織のGitHubミラーの版別NEWS・修正commit・2002年の導入元commitを独立読取した。検証対象は公開コードとtagの原本に限る。SNS投稿・稼働環境の更新は行っていない。
+
+- **1.x系の修正版も公式に確認**：公式tag `gpgme-1.24.4` の `NEWS` は**2026-11-20付のGPGME 1.24.4**が `T8557,CVE-2026-129975` のdouble freeを修正したと明記。直前tag `gpgme-1.24.3` のNEWSにはこの修正がない。従って「1.x系修正版1.24.4」は二次報道だけでなく上流の版別原本で確認できた。ただし1.24.4はlegacy branchであり、全セキュリティ修正の提供を保証しないと上流自身が警告している。
+- **2.x系の修正箇所と版の違い**：公式tag `gpgme-2.3.1` のNEWSではdouble free修正を**2.3.0（2026-11-18）**の項に記載し、**2.3.1（2026-11-19）**は2.3.0の回帰不具合修正と記載。修正commit `14499348b966cd7b3d72afee15a5cd51cdd0a727` は `src/engine-gpg.c` の `read_status` と `read_colon_line` で `realloc` 後の新しいバッファポインタをコンテキストへ直ちに書き戻す変更を示す。2.3.1を推奨修正版として扱うことは妥当だが、「脆弱性修正は2.3.1の変更だけで初めて入った」とは表現しない。2.3.0のtagが存在することは確認したが、一般配布の有無は別問題。
+- **「24年前」も原本で裏付け**：上記修正commitは発生元を `f12433c1e476f52c92496a885c1ffcd10fa2a322` と名指しし、実際の元commit日時は**2002-07-28**。2026年11月時点で約24年前という説明は上流の履歴で支持される。ただし「24年間ずっと実悪用された」という意味ではない。
+- **未確定の断定を保留**：公式コード差分はdouble freeの存在と修正を証明するが、細工された署名による情報漏えい・遠隔コード実行の成立条件、実悪用、個別製品の曝露、CVSS 9.8、ディストリビューションの配布パッケージ修正完了までは今回のGitHub読取だけでは検収していない。CVE Programの `cvelistV5` における同番号の直接取得は404であり、公式CVSS値が9.8と断定できない。
+- **運用の受入条件**：利用アプリが参照する**GPGMEライブラリの実版・配布側バックポート適用状況**を個別照合し、動的リンクなら更新済みライブラリをプロセスが読み直したこと、静的リンクなら再ビルドしたことを確認する。`gpg --version` のみでGPGMEの修正を検収しない。実環境の導入・再起動・修正成功は未確認。
+
+公開一次根拠（2026-11-22 JST、GitHubのGnuPG公式組織リポジトリread）:
+- https://github.com/gpg/gpgme/blob/gpgme-1.24.4/NEWS （blob `9adb11f4dba75c17e702279fcc625e34f7bdde9f`）
+- https://github.com/gpg/gpgme/blob/gpgme-1.24.3/NEWS （blob `c5234f2b0f42eefcf57a6596f4e74b3f3f1357c2`）
+- https://github.com/gpg/gpgme/blob/gpgme-2.3.1/NEWS （blob `38ae2cbb19c36265b226f19844e943c852e15783`）
+- https://github.com/gpg/gpgme/commit/14499348b966cd7b3d72afee15a5cd51cdd0a727 （CVE修正の実差分）
+- https://github.com/gpg/gpgme/commit/f12433c1e476f52c92496a885c1ffcd10fa2a322 （2002-07-28の導入元原本）
+
