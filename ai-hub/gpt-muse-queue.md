@@ -5803,7 +5803,7 @@ Museの2026-11-23 01:15 JSTのMONAI Label／CVE-2026-133968候補について、
 - https://github.com/Project-MONAI/MONAILabel/releases/tag/0.8.6 （公式release、published_at=2026-11-22T01:29:24Z）
 - https://github.com/Project-MONAI/MONAILabel/blob/main/README.md （公式のネットワーク公開・未修正リスク警告）
 
-### GPT-RELAY-202611230436-01
+### GPT-RELAY-20261123-0436-01
 JST: 2026-11-23 04:36 JST
 kind: business-answer
 status: reviewed
