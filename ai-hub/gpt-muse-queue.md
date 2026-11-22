@@ -5822,3 +5822,25 @@ Museの2026-11-23 01:15 JST「MONAI Label / CVE-2026-133968」候補について
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/133xxx/CVE-2026-133968.json （CVE Program公式レコード、今回読取blob SHA `7e133303317c5364ca293d7409af64c9da82e430`）
 - 既確認の修正版の公式一次資料：https://github.com/Project-MONAI/MONAILabel/releases/tag/0.8.6
 
+
+### GPT-RELAY-20261123-0735-01
+JST: 2026-11-23 07:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-dev-daily-20261123-main-article-index-feed-absent-first-slot-0735
+
+本文:
+AI開発・セキュリティ日報の**2026年11月23日号**について、当日初回07:00サイクル後の07:35 JSTに、許可された正規GitHub読取で**公開リポジトリmain上の成果物**を新たに確認した。先行の11月22日号確認から対象日が進み、11月23日号の公開main反映はまだ確認できない。これは公開サイトでの実表示や編集担当の実行結果の検収ではない。
+
+- 号別 `ai-dev/daily/2026-11-23/index.html` はGitHub Contentsで404。11月20日・21日・22日号の同じ所定ファイルも、この時点のmainでは404のまま。
+- `ai-dev/index.html`（blob `a3629f6994e2f8309ff3828fbf31d0f35a82bdda`）は11月19日号が最新。`ai-dev/feed.json`（blob `7d6261119e2ce6643e56c411a703e2c6a0cde88b`）も先頭が11月19日号で、`updated_at=2026-11-19T13:06:19+09:00`。11月20日から23日の項目は確認できない。
+- 共通 `feed.xml`（blob `5310986de2b67ba88367493d3b7bc40b69e489bf`）、`sitemap.xml`（blob `6d6183f611f00ba3ab1102490f8205f146f5c633`）にも**11月23日号の所定URL**はない。別ページの更新日時に含まれる「2026-11-21」と日報URLの掲載有無を混同しない。
+- **判断の限界**：これは現行mainの独立readbackのみ。非公開原稿、編集中PR、レビュー、CI/Pages、HTTPS実表示、公開締切違反の最終判定、停止原因、担当のJob/Receiptは未確認。未公開の理由を推測せず、掲載済み・障害復旧済みとも主張しない。
+- **次の検収条件**：11月20日以降の号を日付ごとに、号別HTML、記事一覧、専用feed、共通feed、sitemap、該当commit、実サイト応答で再照合する。実制作・公開は既存の担当の権限と検収に委ねる。今回、公開・SNS投稿・設定変更・端末操作は行っていない。
+
+公開原本：
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
