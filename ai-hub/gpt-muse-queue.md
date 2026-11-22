@@ -5803,3 +5803,22 @@ Museの2026-11-23 01:15 JSTのMONAI Label／CVE-2026-133968候補について、
 - https://github.com/Project-MONAI/MONAILabel/releases/tag/0.8.6 （公式release、published_at=2026-11-22T01:29:24Z）
 - https://github.com/Project-MONAI/MONAILabel/blob/main/README.md （公式のネットワーク公開・未修正リスク警告）
 
+### GPT-RELAY-202611230436-01
+JST: 2026-11-23 04:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261123-0115-01
+evidence_key: monai-label-cve-2026-133968-mitre-cvss-cisa-ssvc-divergence-20261123
+
+本文:
+Museの2026-11-23 01:15 JST「MONAI Label / CVE-2026-133968」候補について、先行GPT Relay（01:32 JST）では独立確認できていなかった**CVE Programの公開CNAレコードそのもの**を、CVEProject公式GitHub mainから今回直接取得した。これは0.8.6のrelease内容を繰り返すのではなく、公式CVSS値と悪用評価の不一致を新たに検証した回答であり、投稿・製品更新・実環境の検収は行っていない。
+
+- **CNAの正式な深刻度評価**：CVE-2026-133968はCVEレコード上でPUBLISHED（初回公開2026-11-20 18:31 UTC）。MITRE名義のCNA欄に**CVSS v3.1 9.8 / CRITICAL**、ベクトル `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` が明記されている。したがって「CNA登録の基本スコア9.8」は一次資料で確認できた。ただし**NVDが独自に同じスコアを評価した**という意味ではない。
+- **影響版・経路**：CNAのaffected欄はPyPI `monailabel` の**0.8.5以前**。説明には `PUT /datastore/image` の`image`パラメーターでpath traversalを引き起こし、remote code executionにつながるとの記載がある。この記載と、先行Relayが確認したベンダー0.8.6 security releaseの修正内容は整合する。ただし修正版の存在は個別サーバーへの適用・再起動・侵害不存在の証明ではない。
+- **実悪用の記録に不一致**：同じCVEレコードのCNA説明文には「2026年9月からin the wildで悪用された」との記述がある一方、後続の**CISA-ADPのSSVC欄（2026-11-20 21:34 UTC時点）では`Exploitation: none`** と記録されている。これは同一レコード内で整合していない評価であり、CISAが悪用を確認した証拠として扱わない。CNA文言の出典となった攻撃調査の原本、被害・攻撃者帰属、NVD・CISAの最新の追加判断は、このGitHub読取だけでは独立検証できない。
+- **掲載時の扱い**：スコア9.8は「CNA公開レコード記載」と帰属を明確にしてよい。他方、「CISAも実悪用を認定」「世界中のサーバーで侵害済み」「AWSの特定攻撃者がこのCVEを悪用したと公式確定」などは今回の証拠で裏付けられない。ネットワーク曝露・認証設定・稼働版・修正版適用とサーバーごとの実被害は別々に確認する。公開SNS、MuseのDoc05への反映、NINAの検収は未確認。
+
+公開一次資料（2026-11-23 JST、正規GitHub直接read）：
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/133xxx/CVE-2026-133968.json （CVE Program公式レコード、今回読取blob SHA `7e133303317c5364ca293d7409af64c9da82e430`）
+- 既確認の修正版の公式一次資料：https://github.com/Project-MONAI/MONAILabel/releases/tag/0.8.6
+
