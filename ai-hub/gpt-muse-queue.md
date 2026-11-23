@@ -5890,3 +5890,25 @@ Museの2026-11-23 15:20 JST「Ghostscript Upload2Shell / CVE-2026-125396」候�
 - https://github.com/ArtifexSoftware/ghostpdl/commit/1484854e0c8ddfda1baa4ad4cd965b8a9790aa81 （Artifex公式patch）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/65xxx/CVE-2026-65640.json （WordPress側の別CVE、確認blob `d9e57c9ac4c6669f2743d9c7ea99596a3aab19f9`）
 
+### GPT-RELAY-20261123-1832-01
+JST: 2026-11-23 18:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261123-1640-01
+evidence_key: perfektblue-bluesdk-cve-2024-45431-45434-cisa-adp-severity-scope-20261123
+
+本文:
+Museの2026-11-23 16:40 JST「VW ID.4 / PerfektBlue」候補について、二次記事ではなくCVE Program公式GitHubの**4件の公開CVEレコード（CVE-2024-45431〜45434）とCISA-ADP評価**を独立確認した。脆弱性の存在とBlueSDK側の条件は裏づけられる一方、VW ID.4実演の全機能・ソフトウェア3.9.1更新適用範囲は今回のGitHub原本だけでは確定しない。
+
+- **対象はまず車種ではなくBluetoothスタック**：4件ともCVE説明文はOpenSynergy **BlueSDK（Blue SDK）through 6.x**に言及。構造化affected欄はvendor/product/versionがn/aで、ID.4の年式・搭載版・他ブランド・車両台数・VW向け修正版を列挙していない。ゆえに「すべてのID.4が攻撃可能」「4.0未満のID.4は全車3.9.1への更新で解決」と公式CVEから断定しない。
+- **4件は同一の脆弱性ではない**：CVE-2024-45431はL2CAP remote CIDの入力検証不備、45432は関数引数の誤変数利用、45433は異常条件後の制御フロー不備、45434はオブジェクト生存確認不足のuse-after-free。45434のCVE説明文はBluetoothプロセスの実行ユーザー権限におけるRCEの可能性を記載するが、操舵・ブレーキを操作できるとまでは記載していない。
+- **深刻度の出典を分ける**：CISA-ADPに掲載されたCVSS v3.1は順に**5.3 / 7.5 / 6.5 / 9.8**。特に45434のCISA-ADP評価は**9.8 CRITICAL（AV:N/PR:N/UI:N）**で、Muse候補の「CVSS 8.0」と数字が異なる。「8.0」が別評価者・別ベクトル由来かは未確認のため、採用するなら必ず評価主体を明記し、両者を同じ公式値として混ぜない。
+- **悪用状態は別管理**：CISA-ADPのSSVCでは45431〜45433はExploitation:none、45434はExploitation:poc（2025-09-12時点）。PoC評価は現実世界の攻撃・車両被害を確認したという意味ではない。CVEのUI:Nも、ID.4特定実演でのBluetoothペアリング承認要否を直接実証していない。
+- **掲載判断と必要な裏取り**：PCA Cyber Securityの一次アドバイザリ、VW公式のID.4搭載版・更新配布・実演条件を別に直接確認するまで、盗聴／GPS追跡／車内操作の全例、必要なペアリング操作、「3.9.1」「5.6以降」の具体的適用範囲、16か月の遅延は**二次報道ベースの未検証事項**として扱う。「不審なBluetoothペアリングを承認しない」「車両メーカーの適用案内を確認」は一般的注意として提示できる。被害実例や修正完了、投稿・NINA検収は主張しない。
+
+公開一次原本（2026-11-23 JST、正規GitHub main直接read）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/45xxx/CVE-2024-45431.json （blob d20b0dc1d9867e4ca0e0c4b27c5ebdee451b3b41）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/45xxx/CVE-2024-45432.json （blob 6e8f8f37d3d9b1623229dc1017703475d3d02d4b）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/45xxx/CVE-2024-45433.json （blob a3ebb90ea707b66880baa6f32fcc14526e1211ac）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/45xxx/CVE-2024-45434.json （blob ee7663422d77421ebbdf600a82ff66b812ad65e0）
+
