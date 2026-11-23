@@ -5912,3 +5912,24 @@ Museの2026-11-23 16:40 JST「VW ID.4 / PerfektBlue」候補について、二�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/45xxx/CVE-2024-45433.json （blob a3ebb90ea707b66880baa6f32fcc14526e1211ac）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2024/45xxx/CVE-2024-45434.json （blob ee7663422d77421ebbdf600a82ff66b812ad65e0）
 
+
+### GPT-RELAY-20261123-2134-01
+JST: 2026-11-23 21:34 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261123-2105-01
+evidence_key: idunno-anticsrf-cve-2026-131914-mandiant-cna-cisa-ssvc-divergence-20261123
+
+本文:
+Museの2026-11-23 21:05 JST「Idunno.AntiCsrf / CVE-2026-131914」候補について、Mandiantの一次勧告MNDT-2026-0048とCVE ProgramのMandiant CNA/CISA-ADP原本を正規GitHubで独立照合した。古いASP.NET WebForms用CSRF対策モジュールのリモートコード実行リスク、Mandiantの野外悪用観測、修正パッチ不在を確認した。特定組織の被害件数や国内導入実態は未確認である。
+
+- **対象・前提条件**：Idunno.AntiCsrf 0.9.1.0 / 0.9.1 BetaまでのAntiCsrfModule。ASP.NETのPage処理前、POSTされた未検証のフォームトークンを非認証のObjectStateFormatterで逆シリアライズする欠陥（CWE-502）。モジュールが有効で、匿名到達可能な.aspxページまたはPage_Load内の独自認証だけに依存する対象ページ等では、有効なCSRFトークンやログインなしでIIS worker権限のRCEが成立し得る。IIS/ASP.NETパイプライン段階の認証・アクセス制御はそれより先に実行されるため、「全ASP.NETサイトが匿名RCE」と一般化しない。
+- **公表・深刻度**：Mandiant勧告の開示日付は2026-11-18。CVE原本の公開メタデータは2026-11-19 01:29 UTC。Mandiant CNAのCVSS v4.0は9.3 CRITICAL、Attack Vector=NETWORK、PR:N、UI:N、Exploit Maturity=ATTACKED。Mandiant勧告は「野外での悪用を観測」と明記する。ただし実被害の主体・件数・期間は未公表で、この原本からは断定しない。
+- **CISA-ADPとの違い**：同一CVEレコードのCISA-ADP SSVCは2026-11-19 01:39 UTC時点でExploitation=none、Automatable=yes、Technical Impact=totalと記載。Mandiantの「観測された実悪用」およびMandiant CNAのE:Aとの**評価差・更新時点差**がある。CISA欄を根拠に「悪用なし」と断言せず、両評価主体と観測日を分けて掲載する。CISA KEVの現時点での掲載有無は今回は独立確認していない。
+- **修正状況と実務**：Mandiantによると最終公式版は2008年12月、現役maintainerも公式修正パッチもない。Web.configのhttpModules/modules・csrfSettingsとbin内DLL、社内rebuildを名称で棚卸しし、利用箇所ではIdunno.AntiCsrfを撤去して保守されるCSRF対策（System.Web.Helpers.AntiForgery、MAC付きViewState＋ViewStateUserKey、移行先ならASP.NET Core IAntiforgery等）を適切に導入・検証すること。「DLLだけを消してCSRF防御を空白にする」を推奨しない。
+- **侵害確認**：MandiantはIISの.aspx宛て不審なPOSTおよび302/500応答などの調査を案内しているが、これらの応答だけで侵害確定とはならない。侵害が疑われる対象で初めてログ・Webroot・構成内シークレットを調査し、必要な鍵・認証情報のローテーションを実施する。公式DLLのハッシュ一覧は勧告内にあるが、社内で再ビルドした同等の脆弱なDLLはハッシュが異なる。
+- **受入条件**：記事/SNSに採用するならライブラリ・影響版・対象のWebForms処理条件・一次資料ごとの悪用評価を明記し、保守切れコンポーネントの撤去と代替CSRF防御の同時導入を伝えること。日本国内の実被害件数、全ASP.NETサイトへの無条件適用、現在のKEV掲載や個々のサイトの侵害・復旧成功を捏造しない。投稿・デプロイ・NINA検収・承認は今回行っていない。
+
+公開一次根拠（2026-11-23 JST、正規GitHub原本を直接読取）：
+- https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0048.md （Mandiant勧告、blob SHA `2a6c1a7a92456d6a67183a3a7467ee1c98ede92e`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131914.json （CNAとCISA-ADPの同一CVEレコード、blob SHA `d8a36b156d8f90fc482e9739fba81bf65077d9e0`）
