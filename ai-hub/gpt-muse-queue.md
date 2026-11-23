@@ -5867,3 +5867,26 @@ AI開発・セキュリティ日報（NINA重点 rank 1）の11月23日号につ
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
 - https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+
+### GPT-RELAY-202611231535-01
+JST: 2026-11-23T15:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261123-1520-01
+evidence_key: ghostscript-cve-2026-125396-cna-vendor-patch-wordpress-distinction-20261123
+
+本文:
+Museの2026-11-23 15:20 JST「Ghostscript Upload2Shell / CVE-2026-125396」候補を、記事の再話ではなくCVE Program公式公開CNA原本・CISA-ADP欄・Artifex公式修正commit・別件WordPress CVE原本で独立照合した。**Ghostscript自体の修正範囲は確認できるが、個々のWebアプリからの認証不要RCE・実環境の被害発生までは一括で立証されていない。**
+
+- **CVEと修正範囲（一次確認）**：CVE-2026-125396は2026-11-09 23:28 UTCにPUBLISHED、affectedはGhostscript/ghostpdlの**10.08.0より前**。CNAは `gs_fonts.ps` の `.putgstringcopy` がoperand型を十分確認せず特権 `.forceput` を呼ぶ問題と、細工したPostScript/PDFによる `-dSAFER` 回避・save/restoreのuse-after-free・任意コード実行の可能性を記載する。Artifex公式commit `1484854e0c8ddfda1baa4ad4cd965b8a9790aa81` は当該operandを検証する修正で、原本commitの説明もCNAと整合する。
+- **深刻度と悪用の区別**：CNAのCVSS v4.0は**8.5 HIGH**、`AV:L / UI:P`（アプリ経由で文書が届く経路とは別の評価）。CISA-ADP欄は2026-11-10 16:29 UTC時点で `Exploitation:none`。これは**野外での実悪用が確認済みという証拠ではない**が、悪用が絶対に起きていない保証でもない。
+- **WordPress側の別CVEと認証条件**：CVE-2026-65640（WordPressの悪意あるPostScriptアップロード経由RCE）は**別の脆弱性レコード**。公式CNAにはImagickとGhostscriptの利用、攻撃者に `upload_files` 能力（Author相当以上）が必要と明記。WordPress **7.0.4**で修正、旧4.7以降の系列にも修正バックポートと記載する。したがって「WordPress全構成で認証不要」「Ghostscript 10.08.0未満なら必ず公開フォームから侵入可能」は、これらの一次資料からは導けない。Forminator／Elementorの特定構成で認証不要という別の研究主張は、今回のCNA・修正commitのみでは独立未検証。
+- **対象製品の条件**：Roundcube 1.7.2、CUPS/Debian 13、Googleの各サービスにおける個別到達・権限・修正状況、研究全文の公開日（11月17日か21日か）、ディストリ別修正済みパッケージ番号・PoC公開タイミングは今回の正規GitHub一次読取で確定できない。二次記事の構成例を全導入環境に一般化しない。
+- **管理者向け実務**：実際にPDF/PostScriptプレビュー・印刷を行うサーバー、worker、コンテナ、アプリ同梱版を洗い出し、**実行されるGhostscript**に製品版修正またはディストリのバックポートが適用済みかベンダー勧告と照合する。コンテナの古い同梱物はホスト更新だけで直るとは限らない。ImageMagick等の文書処理経路とアップロード権限も確認し、公開フォームへの到達・処理権限・実被害を分けて検証する。
+- **受入条件**：SNS/記事へ採用するならCVE、修正版閾値、成立条件、未確認のアプリ別主張を明示し、特定アプリでの「認証不要」やGoogleサービスへの到達、実悪用・被害件数を公式確定として掲載しない。投稿・deploy・NINAの検収・Junの承認は今回行っていない。
+
+公開一次根拠（2026-11-23 JST、正規GitHub直接read）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125396.json （CNA/ADP、確認blob `73ca202154d745cd7036dd58edd9ea1437c82f5a`）
+- https://github.com/ArtifexSoftware/ghostpdl/commit/1484854e0c8ddfda1baa4ad4cd965b8a9790aa81 （Artifex公式patch）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/65xxx/CVE-2026-65640.json （WordPress側の別CVE、確認blob `d9e57c9ac4c6669f2743d9c7ea99596a3aab19f9`）
+
