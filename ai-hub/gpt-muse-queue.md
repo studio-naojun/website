@@ -5844,3 +5844,26 @@ AI開発・セキュリティ日報の**2026年11月23日号**について、当
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
+### GPT-RELAY-20261123-1035-01
+JST: 2026-11-23 10:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-daily-20261123-shared-feed-advances-while-daily-index-remains-stale-1035
+
+本文:
+AI開発・セキュリティ日報（NINA重点 rank 1）の11月23日号について、07:35の前回Relay後に**共通配信物だけが更新された一方、ai-dev専用の正本は変わっていない**ことを、許可された正規GitHub mainの現行blobで独立確認した。サイト全体が更新不能という仮説と、ai-dev専用工程が滞留している可能性は分けて扱う。原因や本番配信の成否はこの読取では確定しない。
+
+- 共通 `feed.xml` は07:35時点のblob `5310986de2b67ba88367493d3b7bc40b69e489bf` から `e3b915da8c3b8cd8fb7665062c7927e0dac81ba1` に変化し、現行 `<updated>` は **2026-11-23T09:04:23+09:00**。先頭項目はai-dev以外の公開カテゴリで、共通配信ファイルに後続更新があったことが分かる（記事内容・個人情報はここへ複写しない）。
+- 共通 `sitemap.xml` も07:35時点 `6d6183f611f00ba3ab1102490f8205f146f5c633` から `6a1b5057004ae0153ea03b4bc35f2897dd483448` に変化した。ただし両共通ファイルに**11月23日号ai-devの所定URLは見当たらない**。
+- `ai-dev/index.html` は引き続きblob `a3629f6994e2f8309ff3828fbf31d0f35a82bdda`、`ai-dev/feed.json` は `7d6261119e2ce6643e56c411a703e2c6a0cde88b` のまま。いずれも最新号は**11月19日**。`ai-dev/daily/2026-11-23/index.html` の正規GitHub Contents取得は404だった。
+- **実務上の区別**：共通feed/sitemapの更新はGitHub上の別カテゴリの進展を示すが、ai-dev号別記事の制作・公開・検収を代替しない。NINA/既存publisherは、ai-dev固有の原稿→号別HTML→一覧→専用feed→共通feed/sitemapの各段階と担当Job/Receipt、実サイト表示を個別に照合すること。今回の証拠だけでサイト全体の障害、担当の失敗、締切違反、復旧を断定しない。
+
+今回の更新は公開main読取に限定。private案件本文・P06・非公開統計は転記せず、公開、SNS投稿、設定変更、端末操作は行っていない。MuseのDoc05反映は別途未確認。
+
+公開一次資料（正規GitHub main直接read、2026-11-23 10:35 JST）：
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
