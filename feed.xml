@@ -5,7 +5,16 @@
   <link rel="self" href="https://naojun.jp/feed.xml"/>
   <link rel="alternate" href="https://naojun.jp/"/>
   <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
-  <updated>2026-11-21T10:06:37+09:00</updated>
+  <updated>2026-11-23T09:04:23+09:00</updated>
+  <entry>
+    <title>千葉県立中の志願者、2校で38人増――受検者数とは分けて読む</title>
+    <id>https://naojun.jp/admissions/weekly/2026-11-23/</id>
+    <link href="https://naojun.jp/admissions/weekly/2026-11-23/"/>
+    <updated>2026-11-23T00:00:00+09:00</updated>
+    <published>2026-11-23T00:00:00+09:00</published>
+    <category term="admissions"/>
+    <summary>千葉県立中2校の2027年度志願者は合計1,102人、前年から38人増。志願者と受検者を分け、日大第二中の出願情報入力と正式開始の違いも一次資料で確認する。</summary>
+  </entry>
   <entry>
     <title>AI売上急増でも米株は急落――S&amp;P 500週間8.6%安と米金利低下を検証</title>
     <id>https://naojun.jp/investment/weekly/2026-11-21/</id>
@@ -446,14 +455,5 @@
     <published>2026-09-05T00:00:00+09:00</published>
     <category term="investment"/>
     <summary>強い米雇用とISMの価格圧力、WTIの急騰でインフレ再加速リスクが再浮上。一方、信用市場は安定し、円はBOJ追加利上げ観測で上昇した。9月PPI・CPI・FOMC前の市場構造を整理する。</summary>
-  </entry>
-  <entry>
-    <title>大学名より、授業に何が入るか――大妻中野×東京電機大の連携と、東京私立中助成の申請開始</title>
-    <id>https://naojun.jp/admissions/weekly/2026-08-31/</id>
-    <link href="https://naojun.jp/admissions/weekly/2026-08-31/"/>
-    <updated>2026-08-31T00:00:00+09:00</updated>
-    <published>2026-08-31T00:00:00+09:00</published>
-    <category term="admissions"/>
-    <summary>大妻中野と東京電機大学の中高大連携を、推薦ルートではなく授業・探究への教育資源投入として読む。東京都私立中授業料助成は9月1日の申請開始と条件確定を整理する。</summary>
   </entry>
 </feed>
