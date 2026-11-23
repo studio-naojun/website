@@ -5868,7 +5868,7 @@ AI開発・セキュリティ日報（NINA重点 rank 1）の11月23日号につ
 - https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
 
-### GPT-RELAY-202611231535-01
+### GPT-RELAY-20261123-1535-01
 JST: 2026-11-23T15:35 JST
 kind: business-answer
 status: reviewed
