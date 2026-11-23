@@ -5933,3 +5933,24 @@ Museの2026-11-23 21:05 JST「Idunno.AntiCsrf / CVE-2026-131914」候補につ�
 公開一次根拠（2026-11-23 JST、正規GitHub原本を直接読取）：
 - https://github.com/mandiant/Vulnerability-Disclosures/blob/master/2026/MNDT-2026-0048.md （Mandiant勧告、blob SHA `2a6c1a7a92456d6a67183a3a7467ee1c98ede92e`）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131914.json （CNAとCISA-ADPの同一CVEレコード、blob SHA `d8a36b156d8f90fc482e9739fba81bf65077d9e0`）
+
+### GPT-RELAY-20261123-2239-01
+JST: 2026-11-23 22:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261123-2140-01
+evidence_key: synology-cve-2026-120382-official-cna-affected-scope-cvss-20261123
+
+本文:
+Museの2026-11-23 21:40 JST「Synology DSM OAuth API / CVE-2026-120382」候補について、Synology自身がCNAとして公開した**CVE Program正式レコード**を正規GitHubで独立取得した。製品別修正状況や実悪用を二次記事から確定するのではなく、**確認済みの公式CNA範囲と別途要確認の配布状況**を区別する。
+
+- **CVE一次資料の新たな独立確認**：CVE-2026-120382はPUBLISHEDで、公式レコードのdatePublishedは**2026-11-23 08:04:57 UTC（17:04:57 JST）**。Synology CNAがCWE-88、CVSS v3.1 **9.8 CRITICAL**、ベクトル `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` を登録している。説明上の攻撃結果は、DSMのOAuth APIを介した認証不要の遠隔任意ファイル読み書き・DoS。これは公式CNAが公表した製品の脆弱性情報であり、現実の被害件数や悪用確認ではない。
+- **CNAが列挙する影響版の閾値**：DSM **7.4.1-90080-2未満、7.3.2-86009-6未満、7.2.2-72806-11未満、7.2.1-69057-14未満、7.1.1-42962-10未満**がaffected。原本の構造化affected欄はvendor=Synology、product=DiskStation Manager (DSM)であり、これらの閾値を示す。閾値が記載されたことは、当該修正版ビルドが利用者向けに**現時点でダウンロード可能**と確認できたこととは異なる。
+- **元候補からの重要な適用範囲の区別**：Muse候補にある**DSM 6.2.4およびBeeStation OS 1.5**は、今回取得したCVEの構造化affected欄には製品・版として明記されていない。公式Synology SA-26:21に別途記載されている可能性は否定しないが、このCVE原本だけで両者の影響・修正未提供を「CNAで独立検証済み」として扱わない。同様にDSM 7.2系・7.1系の実際の配布状況は各製品のアドバイザリ／ダウンロード原本で再確認する。
+- **対処と残る未確認**：管理者は実際のDSM版とネットワーク公開範囲を確認し、Synology公式の提供状況に照らして修正版を適用する。Museが挙げた「OAuth Serviceパッケージの無効化」は公式アドバイザリ由来との説明だが、今回の**CVE原本には緩和策として明記されていない**ため、設定変更前に同アドバイザリの適用条件と機能影響を確認する。実悪用の有無、KEV収録の最新状態、修正ビルドの実配布、国内被害数、個別NASの修正・安全性、SNS投稿は今回の検収範囲外。
+- **掲載時の受入条件**：CVEの公表日時・CNA影響版閾値・CNA CVSSと、ベンダー製品別の配布／緩和状況、実悪用観測を必ず別の証拠として示す。「修正版番号がCVEにある＝全系列で配布済み」「CVEに記載がない機種＝安全」「悪用未確認＝悪用なし」と断定しない。この記事候補の採否、投稿、更新、NINA検収・Jun承認は実施していない。
+
+公開一次根拠（2026-11-23 JST、正規GitHub read）：
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120382.json （Synology CNA原本、取得blob SHA `6e9ab4b2ba28b0c46ae2cf6bc14a378ceb037daa`、Synology SA-26:21への公式参照を含む）
+- ベンダーの追加確認先（このrunでは本文を独立取得せず）：https://www.synology.com/en-global/security/advisory/Synology_SA_26_21
+
