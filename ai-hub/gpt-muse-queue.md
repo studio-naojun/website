@@ -5954,3 +5954,22 @@ Museの2026-11-23 21:40 JST「Synology DSM OAuth API / CVE-2026-120382」候補�
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/120xxx/CVE-2026-120382.json （Synology CNA原本、取得blob SHA `6e9ab4b2ba28b0c46ae2cf6bc14a378ceb037daa`、Synology SA-26:21への公式参照を含む）
 - ベンダーの追加確認先（このrunでは本文を独立取得せず）：https://www.synology.com/en-global/security/advisory/Synology_SA_26_21
 
+### GPT-RELAY-20261123-2334-01
+JST: 2026-11-23 23:34 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261123-2130-01
+evidence_key: wpide-cve-2026-124251-patchstack-cna-csrf-user-interaction-fix-20261123
+
+本文:
+Museの11月23日21:30 JST「WordPress WPIDE / CVE-2026-124251」候補を、CVE Program公式GitHub上の**Patchstack CNA原本**と、同製品の旧CVE原本で独立照合した。**3.6.5以上への更新とCVSS 8.8は公式資料で確認できるが、「ユーザー操作なしの認証不要RCE」とは記載できない**。以下は公式CVEの記載範囲に限定した訂正である。
+
+- **対象と修正**：CVE-2026-124251は2026年11月10日16:05 UTC公開、XplodedThemesの **WPIDE – File Manager & Code Editor** の**3.6.4以前**がaffectedで、**3.6.5からunaffected**とPatchstack CNAが明記。推奨措置は**少なくとも3.6.5へ更新**（実際に導入された版と更新可否を各サイトで確認する）。
+- **深刻度と成立条件の重要な区別**：CNAによるCWE-352（CSRF）、CVSS v3.1 **8.8 HIGH**、`AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H`。PR:Nは攻撃者自身の認証権限不要を意味するが、**UI:Rは被害側ユーザーの操作が必要**という評価。「認証なしで誰でも直接コード実行」「管理者の操作なしで無条件にRCE」との断言は不正確。CNA本文はCSRFと記載しており、特定のSnippets実行経路・管理者セッション・PHP実行が成立する構成の細部まではCVEだけでは独立立証できない。
+- **旧CVEとの切り分け**：CVE-2026-57766は同プラグインの**3.5.6以前**を対象とする別のCSRFレコード（2026年7月2日公開）。両レコードの対象と欠陥種別は確認できるが、7月修正の技術的不完全性、7サブメニューでのバイパス方法、記者がAIで6時間かけて発見した経緯は**これらのCNA原本に明記されていない**。その主張は個別の技術一次報告・コード差分で別途検証すること。
+- **悪用情報の限界**：CISA-ADPのSSVCは11月10日16:41 UTC時点で `Exploitation:none`。当時の評価であり、現在の実悪用ゼロや国内被害なしを保証しない。インストール数、個々のサイトの侵害、3.6.5の全配信面の適用確認も今回の一次確認対象外。
+- **受入条件**：記事・SNSでは「WPIDE 3.6.4以前にCSRF、3.6.5以上へ更新、攻撃者側PR:N・利用者側UI:R」を明示し、未検証のRCE経路やAI発見経緯、実被害をCNA確認済みの事実と混ぜない。公開記事更新、SNS投稿、デプロイ、Junの承認、NINAの検収は実施していない。
+
+公開一次根拠（正規GitHub main直接read、2026-11-23 JST）：
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/124xxx/CVE-2026-124251.json （Patchstack CNA/CISA-ADP、blob SHA `f42aa1963b4a08edff50ea68c31a6ea4f965a5a8`）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/57xxx/CVE-2026-57766.json （旧CVEのPatchstack CNA/CISA-ADP、blob SHA `571893db9f56e7ec9fc130e1c85b2dd35ede4ead`）
