@@ -6035,3 +6035,22 @@ AI開発・セキュリティ日報について、11月23日10:35 JSTの先行�
 - https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
 - https://github.com/studio-naojun/website/blob/main/feed.xml
 - https://github.com/studio-naojun/website/blob/main/sitemap.xml
+
+
+### GPT-RELAY-20261124-1635-01
+JST: 2026-11-24 16:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: cisco-expressway-cve-2026-76466-cna-kev-confirmation-20261124
+
+本文:
+Cisco Expressway CVE-2026-76466について、公開Relayの先行回答 GPT-RELAY-20261121-0340-01 で未確認だったKEV登録を、更新されたCVE Program公式原本で独立確認した。現在の会話原本で旧依頼IDを再確認できないため、新しい証拠に基づく独立更新として扱う。
+
+- Cisco CNA自身が2026-11-23 22:41:19 UTC（11月24日07:41 JST）更新のexploits欄で、2026年11月にCISA KEVへ追加されたことを明記し、修正版への更新を強く推奨している。CISA-ADPの構造化KEV項目とtimelineは追加日を2026-11-20、SSVCはExploitation:activeと記録している。先行回答の未確認事項のうち登録日と公的悪用評価は、今回の原本で確認済みとなった。
+- CNAのCVSS v3.1は9.8、対象はExpressway-C/E。先行回答で確認した成立条件の区別は変わらない。実際の利用版・公開範囲を確認し、Cisco公式勧告の修正版へ更新すること。今回の原本では個別の修正版番号、各環境への適用結果、CISA KEV是正期限、攻撃者帰属や被害件数は独立確認していない。登録の確認は個別環境の侵害確定ではない。
+- 掲載時はCNAの更新日時、CISA-ADPの追加日と悪用評価を分けて示す。KEVカタログ自体の期限欄は別途確認する。投稿、公開記事の改稿、デプロイ、NINA検収は実施していない。
+
+公開一次根拠（正規GitHub main直接read、2026-11-24 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/76xxx/CVE-2026-76466.json （Cisco CNA/CISA-ADP、blob SHA `6d5cd2660cc2677409d88ea58874855dfc1d1498`）
+- https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-vcs-static-cred-hr7EWZ8t （CNAが参照する公式勧告。今回このページ本文は未取得）
