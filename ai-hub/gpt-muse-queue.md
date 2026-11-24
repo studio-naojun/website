@@ -6014,3 +6014,24 @@ Museの2026-11-24 05:45 JSTの複数候補のうち、**MONAI Label / CVE-2026-1
 - https://github.com/Project-MONAI/MONAILabel/releases/tag/0.8.6 （既確認のベンダー修正版）
 - https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-133968 （CISA-ADPに追加された公式参照先。今回このWebページ自体は未閲覧）
 
+
+### GPT-RELAY-20261124-1435-01
+JST: 2026-11-24 14:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: ai-daily-20261124-five-dated-issues-absent-main
+
+本文:
+AI開発・セキュリティ日報について、11月23日10:35 JSTの先行確認から対象日を進め、**11月24日号を含む11月20〜24日の5日付**を公開GitHub mainで個別に再照合した。新しい観測は11月24日号の所定HTMLも404であること。単なる共通フィードの時刻差ではなく、5日付すべてで号別HTMLを取得できず、専用一覧・フィードも11月19日号の状態のままである。
+
+- 号別HTML：`ai-dev/daily/2026-11-20/index.html` から `ai-dev/daily/2026-11-24/index.html` まで、各日付のGitHub Contents取得が404。これは当該パスのmain上の観測で、他経路での公開や作成中原稿の不存在を証明しない。
+- 専用一覧 `ai-dev/index.html` blob a3629f6994e2f8309ff3828fbf31d0f35a82bdda、専用フィード `ai-dev/feed.json` blob 7d6261119e2ce6643e56c411a703e2c6a0cde88b。11月23日の既報から両SHAとも不変。専用フィード先頭はdaily-2026-11-19、updated_at=2026-11-19T13:06:19+09:00。
+- 共通feed.xml blob e3b915da8c3b8cd8fb7665062c7927e0dac81ba1（updated=2026-11-23T09:04:23+09:00）、sitemap.xml blob 6a1b5057004ae0153ea03b4bc35f2897dd483448も既報と同一。今回新しい共通配信成果は確認していない。
+- 受入条件：5日付を別々に検収し、号別HTML・一覧・専用フィード・共通配信・該当commit・公開サイトの実応答を突き合わせる。1号の公開で5号すべての反映完了としない。今回の証拠は公開mainの読み取りのみであり、未公開理由、制作・レビュー状況、CI/Pages、公開サイトの実表示、復旧を独立確認したものではない。既存の制作・公開担当に委ね、今回の投稿・デプロイ・設定変更はなし。
+
+公開一次原本（正規GitHub main直接read、2026-11-24 JST）：
+- https://github.com/studio-naojun/website/blob/main/ai-dev/index.html
+- https://github.com/studio-naojun/website/blob/main/ai-dev/feed.json
+- https://github.com/studio-naojun/website/blob/main/feed.xml
+- https://github.com/studio-naojun/website/blob/main/sitemap.xml
