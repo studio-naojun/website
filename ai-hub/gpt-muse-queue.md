@@ -6302,3 +6302,28 @@ Chrome CVE-2026-134401について、11月24日20:35の回答で未取得だっ�
 - https://chromereleases.googleblog.com/2026/11/extended-stable-update-for-desktop_01590513949.html
 - https://chromereleases.googleblog.com/2026/11/ （Android 11月23日付リリース）
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/134xxx/CVE-2026-134401.json （blob eba9c565edec1fcc4d309ce14742e8ec059ca903）
+
+
+### GPT-RELAY-20261125-0835-01
+JST: 2026-11-25 08:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-0730-01
+evidence_key: crwd-zs-nov24-current-exchange-value-spread-correction-20261125
+
+本文:
+CrowdStrikeによるZscaler買収について、11月24日通常取引終値の公開市場データとSEC提出資料を照合し、発表時の提示価値と現在の株式交換価値を区別して再計算した。候補の「約11%の規制リスク値引き」は訂正が必要。
+
+- 11月20日、23日、24日のCRWD終値は順に229.44、208.97、210.86ドル、ZSは194.82、229.24、231.62ドル。24日の前日比はCRWD +0.90%、ZS +1.04%。20日比ではCRWD -8.10%、ZS +18.89%。CRWDはStock Analysisの終値表本文、ZSはYahoo Financeの検索取得の確定終値表とStock Analysisの確定終値表示で照合した。Yahoo Financeの直接再取得は429、Nasdaq公式Historical Quotesは動的数値欄を取得できず、取引所原本の独立確認は未達。
+- 11月23日の会社発表の260.41ドルは11月20日のCRWD価格に基づく参考価値であり、固定現金対価ではない。原則交換比率1.135で24日のCRWD終値を掛けると239.3261ドル。ZS終値との差は7.7061ドル、交換価値に対する割引率は約3.22%（ZS価格に対する上昇余地として計算する場合は約3.33%）。23日も237.18095ドルに対し229.24ドルで約3.35%の割引。260.41ドルとの約11.06%の差を現在の合併スプレッドと呼ばない。
+- SEC提出10-Qの株式発行上限による交換比率の下方調整条項は先行回答どおり。上記は比率が調整されないと仮定した静的試算であり、最終受取額・裁定収益・成立確率ではない。規制承認、ZS株主承認、完了までの期間、取引条件や株価変動などを区別する。規制当局の正式な審査状況、日本の顧客への具体的影響、アナリスト評価の原文は今回独立確認していない。
+- 掲載する場合は「発表時価値260ドル、24日終値ベースの交換価値239ドル、ZS終値232ドル」という区別を示し、差額全体を独占禁止法リスクへ帰属させない。記事・SNSの更新、売買、デプロイ、買収成立の検収は実施していない。
+
+公開根拠（2026-11-25 JST確認）:
+- https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-acquire-zscaler-bringing-network-security-and-zero/ （11月23日会社発表）
+- https://www.sec.gov/Archives/edgar/data/1535527/000153552726000038/crwd-20261031.htm （SEC 10-Q本文、交換比率と発行上限）
+- https://stockanalysis.com/stocks/crwd/history/ （終値表本文）
+- https://stockanalysis.com/stocks/zs/ （24日確定終値の検索取得）
+- https://finance.yahoo.com/quote/ZS/history/ （確定終値表の検索取得、直接再取得429）
+- https://www.nasdaq.com/market-activity/stocks/zs/historical （公式数値欄未取得）
+- https://www.nasdaq.com/market-activity/stocks/crwd/historical （公式数値欄未取得）
