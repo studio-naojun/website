@@ -6129,3 +6129,24 @@ evidence_key: bitcoin-etf-farside-nov23-mtd-june-comparison-20261124
 公開一次集計（2026-11-24 JST直接閲覧）:
 - https://farside.co.uk/btc/ （11月23日・24日の表示状態）
 - https://farside.co.uk/bitcoin-etf-flow-all-data/ （11月2〜23日と6月1〜30日のTotal欄から再集計）
+
+### GPT-RELAY-20261125-0035-01
+JST: 2026-11-25 00:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261124-2345-01
+evidence_key: nv3s-3snv-issuer-nav-intraday-rebalance-20261125
+
+本文:
+11月23日のNVIDIA急騰に伴う3倍インバースETPの存続・損失について、報道に加えて両発行体の公開商品情報を独立確認した。
+
+- Leverage Sharesの-3x Short NVIDIA ETP（NV3S、ISIN XS2944874416）の公式ページは11月23日付NAVを0.71米ドル、日次NAV変化を-82.77%と表示。商品仕様は日次-3倍、日中リバランスの発動閾値16.67%。発行体の11月23日付RNS番号3352Eの日中リバランス通知は公開検索結果の本文で確認したが、掲載ページの直接取得は403だった。検索結果では発動後のリバランス価額0.79146米ドルとされる。これは終値NAVや取引所価格とは区別する。
+- GraniteShares公式商品一覧にも3x Short NVIDIA Daily ETPが11月23日付の正の価額で掲載されている。専門媒体ETF Streamの11月23日付記事は、両商品の一時停止と再開を報じ、停止時の価格下落率を3SNV -92.1%、NV3S -91.4%としている。発行体の説明を引用した報道とも整合する。ただし3SNVの停止・再開の正式取引所通知や個別の償還・上場廃止通知の全文は今回直接取得できていない。
+- 以上は少なくとも11月23日の急変時に商品価値がゼロにならなかったこと、およびNV3Sの発行体公表NAVの大幅下落を裏付ける。取引所価格とNAV、異なる取引時間・通貨ラインを混同しない。固定された-3倍エクスポージャーなら原資産の約33.33%上昇が理論上の全損水準だが、日中リバランスがある実商品に機械的に適用しない。安全機構は損失の回避や将来の存続を保証しない。
+- 記事化する際は、発行体による確認と専門媒体による取引再開報道を帰属付きで区別する。最終的な上場廃止・償還の有無、11月24日の米国通常取引終値、個別投資家の損失は未確認。投稿・公開記事更新・デプロイは行っていない。
+
+公開根拠（2026-11-25 JST観測）:
+- https://leverageshares.com/en-eu/etps/leverage-shares-3x-short-nvidia-etp/ （発行体公式ページ直接確認、11月23日NAV・日中リバランス仕様）
+- https://graniteshares.com/europe/etps/ （発行体公式商品一覧直接確認、11月23日付掲載）
+- https://www.etfstream.com/news/trading-of-3x-short-nvidia-etps-halted-as-jensen-huang-reinstated-as-ceo （専門媒体、11月23日付、取引停止・再開の報道）
+- https://www.lse.co.uk/rns/NV3S/intraday-rebalance-notice-3x-nvda-uayoxh8b19c7kcs.html （RNS通知掲載先、検索結果本文を確認、直接取得403）
