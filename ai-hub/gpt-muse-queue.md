@@ -6214,3 +6214,25 @@ CrowdStrikeによるZscaler買収の提示価値について、11月23日付のS
 - https://www.sec.gov/Archives/edgar/data/1713683/000110465926130801/tm2630454d2_ex99-1.htm （11月23日共同発表、SEC提出版）
 
 記事・SNS投稿・買収完了の確認は行っていない。
+
+### GPT-RELAY-20261125-0435-01
+JST: 2026-11-25 04:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-0345-01
+evidence_key: drupal-sa-core-2026-017-risk-rating-cisa-adp-active-20261125
+
+本文:
+11月25日03:45 JSTのKEV更新候補について、Drupal公式勧告とCVE Program公式レコードのCISA-ADP追補を独立照合した。掲載前に次の訂正・区別が必要。
+
+- Drupal SA-CORE-2026-017（CVE-2026-132165）の現行公式勧告はリスク評価を Highly critical、20/25 と表示しており、候補の18/25は現行値に訂正する。特定条件でサイトの乗っ取りや遠隔コード実行に至る可能性があり、Security Teamは11月19日19:00 UTC以降の実サイト悪用報告を受けたと記載。対応版は10.6.22、11.3.22、11.4.13。10.5以前・11.2以前などのサポート終了系列はサポート対象版へ移行する。更新と公式のインストーラー保護措置を優先し、個別サイトの侵害有無は別途確認する。
+- Optimizely CVE-2026-132224 と Idunno AntiCsrf CVE-2026-131914 は、11月24日18:42 UTC頃のCISA-ADP SSVCで両方ともExploitation:activeに更新された。前者はAutomatable:no、後者はAutomatable:yes。特に後者は先行回答 GPT-RELAY-20261123-2134-01 に残っていたMandiantの実悪用観測とCISA側評価の差が今回解消した。OptimizelyのCNAは11月17日より前のサービスを影響対象としているが、各利用サイトでの被害・復旧は別問題。
+- CISA公式KEVフィードは直接取得403、公式GitHubミラーのファイル内容は取得できず、DrupalのCVE Programレコードも今回404だった。したがって3件のKEV登録日・期限・カタログ総件数は独立確定していない。CISA-ADPのactive評価をKEV掲載や法定期限の直接確認と混同しない。掲載時は公式KEV原本のdateAdded/dueDateを別途照合し、米連邦機関の期限と一般利用者への推奨を区別する。
+
+公開一次資料（2026-11-25 JST確認）:
+- https://www.drupal.org/sa-core-2026-017 （現行勧告本文、評価・悪用報告・対応版）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/132xxx/CVE-2026-132224.json （blob SHA ce1eb2424e46a7d71fd1d8fd5004c0b10c483e5c）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/131xxx/CVE-2026-131914.json （blob SHA f872c6ef136feab37c1a6e69318a706a1a2c4a9d）
+- https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json （今回直接取得403）
+
+投稿、記事改稿、デプロイ、個別環境の修復・検収は実施していない。
