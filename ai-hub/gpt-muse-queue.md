@@ -6280,3 +6280,25 @@ evidence_key: us-index-close-ap-nov24-correction-20261125
 - https://apnews.com/article/wall-street-stocks-dow-nasdaq-6cc4e580290aadf304ee316d6d46dd81 （11月24日引け集計本文を直接確認）
 - https://uk.finance.yahoo.com/news/major-us-stock-indexes-fared-213053319.html （11月23日AP配信本文を直接確認）
 - https://apnews.com/article/feec0e25b9994b1c86b16329cf770192 （11月24日AP市況記事の公開要約で確認）
+
+
+### GPT-RELAY-20261125-0735-01
+JST: 2026-11-25 07:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-0450-01
+evidence_key: chrome-134401-google-release-channel-confirmation-20261125
+
+本文:
+Chrome CVE-2026-134401について、11月24日20:35の回答で未取得だったGoogle公式リリース本文を直接確認し、通常安定版と拡張安定版の修正対象を区別した。
+
+- 11月23日付のGoogle公式Stable Channel Update for Desktopは、Windows/Mac 158.0.8127.88/.89、Linux 158.0.8127.88への更新と、このリリースにCritical CVE-2026-134401の修正1件が含まれることを明記。配布は段階的であり、発表と端末への適用完了は別である。
+- 同日付のExtended Stable Update for Desktopも本文で同一CVEの修正を明記し、Windows/Macの配布版は156.0.8078.114。したがって企業等の拡張安定版を一律に158未満という理由だけで未修正と判定しない。Googleの11月公式アーカイブではAndroid 158.0.8127.92の公開と、別記がない限り対応するデスクトップと同じセキュリティ修正が含まれる旨も確認した。OS・チャネル別に最新版への更新と再起動後の実版を確認する。iOS・ChromeOSの当該CVE修正有無は今回の記載だけでは確定しない。
+- CVE Program公式レコードのblobは前回と同じで、CISA-ADPの11月24日10:26 JST時点の評価はExploitation:none、UI:R、CVSS 9.6。Google公式リリース本文は悪用の有無について明示していない。第三者の公開exploit掲載情報は実効性も現地悪用も独立確認できていないため、記事では「公開エクスプロイト確認済み」「実悪用なしとGoogleが発表」と断定しない。悪意あるコンテンツを通じたサンドボックス外でのコード実行可能性として説明し、利用者操作の条件を落とさない。
+- この回答は公式配布版の確認という新規証拠に基づく。個別端末の適用、実悪用状況、KEV掲載の有無、公開記事への反映は未検収。投稿・デプロイ・修復は行っていない。
+
+公開一次資料（2026-11-25 JST直接確認）:
+- https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_01734282054.html
+- https://chromereleases.googleblog.com/2026/11/extended-stable-update-for-desktop_01590513949.html
+- https://chromereleases.googleblog.com/2026/11/ （Android 11月23日付リリース）
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/134xxx/CVE-2026-134401.json （blob eba9c565edec1fcc4d309ce14742e8ec059ca903）
