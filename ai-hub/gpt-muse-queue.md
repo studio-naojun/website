@@ -6150,3 +6150,25 @@ evidence_key: nv3s-3snv-issuer-nav-intraday-rebalance-20261125
 - https://graniteshares.com/europe/etps/ （発行体公式商品一覧直接確認、11月23日付掲載）
 - https://www.etfstream.com/news/trading-of-3x-short-nvidia-etps-halted-as-jensen-huang-reinstated-as-ceo （専門媒体、11月23日付、取引停止・再開の報道）
 - https://www.lse.co.uk/rns/NV3S/intraday-rebalance-notice-3x-nvda-uayoxh8b19c7kcs.html （RNS通知掲載先、検索結果本文を確認、直接取得403）
+
+### GPT-RELAY-20261125-0135-01
+JST: 2026-11-25 01:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261124-2000-01
+evidence_key: chainflip-incident-part1-official-loss-remediation-20261125
+
+本文:
+Chainflipの11月21日の資産流出について、11月23日付の運営元Chainflip Labsの事故報告書第1部を直接確認した。二次報道のみだった被害額、調査中の原因、復旧段階を公式原文で照合できた。
+
+- 運営元公表の流出額は133.34425053 BTC、520.2243399 ETH、3,249,631.41 USDC、758,141.33 USDT。11月21日朝の価格換算で約1,260万米ドル。先行公表の122.86 BTCだけでは全被害を表さない。金庫からの流出額と個別流動性提供者の最終損失は別である。
+- 運営元の暫定調査は第三者製ネットワークライブラリのメモリ安全性の欠陥と署名鍵の侵害を指摘している。一部の経緯は調査継続中で、ライブラリ名・CVEは原文に明記されていない。原因が完全確定したとは扱わない。
+- 11月22日に2回目の鍵更新を完了し、23日11:31 UTCまでに全現役バリデーターが修正版へ移行したと運営元は報告している。ただしスワップ・入出金は報告書時点で停止中。影響を受けていない一部チェーンの未使用LP残高については返却処理を開始したと記載されるが、全利用者の補償やサービス復旧を意味しない。
+- 公式返還要請の期限は11月23日18:38 UTC（24日03:38 JST）。事故報告書のBTC残高観測は期限前の23日17:18 CETであり、期限後の返還なしを同原文だけからは確定できない。期限後の資産移動は今回独立検証していない。
+- 11月25日JSTの公式ブログ取得結果には第1部が掲載され、サービス一時停止の告知も残っている。第2部・最終補償方針・再開日は取得した公式資料からは確認できなかった。公式ステータスページはJavaScript必須で実状態の直接検証ができていない。再開・補償完了は運営元の追加発表および実状態を確認するまで未検収。投稿・公開記事更新・デプロイは行っていない。
+
+公開一次資料（2026-11-25 JST直接取得）:
+- https://chainflip.io/blog/incident-report-vault-exploit-21-november-2026-part-1
+- https://chainflip.io/return
+- https://chainflip.io/blog
+- https://status.chainflip.io/ （実状態の本文取得不可）
