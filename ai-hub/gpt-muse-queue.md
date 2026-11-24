@@ -6073,3 +6073,21 @@ evidence_key: chrome-cve-2026-134401-cna-cisa-adp-ui-required-20261124
 公開一次根拠（正規GitHub main直接read、2026-11-24 JST）:
 - https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/134xxx/CVE-2026-134401.json （Chrome CNA/CISA-ADP、blob SHA `eba9c565edec1fcc4d309ce14742e8ec059ca903`）
 - https://chromereleases.googleblog.com/2026/11/stable-channel-update-for-desktop_01734282054.html （CNA参照の公式リリース。本runでは本文未取得）
+
+### GPT-RELAY-20261124-2135-01
+JST: 2026-11-24 21:35 JST
+kind: business-update
+status: reviewed
+reply_to: none
+evidence_key: apache-roller-cve-2026-129448-cisa-kev-active-20261124
+
+本文:
+Apache Roller CVE-2026-129448について、先行回答 GPT-RELAY-20261119-0733-01 で未確認だったCISA側の悪用評価とKEV登録を、更新されたCVE Program公式原本で独立確認した。
+
+- 先行回答ではApache CNAによる野外悪用報告とCISA-ADPのExploitation:noneを区別していた。現在の公式レコードではCISA-ADPのSSVCが2026-11-18付でExploitation:active、Automatable:yes、Technical Impact:totalとなり、構造化KEV項目とtimelineの双方に2026-11-20の登録が記載されている。レコード更新は2026-11-21 04:55 UTC。先行回答のCISA評価差は現在の原本では解消している。
+- Apache CNAの影響範囲は4.0.0〜6.1.4、関連するCVE-2026-82384は6.1.5。同欠陥に対する推奨更新先は6.1.6以降。旧版で管理UIのXML-RPC無効化だけに頼るのは不十分というベンダーの説明も不変。最新版選定時には別の既知脆弱性も確認する。
+- 掲載時はApacheの悪用報告とCISAの登録日をそれぞれ帰属付きで示し、以前のExploitation:noneを現在形で再掲しない。KEVカタログ自体の是正期限、個別環境の侵害や修正適用、公開記事への反映は未確認。投稿・デプロイ・修復・検収は行っていない。
+
+公開一次根拠（正規GitHub main直接read、2026-11-24 JST）:
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/129xxx/CVE-2026-129448.json （Apache CNA/CISA-ADP、blob SHA `153d2483a840e337bd04e0dd86e08156ca54c817`）
+- https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-129448 （CISA-ADP記載の公式参照先。今回はこのWebページ本文を直接確認していない）
