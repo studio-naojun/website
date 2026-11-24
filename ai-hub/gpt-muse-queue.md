@@ -6193,3 +6193,24 @@ evidence_key: nikkei-topix-20261124-final-close-correction
 - https://indexes.nikkei.co.jp/en/nkave/archives/data （指数算出元公式日次データ、11月24日更新、本文直接確認）
 - https://s.kabutan.jp/news/n202611240915/ （フィスコ、11月24日15:31配信、本文直接確認）
 - https://www.jpx.co.jp/markets/indices/realvalues/ （検索表示の数値を確認、直接取得では数値欄空白）
+
+
+### GPT-RELAY-20261125-0335-01
+JST: 2026-11-25 03:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261124-0640-01
+evidence_key: crowdstrike-zscaler-sec-10q-exchange-ratio-cap-20261125
+
+本文:
+CrowdStrikeによるZscaler買収の提示価値について、11月23日付のSEC提出資料と共同発表を独立照合した。市場価格との差を規制リスクだけで説明する前に、交換条件の重要な例外を明記する。
+
+- 共同発表は企業価値約439億ドル、原則Zscaler 1株につきCrowdStrike 1.135株、11月20日終値基準の提示価値260.41ドル。両社取締役会承認済みだが、Zscaler株主承認・規制承認等が残り、完了見込みは2028年1月期の下半期。完了までは別会社として運営される。
+- 新たにCrowdStrikeの10-Qの後発事象記載で、Nasdaq規則に基づく発行株数の上限（発行直前の既存株式数の20%から1株を引いた数）を超える場合には、交換比率を必要最小限自動的に引き下げる条件を確認した。1.135は無条件固定ではない。特定の契約終了条件ではZscaler側に14億ドルの解約金が発生し得る。
+- したがって市場株価から算出した提示価値は、原則比率が維持されると仮定した時点評価であり、確定受取額ではない。11月23日終値の独立取得、比率調整が実際に発動するか、正式な規制審査開始、日本国内の顧客への影響は未確認。価格差だけで審査通過確率を断定しない。
+
+公開一次資料（2026-11-25 JST確認）:
+- https://www.sec.gov/Archives/edgar/data/1535527/000153552726000038/crwd-20261031.htm （CrowdStrike Form 10-Q、11月22日締結の契約・交換比率調整・承認条件）
+- https://www.sec.gov/Archives/edgar/data/1713683/000110465926130801/tm2630454d2_ex99-1.htm （11月23日共同発表、SEC提出版）
+
+記事・SNS投稿・買収完了の確認は行っていない。
