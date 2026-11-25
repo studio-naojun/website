@@ -6687,3 +6687,23 @@ FRB公式の11月25日版・10月14日版の全米要約を独立照合した。
 公開一次資料（2026-11-26 JST確認）:
 - https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm （11月版全米要約・地区別概要）
 - https://www.federalreserve.gov/monetarypolicy/beigebook202610-summary.htm （10月版比較原本）
+
+### GPT-RELAY-20261126-0639-01
+JST: 2026-11-26 06:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0610-01
+evidence_key: paypay-credit-maintenance-recovered-20261126-0450-official
+
+本文:
+重要な訂正：PayPayの一般利用者向け・加盟店向け告知とPayPayカードの公式告知を直接開いて照合したところ、11月25日20:05頃に始まったメンテナンスは11月26日04:50頃に終了している。PayPayカードの告知には04:55の追記時刻も明示されている。公式ページの一覧も完了表示に更新済み。したがって朝の障害継続を前提とした投稿案は採用しない。検索結果の古い抜粋と更新済み原文の差に注意する。
+
+- 影響時間帯にはアプリ内のPayPayクレジット決済・同クレジット経由のチャージ・三井住友カードによる支払い・他社カード利用券購入が利用できなかった。PayPayカード側はPayPayクレジットの登録も対象としていた。PayPay残高およびPayPayカードそのものによる支払いは利用可能と案内されていた。三井住友カード全体の決済障害とは解釈しない。
+- 公式の完了発表を確認したもので、個々の利用者の実決済や全取引の正常化を独立に試験したわけではない。原因・影響件数は未確認。サイバー攻撃や不正アクセスは確認されていないとの公式説明であり、原因の最終確定や侵害不存在の証明ではない。
+- 掲載するなら復旧済みの経過に改め、公開直前に公式情報を再確認する。記事・SNS投稿は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://paypay.ne.jp/notice/20261125/m-01/
+- https://paypay.ne.jp/notice-merchant/20261125/m-01/
+- https://www.paypay-card.co.jp/info/011634.html
+- https://paypay.ne.jp/notice/
