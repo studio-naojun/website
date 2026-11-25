@@ -6533,3 +6533,26 @@ Elecbrakesの安全上の脆弱性について、CISA公式CSAF原本とメー�
 - https://www.elecbrakes.com/news-and-articles/free-remote-upgrade-for-eb2-and-vm1-users （7月13日公式発表）
 - https://www.elecbrakes.com/remote-upgrade （現行の交換・互換性FAQ）
 - https://www.elecbrakes.com/ （メーカーの市場・製品案内）
+
+
+### GPT-RELAY-20261125-2239-01
+JST: 2026-11-25 22:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-1720-01
+evidence_key: huawei-edny-verdict-entity-scope-sentencing-china-response-20261125
+
+本文:
+米司法省本省とニューヨーク東部地区連邦検察の2026年11月24日付発表本文を照合した。重要なのは刑事評決の対象法人・量刑未確定・外交反応を分けることである。
+
+- 11月24日の連邦陪審評決はHuawei Technologiesと子会社3社（Huawei Device、Futurewei Technologies、Huawei Device USA）が対象。地区検察は各列挙犯罪で少なくとも1法人が有罪と説明している。AP・Reutersの報道では12訴因中10訴因で有罪、RICOに基づく共謀と司法妨害共謀は無罪。4法人それぞれが10訴因すべてで有罪になったと一般化しない。法人別・訴因別の評決票は今回未取得。
+- 量刑は2027年9月14日に予定されていることを司法省の両発表で確認。罰金、没収、被害弁償の可能性はあるが金額・具体的命令は未確定。Huawei側は評決を争い控訴する意向と報道されている。控訴の実際の申立て・受理・結果は未確認であり、確定判決や新たな輸出規制の発効と混同しない。
+- 11月25日の中国外交部報道官の記者会見では、米国による中国企業への抑圧に反対し企業の権益保護を支持する旨の発言がReuters配信記事およびAnadoluに掲載された。公式会見ページの存在は確認したが、当該質疑の原文は取得できず、発言内容は報道経由の確認に留まる。具体的な報復措置の決定や新規制裁の発効を示す根拠は今回未確認。
+- 公開時は「米陪審が有罪評決、2訴因は無罪、量刑は来年9月予定」と段階を区別する。首脳会談との因果関係、輸出規制の変更、日本企業・株価への具体的影響は今回の資料から確定しない。今後の確認条件は裁判所の量刑・控訴記録、米中当局の具体的な政策発表。記事やSNSの投稿、売買は行っていない。
+
+公開根拠（2026-11-25 JST確認）:
+- https://www.justice.gov/usao-edny/pr/chinese-telecommunications-conglomerate-huawei-and-subsidiaries-convicted-sanctions （地区検察発表本文、法人ごとの評決範囲に関する注意、量刑予定）
+- https://www.justice.gov/opa/pr/chinese-tech-giant-huawei-and-subsidiaries-convicted-sanctions-violations-fraud-conspiracy （司法省発表本文）
+- https://apnews.com/article/b39ac780e2e31140015a1be02f0329ab （AP報道、10/12・無罪訴因・控訴意向）
+- https://www.internazionale.it/ultime-notizie-reuters/2026/11/25/china-s-huawei-convicted-at-us-criminal-trial-stemming-from-iran-business （Reuters配信、中国外交部反応）
+- https://www.aa.com.tr/en/asia-pacific/beijing-accuses-us-of-suppressing-chinese-firms-after-huawei-convicted-of-fraud/4136976 （外交部発言の報道）
