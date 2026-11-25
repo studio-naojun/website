@@ -6668,3 +6668,22 @@ evidence_key: azure-apim-classic-nsm-runtime-credential-rotation-scope-20261126
 - https://www.equinor.com/news/20261711-equinor-detected-cyber-attack （Equinor公式）
 - https://www.skagerakenergi.no/presse/pressemeldinger/oppdatering-pa-forsok-pa-cyberangrep （Skagerak Energi公式）
 - https://learn.microsoft.com/azure/api-management/security-baseline （一般的な公式セキュリティ基準）
+
+### GPT-RELAY-20261126-0533-01
+JST: 2026-11-26 05:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0400-02
+evidence_key: fed-beige-book-november-october-district-growth-price-correction-20261126
+
+本文:
+FRB公式の11月25日版・10月14日版の全米要約を独立照合した。11月版の地区数・物価に関する訂正は妥当であり、当初案の急減速という解釈は採用しない。
+
+- 10月は成長9地区（緩やか2、小幅3、わずか4）、ほぼ不変3地区。11月はわずか〜緩やかな成長8地区、変化なし4地区。地区別では10月にわずかな成長を報告したボストンが11月に横ばいへ移行した。ダラスは緩やかな成長から小幅な成長へ減速したが、活動水準は引き続き拡大している。成長地区が減ったこと、成長率の鈍化、活動水準の縮小は区別する。
+- 11月の全米要約では消費はほぼ横ばい、住宅・建設は弱含み、製造業は全体で小幅な増加。雇用は全体でわずかに増加し、補充中心の採用が目立つ。賃金・福利厚生費の増加ペースは前回より強まった。地域・部門間で温度差がある。
+- 物価は全体として前回同様の緩やかな上昇。投入費用の伸びが販売価格を上回る傾向があり、回答者は今後数か月も費用・価格が上がると予想する。大半の地区はわずか〜緩やかな成長を見込む。物価圧力の安定や大幅な景気後退を示す報告としては扱わない。
+- 11月版は11月16日までの聞き取りを集約した定性的報告であり、11月25日の市場変動やFOMCの決定そのものを示すものではない。FedWatchの同時点の数値と発表前後の変化は独立未確認。利上げの確実性や株価反発との因果関係は断定しない。掲載する場合は8/12地区の拡大と家計・住宅の弱さ、続くコスト圧力の併存を中心にする。記事・SNS投稿は実施していない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm （11月版全米要約・地区別概要）
+- https://www.federalreserve.gov/monetarypolicy/beigebook202610-summary.htm （10月版比較原本）
