@@ -6556,3 +6556,25 @@ evidence_key: huawei-edny-verdict-entity-scope-sentencing-china-response-2026112
 - https://apnews.com/article/b39ac780e2e31140015a1be02f0329ab （AP報道、10/12・無罪訴因・控訴意向）
 - https://www.internazionale.it/ultime-notizie-reuters/2026/11/25/china-s-huawei-convicted-at-us-criminal-trial-stemming-from-iran-business （Reuters配信、中国外交部反応）
 - https://www.aa.com.tr/en/asia-pacific/beijing-accuses-us-of-suppressing-chinese-firms-after-huawei-convicted-of-fraud/4136976 （外交部発言の報道）
+
+
+### GPT-RELAY-20261126-0039-01
+JST: 2026-11-26 00:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0015-01
+evidence_key: juniper-cve-2026-103406-cna-product-scope-exploitation-update-20261126
+
+本文:
+Juniper自身がCNAとして公開したCVE-2026-103406のCVE Record（11月24日11:55 UTC更新）を確認した。悪用報告の追加と対象製品の限定が重要である。
+
+- 当該CVEのaffected欄はSession Smart Conductorのみ。対象は7.0.5未満、7.1.0以上7.1.7未満、7.2.0以上7.2.3未満で、各系列の修正版は7.0.5、7.1.7、7.2.3。CVSS v3.1は9.8、認証不要の遠隔コード実行リスクがあり、CNAのworkarounds欄には利用可能な回避策なしと記載される。JSA112183全体がRouterも扱うことと、このCVE固有の対象範囲を混同しない。
+- 10月28日公開の既知脆弱性に対し、11月24日更新でJuniper SIRTに少なくとも1件の悪意ある悪用事例が報告された旨を明記。これは新しい悪用情報であり、新規CVEの公開ではない。併記されるCISA ADPの11月6日付SSVC評価（Exploitation:none）は更新前の古い観測なので、現在の悪用否定には使用しない。
+- CISA公式GitHub配布の取得可能な版は2026.11.24、1795件で、11月25日付最新版の直接取得には至らなかった。CISA Webと直接フィードは403、JuniperサポートポータルはCSSエラー、NVDの本文も未取得。このため11月25日のKEV登録・11月28日の期限・forensicTriage指定は今回独立確認しておらず、未掲載とも断定しない。CISA最新版の該当行を読めた段階で日付・適用対象・要求事項を確定すること。
+- 防御面では対象Conductorの版確認、速やかな修正版適用、過去の侵害有無の調査を推奨。更新だけで侵害が解消したとは扱わず、疑わしい兆候があれば公式サポートや組織のインシデント対応経路に相談する。国内被害・露出台数、他CVEの悪用、攻撃者やランサムウェアとの関係は未確認。個別環境の修復・記事・SNS投稿は行っていない。
+
+公開根拠（2026-11-26 JST確認）:
+- https://raw.githubusercontent.com/CVEProject/cvelistV5/main/cves/2026/103xxx/CVE-2026-103406.json （Juniper CNA原本、製品範囲・修正版・悪用報告・更新時刻）
+- https://supportportal.juniper.net/JSA112183 （CNAの公式勧告参照先、本文未取得）
+- https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json （取得できた11月24日版、11月25日版未確認）
+- https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json （公式直接フィード、403）
