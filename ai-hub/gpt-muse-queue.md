@@ -6600,3 +6600,26 @@ evidence_key: keio-law-returnee-domestic-ib-september-entry-end-2029-official-20
 - https://www.keio.ac.jp/files/7db9e06056c2dd3c003f07a0dd706f0b03e3eef60d40ae6dcd449be34cb88060 （法学部2026年11月25日付PDF、実施年・入試年度・入学時期の対応表）
 - https://www.keio.ac.jp/ja/admissions/faculty/examinations/ib/
 - https://www.keio.ac.jp/ja/admissions/faculty/faq/japanese-returnees/
+
+### GPT-RELAY-20261126-0239-01
+JST: 2026-11-26 02:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0145-01
+evidence_key: hosei-gis-chuo-literature-policy-external-english-2027-official-20261126
+
+本文:
+法政大学・中央大学の2027年度入試変更公式告知と両大学の添付表を照合した。重要な訂正は、法政GISのB方式は外部英語を得点換算しないこと、中央総合政策は変更前から外部英語を得点換算していたこと。
+
+- 法政GISは独立した英語外部試験利用入試を廃止する一方、A方式は外部英語の得点換算を継続し、英語の満点を200点から120点へ引き下げる。英検準1級合格の場合、CSE2500未満は90点、2500以上は100点、1級合格は110点。IELTS・TOEFLには120点換算の基準もある。B方式では準1級以上合格等が出願資格であり、英検CSEの追加条件はなくなるが、得点換算はしない。新設C方式（6教科7科目型）では外部英語の出願資格を設けない。募集人数はA10、B17、C3。A方式の大学独自試験は2科目と公式11月16日案内にあるため、英語の独自試験が新たに必要になるとの誤解を避ける。
+- 中央文学部の学部別選抜英語外部試験利用方式は、出願資格だけだった外部英語を2027年度から得点換算し、国語および地理歴史または数学と合算する。換算の詳細は非公表。英検の出願要件は英語文学文化専攻CSE2120以上、その他1980以上（2級以上の受験、2級不合格は対象外）。資格要件自体がなくなるわけではない。
+- 中央総合政策学部は従来も外部英語を50点満点で加算していた。2027年度から個別英語100点を廃止し、外部英語を150点に引き上げ、国語100点との250点満点で判定する。ただし個別国語の平均点が基準点となる。英検CSE2304以上は出願要件として維持（受験級・合否不問）。「出願資格から初めて得点換算へ」という一括説明は誤り。換算の詳細は非公表で、目安は募集要項を参照する。
+- 上記は制度変更告知・添付表の確認であり、2027年度一般選抜募集要項全体、証明書発行日数や12月受験が間に合う条件は今回未確認。特定月を一律に最後の受験機会とせず、各大学の出願期限・有効期間・必要書類を最新要項で確認するよう案内する。記事・SNS投稿は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://www.hosei.ac.jp/gis/info/article-20250327123531/
+- https://nyushi.hosei.ac.jp/news/article/20270327_02/
+- https://nyushi.hosei.ac.jp/application/files/6117/7509/5625/cff90c89389b645fadd2079aefae4860.pdf （1ページ目の換算表を画像照合）
+- https://nyushi.hosei.ac.jp/news/article/20261116_01/
+- https://www.chuo-u.ac.jp/connect/admission/modification/
+- https://www.chuo-u.ac.jp/common_d/connect/admission/2027/pdf/2027policy_english_external_3011.pdf （変更前後の表を画像照合）
