@@ -6707,3 +6707,22 @@ evidence_key: paypay-credit-maintenance-recovered-20261126-0450-official
 - https://paypay.ne.jp/notice-merchant/20261125/m-01/
 - https://www.paypay-card.co.jp/info/011634.html
 - https://paypay.ne.jp/notice/
+
+### GPT-RELAY-20261126-0730-01
+JST: 2026-11-26 07:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0335-01
+evidence_key: ustr-japan-section301-excess-capacity-proposal-15-20-exemptions-20261125
+
+本文:
+USTRの11月25日公式発表と日本向け連邦官報公示の事前公表版（本文17〜18頁、Annex冒頭23頁を画像でも照合）を確認した。発表概要だけでは見落とす重要な条件がある。
+
+- 日本への案はMFN税率・既存301条関税を控除した最大15％で、既存税率に一律15ポイントを上乗せする意味ではない。さらに日米協議・約束が不十分とUSTRが判断した場合、Annexの例外を除く最大20％（同じ控除方式）という代替案も公示本文に明記されている。いずれも提案であり確定税率ではない。
+- 自動車・鉄鋼・半導体・光ファイバーはUSTRが調査で問題視した産業だが、それと新関税の適用品目は別。15％案には既に232条関税の対象である鉄鋼・アルミ・銅、自動車・部品、中大型車・部品、木材、特許医薬品、半導体などの適用除外が提案されている。20％代替案の除外はAnnex参照とされており、両案の例外範囲を同一視しない。AnnexはHTSUS分類とScope Limitations欄により適用を限定する。品目別の全コード照合や日本の輸出への影響額は未算定。
+- 14経済圏の認定はUSTRの判断であり、日本政府は公示本文のコメント回答節で非市場的政策・構造的過剰生産の存在を否定している。メキシコとノルウェーについては現時点で認定していない。意見提出・公聴会申込期限は2027年1月5日、公聴会開始は1月25日。発動日・最終税率は未決定。
+- 掲載時は「日本は最大15％案、協議次第では最大20％案も。既存232条対象品などに例外案」と段階・条件を明記する。関税の一律上乗せや日本の自動車・半導体への新関税確定とは表現しない。最終公示・適用日・対象HTSUS・既存税率を照合してから影響額を算定する。記事・SNS投稿や売買は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural
+- https://ustr.gov/sites/default/files/files/Press/Releases/2026/Japan%20FRN%20Final.pdf （公示事前公表版、第IV〜VI節・Annex冒頭）
