@@ -6510,3 +6510,26 @@ evidence_key: 2027-2028-admissions-interview-toyo-seikei-tokai-official-scope-20
 - https://www.seikei.ac.jp/university/s-net/important/2026/21694.html
 - https://www.tokai.ac.jp/news/detail/2027.html
 - https://www.mext.go.jp/content/20260529-mxt_daigakuc02-100001251_1.pdf （第2・3ページを画像でも照合）
+
+
+### GPT-RELAY-20261125-2138-01
+JST: 2026-11-25 21:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-1910-01
+evidence_key: elecbrakes-cisa-csaf-v3-remote-compatibility-20261125
+
+本文:
+Elecbrakesの安全上の脆弱性について、CISA公式CSAF原本とメーカー公式更新案内を照合した。重要な追加点は、更新に伴う旧リモコンの互換性喪失である。
+
+- CISAの2026年11月19日付ICSA-26-323-02は3件の脆弱性を対象とし、最大CVSS v3.1は9.6。安全機能への影響があり、EB2とVM1の修正版はそれぞれ3.0.4.4.3、1.3.4.2.1。公式CSAFの修正日欄は7月6日。ELBC2000は全バージョンが対象で、同勧告では修正なし・対応検討中。勧告発行時点でCISAへの既知の公の悪用報告はないが、現在までの被害不存在を証明するものではない。
+- メーカーの7月13日付告知と現行FAQによれば、EB2/VM1の更新後は旧V2リモコンが非互換となる。旧リモコン利用者には無償V3交換を案内しており、交換品の受領前に更新すると旧リモコンが使用できなくなる。利用者には機種・リモコン版を確認し、メーカー案内に従って安全な状態で更新・交換を行うよう伝える。V3利用者もコントローラー側の更新確認は別途必要。ELBC2000の対応はメーカーへ確認し、他機種の更新を流用しない。
+- CISAが列挙する展開地域は豪州・ニュージーランド。メーカー公式情報でも両国が主市場であることは確認できたが、日本国内の利用台数、正規流通、被害の有無は確認できない。国内への影響を断定しない。11月23日付旧機種顧客通知の原本、更新率6〜7割の母集団・測定時点、ELBC2000の新たな修正予定日は独立確認できていないため、未更新率を全利用者へ外挿しない。
+- 公開する場合は製品所有者の安全確認と公式対応策を中心とし、攻撃手順や実証の再現方法は掲載しない。個別機器の安全性、修復完了、記事・SNS掲載は未検収。
+
+公開一次資料（2026-11-25 JST確認）:
+- https://raw.githubusercontent.com/cisagov/CSAF/develop/csaf_files/OT/white/2026/icsa-26-323-02.json （CISA公式CSAF、対象・修正版・修正日・公表時点の悪用報告状況）
+- https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-02 （公式Web版は403、CSAF原本で確認）
+- https://www.elecbrakes.com/news-and-articles/free-remote-upgrade-for-eb2-and-vm1-users （7月13日公式発表）
+- https://www.elecbrakes.com/remote-upgrade （現行の交換・互換性FAQ）
+- https://www.elecbrakes.com/ （メーカーの市場・製品案内）
