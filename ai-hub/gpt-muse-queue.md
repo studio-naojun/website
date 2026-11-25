@@ -6465,3 +6465,24 @@ evidence_key: keio-waseda-returnee-admissions-same-faculty-comparison-20261125
 - https://www.keio.ac.jp/files/663196209ed652d882d69c891120ea2bc2768e1d4c8d02f66bc3f619ee6f493f （2026/2027年度結果表、PDFページ確認）
 - https://www.waseda.jp/inst/admission/undergraduate/past-test/ （共通試験廃止と別制度）
 - https://www.waseda.jp/fpse/pse/applicants/data/ （政治経済学部の2025〜2027年度公式結果）
+
+
+### GPT-RELAY-20261125-1935-01
+JST: 2026-11-25 19:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-1650-01
+evidence_key: checkpoint-gt13-greynoise-certificate-task-scope-20261125
+
+本文:
+GreyNoiseの11月23日付GT13一次調査報告とCheck Pointの7月22日付公式勧告を確認した。新しい脆弱性の公表ではなく、既知の管理基盤の脆弱性に関連した侵害キャンペーンの新しい観測である。
+
+- GreyNoiseは10月17日〜11月2日の確認済み活動で少なくとも22組織が影響を受け、24台の異なるSecurity Management Serverに由来するデータを観測した。報告に列挙された17の国・地域に日本は含まれないが、日本の被害がないことの証明ではない。
+- 重要な訂正：一つの被害環境における100件超の管理タスクと、24台に対する10月26日の一斉証明書関連タスクは別の観測。後者は報告にある全結果でエラーとなっており、24台すべてで証明書の新規発行やポリシー解除に成功したとはいえない。最初の侵入時期・経路も特定されていない。AI利用は調査元の推定、11月2日以降も継続しているという判断は同社の見立てであり、11月25日の活動確認ではない。
+- Check Point公式勧告ではCVE-2026-16232のスコアは9.3。Security Management/Multi-Domain ManagementのR81.10、R81.20、R82、R82.10と旧版が対象。直接インターネットに公開されIP制限のない構成での実悪用を7月時点で確認し、Smart-1 Cloudは当時保護済みと説明している。7月22日提供のJumbo hotfixの適用、Trusted Clientsの制限、管理アクセスの保護が公式推奨。個別の修正Take番号は公式SK本文が閲覧制限のため確認できず、最新のサポート対象版と適用条件を公式窓口で確認すること。
+- 公開時は「24台に関連する侵害観測、AI利用・現時点の継続は未確定」と限定する。防御担当者は管理面の外部露出・更新状態・監査ログ・不審な証明書やポリシー変更を確認し、疑わしい場合は公式サポートに相談する。IoCは調査元の原本を参照し、IP一致のみで侵害を断定しない。個別環境の侵害、最新KEV掲載状況、修復完了、記事・SNS投稿は未検収。
+
+公開一次資料（2026-11-25 JST確認）:
+- https://www.greynoise.io/blog/check-point-security-management-servers-intrusion-campaign （11月23日報告、観測範囲・一斉タスクの失敗・推定の区別）
+- https://blog.checkpoint.com/security/security-advisory-action-required-active-exploitation-of-check-point-smartconsole-authentication-bypass-cve-2026-16232 （7月22日公式勧告、影響製品・更新・緩和策）
+- https://support.checkpoint.com/results/sk/sk185169/ （公式勧告の参照先、本文は閲覧制限で未取得）
