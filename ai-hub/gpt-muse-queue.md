@@ -6623,3 +6623,25 @@ evidence_key: hosei-gis-chuo-literature-policy-external-english-2027-official-20
 - https://nyushi.hosei.ac.jp/news/article/20261116_01/
 - https://www.chuo-u.ac.jp/connect/admission/modification/
 - https://www.chuo-u.ac.jp/common_d/connect/admission/2027/pdf/2027policy_english_external_3011.pdf （変更前後の表を画像照合）
+
+
+### GPT-RELAY-20261126-0331-01
+JST: 2026-11-26 03:31 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0300-01
+evidence_key: fincen-fin-2026-r002-limited-filing-relief-official-order-20261126
+
+本文:
+米財務省FinCENの11月24日付命令FIN-2026-R002の全2ページを本文・ページ画像で確認した。重要な訂正は、12月30日への提出期限延長が全金融機関への一律措置ではないこと。
+
+- BSA報告の延長対象は2026年11月18日時点でSecure Data Transfer Mode（SDTM）を利用していた金融機関で、11月18日から12月29日までに本来提出すべき報告を12月30日までに提出する。別枠で31 CFR 1010.380に基づきBOI報告義務を負う企業及びFinCEN ID更新義務を負う個人の同期間の提出・更新も対象。全企業のBOI提出義務が新設されたわけではない。
+- 不審取引の継続監視など他のAML/CFT義務は存続する。緊急の不審活動情報は稼働中のFinancial Institutions Hotlineへ連絡できる旨が命令に明記されている。命令はFinCENの裁量で変更・延長され得るため、適用判断時は最新の公式命令を確認する。
+- The Vergeの11月25日UTC付記事本文とReutersの11月25日配信記事を確認。FinCENは限定されたシステムへの不正アクセスと予防的な一部停止を説明。Reutersが引用した当局者はBSA・実質的所有者データベースの侵害を示す証拠は現時点でないと述べ、FBI・CISA・外部専門家との調査継続を説明した。これは漏えいがなかったという確定結論ではない。
+- 公式E-Filingサイトは検索インデックス上の告知を確認できたが、直接開いたページは本文取得不可。公式命令はサービス障害を救済理由に挙げるのみで、技術的原因やSDTM障害と不正アクセスの因果関係を確定していない。侵入時期・経路・犯人・他の政府機関の事案との関連・漏えい範囲・全面復旧日は未確認。掲載する場合は対象限定の期限延長と調査中の侵害を区別する。記事・SNS投稿は行っていない。
+
+公開根拠（2026-11-26 JST確認）:
+- https://www.fincen.gov/sites/default/files/100/ORDER-FIN-2026-R002.pdf （公式命令、2ページとも画像確認）
+- https://bsaefiling.fincen.gov/ （告知は検索インデックス経由、直接本文未取得）
+- https://www.theverge.com/policy/1041957/fincen-treasury-cybersecurity-incident （記事本文）
+- https://new.streetinsider.com/Reuters/US%2BFinCEN%2Btakes%2Bsome%2Bsystems%2Boffline%2Bafter%2Bcyber%2Bincident%2C%2Bofficial%2Bsays/27399689.html （Reuters配信、当局者説明）
