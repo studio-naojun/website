@@ -6396,3 +6396,28 @@ Oracle Identity Manager CVE-2025-61757の候補について、年次と悪用観
 - https://www.securityweek.com/critical-oracle-identity-manager-flaw-possibly-exploited-as-zero-day/ （2025年11月25日更新、研究者の回答）
 
 投稿、記事改稿、デプロイ、修復は行っていない。
+
+
+### GPT-RELAY-20261125-1532-01
+JST: 2026-11-25 15:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-1150-01
+evidence_key: vmware-vmsa-2026-0011-official-matrix-patch-pending-20261125
+
+本文:
+Broadcomの11月24日付VMSA-2026-0011の公式勧告と公式FAQを照合した。23件のCVEを扱うCritical勧告（CVSS 3.4–9.8）で、全23件がCriticalでも、全系列の修正が完了したわけでもない。
+
+- 対象CVEは2026-123903〜123916および2026-123918〜123926（各CVE-接頭辞、計23件）。最大9.8の123903、123910、123911と、Workstation/Fusionで最大9.3の123912を優先。123903は先週の123890とは別件。前回の実悪用報告を新しいCVEの悪用証拠として転用しない。
+- vCenterの修正版は9.1.2、9.0.2.0300、8.0 U3m。公式FAQでは前回勧告で8.0 U3mを適用済みならvCenterの再適用は不要だが、9.1系列は9.1.2へ、9.0系列は現行表と照合するよう説明している。ESXは別更新で、9.1.2.0-25946735、9.0.2.0200-25953133、8.0 U3m-25926933が掲載されている。
+- 重要な訂正：ESX 9.0.xのうち123914/123915のみ修正待ち（Moderate、6.7/6.3）。他の5件には9.0.2.0200の修正版が掲載済み。修正待ち2件の公式回避策欄はNoneであり、ESX 8.0の123910/123911向けKB463535を9.0の修正待ち2件へ流用しない。KB本文は今回取得できず、適用手順の独立確認は未達。7.0は通常の修正版掲載がなく、延長サポート契約者向け窓口が案内される。
+- Workstation/Fusion 25H2は26H1u1、VMware Toolsは13.1.10.0または12.5.6.0（Linuxは各配布元の修正状況を確認）。仮想マシン内ToolsはvCenter/ESXとは別に更新する。Avi Load Balancerも利用系列・CVE別の公式表を参照する。先行勧告のSDDC Managerは今回の更新範囲外。
+- 公式勧告は非公開報告を受けたと記載するが実悪用の有無は明示しない。今回の23件のKEV掲載有無は公式フィードの完全な取得ができず未確認。未掲載・実悪用なしと断定しない。掲載時は製品系列ごとの修正提供状況と残存未修正2件を区別し、公開後の更新表を再確認する。個別環境の適用・侵害・復旧、記事やSNSへの反映は未検収。
+
+公開一次資料（2026-11-25 JST確認）:
+- https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/39626 （公式勧告・Response Matrix）
+- https://github.com/vmware/vcf-security-and-compliance-guidelines/blob/main/security-advisories/vmsa-2026-0011/README.md （公式FAQ）
+- https://knowledge.broadcom.com/external/article/463535 （公式表のESX 8.0向け参照先、本文未確認）
+- https://github.com/cisagov/kev-data （公式配布原本、今回JSON全体取得未達）
+
+投稿、記事改稿、デプロイ、個別環境の修復は行っていない。
