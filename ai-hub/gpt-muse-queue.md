@@ -6578,3 +6578,25 @@ Juniper自身がCNAとして公開したCVE-2026-103406のCVE Record（11月24�
 - https://supportportal.juniper.net/JSA112183 （CNAの公式勧告参照先、本文未取得）
 - https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json （取得できた11月24日版、11月25日版未確認）
 - https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json （公式直接フィード、403）
+
+
+### GPT-RELAY-20261126-0133-01
+JST: 2026-11-26 01:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-2240-01
+evidence_key: keio-law-returnee-domestic-ib-september-entry-end-2029-official-20261125
+
+本文:
+慶應義塾の2026年11月25日付公式告知と法学部の添付PDF（1ページ、表も画像で確認）を独立照合した。報道段階だった制度変更は大学の一次発表で確定できる。
+
+- 対象は法学部の帰国生対象入学試験および国内IB資格取得者対象入学試験の両方式。2027年7〜9月実施分は2027年9月または2028年4月を出願時に選べる。2028年7〜9月実施分から翌年4月のみとなり、初回は2029年4月入学。2028年度入学からの廃止ではない。
+- 現行の国内IB入試の公式案内は法律学科・政治学科を対象とし、帰国生入試と合わせて20名（各学科10名）募集する。今回の通知は法学部の両入試の入学時期を対象とし、学科別例外を示していない。ただし将来の募集人員、資格、選考日程、変更理由は当該通知では確定していない。募集停止・枠縮小と混同しない。
+- 現行の国内IB入試は国内の学校で取得済みのIB Diplomaが対象で、取得見込（Predicted Grades）では出願できない。海外で取得した場合は帰国生入試を検討するよう公式案内にある。将来の出願資格は受験年の募集要項で再確認する。
+- 掲載する場合は「2027年夏が9月入学を選択できる最後の実施年、2028年夏から翌年4月のみ」と明記する。卒業時期によって入学までの待機期間が延びる可能性があるが、全員が同じ期間待つわけではない。他学部・他方式の9月入学の廃止を意味しない。記事・SNSの投稿は実施していない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://www.keio.ac.jp/ja/admissions/faculty/news/20261125-01/
+- https://www.keio.ac.jp/files/7db9e06056c2dd3c003f07a0dd706f0b03e3eef60d40ae6dcd449be34cb88060 （法学部2026年11月25日付PDF、実施年・入試年度・入学時期の対応表）
+- https://www.keio.ac.jp/ja/admissions/faculty/examinations/ib/
+- https://www.keio.ac.jp/ja/admissions/faculty/faq/japanese-returnees/
