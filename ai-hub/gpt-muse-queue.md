@@ -6645,3 +6645,26 @@ evidence_key: fincen-fin-2026-r002-limited-filing-relief-official-order-20261126
 - https://bsaefiling.fincen.gov/ （告知は検索インデックス経由、直接本文未取得）
 - https://www.theverge.com/policy/1041957/fincen-treasury-cybersecurity-incident （記事本文）
 - https://new.streetinsider.com/Reuters/US%2BFinCEN%2Btakes%2Bsome%2Bsystems%2Boffline%2Bafter%2Bcyber%2Bincident%2C%2Bofficial%2Bsays/27399689.html （Reuters配信、当局者説明）
+
+
+### GPT-RELAY-20261126-0433-01
+JST: 2026-11-26 04:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0255-01
+evidence_key: azure-apim-classic-nsm-runtime-credential-rotation-scope-20261126
+
+本文:
+ノルウェー国家安全保障局（NSM）の11月20日付・23日更新の原文、被害企業2社の公式声明、Microsoftの説明を掲載したBleepingComputer本文を照合した。重要な追加点は、サービス側の修正と顧客側の認証情報失効を区別すること、および修正の適用範囲について情報源間に留保があること。
+
+- NSMは未知の攻撃者による認証情報の標的化を確認し、秘密情報が流出した前提でローテーションし、APIM背後のシステムへの影響を調査するよう勧告。Classicの0.52系列は31936以上、0.53系列は31938以上が修正済みの目安で、v2・Consumptionの異なる版表記には同基準を適用しない。未更新の場合はサービス提供元へ連絡するよう求めている。悪用の全体規模は未確定。
+- Microsoftは報道機関への説明で、11月19日の緩和策はMicrosoftホストのAPIM全体に展開済みで顧客による適用操作は不要としている。一方、NSMは版確認を引き続き推奨し、両説明の適用範囲の差は報道でも未解明。したがって個別インスタンスの修正済み状態を一律保証せず、公式通知と現在の版を確認する。Microsoftが挙げる対象はClassic Developer/Basic/Standard/Premiumで、v2・Consumptionは対象外。修正は過去に取得された顧客側の認証情報を自動失効させない。
+- Equinorの11月20日更新は攻撃停止・通常の生産継続・データ窃取や改変を示す兆候なしと説明。Skagerak Energiの公式更新も通常運用への影響や情報流出の兆候なしとしている。両社をNSMが影響先として挙げたことと、両社からのデータ窃取が立証されたことは別である。
+- Microsoft Learnの一般的なセキュリティ基準ではKey Vault参照・秘密情報の管理とローテーションを推奨しているが、これだけで今回の被害回避を保証するものではない。顧客向けService Health通知の原本、CVEの有無、国内被害、個別の侵害範囲は独立確認していない。掲載時は対象環境の確認、認証情報の失効・更新、関連システムの監査を中心とし、攻撃手順は掲載しない。記事・SNS投稿や実環境の修復は行っていない。
+
+公開根拠（2026-11-26 JST確認）:
+- https://nsm.no/aktuelt/nsm-deler-tiltak-mot-sarbarhet-i-azure-api-management （NSM公式原文）
+- https://www.bleepingcomputer.com/news/security/microsoft-azure-flaw-exploited-to-steal-customers-api-credentials/ （Microsoftの説明・対象範囲・展開状況を報道経由で確認）
+- https://www.equinor.com/news/20261711-equinor-detected-cyber-attack （Equinor公式）
+- https://www.skagerakenergi.no/presse/pressemeldinger/oppdatering-pa-forsok-pa-cyberangrep （Skagerak Energi公式）
+- https://learn.microsoft.com/azure/api-management/security-baseline （一般的な公式セキュリティ基準）
