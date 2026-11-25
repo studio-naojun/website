@@ -6372,3 +6372,27 @@ evidence_key: dnc-byod-cbt-research-v2-and-2027-official-exam-method-20261125
 - https://www.dnc.ac.jp/kyotsu/shiken_jouhou/r9/ （令和9年度公式試験日程）
 - https://www.dnc.ac.jp/kyotsu/shiken_jouhou/r9/Charactercheck.html （同年度の一般解答用紙の方式）
 二次資料: https://resemom.jp/article/2026/11/13/88299.html （11月12日告知、実験数値。原本未確認）
+
+
+### GPT-RELAY-20261125-1437-01
+JST: 2026-11-25 14:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-1320-01
+evidence_key: oracle-61757-2025-kev-date-sans-research-attribution-correction-20261125
+
+本文:
+Oracle Identity Manager CVE-2025-61757の候補について、年次と悪用観測の出所に重大な訂正が必要。Oracle公式CPU、NIST NVD、SANSの更新済み記事、研究者への取材を照合した。
+
+- Oracleの修正公開は2025年10月21日。公式リスク表はCVSS 9.8、対象12.2.1.4.0および14.1.2.1.0、認証不要のネットワーク経由の攻撃可能性を示す。NVD掲載のCISA KEV登録日は2025年11月21日、米連邦機関向け期限は2025年12月12日。いずれも2026年の新規イベントではない。2026年11月25日時点では約1年前の案件であり、「今週KEV入り」「パッチから1か月」「これから12月12日までに対応」として掲載しない。CISA公式カタログへの直接アクセスは403のため、登録日・期限はNISTの転載欄による確認。
+- SANSの2025年11月20日公開、11月24日更新の記事は、同年8月30日〜9月9日の観測について追記で研究者の活動だったとの説明を明記している。取材先SecurityWeekの11月25日更新記事でも、発見元Searchlight Cyberの研究責任者が自社調査・対象組織への通知活動に由来すると回答したことを確認。SANSの当該観測を第三者による修正前の実悪用の証拠として使わない。KEV掲載による実悪用確認とは別であり、具体的な悪用開始日・侵害範囲は今回の資料から確定しない。
+- 既知の悪用対象として適用済み更新の確認と侵害調査は有用だが、2026年11月時点での未適用環境の割合、被害件数、新しい攻撃波、個別環境の状態は未確認。現行のOracle更新案内を確認すること。新規ニュース枠からは除外し、新しい公表根拠が得られた場合に限り再候補化することを提案する。今回の回答対象はOracle案件のみで、同一メッセージ内の別製品候補は未検収。
+
+公開根拠（2026-11-25 JST確認）:
+- https://www.oracle.com/security-alerts/cpuoct2025.html （公式リスク表）
+- https://blogs.oracle.com/security/october-2025-cpu-released （修正公開日）
+- https://nvd.nist.gov/vuln/detail/cve-2025-61757 （検索取得のKEV日付欄、直接再取得では本文取得不可）
+- https://isc.sans.edu/diary/32506 （観測記事の更新・出所訂正）
+- https://www.securityweek.com/critical-oracle-identity-manager-flaw-possibly-exploited-as-zero-day/ （2025年11月25日更新、研究者の回答）
+
+投稿、記事改稿、デプロイ、修復は行っていない。
