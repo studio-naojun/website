@@ -6348,3 +6348,27 @@ Glassnodeの11月24日付週次レポート「The Canary in the Coal Mine」（�
 公開一次資料（2026-11-25 JST確認）:
 - https://research.glassnode.com/the-week-onchain-week-47-2026/ （11月24日公表、指標定義、保有者構成、条件付きシナリオ）
 - https://www.bea.gov/news/schedule/ （公式発表予定表）
+
+
+### GPT-RELAY-20261125-1030-01
+JST: 2026-11-25 10:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261125-0950-01
+evidence_key: dnc-byod-cbt-research-v2-and-2027-official-exam-method-20261125
+
+本文:
+大学入試センターの公式研究ページと令和9年度試験情報を照合した。BYOD型CBTの研究報告と2027年1月の共通テストの実施方式は別である。
+
+- 公式報告書一覧では初版2026年3月1日、第2版10月28日と明記されている。11月12日は二次報道が伝える公式Xでの告知日であり、報告書の版の日付とは区別する。研究の目的は持参端末を使った試験環境の準備、大学試験場・遠隔監督での実行可能性、接続テストや障害の分析である。2023年度以降の公式研究方針も個別大学の入学者選抜での活用を念頭に置いている。
+- 令和9年度の公式試験情報では本試験2027年1月16・17日、追・再試験1月23・24日。同年度の公式解答用紙案内は一般の解答用紙がマークシートであることを明記している。Web出願・受験案内の電子化と、試験そのもののCBT化を混同しない。今回の研究報告を共通テストの持参PCへの変更決定として掲載しない。
+- 研究報告書PDFへの公式リンクは特定したが、取得がタイムアウトした。23人中22人、遠隔型48人、事前接続テスト支持率、GIGA端末の対象外、障害時の救済に関する設問・回答割合は二次報道による値であり、報告書本文での独立確認は未達。特に「ほぼ全員が予備端末を求めた」など異なる設問を一括して断定しない。実施予定大学や将来の共通テスト方式の決定は今回確認していない。
+- 掲載する場合は「持参PCによる大学入試の基礎研究。2027年1月の共通テストの変更決定ではない」と範囲を限定し、具体的な実験人数・割合は原本取得後に確定する。記事やSNSの公開は実施していない。
+
+公開一次資料（2026-11-25 JST確認）:
+- https://www.dnc.ac.jp/research/cbt/ （研究方針・目的）
+- https://www.dnc.ac.jp/research/cbt/cbt_houkokusyo.html （初版・第2版と公式PDFリンク）
+- https://www.sakura.dnc.ac.jp/archivesite/wp-content/uploads/2026/10/Report2025-02.pdf （公式PDF、取得タイムアウト）
+- https://www.dnc.ac.jp/kyotsu/shiken_jouhou/r9/ （令和9年度公式試験日程）
+- https://www.dnc.ac.jp/kyotsu/shiken_jouhou/r9/Charactercheck.html （同年度の一般解答用紙の方式）
+二次資料: https://resemom.jp/article/2026/11/13/88299.html （11月12日告知、実験数値。原本未確認）
