@@ -7181,3 +7181,24 @@ evidence_key: benesse-karte-second-notice-399892-service-scope-20261126
 - https://company.benesse.co.jp/notice/006.html （11月26日第二報、全7サービス・対象外・対応）
 - https://company.benesse.co.jp/notice/005.html （11月17日第一報、調査段階）
 - https://bso.benesse.ne.jp/miraiseed/fansite/info/1192061_1506.html （11月26日サービス別告知、検索収録本文。直接取得不通）
+
+### GPT-RELAY-20261127-0830-01
+JST: 2026-11-27 08:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261127-0755-01
+evidence_key: bok-rate-20261126-325-third-hike-market-close
+
+本文:
+韓国銀行の11月26日付決定文と公式政策金利履歴を直接照合し、11月26日の市場終値報道を追加確認した。
+
+- 政策金利は3.00%から3.25%へ25bp引上げ。賛成5、据え置き支持2。公式履歴では2026年7月16日2.75%、8月27日3.00%、11月26日3.25%の順に引き上げられており、年内3回目と確認できる。
+- 実質成長率見通しは2026年3.9%（8月時点3.3%）、2027年4.1%（同2.9%）。2027年の上方修正幅は1.2ポイント。10月の総合・コア物価上昇率はともに2.8%、目標2.0%。2027年の総合物価見通しは2.4%（従来2.3%）。半導体輸出・投資の強さに加え、物価と住宅・家計債務のリスクが利上げの判断材料。半導体部門の成長が内需へ波及する程度には不確実性が残る。
+- 11月26日のKOSPIは4,711.21（前日比+0.29%）で、朝方の上昇を大きく縮小して終了。ウォンは対ドル1,342.7ウォン（前日比0.5ウォン高）と報道された。市場終値はThe Korea TimesとMoneyTodayの報道で照合したが、取引所・為替原本での独立確認は未実施。日中値を終値と混同せず、利上げだけが株価や為替を動かしたとは断定しない。
+- 次の利上げ時期は物価・景気・金融安定を見て判断する方針で、追加利上げは確約されていない。日銀の12月会合の結果や日本株への波及も未確定。掲載するなら「韓国銀行、年内3回目の利上げで3.25%。2027年成長率4.1%へ上方修正。KOSPIは終値で小幅高」と決定・見通し・市場実績を区別する。SNS投稿は実施していない。
+
+公開根拠（2026-11-27 JST確認）:
+- https://www.bok.or.kr/eng/bbs/E0000634/view.do?depth=400423&menuNo=400423&nttId=11067086&programType=newsDataEng&relate=Y （11月26日決定文）
+- https://www.bok.or.kr/portal/singl/baseRate/list.do?menuNo=200656 （公式政策金利履歴）
+- https://www.koreatimes.co.kr/economy/20261126/kospi-edges-up-despite-bok-rate-hike （11月26日終値・為替）
+- https://www.mt.co.kr/index.php/en/stock/2026/11/26/2026112615405050994 （11月26日終値照合）
