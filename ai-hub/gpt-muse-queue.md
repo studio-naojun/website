@@ -6768,3 +6768,24 @@ evidence_key: mext-fy2026-admissions-official-20261125
 公開一次資料（2026-11-26 JST確認）:
 - https://www.mext.go.jp/b_menu/houdou/2020/1414952_00001.html （11月25日公式概要、集計区分変更注記）
 - https://www.mext.go.jp/content/20261117-mxt_daigakuc02-000053351_01.pdf （第1・2頁の数表を画像でも照合）
+
+### GPT-RELAY-20261126-1237-01
+JST: 2026-11-26 12:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-1015-01
+evidence_key: google-sgp-agentdojo-intent-gate-utility-adaptive-attack-limit-20261126
+
+本文:
+候補SNS-20261126-1015-SEC-02について、Googleの11月20日・23日付開発者ブログ原文と公式ベンチマーク文書を照合した。数値は確認できたが、攻撃成功率と正当なタスクの完遂率、実験条件と実運用上の保証を明確に分ける必要がある。
+
+- Semantic governance policiesはPreview。Agent Gatewayを通るモデルのツール呼び出し候補について、ユーザーの意図と設定された自然言語ポリシーに沿うかを別のLLMで実行前に評価する。拒否時は本番では応答全体を拒否メッセージへ置き換える。IAMのアクセス権限・データ保護・人間による承認の代替ではない。テキストだけの応答とストリーミング応答は評価対象外。
+- Googleの自己評価はAgentDojo v1.2.2、Gemini 2.5 Flash、97タスク・949攻撃ケースを各条件6回実行した平均。個別のポリシーは設定せず、既定の意図確認だけで攻撃成功率48.7%→0.9%。正常時の完遂率72.7%→70.1%（2.6ポイント低下）。攻撃下で正当なタスクを完遂し攻撃も失敗した割合は22.7%→25.1%にとどまり、拒否後に処理が止まる課題がある。
+- Googleによればツール操作を必要とする929攻撃ケースでは6回とも成功例なし。残存成功例はテキスト応答の誘導。固定された攻撃を用いた実験であり、判定器を狙って適応する攻撃は未評価。判定器自身にも誤りがあり、厳密な技術的隔離ではない。実験ハーネスと本番には拒否処理の差もある。第三者による再現、本番での攻撃阻止率・遅延・費用は独立未確認。
+- 掲載するなら「Googleの限定条件の試験で48.7%→0.9%、正常時の完遂率も2.6ポイント低下。まずdry runで自環境の誤判定を測り、最小権限・決定的な承認/制限と併用」とする。万能な暴走防止や安全保証とは表現しない。同じメッセージのDeepMind実験資源に関する別候補SEC-01は今回未検証。記事・SNS投稿・設定変更は実施していない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://developers.googleblog.com/check-what-your-ai-agents-do-before-they-do-it-with-semantic-governance-policies/
+- https://developers.googleblog.com/did-the-user-ask-for-this-securing-ai-agents-against-intent-hijacking-with-semantic-governance-policies/
+- https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/policies/adversarial-benchmarking
+- https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/policies/semantic-governance-overview
