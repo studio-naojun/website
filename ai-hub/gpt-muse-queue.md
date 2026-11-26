@@ -6953,3 +6953,28 @@ evidence_key: dokkyo-evening-2027-common-test-english-june-announcement-20261126
 - https://nyushi.dokkyo.ac.jp/nyushi/gakubu-seido/system_ippan （現行制度案内・出願・検定料）
 - https://digitalpr.jp/r/137098 （大学名義、6月16日付発表）
 - https://nyushi.dokkyo.ac.jp/news/9784 （一般選抜要項公開告知）
+
+### GPT-RELAY-20261126-2133-01
+JST: 2026-11-26 21:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-2125-01
+evidence_key: sophia-2028-returnee-nine-departments-eligibility-waseda-exception-20261126
+
+本文:
+上智大学の2026年3月31日付公式告知と公式PDFの検索収録本文（第1節、募集学科・日程・方式・出願要件）を照合した。11月の新規発表ではなく、既発表の2028年4月入学制度変更として扱う。今回、公式サイトへの直接取得とPDF画像取得は404となったため、現行配布版の画像・変更の有無は未確認。掲載前に大学公式ページから再確認すること。
+
+- 帰国生入試の募集対象から外れる9学科は、文学部の史学・国文、総合人間科学部の社会福祉、経済学部の経済・経営、総合グローバル学部の総合グローバル、理工学部の物質生命理工・機能創造理工・情報理工。経済・総合グローバル・理工の各学部については告知記載の既存対象学科すべてが該当する。学部そのものの募集停止や帰国生の入学禁止とは異なる。
+- 継続する帰国生入試の出願時期は7月下旬のまま、試験は9月下旬から10月中旬へ。法学部3学科、イスパニア語学科、教育学科、社会学科は二段階方式の対象で、11月下旬に面接を実施する予定。海外教育制度に基づく在籍要件は、中高6年間を対象とした従来の条件から、日本の高校相当3年間のうち連続2年以上へ限定される。例えば13年制では11～13年生が対象。単なる海外居住2年では足りず、外国語検定等の他要件も残る。2026年度の高2で2028年3月卒業予定の層に加え、2028年度以降に受験する既卒者等にも適用される。
+- 早稲田は共通試験（法・教育・商）を2025年度から廃止したが、教育学部の独自帰国生入試は2027年度も公式要項がある。理工3学部は2023年度入学者募集を最後に停止。慶應SFCは2025年度実施を最後に終了し、公式にAO等を案内している。慶應法学部の9月入学廃止（2028年夏実施分以降）は11月25日付公式告知で別途確認済みであり、帰国生入試そのものの募集停止とは区別する。
+- 掲載するなら「上智が3月に予告した2028年度帰国生入試の変更を再確認。9学科の募集停止に加え在籍条件・試験日程も変更」とする。代替選抜は大学・学科ごとの出願資格、言語・科目、併願条件を確認し、全員が利用できるとは断定しない。日経有料記事の全文、制度変更の理由、2028年度最終募集要項は未確認。記事・SNS投稿は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://adm.sophia.ac.jp/jpn/news/gakubu_ad/2028tokubetsu202603/ （3月31日告知の検索収録本文）
+- https://adm.sophia.ac.jp/assets/uploads/sites/2/2026/03/2028tokubetsu_notice.pdf （公式PDFの検索収録本文、第1節。直接取得・画像は未確認）
+- https://www.sophia.ac.jp/jpn/admissions/gakubu_ad/kikoku.html （2027年度募集概要）
+- https://www.waseda.jp/inst/admission/undergraduate/past-test/
+- https://www.waseda.jp/fedu/edu/admission/
+- https://www.waseda.jp/fsci/admissions_us/application/
+- https://www.keio.ac.jp/ja/sfc-pem/admission/pmei/
+- https://www.keio.ac.jp/ja/admissions/faculty/news/20261125-01/
