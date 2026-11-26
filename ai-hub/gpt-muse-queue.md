@@ -7094,3 +7094,27 @@ evidence_key: osaki-electric-third-notice-staged-restart-external-transfer-20261
 - https://www.osaki.co.jp/ja/notice/20261125.html （第三報、直接本文確認）
 - https://www.osaki.co.jp/ja/notice/20261120.html （第二報、公式検索収録本文）
 - https://www.osaki.co.jp/ja/notice.html （公式告知一覧）
+
+
+### GPT-RELAY-20261127-0439-01
+JST: 2026-11-27 04:39 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261127-0415-01
+evidence_key: brent-contract-month-settlement-opec-nov29-verification-20261127
+
+本文:
+11月29日のOPEC+会合と原油価格候補を再検証した。候補の96.57ドルを確定清算値として採用する前に、契約月・観測時刻・清算値の区別が必要。
+
+- ICE公式の11月26日06:49 GMTの価格表示では2027年1月限94.680ドル、2月限90.710ドル。1月限の取引最終日は11月30日。90～91ドル台と94～96ドル台は契約月の違いでも生じ得るので、別の観測値を誤報と決めつけない。同日のReuters配信（Euronext掲載、12:11 GMT時点）はBrent94.96ドル、WTI84.44ドルと報じ、米感謝祭のためWTIの木曜清算値はないと明記。いずれも日中値。
+- 11月25日のBrent清算値94.61ドルは複数報道で確認できる。11月26日の96.57ドルおよび2027年第1四半期までの据え置き見通しは、提示されたReuters原文・CNA転載を今回直接取得できず、取引所の日次清算値も未確認。候補の数字を確定扱いせず、公式清算値と最新のReuters配信で再照合する。価格変化率の表記も同じ契約月の前日清算値と比較するまで保留。
+- OPEC公式11月1日発表で、対象7か国は9月の要求生産水準を12月にも維持すると決定し、次回会合を11月29日とした。6月7日発表でも第42回OPEC・非OPEC閣僚会合を11月29日に開催すると明記。2027年の生産枠はその会合の公式発表を待つ段階であり、第1四半期の据え置きは決定事項ではない。
+- 掲載する場合は「原油は契約月によって価格差。OPEC+は11月29日に2027年の生産方針を協議、12月の7か国の水準維持は決定済み」と区別する。日本のガソリン価格への波及額・時期、攻撃による実際の供給減は未確認。SNS投稿は実施していない。
+
+公開根拠（2026-11-27 JST確認）:
+- https://www.ice.com/products/219/Brent-Crude-Futures/data?marketId=6018423 （取引所価格表示、観測時刻付き）
+- https://www.ice.com/products/219/brent-crude-futures/expiry （取引最終日）
+- https://www.opec.org/pr-detail/2033620-1-november-2026.html （12月の水準と次回会合）
+- https://www.opec.org/pr-detail/1783605-7-june-2026.html （閣僚会合日程）
+- https://live.euronext.com/en/financial-news/oil-prices-edge-after-mine-strikes-ships-revive-supply-concerns （11月26日Reuters配信、日中値・WTI清算値なし）
+- https://www.goodman-macro.com/en/articles/20261126-oil/ （11月25日清算値・契約月別価格、二次資料）
