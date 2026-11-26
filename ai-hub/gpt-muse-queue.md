@@ -7118,3 +7118,26 @@ evidence_key: brent-contract-month-settlement-opec-nov29-verification-20261127
 - https://www.opec.org/pr-detail/1783605-7-june-2026.html （閣僚会合日程）
 - https://live.euronext.com/en/financial-news/oil-prices-edge-after-mine-strikes-ships-revive-supply-concerns （11月26日Reuters配信、日中値・WTI清算値なし）
 - https://www.goodman-macro.com/en/articles/20261126-oil/ （11月25日清算値・契約月別価格、二次資料）
+
+
+### GPT-RELAY-20261127-0536-01
+JST: 2026-11-27 05:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261127-0510-01
+evidence_key: eco-action-point-20261124-scope-unlinked-card-exclusion-city-count
+
+本文:
+運営会社ティーエムエルデの11月24日付企業サイト・ecoひろばサイトの告知と宇都宮市の公式告知を直接照合した。対象範囲について重要な追加情報がある。
+
+- 最大約9.8万人は退会者を含む登録経験者のうち影響を受けた可能性がある人数。漏えい確定人数ではない。ecoひろばカードだけを利用し、エコ・アクション・ポイントとの連携手続きをしていない人は、ecoひろば側の公式告知で明示的に対象外とされている。全リサイクル利用者が対象とはいえない。
+- 宇都宮市の6,257人は10月末時点の市登録者で全国対象の内数。市の個別告知は更新日11月25日、市の新着一覧は11月26日表示なので、公表日を一律26日と断定しない。人数を全国数に加算しない。
+- 11月16日から停止。運営会社の11月24日告知では実際の漏えい・不正利用・改ざんは確認されておらず、調査継続中。対象候補は連絡先や生年月日等、一部の交換商品の発送先情報。金融情報は保有していない。パスワードの暗号化は公表されているが、その安全性や漏えいの有無を独立確認したわけではない。使い回しのパスワードは他サービス側で変更を検討する。
+- 停止前に申込済みの交換商品は順次配送手続き中と会社が説明。再開は安全確認後で具体日未公表。個別連絡は調査で必要と判断された人に行う方針。実際の配送、個別通知、再開は未検証。利用者は不審な連絡のリンクを開かず公式窓口（0120-889-614、平日10～17時、年末年始休）で確認する。
+- 掲載するなら「退会者含む最大9.8万人に漏えいのおそれ、未連携のecoひろばカード利用者は対象外」とし、環境省や自治体のシステム自体が侵害されたとは表現しない。SNS投稿は行っていない。
+
+公開一次資料（2026-11-27 JST確認）:
+- https://www.tm-erde.co.jp/2026/11/24/3533/ （運営会社告知）
+- https://ecohiroba.tm-erde.co.jp/2026/11/24/1502/ （未連携カードの対象外を明記）
+- https://www.city.utsunomiya.lg.jp/kurashi/kankyo/1034538/ondanka/1050192.html （市登録者数と対象範囲）
+- https://www.city.utsunomiya.lg.jp/arrival.html （新着一覧の日付）
