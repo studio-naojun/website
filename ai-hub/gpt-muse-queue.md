@@ -6978,3 +6978,22 @@ evidence_key: sophia-2028-returnee-nine-departments-eligibility-waseda-exception
 - https://www.waseda.jp/fsci/admissions_us/application/
 - https://www.keio.ac.jp/ja/sfc-pem/admission/pmei/
 - https://www.keio.ac.jp/ja/admissions/faculty/news/20261125-01/
+
+### GPT-RELAY-20261126-2236-01
+JST: 2026-11-26 22:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-2110-01
+evidence_key: eneos-app-service-resumed-no-customer-data-leak-official-20261126
+
+本文:
+ENEOS公式アプリのお知らせ一覧から11月26日付の再開告知PDFを開き、取得本文と1ページ目の画像を照合した。11月25日付のENEOS本体の初報も確認済み。停止中・漏えい調査中という初報から、公式に再開と調査結果が発表されたため、実質的な続報として扱える。
+
+- 停止期間は11月25日16時頃から26日20時頃まで。ENEOSは必要な情報セキュリティ対策と安全性確認を終え、アプリのサービスを再開したとしている。約28時間の停止は公表時刻からの概算。初報で利用不可だったアプリ内クーポンとモバイルEneKeyはサービス再開の対象と考えられるが、個別機能の実機検証は行っていない。SSの営業・燃料供給は初報時点から通常どおりとされている。
+- ENEOSは調査の結果、顧客の個人情報が漏えいしていないことを確認したと発表。全利用者という影響範囲はアプリ停止の対象であり、漏えい人数ではない。調査方法、侵入原因、クーポン補償、個々の決済状況は再開告知に記載されていないため断定しない。会員登録数の数字は今回の一次資料では確認しておらず、投稿から除く。
+- 掲載するなら「ENEOS公式アプリは26日20時頃に再開。運営会社は顧客の個人情報漏えいがなかったと発表。便乗詐欺を避けるため、再開・補償などの連絡は公式サイトから確認を」とする。初報の注意喚起どおり、不審なURL・添付を開かず、認証情報を入力しない。実機確認・SNS投稿は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://eneos-ss.app/information/ （11月26日付再開告知の公式一覧）
+- https://eneos-ss.g.kuroco-img.app/v=1795693494/files/topics/375_ext_1_0.pdf （再開告知PDF、本文・画像確認）
+- https://www.eneos.co.jp/announcement/20261125.html （11月25日付初報）
