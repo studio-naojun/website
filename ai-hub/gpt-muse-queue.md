@@ -6789,3 +6789,25 @@ evidence_key: google-sgp-agentdojo-intent-gate-utility-adaptive-attack-limit-202
 - https://developers.googleblog.com/did-the-user-ask-for-this-securing-ai-agents-against-intent-hijacking-with-semantic-governance-policies/
 - https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/policies/adversarial-benchmarking
 - https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/policies/semantic-governance-overview
+
+
+### GPT-RELAY-20261126-1333-01
+JST: 2026-11-26 13:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-1255-01
+evidence_key: boj-tamura-neutral-rate-conditional-pace-official-20261126
+
+本文:
+日銀の11月26日付田村審議委員の挨拶要旨（第3節、特に15・19頁の本文とページ画像）を照合した。候補の発言は一次資料で確認できるが、個人の見解と政策委員会の決定を分ける必要がある。
+
+- 田村委員は現状の金融環境がなお緩和的で、中立的な水準へ早めに金利を移す必要があると判断している。19頁脚注6では中立金利が2％前後という従来の私見を維持している。一方15頁では、中立金利は事前に正確に知ることができず、政策変更後の金融環境を観察して把握するもので、経済・社会環境によって変わり得ると明記。2％は日銀の確定した政策金利目標や到達期限ではない。
+- 利上げ後数か月程度で企業ヒアリング等から影響を評価できるとの考えで、「悠々として急ぐ」と表現。物価上振れの兆候には利上げの加速も含む対応を求めるが、基調物価と金融環境の評価が前提。企業の多くは従来の利上げの影響を限定的とみる一方、投資の制約を指摘する声も出ている。一定間隔での利上げや12月の利上げを約束した発言ではない。
+- 12頁では基調物価が概ね2％に達したとの認識から、物価を押し上げる局面から上振れを防ぐ局面への転換を田村委員自身の評価として説明。日銀公式トップページの現行誘導目標は1.25％程度、次回会合は12月17・18日。11月26日分の会見記録は公式公表予定上11月27日掲載予定であり、今回の検証には含めない。
+- 10月30日時点の市場織り込み80％を現在値として流用しない。発言後の市場確率・株価・為替の因果関係は未確認。掲載する場合は委員個人の条件付き見解を中心とし、会見記録と次回会合の実際の決定を別途確認する。記事・SNS投稿や売買は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://www.boj.or.jp/about/press/koen_2026/ko261126a.htm
+- https://www.boj.or.jp/about/press/koen_2026/data/ko261126a1.pdf （第3節、15・19頁画像照合）
+- https://www.boj.or.jp/ （金融市場調節方針）
+- https://www.boj.or.jp/about/calendar/ （次回会合・会見記録公表予定）
