@@ -6834,3 +6834,32 @@ evidence_key: rakuten-securities-second-report-distinct-counts-regulatory-order-
 - https://www.rakuten-sec.co.jp/smartphone/info/info20261117-02.html （初報）
 - https://www.rakuten-sec.co.jp/web/company/newsrelease/pdf/press2026111901.pdf （命令受領発表、検索取得本文）
 - https://www.rakuten-sec.co.jp/web/info/info20261105-01.html （別件の公式説明）
+
+### GPT-RELAY-20261126-1531-01
+JST: 2026-11-26 15:31 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-1525-01
+evidence_key: jspwiki-cna-six-legacy-branch-fix-scope-release-index-20261126
+
+本文:
+ApacheがCNAとして公開したCVE Programの公式JSON原本（CVEProject/cvelistV5）10件とApache公式配布一覧を直接照合した。1525-SEC-01の残り4件も含め、2.x向け修正の記載範囲を確認できた。
+
+- CVE-2026-78102、78111、78099、125741、78110、78096の6件とも、Apache CNAの修正推奨は3.0.1であり、2.12.6向け修正の記載はない。うち78110は影響範囲の構造化欄が3.0.0未満、説明欄は3.0.0までと食い違うため、境界はApacheの追加説明待ちとする。2.12.6で6件が直らないことを実機試験したわけではない。バックポートの有無が確認できるまで包括修正と見なさない。
+- 78114は例外として3.0.1と2.12.6の両方を明示（Apache CNAのCVSS 4.0は10.0）。71903は2.12.5を明示。Apache公式配布一覧には11月20日付3.0.1と2.12.5があるが、2.12.6は掲載されていない。修正推奨版の記載と実際の配布開始は区別する。2.x運用者には互換性・移行手順を確認して3.0.1への更新を検討し、移行できない場合は公開範囲・アクセス権の縮小と公式バックポート情報の確認を勧める。
+- 78102の8.2（CVSS 3.1）はCISA-ADP評価。78099はApacheの定性評価important、78110と78111はmoderateで、確認した公式JSONには数値CVSSがない。82359は定性評価criticalと明記されているため、「Criticalに根拠がない」ではなく「ベンダーの定性評価Critical、数値CVSSは未確認」と訂正する。78110はCSS注入でありXSSと一括しない。
+- 追加でページ単位のアクセス制御の問題78098も公式CNA原本で確認した（3.0.1推奨）。したがって9件を全件数と断定せず、今回照合した10件も網羅一覧とは扱わない。Apacheメーリングリスト本文は直接取得できなかった。CISA-ADPの78102等のSSVCでは評価時点のExploitation=noneだが、全件の最新KEV一覧は完全取得できず個別非掲載を独立確定していない。実働PoC・悪用の不存在も保証しない。
+- 掲載するなら「3.0.1が配布済み。2.x向けの2.12.6は一部CVEの推奨版として記載されているが、公式配布一覧では未確認。他の6件の2.x向け修正は未確認」と区別する。公開直前に配布一覧・CNA更新・KEV原本を再確認。記事・SNS投稿や環境変更は行っていない。
+
+公開一次資料（2026-11-26 JST確認）:
+- https://downloads.apache.org/jspwiki/
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78102.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78111.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78099.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/125xxx/CVE-2026-125741.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78110.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78096.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78114.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/82xxx/CVE-2026-82359.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/71xxx/CVE-2026-71903.json
+- https://github.com/CVEProject/cvelistV5/blob/main/cves/2026/78xxx/CVE-2026-78098.json
