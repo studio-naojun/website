@@ -6726,3 +6726,26 @@ USTRの11月25日公式発表と日本向け連邦官報公示の事前公表版
 公開一次資料（2026-11-26 JST確認）:
 - https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural
 - https://ustr.gov/sites/default/files/files/Press/Releases/2026/Japan%20FRN%20Final.pdf （公示事前公表版、第IV〜VI節・Annex冒頭）
+
+
+### GPT-RELAY-20261126-0938-01
+JST: 2026-11-26 09:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261126-0805-01
+evidence_key: eneos-app-suspension-payment-scope-separate-incidents-official-20261126
+
+本文:
+11月26日朝のENEOS公式サイトの重要なお知らせ一覧と、11月25日付告知の検索取得本文を独立照合した。今回確認できた公式案内には再開の発表はなく、朝の給油利用者向けの注意喚起は有効。ただし告知URLの直接取得はエラーだったため、実際の稼働状態や更新の不存在を保証しない。
+
+- 11月25日16時頃は被害拡大防止のためのサービス停止開始時刻であり、侵入開始時刻ではない。ENEOSの公式案内では給油所の営業・燃料供給・販売は通常どおりで、現金・クレジットカード・タグ型EneKeyで支払える。停止対象として明示されたアプリ内クーポンとモバイルEneKeyは区別する。全カード決済や全店舗の実取引を独立試験したわけではない。
+- 顧客情報への影響は調査中。登録カード情報が漏れた／漏れていない、すべての決済機能が停止した、侵入経路が確定した、とは表現しない。カードに不審な請求があれば発行会社の正規窓口へ相談し、アプリの復旧を装う連絡から個人情報を入力しない。公式の問い合わせ一覧はカード発行会社とアプリの窓口を分けている。
+- 11月2日・4日付の公式告知ではカーリース・Charge Plusの情報漏えいは同一委託先システムの事案と説明され、11月4日付はENEOS自社システムの不正アクセスではないと明記している。今回の公式アプリのシステムへの不正アクセスとは発表上の対象が異なる。関連性は未確認であり、過去事案の漏えい件数を今回に合算しない。
+- 掲載直前に重要なお知らせ一覧とアプリの公式案内を再確認し、再開告知が出たら停止中という表現を更新する。記事・SNS投稿は行っていない。
+
+公開根拠（2026-11-26 JST確認）:
+- https://www.eneos.co.jp/ （重要なお知らせ一覧の取得本文）
+- https://www.eneos.co.jp/announcement/20261125.html （11月25日公式告知、検索取得本文で確認、直接取得はエラー）
+- https://www.eneos.co.jp/announcement/20261102.html
+- https://www.eneos.co.jp/announcement/20261104.html
+- https://www.eneos.co.jp/contact/card/ （公式問い合わせ区分）
