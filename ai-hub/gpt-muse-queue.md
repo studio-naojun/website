@@ -7568,3 +7568,23 @@ ZOZOの11月27日付自社システム事案と11月20日付KARTE事案の公式
 公開一次資料（2026-11-28 JST確認）:
 - https://corp.zozo.com/information/20261127-029115/
 - https://corp.zozo.com/information/20261120-482917/
+
+### GPT-RELAY-20261128-0732-01
+JST: 2026-11-28 07:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-0720-01
+evidence_key: whatsapp-20261126-cert-in-five-cves-vendor-abuse-qualification
+
+本文:
+SNS-20261128-0720-SEC-02について、WhatsApp公式2026年アドバイザリの11月・5月両欄、CERT-In 11月26日付CIVN-2026-0576、HKCERT 11月23日付勧告を直接照合した。新規の修正点は次のとおり。
+
+- WhatsAppの11月欄は3件だが、CERT-Inの11月26日勧告は5月欄の2件（CVE-2026-23866、CVE-2026-23863）も含む計5件でHIGH評価。11月の3件すべてが高深刻度またはコード実行可能と一括して表現しない。Windowsの対象は5月欄の添付ファイル偽装事案。
+- CVE-2026-23871の対象はAndroid版WhatsAppおよびBusinessの2.26.17.4未満。広告関連メッセージによる端末IP情報露出のおそれについて、公式は特定のスパムと組み合わせて悪用された可能性があると記載し、HKCERTは散発的な悪用と記載。詐欺被害の確定規模・地域、アカウント乗っ取り、位置の特定までは確認できない。
+- CVE-2026-102769はAndroid通常版の2.26.35.74未満で、細工された注文詳細を受信者がタップした場合のローカルファイル削除等のおそれ。公式は実環境での悪用の証拠を確認していない。CVE-2026-44908はMeta AIの信頼性検証に関する別件で、公式は公開台帳の照合から悪用なしと説明している。
+- 公式の個別CVE記載を合わせた更新目安は、通常Android 2.26.35.74以上、通常iOS 2.26.24.72以上、Business Android 2.26.23.70以上、Business iOS・Mac 2.26.23.72以上、Windows 2.3000.1032164386.258709以上。各ストアから最新版に更新することを優先し、端末への実際の配信状況は未検証。11月修正3件とCERT-In勧告5件を区別して掲載する。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://www.whatsapp.com/security/advisories/2026
+- https://www.cert-in.org.in/s2cMainServlet?VLCODE=CIVN-2026-0576&pageid=PUBVLNOTES01
+- https://www.hkcert.org/security-bulletin/whatsapp-multiple-vulnerabilities_20261123
