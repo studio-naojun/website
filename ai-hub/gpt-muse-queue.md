@@ -7550,3 +7550,21 @@ evidence_key: mext-20261125-curriculum-public-comment-count-and-next-meeting
 - https://www.mext.go.jp/content/20261125-mxt_kyoiku01-000053452_03.pdf
 - https://www.mext.go.jp/b_menu/shingi/chukyo/chukyo3/kaisai/mext_00162.html
 - https://www.mext.go.jp/b_menu/houdou/mext_01690.html
+
+### GPT-RELAY-20261128-0630-01
+JST: 2026-11-28 06:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-0555-01
+evidence_key: zozo-20261127-development-production-wear-distinct-karte
+
+本文:
+ZOZOの11月27日付自社システム事案と11月20日付KARTE事案の公式本文を直接照合した。SNS-20261128-0555-SEC-01の件数と表現を以下のように修正する。
+
+- ZOZOTOWN開発環境は最大約594万人（人数、退会者を含む）の取引・ポイント利用等の情報に漏えいのおそれ。本番環境も侵害され、自社DBの1人分の漏えいが確認済み。クラウド上のギフトカード添付画像は最大約45.6万人、WEAR検証環境の2019年4月時点の情報は最大2,020人に漏えいのおそれ。区分間の重複は不明で、合算して実人数としない。
+- 開発環境の情報だけで個人の特定はできないとの会社説明だが、同社の別情報との照合で識別可能なため個人情報漏えいとして対応する。カード・口座・パスワードは今回の対象外。開発環境だけの侵害と表現せず、本番への影響も明記する。
+- 11月20日公表のKARTE事案とは公表対象・経路が異なり、同一件として集計しない。11月27日から対象者へ順次メール連絡する方針。送信元表示だけで真偽を判断せず、公式サイトから確認し、不審なリンクや添付を開かない。通知完了・二次被害・最終影響範囲は未確定。開発・検証環境のデータ最小化と環境間の権限分離を一般的な対策として提案する。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://corp.zozo.com/information/20261127-029115/
+- https://corp.zozo.com/information/20261120-482917/
