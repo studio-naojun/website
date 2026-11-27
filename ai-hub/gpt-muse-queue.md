@@ -7373,3 +7373,26 @@ evidence_key: china-state-council-20261127-market-stability-intraday-vs-close
 - https://finance.eastmoney.com/a/202611273941555069.html （央広財経、午前引け）
 - https://finance.eastmoney.com/a/202611273941607744.html （第一財経、13:40配信の取引中データ）
 - https://cn.investing.com/indices/shanghai-composite-historical-data （時刻・終値の区別が必要な相場表示）
+
+### GPT-RELAY-20261127-1735-01
+JST: 2026-11-27 17:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261127-1705-01
+evidence_key: boj-december-hike-20261127-80pct-pre-speech-counterevidence
+
+本文:
+11月26日の田村委員挨拶の日銀公式PDF本文・19頁画像、11月25日付Bloomberg配信記事、27日付Commerzbankコメントの公開収録本文を照合した。候補の約80%という市場観測は支持されるが、「田村発言で71%から80%へ上昇した」との因果・正確な幅の断定は保留する。
+
+- 田村委員は11月26日、中立金利への早期接近が必要との個人的見解を示し、物価上振れの兆候には利上げ加速を含む迅速な対応が必要と述べた。中立金利2%前後は本人の見方であり、政策委員会の決定ではない。日銀公表予定では挨拶は26日10:00、植田総裁の次の挨拶は30日10:05。
+- 重要な反証：The Business Times掲載のBloomberg記事は25日08:49公開（24日のインタビュー）で、26日の田村発言より前からOISが12月の利上げを約80%織り込むと明記していた。26日朝の約70%についてはヨリビケの26日11:00記事が外為どっとコムの観測として伝え、24日9:48までのOANDA観測78.7%も併記している。元のYahoo!配信は403、CB Terminalは取得不能。27日付CommerzbankコメントはFXStreet配信の転載収録本文で約80%を確認したが、原記事直接取得は不通。これらは同一データ系列の時系列ではない。
+- 補助的にはJP-BONDが11月26日清算のTONA3か月金利先物から12月の25bp利上げを約73〜89%と試算している。25日清算では63〜85%、24日では83〜93%。これはOISの直接値ではなく、1月会合を含む契約期間の仮定で幅が変わる別指標。取引所の清算値原本は未照合。
+- 掲載する場合は「27日付の市場解説では12月利上げの織り込みは約8割。26日の田村委員は早めの正常化を主張した。ただし発言前にも約8割との報道があり、71%→80%の正確な変化と発言の寄与は同一時点・同一算出方法のOIS原データが確認できるまで断定しない」とする。次回会合は12月17〜18日。実際の利上げは未決定。SNS投稿は行っていない。
+
+公開資料（2026-11-27 JST確認）:
+- https://www.boj.or.jp/about/press/koen_2026/data/ko261126a1.pdf （19頁本文・画像）
+- https://www.boj.or.jp/about/calendar/index.htm （公表予定）
+- https://www.businesstimes.com.sg/companies-markets/banking-finance/bank-japan-likely-lift-rate-2-mid-2027-ex-board-member-says （25日付Bloomberg配信本文）
+- https://yoribike.jp/a/2026-11-26-news-boj-tamura-neutral （26日付二次観測）
+- https://www.tmgm.com/eng/analysis/market-news/article/japanese-yen-inflation-strengthens-case-for-december-hike-commerzbank-202611270653 （27日付転載収録本文）
+- https://www.jp-bond.com/seisaku-kinri （27日更新、金利先物に基づく別指標）
