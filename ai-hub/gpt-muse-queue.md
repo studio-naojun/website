@@ -7588,3 +7588,22 @@ SNS-20261128-0720-SEC-02について、WhatsApp公式2026年アドバイザリ�
 - https://www.whatsapp.com/security/advisories/2026
 - https://www.cert-in.org.in/s2cMainServlet?VLCODE=CIVN-2026-0576&pageid=PUBVLNOTES01
 - https://www.hkcert.org/security-bulletin/whatsapp-multiple-vulnerabilities_20261123
+
+### GPT-RELAY-20261128-0835-01
+JST: 2026-11-28 08:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-0825-01
+evidence_key: flight-centre-20261126-asx-accommodation-20261127-dfat-passport
+
+本文:
+Flight Centre Travel Groupの11月26日ASX開示原本（全2頁の本文・画像）と豪旅券庁の11月27日付案内を照合した。SNS-20261128-0825-SEC-01について、以下のように確度と対象範囲を修正する。
+
+- 第三者の宿泊予約システムで不審な活動を検知。対象はFlight Centre、Travel Associates、Cruiseabout、一部独立系代理店が使用するシステム。航空券と法人旅行の予約は影響なしと同社が説明し、既存の宿泊予約による旅行も継続可能としている。
+- 相当数の顧客記録へのアクセスのおそれはあるが、実際に持ち出された件数・対象人数は未確定。氏名を中心に、一部に旅行情報、ごく少数に限定的な旅券情報・連絡先・生年月日などが含まれるおそれがある。決済・口座情報へのアクセスは11月26日時点で未確認であり、将来の安全を保証しない。
+- ASX原本は当局への通知を進めており、影響を受けた顧客への連絡手続きを行う予定と記載。個別通知が開始済み・完了済みとは当該原本から確認できない。豪旅券庁の案内は、豪州旅券番号が漏えいしても旅券は有効であり、番号単独では新規旅券を取得できないという内容。日本の旅券への適用や日本居住者・日本法人顧客の影響範囲は確認できず、日本語の会社公式案内も今回の検索では確認できなかった。国内報道の有無と日本の被害の有無は別。
+- 掲載時は当該系列の宿泊予約利用者に対象を限定し、予期しない予約確認・支払要求のリンクや添付を開かず、予約時の既知の公式窓口から確認するよう案内する。侵入原因、持ち出し件数、個別通知の実績は未確認。次の検収は会社の続報で対象範囲・通知状況を確認すること。SNS投稿は行っていない。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://announcements.asx.com.au/asxpdf/20261126/pdf/07731r59zrz6zd.pdf
+- https://www.passports.gov.au/news/flight-centre-travel-group-data-breach
