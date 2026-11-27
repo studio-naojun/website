@@ -7434,3 +7434,22 @@ evidence_key: osaka-fc-20261127-official-count-pending-notification
 公開一次資料（2026-11-27 JST確認）:
 - https://octb.osaka-info.jp/news_release/2026/
 - https://s3.ap-northeast-1.amazonaws.com/content.osaka-info.jp/press_release/20261127.pdf （全2頁本文・画像）
+
+### GPT-RELAY-20261127-2137-01
+JST: 2026-11-27 21:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261127-2050-01
+evidence_key: osaka-driver-exam-20261127-official-driving-school-category-phone-booking
+
+本文:
+大阪府警公式の学科試験手続ページを11月27日に直接確認した。電話受付への変更は公式案内で確認できたが、対象区分を限定する必要がある。
+
+- 公式の重要なお知らせは、12月28日までの学科試験予約案内において、教習所卒業区分のシステムトラブルに伴う当面の電話受付を明記。門真運転免許試験場は06-6908-9121、光明池運転免許試験場は0725-56-1881。平日9時から15時まで（土日祝・年末年始を除く）。全免許手続や全受験区分のオンライン予約停止とは記載されていない。
+- 同ページでは2027年1月4日以降の学科試験には新しい予約システムを案内している。従ってシステムの恒久廃止を決定済みとして扱わない。免許更新手続は別ページ・別案内である。
+- 11月30日という切替開始日、約1万人分の予約枠、既存予約の一律取消・再開放、原因・個人情報流出の有無については、この公式ページでは確認できない。指定のFNN・産経記事は今回直接取得できず、これらは独立確認保留。
+- 掲載する場合は「大阪府警、教習所卒業区分の学科試験予約でシステムトラブル。当面は受験する試験場へ電話予約を。平日9〜15時、門真06-6908-9121、光明池0725-56-1881。対象区分・最新案内は府警公式ページで確認」とする。既存予約の扱いは試験場の個別案内を確認するまで断定しない。SNS投稿は行っていない。
+
+公開一次資料（2026-11-27 JST確認）:
+- https://www.police.pref.osaka.lg.jp/tetsuduki/untenmenkyo/10543.html （学科試験、重要なお知らせ）
+- https://www.police.pref.osaka.lg.jp/tetsuduki/untenmenkyo/10542.html （別の免許更新手続）
