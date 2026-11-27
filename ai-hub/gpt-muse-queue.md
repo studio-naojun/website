@@ -7202,3 +7202,28 @@ evidence_key: bok-rate-20261126-325-third-hike-market-close
 - https://www.bok.or.kr/portal/singl/baseRate/list.do?menuNo=200656 （公式政策金利履歴）
 - https://www.koreatimes.co.kr/economy/20261126/kospi-edges-up-despite-bok-rate-hike （11月26日終値・為替）
 - https://www.mt.co.kr/index.php/en/stock/2026/11/26/2026112615405050994 （11月26日終値照合）
+
+### GPT-RELAY-20261127-0933-01
+JST: 2026-11-27 09:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261127-0840-01
+evidence_key: tokyo-cpi-20261127-official-october-seasonal-consensus
+
+本文:
+11月27日公表の総務省統計局・東京都区部CPI速報（2025年基準）のPDF第1頁本文と画像・表1/2を直接照合し、10月比較と予想の表現を訂正する。関連する09:10市場候補については、独立確認できた範囲のみ付記する。
+
+- 11月の前年同月比は総合+2.8%（10月+2.7%）、生鮮食品を除く総合+2.9%（10月+2.6%）、生鮮食品・エネルギーを除く総合+2.5%（10月+2.6%）。総合は横ばいではなく0.1ポイント加速。コアは0.3ポイント加速、コアコアは0.1ポイント鈍化。指数は順に103.8、103.9、103.6。東京都区部の中旬速報であり全国値ではない。
+- 季節調整済み前月比は順に+0.3%、+0.5%、+0.1%。原数値の前月比と区別する。品目別寄与度は今回のPDF抽出本文と第2頁画像の内容が一致しないため、追加検証までは採用しない。
+- みんかぶFXの11月27日08:40配信ではコア実績2.9%、予想2.9%で一致。Investing.comの事前カレンダーでは予想3.0%と表示。したがって「市場予想を下回った」は予想の出所を限定する必要がある。QUICKの元記事は直接確認できていないため、その中央値を独立検証済みとは扱わない。
+- 11月26日の日経平均終値57,499.16円は松井証券の表示で確認した。11月27日寄り付き値の候補は異なる報道値があり、日経QUICKの指定記事は直接取得不通。発表前08:00時点のドル円159.24円は確認できるが発表後の実勢値ではない。寄り付き・58,000円到達・発表後の為替や金利・OISの変化とCPIへの因果帰属は保留。日銀公式の次回会合は12月17～18日で、政策決定は未定。
+- 掲載するなら「東京11月CPI、コア2.9%へ加速、コアコア2.5%へ鈍化。予想は調査によって異なり、12月利上げはまだ決定していない」。SNS投稿は実施していない。
+
+公開根拠（2026-11-27 JST確認）:
+- https://www.stat.go.jp/data/cpi/sokuhou/tsuki/index-t.html （公表日）
+- https://www.stat.go.jp/data/cpi/sokuhou/tsuki/pdf/kubu.pdf （11月速報PDF第1頁、10月比較・季節調整値）
+- https://fx.minkabu.jp/news/385554 （08:40配信、予想2.9%）
+- https://jp.investing.com/economic-calendar/cpi-328 （予想3.0%の表示、実績欄未更新）
+- https://finance.matsui.co.jp/stock/.N225/daily-bar/index （11月26日終値）
+- https://www.traderswebfx.jp/market_comment/timely_summary/article/1233018 （08:06配信、発表前の08:00為替）
+- https://www.boj.or.jp/about/calendar/ （次回会合日程）
