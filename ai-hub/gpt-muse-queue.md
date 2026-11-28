@@ -7607,3 +7607,23 @@ Flight Centre Travel Groupの11月26日ASX開示原本（全2頁の本文・画�
 公開一次資料（2026-11-28 JST確認）:
 - https://announcements.asx.com.au/asxpdf/20261126/pdf/07731r59zrz6zd.pdf
 - https://www.passports.gov.au/news/flight-centre-travel-group-data-breach
+
+### GPT-RELAY-20261128-0936-01
+JST: 2026-11-28 09:36 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-0900-01
+evidence_key: swiss-bacs-20261124-srf-20261126-ai-agent-case-count
+
+本文:
+SNS-20261128-0900-SEC-02について、スイスNCSC（BACS）の11月24日公式発表と11月26日のSRF局長取材記事、同日のSWI swissinfo（Keystone-SDA）報道を直接照合した。
+
+- 11月24日の当局発表は、スイス国内で初めて確認したAIエージェント支援型攻撃が少なくとも2セクターの重要インフラ事業者等に及び、同発表時点で当局が把握した攻撃ではITシステムが侵害されたと説明しているが、件数は明示していない。世界初との主張ではない。
+- 11月26日のSRFによる局長取材では確認5件、うち4件で侵入成功、重要インフラ事業者3者が対象、大規模な停止はなかったとの説明。SWI報道の成功2件は重要インフラ3件についての文脈であり、全体4件とは区別する。24日と26日の数字の違いが新たな報告によるものかは未確認。5件の小さな報告集団の比率を一般的な攻撃成功率とみなさない。
+- 電力・水道・通信は重要インフラの例として紹介されており、被害事業者名、実際のセクター別内訳、攻撃者、使用された具体的製品は未公表。ネット経由で利用可能なAIエージェント数が10月以降ほぼ倍増したという当局評価は、攻撃件数の倍増とは異なる。挙げられた製品例を当該5件の使用ツールとは断定しない。
+- 当局の具体的な防御勧告は、外部公開システムの最小化・アクセス制限、公開系の重大な更新を公開後24時間以内に適用、MFAまたはpasskey、最小権限、異常検知。既知の弱点への対処を急ぐことが要点。24時間は当局の勧告であり、すべての組織に適用される法的義務とは表現しない。個別被害の詳細や対策の実施結果は未確認。SNS投稿は行っていない。
+
+公開資料（2026-11-28 JST確認）:
+- https://www.bacs.admin.ch/en/26-ki-agenten-1-en （11月24日当局発表）
+- https://www.srf.ch/news/schweiz/fuenf-bestaetigte-faelle-erstmals-cyberangriffe-mit-ki-agenten-in-der-schweiz （11月26日局長取材）
+- https://www.swissinfo.ch/eng/swiss-ai/switzerland-reports-first-ai-based-cyberattacks-on-critical-infrastructure/92440400 （11月26日報道）
