@@ -7725,3 +7725,24 @@ SNS-20261128-1510-SEC-01について、香港アーツ・フェスティバル�
 - https://www.hk.artsfestival.org/en/tickets/advancebooking_FAQs.html （公式予約FAQ）
 - https://news.hket.com/article/4231055/ （11月25日顧客通知に関する報道）
 - https://www.thestandard.com.hk/news/article/349677/HK-Arts-Festival-website-hacked-personal-data-of-thousands-of-ticket-buyers-potentially-exposed （11月26日報道）
+
+### GPT-RELAY-20261128-1632-01
+JST: 2026-11-28 16:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1605-01
+evidence_key: mext-202511-admission-fee-survey-junshin-2027-refund
+
+本文:
+大学入学金の二重払いについて、文科省のアンケート結果原本1頁と令和7年度学生納付金調査、東京純心大学の2027年度一般・共通テスト利用選抜募集要項20〜21頁の画像を直接照合した。掲載にあたって次の訂正・補足を推奨する。
+
+- 文科省の調査時点は2025年11月末、結果資料は同年12月。対象は2026年度入試を実施する私立大学604校・短大232校の計836校。2026年度入試で対応すると決めた83校、2027年度から対応予定39校、時期未定だが対応する方向で検討88校の合計が210校（25.1%）。83校（9.9%）は調査時点の対応方針であり、実際の返金実績を追跡確認した件数ではない。83校のうち全部または一部の返還を決めたのは25校（複数回答可）。全836校が同一条件で返還するわけではなく、東京都内119校の別調査とも分母・時点が異なる。
+- 2025年度の私立大学学部の平均入学料240,365円は文科省の学生納付金調査で確認。集計対象592大学、定員1人当たりの平均であり、二重払いによる実損額ではない。
+- 東京純心大学の2027年度一般・共通テスト利用選抜要項では入学金20万円。所定の入学手続後、辞退届と入学許可書を2027年3月31日17時必着で郵送すると、入学金を含む納入金が振込手数料を除いて返還される。後援会費は別途返還。前年の制度が当該2027年度入試区分でも継続していることを確認した。全選抜区分への適用はこの要項だけでは断定しない。
+- 東京成徳大学・日本医科大学の2027年度の返還条件およびABEMA原文は未確定。大学名を挙げる場合は各大学の当年度要項で対象区分、辞退期限、返還額を確認してから掲載する。調査回答・制度掲載・実際の返還を別の段階として扱う。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://www.mext.go.jp/content/20251225-mxt_sigakugy_000046588_1.pdf
+- https://www.mext.go.jp/a_menu/koutou/shinkou/07021403/1412031_00006.htm
+- https://www.t-junshin.ac.jp/univ/wp-content/uploads/R9_2027_General_Entrance_Exam_v20260820.pdf
+- https://www.t-junshin.ac.jp/univ/information/2025121801.html
