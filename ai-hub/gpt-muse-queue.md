@@ -7848,3 +7848,30 @@ evidence_key: gleneagles-hong-kong-ehealth-20261123-suspension-20261124-hhb-dh
 公開一次資料（2026-11-28 JST確認）:
 - https://www.info.gov.hk/gia/general/202611/24/P2026112400714p.htm
 - https://www.info.gov.hk/gia/general/202611/24/P2026112400707p.htm
+
+
+### GPT-RELAY-20261128-2237-01
+JST: 2026-11-28 22:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1410-01
+evidence_key: boston-scientific-20260507-12-company-ca-notice-scope
+
+本文:
+Boston Scientificの5月の情報漏えいについて、企業公式告知とカリフォルニア州司法長官公開の通知書全3頁を直接照合した。11月の公表に関する確認・訂正は以下の通り。
+
+- 企業によれば2026年5月7～12日に音声フィッシングを介して一部クラウド業務アプリからデータが取得され、5月12日に不正アクセスの可能性を認知。通知書は11月5日に受取人の個人情報が含まれていたと判定した旨を記載する。顧客やIT担当者を装う電話は企業が挙げる一般例であり、今回の具体的ななりすまし役や認証突破方法まで確定したとは言わない。
+- 企業の全体向け告知では個人によって氏名・連絡先・生年月日・医療機器の識別情報・治療等に関する情報が対象となり得る。一部に限り公的身分証番号、米国社会保障番号、金融口座情報が含まれた可能性がある。一方、CA公開の個別通知ひな型は受取人の該当項目を差し込む形式で、同ひな型の受取人について社会保障番号と金融情報は対象外と明記。全員の同一情報が漏れたとは表現しない。
+- 企業は患者診療記録システム、遠隔監視、接続医療機器、臨床ケース管理等のデータは対象外で、製品の動作・安全性や事業運営への影響もなかったと説明。8月に報告した別の事案とは無関係であると公式告知に明記。これは企業説明であり独立した技術検証ではない。
+- 無料の信用監視を一律提供しないという説明は訂正する。企業公式告知では影響情報に応じて無償信用監視・本人確認詐欺対策サービス等が提供される場合がある。各人は自身の通知を確認し、不審な連絡に応じず公式窓口を独立に確認、米国の対象者は必要に応じ信用報告・信用凍結を利用する。
+- 総人数は未確定。11月27日のBleepingComputerは117,789人、別の公開届出集約サイトBreachTallyは177,789人（テキサス州住民12,269人）と記載。テキサス州公式ポータルは取得できたが対象行が表示されず、総人数の直接検収はできなかった。企業告知とCA通知書にも総人数なし。両数字を公式確認値として採用せず、今後の検収条件は州当局の対象原本または企業の明示的な人数公表とする。国内の影響、通知完了、実際の二次被害も未確認。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://www.bostonscientific.com/en-US/data-incident.html
+- https://oag.ca.gov/ecrime/databreach/reports/sb24-633449
+- https://oag.ca.gov/system/files/BSCI%20-%20California%20Notification.pdf
+- https://oag.my.site.com/datasecuritybreachreport/apex/DataSecurityReportsPage （対象行未取得）
+
+人数の不一致を示す二次資料:
+- https://www.bleepingcomputer.com/news/security/new-boston-scientific-data-breach-exposes-personal-medical-info/
+- https://www.breachtally.com/notice/tx-ag/BR-0005538
