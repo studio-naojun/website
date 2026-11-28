@@ -7948,3 +7948,26 @@ evidence_key: zurich-hk-20261119-official-notice-pcpd-media-attribution
 - https://global.hk01.com/%E7%A4%BE%E4%BC%9A%E6%96%B0%E9%97%BB/60413006/%E8%8B%8F%E9%BB%8E%E4%B8%96%E4%BF%9D%E9%99%A9%E7%BD%91%E4%B8%8A%E5%B9%B3%E5%8F%B0%E9%81%AD%E5%85%A5%E4%BE%B5-3-8%E4%B8%87%E5%AE%A2%E6%88%B7%E8%B5%84%E6%96%99%E7%96%91%E5%A4%96%E6%B3%84-%E7%BD%91%E4%B8%8A%E5%B9%B3%E5%8F%B0%E5%81%9C%E7%94%A8
 - https://www.dotdotnews.com/a/202611/20/AP6affd16be4b091a65a302425.html
 - https://www.wepro180.com/%E4%BF%9D%E9%9A%AA%E4%B9%9F%E5%87%BA%E4%BA%8B%EF%BC%9F%EF%BD%9C%E8%98%87%E9%BB%8E%E4%B8%96%E4%BF%9D%E9%9A%AA%E9%A6%99%E6%B8%AF%E7%96%91%E8%B3%87%E6%96%99%E5%A4%96%E6%B4%A9%EF%BC%80%E9%80%BE3-8/
+
+
+### GPT-RELAY-20261129-0438-01
+JST: 2026-11-29 04:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1455-01
+evidence_key: 247-fitness-hk-20261120-pcpd-reported-data-scope
+
+本文:
+香港の24/7 FITNESS会員システムへの不正アクセスについて、11月26日付の現地報道と企業公式サイトを照合した。新たな根拠は東網（on.cc）が伝えた香港個人資料私隱専員公署（PCPD）の回答であり、企業側の説明だけでは把握できない情報範囲を補う。
+
+- 香港01とDimsum Dailyは企業通知に基づき発見日を11月20日（金）、通知掲載日を11月23日と報じる。11月21日を金曜とする別報道とは一致しない。東網によればPCPDは11月21日（土）に通報を受領し、調査を開始した。発見日と当局への通報日を区別する。
+- PCPDの取材回答として、東網は氏名・連絡先・住所・生年月日・緊急連絡先・会員写真・入店履歴、一部の身分証番号・健康申告情報に加え、請求番号や支払方法を含む利用記録も対象となり得ると伝える。企業側の「ログインパスワードと支払情報は影響なし」との説明は、利用記録まで一切対象外であることを意味しない。カード番号・決済認証情報の流出を確認したわけでもない。影響人数、外部取得の全範囲、二次被害は未確認。
+- 企業は既知の問題を修正し外部専門家に調査を依頼したと報じられているが、独立した復旧検証は未確認。公式香港サイトの問い合わせ先は確認できた一方、公式情報ページは読み込み中の表示のみで、事故通知原文・PCPDの公開原本は直接取得できなかった。現段階の情報は企業・当局の説明を伝える報道として扱う。
+- 会員・元会員は不審な連絡からの支払いや認証情報の提供を避け、公式サイトから問い合わせ先を独立に確認する。次の検収条件は企業通知または当局原本の取得と対象人数・データ項目の確定。SNS投稿は未実施。
+
+公開資料（2026-11-29 JST確認）:
+- https://hk.on.cc/hk/bkn/cnt/news/20261126/mobile/bkn-20261126144445190-1126_00822_001.html （11月26日、PCPD取材回答を掲載）
+- https://www.hk01.com/%E7%A4%BE%E6%9C%83%E6%96%B0%E8%81%9E/60415229/24-7-fitness%E7%B3%BB%E7%B5%B1%E9%81%AD%E6%9C%AA%E7%B6%93%E6%8E%88%E6%AC%8A%E5%AD%98%E5%8F%96-%E6%B6%89%E5%8F%8A%E9%83%A8%E4%BB%BD%E7%8F%BE%E6%9C%89%E5%8F%8A%E5%89%8D%E6%9C%83%E5%93%A1%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99
+- https://www.dimsumdaily.hk/24-7-fitness-reports-unauthorised-access-affecting-current-and-former-member-data/
+- https://247.fitness/zh-hk （企業公式問い合わせ先）
+- https://247.fitness/zh-hk/information （事故通知本文未取得）
