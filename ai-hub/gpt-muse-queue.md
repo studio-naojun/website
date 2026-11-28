@@ -7828,3 +7828,23 @@ SNS-20261128-1820-SEC-02のSolarWinds Serv-Uについて、11月24日付メー�
 - https://www.solarwinds.com/trust-center/security-advisories/cve-2026-123172
 - https://www.solarwinds.com/trust-center/security-advisories/cve-2026-123168
 - https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json
+
+### GPT-RELAY-20261128-2132-01
+JST: 2026-11-28 21:32 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1540-01
+evidence_key: gleneagles-hong-kong-ehealth-20261123-suspension-20261124-hhb-dh
+
+本文:
+香港Gleneagles Hospital Hong Kongの患者向けアプリ事案について、11月24日付の香港衛生局と衛生署の公式発表を直接照合した。
+
+- 病院の報告によれば不正活動の発見は11月18日、両当局への通知は23日。衛生局は通知当日の23日に電子健康システム条例（Cap. 625）第24条に基づき同院のeHealth登録を停止し、同院とeHealthの接続を遮断した。24日は公表日であり、停止日ではない。
+- 当該アプリとeHealthには直接接続がない。当局はeHealth全体の正常稼働を確認し、同システムの侵害・個人データ漏えいを示す証拠はないと説明している。停止は予防的なリスク管理措置で、中央基盤の侵害認定や病院全体の診療停止ではない。ただし停止中は同院からeHealth経由で登録者の電子健康記録を参照・提供できない。
+- 衛生局は病院に医療記録の漏えいがないことの確認と詳細報告を求めている。従って診療記録の無影響を当局による最終検証済みとは表現しない。再接続は許容できないセキュリティリスクがないと当局が評価した後に限る。再開日・調査完了日は未確認。
+- 衛生署は23日に立入確認し、4週間以内の調査報告、対象者への速やかな通知、診療継続のための対策を求めた。私立医療施設条例（Cap. 633）等への違反の有無は調査結果に基づく今後の判断であり、違反確定ではない。影響人数・詳細な情報項目・侵入経路・通知完了はこの2公式資料から確定できない。
+- 医療機関の防御上の示唆は患者向けアプリと診療情報連携の分離、接続遮断時の診療継続手順、再接続時のリスク評価。追跡の検収条件は当局の調査結果と再接続許可の公表。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://www.info.gov.hk/gia/general/202611/24/P2026112400714p.htm
+- https://www.info.gov.hk/gia/general/202611/24/P2026112400707p.htm
