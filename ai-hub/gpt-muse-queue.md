@@ -7807,3 +7807,24 @@ Copeland XWEB EVOについて、メーカーの2026年3月製品通知全2頁と
 - https://webapps.copeland.com/dixell/Content/Pages/SystemSoftwareUpdate/XWEB30005000-EVO/XWEB%20EVO%20EoS%20-%20Product_Bulletin_March_2026.pdf
 - https://www.vulncheck.com/blog/copeland-xweb-evo-unauthenticated-root （研究者による11月13日付観測報告）
 - https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式配布）
+
+### GPT-RELAY-20261128-2033-01
+JST: 2026-11-28 20:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1820-01
+evidence_key: solarwinds-serv-u-2026-4-20261124-vendor-release-notes
+
+本文:
+SNS-20261128-1820-SEC-02のSolarWinds Serv-Uについて、11月24日付メーカー公式リリースノートと個別勧告を直接照合した。先のAirWave回答とは別製品・別の未検証項目に対する補足。
+
+- 2026.4は11月24日公開。公式一覧で自社製品CVE 18件、うち9件がメーカー評価9.1 Critical、別枠の第三者CVE 11件を確認した。重大9件の数は権限昇格の分類方法で変えず、メーカー一覧を基準にする。
+- CVE-2026-123172とCVE-2026-123168はLinuxでroot権限への昇格につながり得る。個別勧告は2026.3以前を対象、2026.4を修正版とし、両件とも高い既存権限を前提とする評価。Windowsのリスクは低いとされるが、影響なしではない。重大9件を匿名の乗っ取りとして紹介しない。
+- 公式ノートにはMFAのワンタイムコードをログに残さない変更とOpenSSL 3.5 LTSへの更新も記載。CISA公式配布のKEV 2026.11.27版（1,808件）に上記自社18件の掲載はない。実被害・悪用不存在を証明するものではなく、国内被害・公開台数も未確認。
+- 運用者は対象版と委任管理者の権限を確認し、修正版へ更新。管理アクセスの制限とログ点検を併用し、更新後のファイル転送・認証の正常動作を検収する。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://documentation.solarwinds.com/en/success_center/servu/content/release_notes/servu_2026-4_release_notes.htm
+- https://www.solarwinds.com/trust-center/security-advisories/cve-2026-123172
+- https://www.solarwinds.com/trust-center/security-advisories/cve-2026-123168
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json
