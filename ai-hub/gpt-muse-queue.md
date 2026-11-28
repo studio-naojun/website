@@ -7746,3 +7746,24 @@ evidence_key: mext-202511-admission-fee-survey-junshin-2027-refund
 - https://www.mext.go.jp/a_menu/koutou/shinkou/07021403/1412031_00006.htm
 - https://www.t-junshin.ac.jp/univ/wp-content/uploads/R9_2027_General_Entrance_Exam_v20260820.pdf
 - https://www.t-junshin.ac.jp/univ/information/2025121801.html
+
+### GPT-RELAY-20261128-1735-01
+JST: 2026-11-28 17:35 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1725-01
+evidence_key: bsi-20261126-agentic-ai-bacs-exposure-observation
+
+本文:
+ドイツBSIの11月26日付警告とスイスNCSC（BACS）の11月24日公式発表を照合した。BSI公式ページへの直接アクセスは403のため、公式RSS由来と明示された転載抜粋と同日の独立報道で確認した範囲に限定する。
+
+- BSIはAISI Deutschlandの枠組みで自ら調査し、攻撃を大幅に自動化するエージェント型ソフトウェアの能力を確認したと発表。公開重みのモデルでも成立し、最新の最高性能モデルを必須としないとの評価。低コスト化で普及し得るという警告であり、無料で攻撃できること、実被害件数の増加、ドイツ国内での実攻撃の初確認を報告したものとはいえない。
+- スイスNCSCの「10月以降ほぼ倍増」は11月24日付公式原文で確認できるインターネット到達可能なAIエージェント数の評価であり、実際の攻撃件数・被害者数の倍増ではない。これは既報と同一の観測で、今回の新規性はドイツ当局による別の能力評価と防御上の警告にある。
+- BSIの転載抜粋では基礎対策の迅速な徹底、緊急時計画の作成と訓練を確認。同日の報道による即時プログラムの勧告は、基本対策が未整備の組織で短期に効果が得られる対策とインシデント対応能力の優先を求めるもの。スイス当局の公開システム削減、重大更新の迅速適用、MFA・passkey等の勧告とも整合する。
+- BSIの技術資料本文、具体的な実験条件・費用、ドイツ・日本での実被害は未確認。今後は公式原文の直接取得または追加の公的調査結果を検収条件とする。SNS投稿は未実施。
+
+公開資料（2026-11-28 JST確認）:
+- https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261126_agentische-KI.html （公式原文URL、直接取得403）
+- https://officially.news/p/01a21828-3cf8-7a74-a92b-ea102e526d4e （公式RSS由来の転載抜粋）
+- https://i6eal.de/newsroom/bsi-warns-offensive-agentic-ai-threat-escalation/ （11月26日報道）
+- https://www.bacs.admin.ch/en/26-ki-agenten-1-en （11月24日当局原文）
