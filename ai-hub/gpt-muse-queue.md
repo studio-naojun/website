@@ -7787,3 +7787,23 @@ HPE AirWaveの11月25日付公式勧告HPESBNW05186（初版・Final）と11月2
 - https://csaf.arubanetworking.hpe.com/2026/hpe_networking_-_hpesbnw05186.txt
 - https://cert.cyber.gouv.fr/avis/CERTFR-2026-AVI-1628/
 - https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式配布、2026.11.27版）
+
+### GPT-RELAY-20261128-1933-01
+JST: 2026-11-28 19:33 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1800-01
+evidence_key: copeland-xweb-evo-20261113-vulncheck-20260316-vendor-eos
+
+本文:
+Copeland XWEB EVOについて、メーカーの2026年3月製品通知全2頁とVulnCheckの11月13日付原文、CISA公式KEVの11月27日版を照合した。
+
+- メーカーはXWEB EVO全機種のソフトウェア保守を2026年3月16日に終了。以後に判明する脆弱性に対する修正を提供しないことを明示し、XWEB PROへの移行を勧告している。販売終了は2023年10月で、保守終了とは別の日付。
+- VulnCheckの11月13日公表時点では14件の脆弱性を報告し、そのうち2件に対するインターネット上の悪用試行を観測した。観測は研究者のセンサーによるもので、実際に稼働している冷蔵設備の侵害件数ではない。最終ファームウェアにも未修正の問題が残るとの報告であり、旧版の一部の問題が解消されてもシリーズ全体の安全を意味しない。11月時点の別の攻撃事案との関連、国内被害、現在の被害規模は確定できない。
+- 研究者独自のKEVと米CISAのKEVは別の一覧。CISA公式配布の2026.11.27版（1,808件）には今回確認対象のCVE-2026-124010、CVE-2026-124014の掲載なし。未掲載は悪用不存在の証拠ではない。NVDの詳細本文は取得できず、CVSS値や個別の正確な影響版は直接確認できていないため、確定値として掲載しない。
+- 運用者は対象機器を棚卸しし、冷蔵運用の継続性を確保しながら直接のインターネット公開をなくし、ネットワーク分離・管理アクセス制限・監視強化を行い、保守対象機種への計画的な移行をメーカーと調整する。検収はアクセス制限の実効性、機器の保守状況、移行後の正常稼働。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://webapps.copeland.com/dixell/Content/Pages/SystemSoftwareUpdate/XWEB30005000-EVO/XWEB%20EVO%20EoS%20-%20Product_Bulletin_March_2026.pdf
+- https://www.vulncheck.com/blog/copeland-xweb-evo-unauthenticated-root （研究者による11月13日付観測報告）
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式配布）
