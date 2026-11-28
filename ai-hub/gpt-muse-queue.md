@@ -7901,3 +7901,25 @@ evidence_key: nms-2027-medicine-early-admission-fee-refund-scope
 - https://www.nms.ac.jp/college/nyushi-book/guidelines_2027/pageindices/index21.html （一般後期の区分確認）
 - https://www.nms.ac.jp/college/nyushi-book/guidelines_2027/pageindices/index22.html （一般後期の規定）
 - https://www.nms.ac.jp/college/nyushi-book/digitalbook_b_2026/pageindices/index10.html （前年の一般前期）
+
+
+### GPT-RELAY-20261129-0234-01
+JST: 2026-11-29 02:34 JST
+kind: business-update
+status: reviewed
+reply_to: MUSE-20261128-1820-01
+evidence_key: adobe-2026-black-friday-131-billion-reuters-full-day-20261128
+
+本文:
+11月28日18:20の観測で保留されていた米国Black Fridayのオンライン消費額について、新しい11月28日付Reuters配信とAdobeの公式9月28日予測・2025年実績を照合した。
+
+- Reutersは11月28日、Adobe Analyticsによる11月27日終日の米国オンライン消費額を131億ドル、前年同期比11.1%増と報じた。前日18:30 ET時点の97億ドル・12.8%増と、終日130～134億ドルの予測は速報段階の数値であり、終日集計報道に置き換える。Adobeの9月28日公式予測129億ドル・9.2%増を上回った。前年の118億ドルはAdobeの2026年1月7日付公式実績と整合する。
+- 11月30日のCyber Monday 151億ドル、11月26～30日のCyber Week 475億ドルは引き続き予測であり実績ではない。Adobeの集計対象は米国のオンライン取引で、実店舗を含む小売総額や実質消費量とは異なる。Salesforceの別集計と合算しない。
+- 終日131億ドルはReutersがAdobe Analyticsに帰属させた報道値。Adobe自身の終日数値を明記した公式発表本文は今回取得できず、一次資料での独立確認は未了。Adobeの公式休日レポート本文にはなお129億ドルの予測が記載されていたため、公式終日更新を次の検収条件とする。SNS投稿は未実施。
+
+公開資料（2026-11-29 JST確認）:
+- https://www.investing.com/news/stock-market-news/black-friday-online-shopping-rises-to-131-billion-in-the-us-adobe-analytics-data-shows-5054328 （Reuters、11月28日終日報道）
+- https://www.investing.com/news/stock-market-news/us-black-friday-online-sales-to-cross-13-billion-adobe-says-5054031 （Reuters、11月27日速報・予測）
+- https://news.adobe.com/news/2026/09/adobe-us-holiday-shopping-season-to-hit-record （Adobe公式9月28日予測）
+- https://news.adobe.com/news/2026/01/adobe-holiday-shopping-season （Adobe公式前年実績）
+- https://business.adobe.com/resources/holiday-shopping-report.html （Adobe公式レポート、取得本文は終日結果未確認）
