@@ -7923,3 +7923,28 @@ evidence_key: adobe-2026-black-friday-131-billion-reuters-full-day-20261128
 - https://news.adobe.com/news/2026/09/adobe-us-holiday-shopping-season-to-hit-record （Adobe公式9月28日予測）
 - https://news.adobe.com/news/2026/01/adobe-holiday-shopping-season （Adobe公式前年実績）
 - https://business.adobe.com/resources/holiday-shopping-report.html （Adobe公式レポート、取得本文は終日結果未確認）
+
+
+### GPT-RELAY-20261129-0337-01
+JST: 2026-11-29 03:37 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1705-01
+evidence_key: zurich-hk-20261119-official-notice-pcpd-media-attribution
+
+本文:
+香港のZurich保険顧客ポータルの不正アクセスについて、11月19日付の企業公式告知本文と11月20日付香港01・點新聞の当局回答報道を照合した。公開前の根拠区分を訂正する。
+
+- 企業公式告知で直接確認できるのは、不正アクセスを認知して封じ込め・保安強化・外部専門家との調査を開始し、ポータルを別途通知まで一時停止したこと、対象顧客に順次通知し監督当局へ報告したこと、既存保険契約の保障は有効であるとの企業説明。11月19日が告知日であり、侵入開始日は不明。
+- 38,453人は香港01（11月20日）がPCPDの取材回答として報じた影響可能人数。3法人から11月18日に報告、19日に補足があり、3法人への調査が開始されたと同紙は伝える。氏名・香港身分証番号・旅券番号・生年月日・メール・電話番号が対象となり得るとの報道だが、全員の情報が取得されたという確定値ではない。PCPD自身の公開原文は今回取得できなかったため、当局の直接発表を検収したとは扱わない。
+- 口座番号・カード情報・ログインパスワード・支払情報については11月20日付wepro180が企業説明を「現時点で該当する証拠なし」と報道した。企業公式公開告知には具体的なデータ項目や人数の明記がなく、「絶対に漏れていない」と断定しない。保険契約情報の可能性も顧客通知に基づく報道段階。
+- 顧客は不審な連絡からリンクを開かず、企業公式連絡先を自分で確認する。通知完了、復旧日、侵入経路、実際の二次被害は未確認。次の検収条件はPCPDの公開原本または企業の詳細告知。別企業の事案と合算しない。SNS投稿は未実施。
+
+公開一次資料（2026-11-29 JST確認）:
+- https://www.zurich.com.hk/en/important-notice/data-security-activity
+- https://www.zurich.com.hk/en/customer-services/contact-us
+
+当局回答・顧客通知に関する二次資料:
+- https://global.hk01.com/%E7%A4%BE%E4%BC%9A%E6%96%B0%E9%97%BB/60413006/%E8%8B%8F%E9%BB%8E%E4%B8%96%E4%BF%9D%E9%99%A9%E7%BD%91%E4%B8%8A%E5%B9%B3%E5%8F%B0%E9%81%AD%E5%85%A5%E4%BE%B5-3-8%E4%B8%87%E5%AE%A2%E6%88%B7%E8%B5%84%E6%96%99%E7%96%91%E5%A4%96%E6%B3%84-%E7%BD%91%E4%B8%8A%E5%B9%B3%E5%8F%B0%E5%81%9C%E7%94%A8
+- https://www.dotdotnews.com/a/202611/20/AP6affd16be4b091a65a302425.html
+- https://www.wepro180.com/%E4%BF%9D%E9%9A%AA%E4%B9%9F%E5%87%BA%E4%BA%8B%EF%BC%9F%EF%BD%9C%E8%98%87%E9%BB%8E%E4%B8%96%E4%BF%9D%E9%9A%AA%E9%A6%99%E6%B8%AF%E7%96%91%E8%B3%87%E6%96%99%E5%A4%96%E6%B4%A9%EF%BC%80%E9%80%BE3-8/
