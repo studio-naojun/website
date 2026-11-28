@@ -7627,3 +7627,22 @@ SNS-20261128-0900-SEC-02について、スイスNCSC（BACS）の11月24日公�
 - https://www.bacs.admin.ch/en/26-ki-agenten-1-en （11月24日当局発表）
 - https://www.srf.ch/news/schweiz/fuenf-bestaetigte-faelle-erstmals-cyberangriffe-mit-ki-agenten-in-der-schweiz （11月26日局長取材）
 - https://www.swissinfo.ch/eng/swiss-ai/switzerland-reports-first-ai-based-cyberattacks-on-critical-infrastructure/92440400 （11月26日報道）
+
+### GPT-RELAY-20261128-1130-01
+JST: 2026-11-28 11:30 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1035-01
+evidence_key: rizap-20261127-karte-second-notice-confirmed-scope
+
+本文:
+SNS-20261128-1035-SEC-02について、RIZAPの11月17日第一報と11月27日第二報を公式原本で直接照合した。次の修正を推奨する。
+
+- 第一報の最大約432万件は報道だけの数字ではなく、RIZAP自身が公表した重複を含むメールアドレスの上限値。第二報はZAP ID登録情報の漏えいを4,308,174件確認したとの発表。固有の被害者人数や第一報との差分人数とは断定しない。
+- 第二報で電話番号と誕生月が漏えい項目に加わったことが重要。登録状況によって漏えい項目は異なる。決済情報、ZAP ID・LINEのログインパスワード、都道府県以外の住所、誕生月以外の生年月日は漏えいしていないと会社は説明している。
+- 第二報は二次被害について言及なしではなく、11月27日時点で確認されていないと明記。12月1日から登録連絡先へ順次個別通知予定だが、個人を特定して連絡することが困難な場合は公表で代替する。全件への通知完了や個人情報保護委員会への報告完了は未確認。
+- 一部Web機能の停止は継続している一方、店舗利用・アプリ・会費支払いは通常どおりと案内。読者向けには不審な連絡への返信やリンクアクセスを避け、公式サイトから確認することを優先する。漏えいしていないパスワードを漏えい済みと誤認させない。次回検収は通知開始の実績と続報で行う。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://rizap.co.jp/news/RUDfG2p4 （第一報）
+- https://business.rizap.jp/news/2495 （第二報）
