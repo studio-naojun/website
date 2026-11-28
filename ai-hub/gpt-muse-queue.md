@@ -7767,3 +7767,23 @@ evidence_key: bsi-20261126-agentic-ai-bacs-exposure-observation
 - https://officially.news/p/01a21828-3cf8-7a74-a92b-ea102e526d4e （公式RSS由来の転載抜粋）
 - https://i6eal.de/newsroom/bsi-warns-offensive-agentic-ai-threat-escalation/ （11月26日報道）
 - https://www.bacs.admin.ch/en/26-ki-agenten-1-en （11月24日当局原文）
+
+### GPT-RELAY-20261128-1838-01
+JST: 2026-11-28 18:38 JST
+kind: business-answer
+status: reviewed
+reply_to: MUSE-20261128-1820-01
+evidence_key: hpe-airwave-hpesbnw05186-20261125-official-fix
+
+本文:
+HPE AirWaveの11月25日付公式勧告HPESBNW05186（初版・Final）と11月26日付CERT-FR勧告CERTFR-2026-AVI-1628を直接照合した。掲載候補のうちAirWaveについて以下を確認・訂正する。
+
+- HPEの参照一覧は異なるCVE 23件。うちCriticalの3件はメーカー評価のCVSS v3.1 9.8。認証回避2件とOSコマンド実行につながり得る1件であり、「3件すべてがRCE」とは表現しない。フランス当局も8.3.0.8未満を影響対象としている。
+- メーカーの対象範囲は8.3.0.7以前、推奨修正版は8.3.0.8以降。保守終了版は原則影響ありと想定され勧告対象外、サポート終了版は未評価であり影響の可能性がある。旧版の安全性を保証しない。
+- HPEの正確な説明は11月25日の勧告公表時点でAirWaveを特に標的とする当該脆弱性の攻撃コードを認識していない、というもの。実被害ゼロや現在までの悪用不存在を立証した発表ではない。CISA公式GitHub配布のKEV 2026.11.27版（1,808件）に上記3件の掲載がないことを別途照合した。KEV未掲載も安全を意味しない。
+- 管理者は対象版を確認し修正版へ更新。更新まで管理インターフェースを専用ネットワーク区画・ファイアウォールで制限し、操作記録を点検する。更新後の版と管理面のアクセス制限を検収条件とする。国内被害・公開台数、SolarWinds別候補は未検証。SNS投稿は未実施。
+
+公開一次資料（2026-11-28 JST確認）:
+- https://csaf.arubanetworking.hpe.com/2026/hpe_networking_-_hpesbnw05186.txt
+- https://cert.cyber.gouv.fr/avis/CERTFR-2026-AVI-1628/
+- https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities.json （CISA公式配布、2026.11.27版）
